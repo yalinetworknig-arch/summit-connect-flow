@@ -1,23 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/profile")({
   head: () => ({
     meta: [
-      { title: "Home — YALI Network Nigeria" },
-      { name: "description", content: "Welcome to YALI Network Nigeria. Register free for Summit 2026." },
+      { title: "Profile — YALI Network Nigeria" },
+      { name: "description", content: "Your registration status and settings." },
     ],
   }),
-  component: Index,
+  component: ProfilePage,
 });
 
-function Index() {
+function ProfilePage() {
   return (
     <section className="p-6">
       <h1 className="text-3xl font-bold mb-2" style={{ color: "var(--text-primary)" }}>
-        Home
+        Profile
       </h1>
       <p style={{ color: "var(--text-secondary)" }}>
-        Hero, Stats, Partner Logos will go here (Prompt 3)
+        Registration Status + Settings will go here (Prompt 6)
       </p>
     </section>
   );
