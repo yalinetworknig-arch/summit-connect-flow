@@ -1,5 +1,5 @@
 import { Outlet } from "@tanstack/react-router";
-import { TopNav } from "./TopNav";
+import { TopNav } from "@/components/TopNav";
 import { BottomTabBar } from "./BottomTabBar";
 
 export function AppShell() {
