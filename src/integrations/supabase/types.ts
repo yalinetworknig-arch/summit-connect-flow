@@ -14,7 +14,201 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      contact_submissions: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          status: string
+          subject: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          status?: string
+          subject: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          status?: string
+          subject?: string
+        }
+        Relationships: []
+      }
+      pwa_analytics: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          metadata: Json
+          path: string | null
+          platform: string | null
+          session_id: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          metadata?: Json
+          path?: string | null
+          platform?: string | null
+          session_id?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          metadata?: Json
+          path?: string | null
+          platform?: string | null
+          session_id?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      registrations: {
+        Row: {
+          accommodation_needed: boolean
+          attendee_type: string
+          calendar_downloaded: boolean
+          created_at: string
+          dietary_restrictions: string | null
+          email: string
+          email_confirmed: boolean
+          full_name: string
+          heard_about_summit: string | null
+          id: string
+          phone: string
+          pwa_installed: boolean
+          state: string
+          ticket_code: string
+          track_selection: string | null
+          travel_support_needed: boolean
+          whatsapp_notified: boolean
+          yali_id: string | null
+        }
+        Insert: {
+          accommodation_needed?: boolean
+          attendee_type: string
+          calendar_downloaded?: boolean
+          created_at?: string
+          dietary_restrictions?: string | null
+          email: string
+          email_confirmed?: boolean
+          full_name: string
+          heard_about_summit?: string | null
+          id?: string
+          phone: string
+          pwa_installed?: boolean
+          state: string
+          ticket_code?: string
+          track_selection?: string | null
+          travel_support_needed?: boolean
+          whatsapp_notified?: boolean
+          yali_id?: string | null
+        }
+        Update: {
+          accommodation_needed?: boolean
+          attendee_type?: string
+          calendar_downloaded?: boolean
+          created_at?: string
+          dietary_restrictions?: string | null
+          email?: string
+          email_confirmed?: boolean
+          full_name?: string
+          heard_about_summit?: string | null
+          id?: string
+          phone?: string
+          pwa_installed?: boolean
+          state?: string
+          ticket_code?: string
+          track_selection?: string | null
+          travel_support_needed?: boolean
+          whatsapp_notified?: boolean
+          yali_id?: string | null
+        }
+        Relationships: []
+      }
+      sponsor_inquiries: {
+        Row: {
+          assigned_to: string | null
+          budget_range: string
+          company_name: string
+          contact_name: string
+          created_at: string
+          decision_timeline: string
+          email: string
+          goals: string
+          id: string
+          notes: string | null
+          phone: string
+          preferred_tier: string
+          status: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          budget_range: string
+          company_name: string
+          contact_name: string
+          created_at?: string
+          decision_timeline: string
+          email: string
+          goals: string
+          id?: string
+          notes?: string | null
+          phone: string
+          preferred_tier: string
+          status?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          budget_range?: string
+          company_name?: string
+          contact_name?: string
+          created_at?: string
+          decision_timeline?: string
+          email?: string
+          goals?: string
+          id?: string
+          notes?: string | null
+          phone?: string
+          preferred_tier?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      stats: {
+        Row: {
+          id: string
+          key: string
+          updated_at: string
+          value: number
+        }
+        Insert: {
+          id?: string
+          key: string
+          updated_at?: string
+          value?: number
+        }
+        Update: {
+          id?: string
+          key?: string
+          updated_at?: string
+          value?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
