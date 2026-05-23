@@ -2,6 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { motion, type Variants } from "framer-motion";
 import { Countdown } from "./Countdown";
 import wordmark from "@/assets/new-wordmark.png";
+import usFlag from "@/assets/us-flag.png";
+import yaliLogo from "@/assets/yali-logo.png";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -170,18 +172,24 @@ export function Hero() {
           className="mb-10 inline-flex items-center gap-6 px-6 py-3 rounded-2xl border border-white/10 bg-white/[0.03]"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-6 rounded-sm bg-gradient-to-b from-white/95 to-white/80 flex items-center justify-center text-[7px] font-black tracking-tight text-[#0A1128]">
-              U.S.A
-            </div>
+            <img
+              src={usFlag}
+              alt="United States flag"
+              className="w-10 h-auto rounded-sm shadow-[0_2px_8px_rgba(0,0,0,0.35)] ring-1 ring-white/20"
+              draggable={false}
+            />
             <div className="text-left text-[9px] leading-tight font-semibold text-white/90 uppercase tracking-wider">
               United States Diplomatic<br />Mission in Nigeria
             </div>
           </div>
           <div className="h-6 w-px bg-white/15" />
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[10px] font-black text-[#0A1128]">
-              Y
-            </div>
+            <img
+              src={yaliLogo}
+              alt="YALI Network Nigeria"
+              className="w-10 h-10 rounded-full bg-white object-contain p-0.5 shadow-[0_2px_8px_rgba(0,0,0,0.35)] ring-1 ring-white/20"
+              draggable={false}
+            />
             <div className="text-left text-[9px] leading-tight font-semibold text-white/90 uppercase tracking-wider">
               YALI Network<br />Nigeria
             </div>
