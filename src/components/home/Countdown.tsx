@@ -38,14 +38,14 @@ export function Countdown() {
           className="rounded-xl border border-border-strong bg-accent-cyan/10 px-4 sm:px-6 py-3 sm:py-4 min-w-[80px] sm:min-w-[110px] text-center"
         >
           <div
-            className="tabular-nums font-bold leading-none text-accent-cyan font-display"
+            className="tabular-nums font-bold leading-none text-white font-display"
             style={{
               fontSize: "clamp(28px, 5vw, 48px)",
             }}
           >
             {mounted ? String(value).padStart(2, "0") : "--"}
           </div>
-          <div className="mt-2 text-[12px] sm:text-[14px] uppercase tracking-widest text-text-secondary">
+          <div className="mt-2 text-[12px] sm:text-[14px] uppercase tracking-widest text-white/70">
             {label}
           </div>
         </div>
