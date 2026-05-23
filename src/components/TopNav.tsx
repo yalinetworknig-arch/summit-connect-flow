@@ -63,7 +63,7 @@ function NavLinks({
           onClick={onNavigate}
           className={`${
             vertical ? "px-3 py-3 text-base" : "px-4 py-2 text-sm"
-          } rounded-full font-medium transition-colors text-text-primary hover:bg-accent-cyan/10 hover:text-accent-cyan`}
+          } font-medium uppercase tracking-wide transition-colors text-white/80 hover:text-[#00D9FF] relative after:absolute after:left-3 after:right-3 after:bottom-0 after:h-0.5 after:bg-[#00D9FF] after:scale-x-0 hover:after:scale-x-100 after:transition-transform`}
         >
           {label}
         </a>
@@ -77,8 +77,8 @@ export function TopNav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed top-3 md:top-5 inset-x-0 z-40 px-3 md:px-6 pointer-events-none">
-      <div className="pointer-events-auto mx-auto max-w-6xl flex items-center justify-between gap-4 rounded-full border border-border-strong/60 bg-surface/70 backdrop-blur-xl shadow-elegant pl-4 pr-2 md:pl-6 md:pr-3 h-14 md:h-16">
+    <header className="fixed top-0 inset-x-0 z-40 bg-[#0A1128] border-b border-white/10">
+      <div className="mx-auto max-w-[1200px] flex items-center justify-between gap-4 px-4 md:px-6 h-14 md:h-16">
         <a href="#home" aria-label="AIDIFILN — Home" className="flex items-center shrink-0">
           <img
             src={logoRainbow}
