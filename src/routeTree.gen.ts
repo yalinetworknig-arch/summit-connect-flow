@@ -19,6 +19,7 @@ import { Route as NetworkRouteImport } from './routes/network'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RegisterIdRouteImport } from './routes/register.$id'
 
 const TracksRoute = TracksRouteImport.update({
   id: '/tracks',
@@ -70,6 +71,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RegisterIdRoute = RegisterIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => RegisterRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -77,11 +83,12 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/network': typeof NetworkRoute
   '/profile': typeof ProfileRoute
-  '/register': typeof RegisterRoute
+  '/register': typeof RegisterRouteWithChildren
   '/schedule': typeof ScheduleRoute
   '/sponsors': typeof SponsorsRoute
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
+  '/register/$id': typeof RegisterIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -89,11 +96,12 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/network': typeof NetworkRoute
   '/profile': typeof ProfileRoute
-  '/register': typeof RegisterRoute
+  '/register': typeof RegisterRouteWithChildren
   '/schedule': typeof ScheduleRoute
   '/sponsors': typeof SponsorsRoute
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
+  '/register/$id': typeof RegisterIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -102,11 +110,12 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/network': typeof NetworkRoute
   '/profile': typeof ProfileRoute
-  '/register': typeof RegisterRoute
+  '/register': typeof RegisterRouteWithChildren
   '/schedule': typeof ScheduleRoute
   '/sponsors': typeof SponsorsRoute
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
+  '/register/$id': typeof RegisterIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
     | '/sponsors'
     | '/summit'
     | '/tracks'
+    | '/register/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
     | '/sponsors'
     | '/summit'
     | '/tracks'
+    | '/register/$id'
   id:
     | '__root__'
     | '/'
@@ -145,6 +156,7 @@ export interface FileRouteTypes {
     | '/sponsors'
     | '/summit'
     | '/tracks'
+    | '/register/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -153,7 +165,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   NetworkRoute: typeof NetworkRoute
   ProfileRoute: typeof ProfileRoute
-  RegisterRoute: typeof RegisterRoute
+  RegisterRoute: typeof RegisterRouteWithChildren
   ScheduleRoute: typeof ScheduleRoute
   SponsorsRoute: typeof SponsorsRoute
   SummitRoute: typeof SummitRoute
@@ -232,8 +244,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/register/$id': {
+      id: '/register/$id'
+      path: '/$id'
+      fullPath: '/register/$id'
+      preLoaderRoute: typeof RegisterIdRouteImport
+      parentRoute: typeof RegisterRoute
+    }
   }
 }
+
+interface RegisterRouteChildren {
+  RegisterIdRoute: typeof RegisterIdRoute
+}
+
+const RegisterRouteChildren: RegisterRouteChildren = {
+  RegisterIdRoute: RegisterIdRoute,
+}
+
+const RegisterRouteWithChildren = RegisterRoute._addFileChildren(
+  RegisterRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -241,7 +272,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   NetworkRoute: NetworkRoute,
   ProfileRoute: ProfileRoute,
-  RegisterRoute: RegisterRoute,
+  RegisterRoute: RegisterRouteWithChildren,
   ScheduleRoute: ScheduleRoute,
   SponsorsRoute: SponsorsRoute,
   SummitRoute: SummitRoute,
@@ -250,3 +281,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
