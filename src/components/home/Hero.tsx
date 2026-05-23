@@ -217,24 +217,6 @@ export function Hero() {
           National Summit
         </motion.h2>
 
-        {/* AIDIFILN rainbow wordmark */}
-        <h1 className="sr-only">AIDIFILN</h1>
-        <motion.div
-          custom={0.6}
-          initial="hidden"
-          animate="show"
-          variants={fadeUp}
-          aria-hidden="true"
-          className="font-display font-bold text-rainbow mt-6"
-          style={{
-            fontSize: "clamp(36px, 6.4vw, 72px)",
-            letterSpacing: "0.05em",
-            lineHeight: 1,
-          }}
-        >
-          AIDIFILN
-        </motion.div>
-
         {/* THEME */}
         <motion.p
           custom={1}
