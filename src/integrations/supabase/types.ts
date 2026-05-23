@@ -80,6 +80,7 @@ export type Database = {
       registrations: {
         Row: {
           accommodation_needed: boolean
+          amount_kobo: number | null
           attendee_type: string
           calendar_downloaded: boolean
           created_at: string
@@ -89,6 +90,8 @@ export type Database = {
           full_name: string
           heard_about_summit: string | null
           id: string
+          payment_status: string
+          paystack_reference: string | null
           phone: string
           pwa_installed: boolean
           state: string
@@ -100,6 +103,7 @@ export type Database = {
         }
         Insert: {
           accommodation_needed?: boolean
+          amount_kobo?: number | null
           attendee_type: string
           calendar_downloaded?: boolean
           created_at?: string
@@ -109,6 +113,8 @@ export type Database = {
           full_name: string
           heard_about_summit?: string | null
           id?: string
+          payment_status?: string
+          paystack_reference?: string | null
           phone: string
           pwa_installed?: boolean
           state: string
@@ -120,6 +126,7 @@ export type Database = {
         }
         Update: {
           accommodation_needed?: boolean
+          amount_kobo?: number | null
           attendee_type?: string
           calendar_downloaded?: boolean
           created_at?: string
@@ -129,6 +136,8 @@ export type Database = {
           full_name?: string
           heard_about_summit?: string | null
           id?: string
+          payment_status?: string
+          paystack_reference?: string | null
           phone?: string
           pwa_installed?: boolean
           state?: string

@@ -1,0 +1,87 @@
+import { Link } from "@tanstack/react-router";
+import { Countdown } from "./Countdown";
+
+export function Hero() {
+  return (
+    <section
+      className="relative overflow-hidden"
+      style={{ background: "var(--brand-navy)", color: "#FFFFFF" }}
+    >
+      {/* Hex pattern overlay */}
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        style={{ opacity: 0.1 }}
+        aria-hidden="true"
+      >
+        <defs>
+          <pattern
+            id="hex"
+            width="56"
+            height="48"
+            patternUnits="userSpaceOnUse"
+            patternTransform="scale(1)"
+          >
+            <path
+              d="M28 0 L56 16 L56 48 L28 64 L0 48 L0 16 Z"
+              fill="none"
+              stroke="#00D9FF"
+              strokeWidth="1"
+            />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#hex)" />
+      </svg>
+
+      <div className="relative max-w-5xl mx-auto px-6 py-20 md:py-28 min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center text-center gap-8">
+        <h2
+          className="font-bold uppercase tracking-wide"
+          style={{
+            fontFamily: "Space Grotesk, sans-serif",
+            fontSize: "clamp(32px, 5.5vw, 64px)",
+            lineHeight: 1.05,
+          }}
+        >
+          YALI Network Nigeria<br className="hidden sm:block" /> National Summit
+        </h2>
+
+        <h1
+          className="text-rainbow font-bold leading-none"
+          style={{
+            fontFamily: "Space Grotesk, sans-serif",
+            fontSize: "clamp(48px, 9vw, 96px)",
+            letterSpacing: "-0.02em",
+          }}
+        >
+          AIDIFILN
+        </h1>
+
+        <p
+          className="max-w-2xl text-base sm:text-lg"
+          style={{ color: "var(--text-secondary)", fontSize: "18px", lineHeight: 1.6 }}
+        >
+          Artificial Intelligence, Digital Innovation and the Future of Inclusive
+          Leadership in Nigeria.
+        </p>
+
+        <Countdown />
+
+        <div className="flex flex-col sm:flex-row items-center gap-3 mt-2">
+          <Link
+            to="/register"
+            className="px-7 py-3 rounded-full text-base font-semibold transition-transform hover:scale-105"
+            style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
+          >
+            Register Now
+          </Link>
+          <Link
+            to="/sponsors"
+            className="px-7 py-3 rounded-full text-base font-semibold border-2 transition-colors hover:bg-white/5"
+            style={{ borderColor: "var(--accent-cyan)", color: "var(--accent-cyan)" }}
+          >
+            Become a Sponsor
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
