@@ -1,11 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { Countdown } from "./Countdown";
 import logoRainbow from "@/assets/aidifiln-lockup-rainbow.png";
+import logoNavy from "@/assets/aidifiln-lockup-navy.png";
 
 export function Hero() {
   return (
     <section
-      className="relative overflow-hidden bg-brand-navy text-white"
+      id="home"
+      className="relative overflow-hidden bg-brand-navy text-white scroll-mt-24"
     >
       {/* Hex pattern overlay */}
       <svg
@@ -44,13 +46,23 @@ export function Hero() {
         </h2>
 
         <h1 className="sr-only">AIDIFILN</h1>
-        <img
-          src={logoRainbow}
-          alt="AIDIFILN — Artificial Intelligence, Digital Innovation and the Future of Inclusive Leadership in Nigeria"
-          className="w-full max-w-3xl h-auto select-none drop-shadow-[0_8px_30px_rgba(0,217,255,0.15)]"
-          loading="eager"
-          decoding="async"
-        />
+        <picture className="block w-full max-w-3xl">
+          <img
+            src={logoRainbow}
+            alt="AIDIFILN — Artificial Intelligence, Digital Innovation and the Future of Inclusive Leadership in Nigeria"
+            className="hidden dark:block w-full h-auto select-none drop-shadow-[0_8px_30px_rgba(0,217,255,0.2)]"
+            loading="eager"
+            decoding="async"
+          />
+          <img
+            src={logoNavy}
+            alt=""
+            aria-hidden="true"
+            className="block dark:hidden w-full h-auto select-none drop-shadow-[0_8px_30px_rgba(11,28,58,0.15)]"
+            loading="eager"
+            decoding="async"
+          />
+        </picture>
 
         <p
           className="max-w-2xl text-white/70"
