@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Sun, Moon, Menu } from "lucide-react";
 import logoRainbow from "@/assets/aidifiln-logo-rainbow.png";
-import logoNavy from "@/assets/aidifiln-lockup-navy.png";
+import logoNavy from "@/assets/aidifiln-lockup-navy.svg";
 import {
   Sheet,
   SheetContent,
