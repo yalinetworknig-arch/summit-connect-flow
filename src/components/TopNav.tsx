@@ -63,7 +63,7 @@ function NavLinks({
           onClick={onNavigate}
           className={`${
             vertical ? "px-3 py-3 text-base" : "px-4 py-2 text-sm"
-          } rounded-full font-medium transition-colors text-text-primary hover:bg-accent-cyan/10 hover:text-accent-cyan`}
+          } font-medium uppercase tracking-wide transition-colors text-white/80 hover:text-[#00D9FF] relative after:absolute after:left-3 after:right-3 after:bottom-0 after:h-0.5 after:bg-[#00D9FF] after:scale-x-0 hover:after:scale-x-100 after:transition-transform`}
         >
           {label}
         </a>
