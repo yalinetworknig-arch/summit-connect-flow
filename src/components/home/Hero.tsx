@@ -238,60 +238,34 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.92, y: 12 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 90, damping: 14, delay: 0.4 }}
-          whileHover={{ scale: 1.02 }}
+          whileHover={{ scale: 1.015 }}
           className="relative w-full max-w-[760px] mt-2"
         >
           {/* Breathing cyan halo */}
           <motion.div
             aria-hidden="true"
-            className="absolute -inset-6 rounded-[2rem] pointer-events-none motion-reduce:hidden"
+            className="absolute -inset-10 pointer-events-none motion-reduce:hidden"
             style={{
               background:
-                "radial-gradient(60% 60% at 50% 50%, rgba(0,217,255,0.35), rgba(123,44,255,0.12) 55%, transparent 80%)",
-              filter: "blur(24px)",
+                "radial-gradient(55% 55% at 50% 50%, rgba(0,217,255,0.22), rgba(123,44,255,0.08) 55%, transparent 78%)",
+              filter: "blur(32px)",
             }}
-            animate={{ opacity: [0.55, 0.95, 0.55], scale: [1, 1.04, 1] }}
+            animate={{ opacity: [0.35, 0.7, 0.35], scale: [1, 1.03, 1] }}
             transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
           />
-          {/* Glass plate */}
-          <motion.div
-            className="relative rounded-2xl border border-white/15 bg-white/[0.06] backdrop-blur-xl px-5 sm:px-8 py-4 sm:py-6 overflow-hidden"
+          {/* Wordmark — crisp, embossed via drop-shadow only */}
+          <motion.img
+            src={wordmark}
+            alt="AIDIFILN — Artificial Intelligence, Digital Innovation and the Future of Inclusive Leadership in Nigeria"
+            className="relative w-full h-auto select-none"
+            draggable={false}
             style={{
-              boxShadow:
-                "inset 0 1px 0 rgba(255,255,255,0.28), inset 0 -1px 0 rgba(0,0,0,0.45), 0 30px 80px -20px rgba(0,217,255,0.35), 0 10px 30px -10px rgba(0,0,0,0.55)",
+              filter:
+                "drop-shadow(0 1px 0 rgba(255,255,255,0.18)) drop-shadow(0 12px 24px rgba(0,0,0,0.55)) drop-shadow(0 0 28px rgba(0,217,255,0.35))",
             }}
             animate={{ y: [0, -6, 0] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          >
-            {/* Top sheen */}
-            <div
-              aria-hidden="true"
-              className="absolute inset-x-0 top-0 h-1/2 pointer-events-none"
-              style={{
-                background:
-                  "linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 100%)",
-              }}
-            />
-            {/* Diagonal sheen */}
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 pointer-events-none opacity-60"
-              style={{
-                background:
-                  "linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.10) 50%, transparent 70%)",
-              }}
-            />
-            <img
-              src={wordmark}
-              alt="AIDIFILN — Artificial Intelligence, Digital Innovation and the Future of Inclusive Leadership in Nigeria"
-              className="relative w-full h-auto select-none"
-              style={{
-                filter:
-                  "drop-shadow(0 6px 18px rgba(0,0,0,0.55)) drop-shadow(0 2px 4px rgba(0,217,255,0.25))",
-              }}
-              draggable={false}
-            />
-          </motion.div>
+          />
         </motion.div>
 
         {/* Date */}
