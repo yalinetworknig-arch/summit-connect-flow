@@ -35,17 +35,17 @@ export function Countdown() {
       {cells.map(([label, value]) => (
         <div
           key={label}
-          className="rounded-xl border border-border-strong bg-accent-cyan/10 px-4 sm:px-6 py-3 sm:py-4 min-w-[80px] sm:min-w-[110px] text-center"
+          className="rounded-xl border border-white/15 bg-white/5 backdrop-blur-md px-4 sm:px-6 py-3 sm:py-4 min-w-[80px] sm:min-w-[110px] text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_24px_-12px_rgba(0,217,255,0.35)]"
         >
           <div
-            className="tabular-nums font-bold leading-none text-accent-cyan font-display"
+            className="tabular-nums font-bold leading-none text-white font-display"
             style={{
               fontSize: "clamp(28px, 5vw, 48px)",
             }}
           >
             {mounted ? String(value).padStart(2, "0") : "--"}
           </div>
-          <div className="mt-2 text-[12px] sm:text-[14px] uppercase tracking-widest text-text-secondary">
+          <div className="mt-2 text-[12px] sm:text-[14px] uppercase tracking-widest text-white/70">
             {label}
           </div>
         </div>
