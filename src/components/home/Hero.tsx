@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { motion, type Variants } from "framer-motion";
 import { Countdown } from "./Countdown";
-import wordmark from "@/assets/aidifiln-wordmark.png";
+import wordmark from "@/assets/new-wordmark.png";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -313,7 +313,7 @@ export function Hero() {
         </motion.div>
 
         <p className="mt-10 text-[#00D9FF]/80 text-sm">
-          www.yalinetwork.ng/summit
+          &nbsp;
         </p>
       </div>
 
