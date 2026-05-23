@@ -83,7 +83,7 @@ export function TopNav() {
           <img
             src={logoRainbow}
             alt="AIDIFILN"
-            className="hidden dark:block h-10 md:h-12 w-auto select-none drop-shadow-[0_2px_8px_rgba(0,217,255,0.35)]"
+            className="hidden dark:block h-10 md:h-12 w-auto select-none"
             loading="eager"
             decoding="async"
           />
