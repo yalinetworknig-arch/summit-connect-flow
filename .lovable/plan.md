@@ -1,71 +1,62 @@
-# Supabase Schema — YALI Summit 2026 (Phase 1)
+# App Shell Alignment Plan
 
-Create the database foundation. No UI, no PWA setup yet.
+The current shell is close but doesn't match this spec. This plan reconciles them without building any page content.
 
-## Tables
+## 1. Design tokens (`src/styles.css`)
 
-**1. `registrations`** — FREE event signups (no payment fields)
-- `id` uuid PK (gen_random_uuid)
-- `created_at` timestamptz default now()
-- `attendee_type` text — CHECK in ('delegate','sponsor_rep','media','general')
-- `full_name` text NOT NULL
-- `email` text NOT NULL UNIQUE
-- `phone` text NOT NULL — CHECK regex `^\+234[0-9]{10}$`
-- `state` text NOT NULL — CHECK in (36 states + FCT)
-- `yali_id` text nullable
-- `track_selection` text — CHECK in ('healthtech','agritech','edtech','govtech','fintech','climatetech','socialimpact')
-- `accommodation_needed` boolean default false
-- `travel_support_needed` boolean default false
-- `dietary_restrictions` text nullable
-- `heard_about_summit` text nullable
-- `ticket_code` text UNIQUE NOT NULL (default gen_random_uuid()::text)
-- `email_confirmed` boolean default false
-- `whatsapp_notified` boolean default false
-- `calendar_downloaded` boolean default false
-- `pwa_installed` boolean default false
-- Trigger: enforce `yali_id NOT NULL` when `attendee_type = 'delegate'`
+Add the missing brand tokens alongside existing ones (both `:root` light and `.dark`):
+- `--border-dark: #2A3447`, `--border-light: #E4E7EB`
+- `--surface-light: #F8FAFB` (already present), confirm `--surface` dark = `#141B2D`
+- `--text-primary-light/dark`, `--text-secondary-light/dark` (already present, rename-map if needed)
+- `--error: #EF4444` (currently only `--destructive`)
+- Keep existing `--success`, `--warning`, `--accent-cyan`, rainbow `.text-rainbow` class
+- Google Fonts `@import` already present — keep as is
 
-**2. `sponsor_inquiries`**
-- id, created_at
-- company_name, contact_name, email, phone (all text NOT NULL)
-- `budget_range` CHECK in ('under_1m','1m_5m','5m_10m','10m_20m','above_20m')
-- `preferred_tier` CHECK in ('title','gold','silver','bronze','undecided')
-- `goals` text NOT NULL
-- `decision_timeline` CHECK in ('within_1_week','within_2_weeks','within_1_month','flexible')
-- `status` CHECK in ('new','contacted','meeting_scheduled','proposal_sent','closed') default 'new'
-- assigned_to, notes (nullable)
+## 2. Routes
 
-**3. `contact_submissions`**
-- id, created_at
-- name, email, subject, message (text, required)
-- status text default 'new'
+Currently exist: `/`, `/summit`, `/schedule`, `/network`, `/sponsors`, `/profile`, `/register`.
 
-**4. `stats`** — homepage counters (registrations count, days-to-summit, etc.)
-- id, key text UNIQUE, value integer, updated_at
+Spec requires: `/`, `/register`, `/sponsors`, `/about`, `/schedule`, `/tracks`, `/contact`.
 
-**5. `pwa_analytics`** — install/engagement events
-- id, created_at
-- event_type text — CHECK in ('install_prompted','install_accepted','install_dismissed','offline_view','push_subscribed','sw_activated')
-- session_id text, user_agent text, platform text, path text (all nullable)
-- metadata jsonb default '{}'
+Actions:
+- Create new route files: `src/routes/about.tsx`, `src/routes/tracks.tsx`, `src/routes/contact.tsx` — each a placeholder `<h1>` shell with route-specific `head()` meta.
+- Leave `summit.tsx`, `network.tsx`, `profile.tsx` in place (used by prior PWA bottom tab work) but not linked from the new top nav. Decision needed — see question below.
 
-## RLS Strategy
+## 3. Top navigation (`src/components/TopNav.tsx`)
 
-All tables: RLS enabled.
-- `registrations`, `sponsor_inquiries`, `contact_submissions`, `pwa_analytics`: public INSERT allowed (anon), SELECT denied (admin only via service role).
-- `stats`: public SELECT allowed, no public writes.
+Rewrite to match spec:
+- Sticky top bar, always visible (mobile + desktop), not `hidden md:flex`.
+- Left: `AIDIFILN` wordmark using `.text-rainbow`.
+- Center (desktop ≥ md): Home, About, Schedule, Tracks, Sponsors, Contact with active styles.
+- Right (desktop): theme toggle (Sun/Moon) + `Register` button + `Sponsor` button.
+- Mobile (< md): hamburger (`Menu` icon) opens shadcn `Sheet` (side="right", full-height overlay) containing the same nav items stacked + both CTAs + theme toggle.
+- Theme toggle persists choice to `localStorage` and reads `prefers-color-scheme` on first load (default dark).
 
-This keeps the form-submit flow working without auth in Phase 1 while preventing data exfiltration. No SELECT policy on PII tables means lists/dashboards must go through server functions using `supabaseAdmin`.
+## 4. Footer (`src/components/Footer.tsx`, new)
 
-## Indexes
-- `registrations(email)`, `registrations(ticket_code)`, `registrations(attendee_type)`
-- `sponsor_inquiries(status)`, `sponsor_inquiries(created_at desc)`
-- `pwa_analytics(event_type, created_at desc)`
+- 3-column grid on desktop, single column on mobile.
+- Col 1: AIDIFILN logo + tagline.
+- Col 2: Quick Links (same 6 nav items as `Link`s).
+- Col 3: Contact email + phone + social row (Facebook, Twitter, Linkedin, Instagram from `lucide-react`), all `target="_blank" rel="noopener noreferrer"`.
+- Bottom bar: copyright + Privacy Policy link.
 
-## Out of scope (next prompts)
-- PWA manifest / service worker
-- Bottom-nav UI
-- Registration / sponsor forms
-- Auth (Phase 1 has none)
+## 5. AppShell (`src/components/AppShell.tsx`)
 
-After you approve, I'll run the migration in one step and stop for confirmation before any UI work.
+- Render `<TopNav />`, `<main><Outlet /></main>`, `<Footer />`.
+- Remove `BottomTabBar` from the layout (spec uses hamburger Sheet for mobile, not bottom tabs). Decision needed — see question below.
+- Adjust `main` padding for fixed top nav (`pt-16`) and no longer reserve bottom space.
+
+## 6. Quality gates (verified manually after build)
+
+- Responsive check at 375/768/1024/1440 in preview.
+- Contrast: cyan (#00D9FF) on navy (#0A1128) ≈ 11.7:1 passes AA.
+- All external/social links use `target="_blank" rel="noopener noreferrer"`.
+- Theme toggle round-trips between light/dark and persists.
+- Sheet open/close on mobile.
+
+## Open questions before I implement
+
+1. **Keep or remove the mobile `BottomTabBar`?** The previous PWA prompt added it; this prompt's nav spec replaces mobile nav with a hamburger Sheet. I'll remove `BottomTabBar` from `AppShell` unless you want both.
+2. **Keep `/summit`, `/network`, `/profile` route files?** They're not in this spec's nav. I'll leave the files (no link to them) so PWA work isn't lost, unless you want them deleted.
+
+Confirm or answer the two questions and I'll implement.

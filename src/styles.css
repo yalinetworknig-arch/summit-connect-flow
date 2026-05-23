@@ -99,6 +99,9 @@
   --text-secondary: #64748B;
   --success: #10B981;
   --warning: #F59E0B;
+  --error: #EF4444;
+  --border-strong: #E4E7EB;
+  --brand-navy: #0A1128;
 
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -143,6 +146,9 @@
   --text-secondary: #94A3B8;
   --success: #10B981;
   --warning: #F59E0B;
+  --error: #EF4444;
+  --border-strong: #2A3447;
+  --brand-navy: #0A1128;
 
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
