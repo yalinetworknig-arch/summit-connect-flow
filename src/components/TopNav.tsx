@@ -77,8 +77,8 @@ export function TopNav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 inset-x-0 z-40 bg-[#0A1128] border-b border-white/10">
-      <div className="mx-auto max-w-[1200px] flex items-center justify-between gap-4 px-4 md:px-6 h-14 md:h-16">
+    <header className="fixed top-3 md:top-5 inset-x-0 z-40 px-3 md:px-6 pointer-events-none">
+      <div className="pointer-events-auto mx-auto max-w-[1180px] flex items-center justify-between gap-4 px-3 md:px-5 h-14 md:h-16 rounded-full border border-white/10 bg-[#0A1128]/70 backdrop-blur-xl shadow-[0_10px_40px_-12px_rgba(0,0,0,0.6)]">
         <a href="#home" aria-label="AIDIFILN — Home" className="flex items-center shrink-0">
           <img
             src={logoRainbow}
