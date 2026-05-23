@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Sun, Moon, Menu } from "lucide-react";
 import logoRainbow from "@/assets/aidifiln-logo-rainbow.png";
-import logoNavy from "@/assets/aidifiln-lockup-navy.svg";
+import logoNavy from "@/assets/aidifiln-lockup-white.png";
 import {
   Sheet,
   SheetContent,
@@ -83,14 +83,14 @@ export function TopNav() {
           <img
             src={logoRainbow}
             alt="AIDIFILN"
-            className="hidden dark:block h-7 md:h-8 w-auto select-none"
+            className="hidden dark:block h-10 md:h-12 w-auto select-none drop-shadow-[0_2px_8px_rgba(0,217,255,0.35)]"
             loading="eager"
             decoding="async"
           />
           <img
             src={logoNavy}
             alt="AIDIFILN"
-            className="block dark:hidden h-7 md:h-8 w-auto select-none"
+            className="block dark:hidden h-10 md:h-12 w-auto select-none drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]"
             loading="eager"
             decoding="async"
           />
@@ -139,8 +139,8 @@ export function TopNav() {
             >
               <SheetHeader>
                 <SheetTitle className="text-left">
-                  <img src={logoRainbow} alt="AIDIFILN" className="hidden dark:block h-8 w-auto" />
-                  <img src={logoNavy} alt="AIDIFILN" className="block dark:hidden h-8 w-auto" />
+                  <img src={logoRainbow} alt="AIDIFILN" className="hidden dark:block h-10 w-auto" />
+                  <img src={logoNavy} alt="AIDIFILN" className="block dark:hidden h-10 w-auto" />
                 </SheetTitle>
               </SheetHeader>
               <div className="mt-6 flex flex-col gap-6">
