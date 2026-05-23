@@ -79,9 +79,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
       { name: "apple-mobile-web-app-title", content: "YALI NG" },
       { property: "og:title", content: "YALI Network Nigeria — Summit 2026" },
-      { property: "og:description", content: "Artificial Intelligence, Digital Innovation and the Future of Inclusive Leadership in Nigeria." },
+      { property: "og:description", content: "YALI Network Nigeria Platform — Summit 2026 Event Registration" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "YALI Network Nigeria — Summit 2026" },
+      { name: "twitter:description", content: "YALI Network Nigeria Platform — Summit 2026 Event Registration" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
