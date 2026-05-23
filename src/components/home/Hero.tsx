@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Countdown } from "./Countdown";
+import logoRainbow from "@/assets/aidifiln-lockup-rainbow.png";
 
 export function Hero() {
   return (
@@ -42,15 +43,14 @@ export function Hero() {
           YALI Network Nigeria<br className="hidden sm:block" /> National Summit
         </h2>
 
-        <h1
-          className="text-rainbow font-bold leading-none font-display"
-          style={{
-            fontSize: "clamp(48px, 9vw, 96px)",
-            letterSpacing: "-0.02em",
-          }}
-        >
-          AIDIFILN
-        </h1>
+        <h1 className="sr-only">AIDIFILN</h1>
+        <img
+          src={logoRainbow}
+          alt="AIDIFILN — Artificial Intelligence, Digital Innovation and the Future of Inclusive Leadership in Nigeria"
+          className="w-full max-w-3xl h-auto select-none drop-shadow-[0_8px_30px_rgba(0,217,255,0.15)]"
+          loading="eager"
+          decoding="async"
+        />
 
         <p
           className="max-w-2xl text-white/70"
