@@ -7,7 +7,7 @@ export function AppShell() {
   return (
     <div className="min-h-dvh bg-background text-text-primary">
       <TopNav />
-      <main className="pt-16 pb-20 md:pb-0 min-h-[calc(100dvh-4rem)]">
+      <main className="pb-20 md:pb-0 min-h-dvh">
         <Outlet />
       </main>
       <Footer />
