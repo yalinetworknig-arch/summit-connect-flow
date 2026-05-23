@@ -64,7 +64,6 @@ export function Hero() {
             </pattern>
             <mask id="waveMask">
               <rect width="1200" height="800" fill="black" />
-              <motion-wave />
               <path
                 id="wavePath"
                 d="M0,520 Q300,420 600,520 T1200,520 L1200,800 L0,800 Z"
