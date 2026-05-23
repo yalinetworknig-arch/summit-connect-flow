@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { motion, type Variants } from "framer-motion";
 import { Countdown } from "./Countdown";
+import wordmark from "@/assets/aidifiln-wordmark.png";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -39,6 +40,103 @@ export function Hero() {
         </defs>
         <rect width="100%" height="100%" fill="url(#hexdots)" />
       </svg>
+
+      {/* Animated dynamic halftone wave field (bottom of flier inspiration) */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        <svg
+          className="absolute inset-0 w-full h-full"
+          viewBox="0 0 1200 800"
+          preserveAspectRatio="xMidYMid slice"
+        >
+          <defs>
+            <radialGradient id="glow1" cx="20%" cy="80%" r="60%">
+              <stop offset="0%" stopColor="#00D9FF" stopOpacity="0.55" />
+              <stop offset="60%" stopColor="#0066FF" stopOpacity="0.15" />
+              <stop offset="100%" stopColor="#0A1128" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="glow2" cx="80%" cy="90%" r="55%">
+              <stop offset="0%" stopColor="#7B2CFF" stopOpacity="0.45" />
+              <stop offset="60%" stopColor="#001B4B" stopOpacity="0.1" />
+              <stop offset="100%" stopColor="#0A1128" stopOpacity="0" />
+            </radialGradient>
+            <pattern id="halftone" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
+              <circle cx="7" cy="7" r="2" fill="#00D9FF" />
+            </pattern>
+            <mask id="waveMask">
+              <rect width="1200" height="800" fill="black" />
+              <motion-wave />
+              <path
+                id="wavePath"
+                d="M0,520 Q300,420 600,520 T1200,520 L1200,800 L0,800 Z"
+                fill="white"
+              >
+                <animate
+                  attributeName="d"
+                  dur="9s"
+                  repeatCount="indefinite"
+                  values="
+                    M0,520 Q300,420 600,520 T1200,520 L1200,800 L0,800 Z;
+                    M0,540 Q300,480 600,500 T1200,560 L1200,800 L0,800 Z;
+                    M0,520 Q300,420 600,520 T1200,520 L1200,800 L0,800 Z"
+                />
+              </path>
+              <path
+                d="M0,620 Q300,560 600,620 T1200,600 L1200,800 L0,800 Z"
+                fill="white"
+                opacity="0.7"
+              >
+                <animate
+                  attributeName="d"
+                  dur="11s"
+                  repeatCount="indefinite"
+                  values="
+                    M0,620 Q300,560 600,620 T1200,600 L1200,800 L0,800 Z;
+                    M0,600 Q300,680 600,600 T1200,640 L1200,800 L0,800 Z;
+                    M0,620 Q300,560 600,620 T1200,600 L1200,800 L0,800 Z"
+                />
+              </path>
+            </mask>
+          </defs>
+          <rect width="1200" height="800" fill="url(#glow1)" />
+          <rect width="1200" height="800" fill="url(#glow2)" />
+          <rect width="1200" height="800" fill="url(#halftone)" mask="url(#waveMask)" opacity="0.55" />
+          {/* slow drifting diagonal streaks */}
+          <g opacity="0.18">
+            <motion.path
+              d="M-100,700 L400,300"
+              stroke="#00D9FF"
+              strokeWidth="1"
+              animate={{ opacity: [0.1, 0.4, 0.1] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.path
+              d="M200,800 L800,200"
+              stroke="#7B2CFF"
+              strokeWidth="1"
+              animate={{ opacity: [0.05, 0.3, 0.05] }}
+              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </g>
+        </svg>
+
+        {/* Floating ambient dots */}
+        {[...Array(6)].map((_, i) => (
+          <motion.span
+            key={i}
+            className="absolute rounded-full bg-[#00D9FF]"
+            style={{
+              width: 4 + (i % 3) * 2,
+              height: 4 + (i % 3) * 2,
+              left: `${10 + i * 14}%`,
+              bottom: `${10 + (i % 4) * 12}%`,
+              opacity: 0.35,
+              filter: "blur(0.5px)",
+            }}
+            animate={{ y: [0, -18, 0], opacity: [0.2, 0.6, 0.2] }}
+            transition={{ duration: 4 + i, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 }}
+          />
+        ))}
+      </div>
 
       {/* Vertical side labels — desktop only */}
       <span
@@ -144,21 +242,27 @@ export function Hero() {
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="text-[#00D9FF] text-xs font-medium uppercase mt-8 mb-3"
+          className="text-[#00D9FF] text-xs font-medium uppercase mt-10 mb-5"
           style={{ letterSpacing: "0.2em" }}
         >
           Theme:
         </motion.p>
-        <motion.p
+
+        {/* AIDIFILN wordmark image (contains tagline) */}
+        <h1 className="sr-only">
+          AIDIFILN — Artificial Intelligence, Digital Innovation and the Future
+          of Inclusive Leadership in Nigeria
+        </h1>
+        <motion.img
           custom={1.2}
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="max-w-[600px] text-white/90 text-base md:text-lg leading-relaxed"
-        >
-          Artificial Intelligence, Digital Innovation and the Future of
-          Inclusive Leadership in Nigeria.
-        </motion.p>
+          src={wordmark}
+          alt="AIDIFILN — Artificial Intelligence, Digital Innovation and the Future of Inclusive Leadership in Nigeria"
+          className="w-full max-w-[720px] h-auto select-none"
+          draggable={false}
+        />
 
         {/* Date */}
         <motion.p
