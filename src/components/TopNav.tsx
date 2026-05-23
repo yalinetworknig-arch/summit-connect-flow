@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { Sun, Moon, Menu } from "lucide-react";
 import logoRainbow from "@/assets/aidifiln-logo-rainbow.png";
+import logoNavy from "@/assets/aidifiln-lockup-navy.png";
 import {
   Sheet,
   SheetContent,
@@ -11,12 +12,12 @@ import {
 } from "@/components/ui/sheet";
 
 const items = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/schedule", label: "Schedule" },
-  { to: "/tracks", label: "Tracks" },
-  { to: "/sponsors", label: "Sponsors" },
-  { to: "/contact", label: "Contact" },
+  { href: "#home", label: "Home" },
+  { href: "#about", label: "About" },
+  { href: "#schedule", label: "Schedule" },
+  { href: "#tracks", label: "Tracks" },
+  { href: "#sponsors", label: "Sponsors" },
+  { href: "#contact", label: "Contact" },
 ] as const;
 
 function useTheme() {
@@ -47,87 +48,78 @@ function useTheme() {
 }
 
 function NavLinks({
-  pathname,
   onNavigate,
   vertical,
 }: {
-  pathname: string;
   onNavigate?: () => void;
   vertical?: boolean;
 }) {
   return (
     <nav className={vertical ? "flex flex-col gap-1" : "flex items-center gap-1"}>
-      {items.map(({ to, label }) => {
-        const active = to === "/" ? pathname === "/" : pathname.startsWith(to);
-        return (
-          <Link
-            key={to}
-            to={to}
-            onClick={onNavigate}
-            className={`${vertical ? "px-3 py-3 text-base" : "px-4 py-2 text-sm"} rounded-lg font-medium transition-colors ${
-              active
-                ? "text-accent-cyan bg-accent-cyan/10"
-                : "text-text-primary hover:bg-white/5"
-            }`}
-          >
-            {label}
-          </Link>
-        );
-      })}
+      {items.map(({ href, label }) => (
+        <a
+          key={href}
+          href={href}
+          onClick={onNavigate}
+          className={`${
+            vertical ? "px-3 py-3 text-base" : "px-4 py-2 text-sm"
+          } rounded-full font-medium transition-colors text-text-primary hover:bg-accent-cyan/10 hover:text-accent-cyan`}
+        >
+          {label}
+        </a>
+      ))}
     </nav>
   );
 }
 
 export function TopNav() {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { isDark, toggle } = useTheme();
   const [open, setOpen] = useState(false);
 
   return (
-    <header
-      className="fixed top-0 inset-x-0 z-40 h-16 border-b border-border-strong backdrop-blur-md bg-surface/85"
-    >
-      <div className="max-w-7xl mx-auto h-full px-4 md:px-8 flex items-center justify-between gap-4">
-        <Link to="/" aria-label="AIDIFILN — Home" className="flex items-center">
+    <header className="fixed top-3 md:top-5 inset-x-0 z-40 px-3 md:px-6 pointer-events-none">
+      <div className="pointer-events-auto mx-auto max-w-6xl flex items-center justify-between gap-4 rounded-full border border-border-strong/60 bg-surface/70 backdrop-blur-xl shadow-elegant pl-4 pr-2 md:pl-6 md:pr-3 h-14 md:h-16">
+        <a href="#home" aria-label="AIDIFILN — Home" className="flex items-center shrink-0">
           <img
             src={logoRainbow}
             alt="AIDIFILN"
-            className="h-8 md:h-9 w-auto select-none"
+            className="hidden dark:block h-7 md:h-8 w-auto select-none"
             loading="eager"
             decoding="async"
           />
-        </Link>
+          <img
+            src={logoNavy}
+            alt="AIDIFILN"
+            className="block dark:hidden h-7 md:h-8 w-auto select-none"
+            loading="eager"
+            decoding="async"
+          />
+        </a>
 
         <div className="hidden md:block">
-          <NavLinks pathname={pathname} />
+          <NavLinks />
         </div>
 
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-2">
           <button
             onClick={toggle}
-            className="p-2 rounded-lg hover:bg-white/5 transition-colors text-text-secondary"
+            className="p-2 rounded-full hover:bg-accent-cyan/10 transition-colors text-text-secondary"
             aria-label="Toggle theme"
           >
             {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
           <Link
             to="/register"
-            className="px-5 py-2 rounded-full text-sm font-semibold transition-transform hover:scale-105 active:scale-95 bg-accent-cyan text-brand-navy"
+            className="px-5 py-2 rounded-full text-sm font-semibold transition-transform hover:scale-105 active:scale-95 bg-accent-cyan text-brand-navy shadow-elegant"
           >
             Register
-          </Link>
-          <Link
-            to="/sponsors"
-            className="px-5 py-2 rounded-full text-sm font-semibold border border-accent-cyan text-accent-cyan transition-colors hover:bg-accent-cyan/10"
-          >
-            Sponsor
           </Link>
         </div>
 
         <div className="md:hidden flex items-center gap-2">
           <button
             onClick={toggle}
-            className="p-2 rounded-lg hover:bg-white/5 transition-colors text-text-secondary"
+            className="p-2 rounded-full hover:bg-accent-cyan/10 transition-colors text-text-secondary"
             aria-label="Toggle theme"
           >
             {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -135,7 +127,7 @@ export function TopNav() {
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <button
-                className="p-2 rounded-lg hover:bg-white/5 transition-colors text-text-primary"
+                className="p-2 rounded-full hover:bg-accent-cyan/10 transition-colors text-text-primary"
                 aria-label="Open menu"
               >
                 <Menu className="w-6 h-6" />
@@ -147,12 +139,12 @@ export function TopNav() {
             >
               <SheetHeader>
                 <SheetTitle className="text-left">
-                  <img src={logoRainbow} alt="AIDIFILN" className="h-8 w-auto" />
+                  <img src={logoRainbow} alt="AIDIFILN" className="hidden dark:block h-8 w-auto" />
+                  <img src={logoNavy} alt="AIDIFILN" className="block dark:hidden h-8 w-auto" />
                 </SheetTitle>
               </SheetHeader>
               <div className="mt-6 flex flex-col gap-6">
                 <NavLinks
-                  pathname={pathname}
                   vertical
                   onNavigate={() => setOpen(false)}
                 />
@@ -164,13 +156,13 @@ export function TopNav() {
                   >
                     Register
                   </Link>
-                  <Link
-                    to="/sponsors"
+                  <a
+                    href="#sponsors"
                     onClick={() => setOpen(false)}
                     className="px-5 py-3 rounded-full text-sm font-semibold text-center border border-accent-cyan text-accent-cyan"
                   >
                     Sponsor
-                  </Link>
+                  </a>
                 </div>
               </div>
             </SheetContent>

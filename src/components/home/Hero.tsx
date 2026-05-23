@@ -5,7 +5,8 @@ import logoRainbow from "@/assets/aidifiln-lockup-rainbow.png";
 export function Hero() {
   return (
     <section
-      className="relative overflow-hidden bg-brand-navy text-white"
+      id="home"
+      className="relative overflow-hidden bg-brand-navy text-white scroll-mt-24"
     >
       {/* Hex pattern overlay */}
       <svg
@@ -47,7 +48,7 @@ export function Hero() {
         <img
           src={logoRainbow}
           alt="AIDIFILN — Artificial Intelligence, Digital Innovation and the Future of Inclusive Leadership in Nigeria"
-          className="w-full max-w-3xl h-auto select-none drop-shadow-[0_8px_30px_rgba(0,217,255,0.15)]"
+          className="w-full max-w-3xl h-auto select-none drop-shadow-[0_8px_30px_rgba(0,217,255,0.2)]"
           loading="eager"
           decoding="async"
         />
