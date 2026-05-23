@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Sun, Moon, Menu } from "lucide-react";
+import logoRainbow from "@/assets/aidifiln-logo-rainbow.png";
 import {
   Sheet,
   SheetContent,
@@ -87,11 +88,14 @@ export function TopNav() {
       className="fixed top-0 inset-x-0 z-40 h-16 border-b border-border-strong backdrop-blur-md bg-surface/85"
     >
       <div className="max-w-7xl mx-auto h-full px-4 md:px-8 flex items-center justify-between gap-4">
-        <Link
-          to="/"
-          className="text-rainbow font-bold text-2xl font-display"
-        >
-          AIDIFILN
+        <Link to="/" aria-label="AIDIFILN — Home" className="flex items-center">
+          <img
+            src={logoRainbow}
+            alt="AIDIFILN"
+            className="h-8 md:h-9 w-auto select-none"
+            loading="eager"
+            decoding="async"
+          />
         </Link>
 
         <div className="hidden md:block">
@@ -142,10 +146,8 @@ export function TopNav() {
               className="w-full sm:max-w-sm bg-surface border-border-strong"
             >
               <SheetHeader>
-                <SheetTitle
-                  className="text-rainbow text-2xl font-bold text-left font-display"
-                >
-                  AIDIFILN
+                <SheetTitle className="text-left">
+                  <img src={logoRainbow} alt="AIDIFILN" className="h-8 w-auto" />
                 </SheetTitle>
               </SheetHeader>
               <div className="mt-6 flex flex-col gap-6">
