@@ -314,7 +314,7 @@ export function Hero() {
           </Link>
           <a
             href="#sponsors"
-            className="px-7 min-h-12 inline-flex items-center justify-center rounded-full text-base font-semibold border-2 border-[#00D9FF] text-[#00D9FF] transition-colors hover:bg-[#00D9FF]/10"
+            className="px-7 min-h-12 inline-flex items-center justify-center rounded-full text-base font-semibold border-2 border-[#00D9FF] transition-colors text-slate-50 bg-[#f1f2f9]/0"
           >
             Become a Sponsor
           </a>
