@@ -1,119 +1,52 @@
-# Homepage Content + Registration Flow
+# YALI Summit 2026 — Alignment & Hardening Plan
 
-This plan covers prompts 3–9 in one continuous build. Database already has `registrations` table with the right columns; no schema changes needed except adding a `payment_status` column for Paystack tracking.
+The four pattern docs (`docs/motion-framer-patterns.md`, `docs/pwa-ux-patterns.md`, `docs/modern-web-standards.md`, `docs/21st-dev-patterns.md`) become the **design system source of truth** for every change below. Each phase explicitly references which doc rules apply.
 
-## Prompt 3 — Hero (`src/components/home/Hero.tsx`)
+## Phase 0 — Audit (no code changes yet)
+- Compare current routes (`index`, `summit`, `register`, `tracks`, `schedule`, `sponsors`, `network`, `profile`, `about`, `contact`) against brief Section 01 scope.
+- Verify design tokens in `src/styles.css` match the Design Language Card (navy `#0A1128`, cyan `#00D9FF`, surfaces, rainbow gradient, Space Grotesk + Inter).
+- Verify Supabase schema vs brief: `registrations`, `sponsor_inquiries`, `contact_submissions`, `stats`, `pwa_analytics` — confirm fields cover delegate flow (tracks, logistics, dietary, YALI ID for delegates).
+- Output: short gap report before any edits.
 
-- Full-viewport section (`min-h-[calc(100vh-4rem)]`), navy `--brand-navy` background.
-- Hex pattern: inline SVG `<pattern>` repeated across an absolutely-positioned layer at `opacity: 0.1`.
-- Stack: small kicker "YALI Network Nigeria National Summit" (Space Grotesk 700, clamp 32→64px) → AIDIFILN rainbow wordmark (clamp 48→96px, `.text-rainbow`) → tagline (Inter 400, 18px, max-w-2xl) → countdown → CTA pair.
-- Countdown component (`Countdown.tsx`): pure client `useEffect` interval, target `new Date('2026-09-11T00:00:00+01:00')`. 4 boxes (Days/Hours/Minutes/Seconds), numbers 48px Space Grotesk, labels 14px uppercase tracking-wider. SSR-safe (render placeholders on first paint).
-- CTAs: `<Link to="/register">` cyan pill (primary) + `<Link to="/sponsors">` outlined cyan (secondary).
+## Phase 1 — Design system & tokens (uses `modern-web-standards.md` + `21st-dev-patterns.md`)
+- Move all hard-coded colors in components (Hero uses inline `style={{ background: 'var(--brand-navy)' }}`) into semantic Tailwind tokens defined in `src/styles.css` (oklch).
+- Add tokens: `--brand-navy`, `--accent-cyan`, `--surface-dark`, `--surface-light`, `--text-primary/secondary`, `--gradient-rainbow`, `--shadow-elegant`.
+- Wire Space Grotesk + Inter via `@import` in `styles.css`; remove ad-hoc `fontFamily` inline styles.
+- Add `prefers-reduced-motion` and container-query base utilities per 21st-dev doc.
 
-## Prompt 4 — Stats (`src/components/home/Stats.tsx`)
+## Phase 2 — PWA shell & navigation (uses `pwa-ux-patterns.md`)
+- Mobile bottom tab bar (Home / Summit / Network / Resources / Profile) with safe-area-inset and 44px+ targets.
+- Desktop side drawer / top nav parity.
+- `public/manifest.json` review: name, short_name, theme color `#0A1128`, icons, `display: standalone`.
+- Install-prompt UX after 2 page views or 30s, dismissible, analytics events written to `pwa_analytics`.
+- Honor the Lovable PWA caveats in the system prompt: register SW only in production, guard against iframe/preview hosts, NetworkFirst for HTML.
 
-- Section below hero, padded.
-- 4 cards in `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6`.
-- Each card: `var(--surface)` bg, `var(--border-strong)` border, `rounded-xl shadow-md p-6`. Number 48px Space Grotesk cyan, label 14px text-secondary.
-- Data: 740+ Attendees, 7 Sector Tracks, 4 Days of Innovation, 180+ Speakers (TBC).
+## Phase 3 — Motion layer (uses `motion-framer-patterns.md`)
+- Install `framer-motion` if missing.
+- Apply spring-based tab transitions, button tap scale, staggered card entrance to Hero/Stats/Partners/FAQ and Tracks grid.
+- Bottom sheet primitive for registration step transitions; animated counter for Stats; skeleton shimmer for loading states.
+- All animations gated by `useReducedMotion`.
 
-## Prompt 5 — Partners (`src/components/home/Partners.tsx`)
+## Phase 4 — Registration funnel hardening (uses `pwa-ux-patterns.md` + `modern-web-standards.md`)
+- Confirm multi-step flow: Personal Info → Attendee Type → Track → Logistics → (no Payment — event is FREE; remove or hide `StepPayment` per brief Section 01).
+- Zod schemas with length/format limits; autosave to localStorage via existing `lib/register/storage.ts`.
+- Server function for insert; QR ticket + `.ics` download + WhatsApp share on confirmation screen.
+- Live "X spots remaining" pulled from `stats` table.
 
-- Heading "Partners From Our Previous Edition" (32px Space Grotesk 700, centered).
-- Three labelled subsections: Title Sponsor (1), Key Sponsors (3), Partners (6).
-- Each subsection uses `grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6` (Title Sponsor centered single column).
-- Logo cell: 200×100 `<img>` from `via.placeholder.com/200x100?text=...`, `grayscale hover:grayscale-0 transition` with `loading="lazy"`.
+## Phase 5 — Sponsor portal (uses brief Section 02 — Chidi)
+- Tier comparison table, instant deck download (no email gate), inquiry form writing to `sponsor_inquiries`, success state with clear offline next steps.
 
-## Prompt 6 — FAQ (`src/components/home/FAQ.tsx`)
+## Phase 6 — Content hub (Schedule / Tracks / Speakers / FAQ)
+- Static cached JSON for offline; container-query card layouts; SEO `head()` metadata per route (unique title/description, og:image only on leaf routes).
 
-- Uses existing shadcn `Accordion` from `@/components/ui/accordion`.
-- 8 hard-coded Q&A entries (realistic answers, no Lorem).
-- Style overrides: bottom border `var(--border-strong)`, `rounded-lg` items, cyan chevron via Tailwind `data-[state=open]:text-[var(--accent-cyan)]` on `AccordionTrigger`.
+## Phase 7 — QA pass
+- Mobile viewport (375px) walkthrough.
+- Lighthouse PWA + a11y + perf checks.
+- Verify all four docs' "DO/DON'T" rules satisfied; reduced-motion path; offline path; 44px targets; safe-area.
 
-## Homepage composition (`src/routes/index.tsx`)
+## What I'll ask before building
+1. Which phase do you want first? (Recommend Phase 0 audit → Phase 1 tokens, since downstream work depends on them.)
+2. Confirm: **registration is fully FREE** — remove `StepPayment` and Paystack code paths?
+3. Confirm summit dates: brief says Sept 10–13 in one place and Sept 11–12 / Sept 11–14 elsewhere — which is canonical?
 
-Replace placeholder with `<Hero /> <Stats /> <Partners /> <FAQ />` and route-level head meta describing the summit.
-
-## Prompt 7+8 — Multi-step registration (`src/routes/register.tsx` + `src/components/register/`)
-
-Folder layout:
-```
-src/components/register/
-  ProgressIndicator.tsx   # 5-step pill row
-  StepAttendeeType.tsx    # Step 1
-  StepPersonalInfo.tsx    # Step 2
-  StepTrack.tsx           # Step 3
-  StepLogistics.tsx       # Step 4
-  StepPayment.tsx         # Step 5
-src/lib/register/
-  schema.ts               # Zod schemas per step + full schema
-  storage.ts              # load/save formState to localStorage
-  tracks.ts               # 7 track definitions (slug, title, description, icon)
-  states.ts               # 36 Nigerian states + FCT
-```
-
-- Single parent component holds `formState`, `currentStep`, autosaves to `localStorage` key `yali-reg-draft` on every change.
-- Per-step Zod validation gates "Next". Errors render inline below each field.
-- All inputs: shadcn `Input` / `Select` / `Checkbox` / `Textarea` / `RadioGroup`, themed via tokens; focus uses `focus-visible:ring-2 focus-visible:ring-[var(--accent-cyan)]`.
-- Step 1: 4 radio cards (lucide icons: GraduationCap, Building2, Newspaper, Users).
-- Step 2: name/email/phone/state; YALI ID input shows only if `attendee_type === "delegate"` (DB trigger enforces it server-side too).
-- Step 3: 7 track cards; selected one expands description; stores `track_selection`.
-- Step 4: two checkboxes + dietary textarea (max 500 chars).
-- Step 5: pricing logic — `new Date() < 2026-07-01` ⇒ ₦15,000 early bird, else ₦20,000. Paystack inline button via `@paystack/inline-js` (will need `bun add @paystack/inline-js`). Public key from `VITE_PAYSTACK_PUBLIC_KEY`. On `success` callback, call server fn `submitRegistration` which inserts into `registrations` via `supabaseAdmin` (anon insert policy already exists, but using a server fn lets us also persist a `paystack_reference` and return the inserted row).
-
-### Server function (`src/lib/registrations.functions.ts`)
-
-```ts
-submitRegistration = createServerFn({ method: "POST" })
-  .inputValidator((input) => fullRegistrationSchema.parse(input))
-  .handler(async ({ data }) => {
-    const { data: row, error } = await supabaseAdmin
-      .from("registrations").insert(data).select().single();
-    if (error) throw new Error(error.message);
-    return row; // includes ticket_code + id
-  });
-```
-
-### Tiny migration
-
-Add columns to `registrations` for payment tracking:
-```sql
-ALTER TABLE public.registrations
-  ADD COLUMN IF NOT EXISTS paystack_reference text,
-  ADD COLUMN IF NOT EXISTS amount_kobo integer,
-  ADD COLUMN IF NOT EXISTS payment_status text NOT NULL DEFAULT 'pending';
-```
-
-### Secret needed
-
-`VITE_PAYSTACK_PUBLIC_KEY` (publishable, safe in client). User will be prompted to add it.
-
-## Prompt 9 — Confirmation (`src/routes/register.$id.tsx`)
-
-- New dynamic route. Loads registration by id via server fn `getRegistrationById` (returns only safe fields: full_name, email, ticket_code, track_selection, attendee_type, created_at).
-- Renders:
-  - Success banner with checkmark.
-  - QR code generated client-side via `qrcode` package (`bun add qrcode`), encoding `${origin}/register/${id}` plus ticket_code.
-  - "Download .ics" button — builds an ICS string in-memory for Sept 11–12, 2026 at "Lagos, Nigeria" and triggers download via Blob.
-  - "Share on WhatsApp" link `https://wa.me/?text=` + `encodeURIComponent("I just registered for YALI Summit 2026! Join me at <url>")`, opens in new tab.
-  - Link back to homepage.
-- After successful Paystack callback in Step 5, navigate via `useNavigate` to `/register/${row.id}`.
-
-## Quality gates I'll verify before finishing
-
-- Responsive at 375 / 768 / 1024 / 1440 (mobile-first classes throughout).
-- Hero contrast: cyan on navy ≈ 11.7:1, white on navy ≈ 16:1, both pass AA.
-- Countdown SSR-safe (no hydration mismatch).
-- All Zod errors surface inline; "Next"/"Submit" buttons disabled while invalid.
-- All external links (Paystack, WhatsApp, social, placeholders) use `target="_blank" rel="noopener noreferrer"` where appropriate.
-- No console errors after navigating Home → Register → through all 5 steps (with Paystack key absent it falls back to a disabled button with a clear message instead of crashing).
-- Build passes.
-
-## Decisions I'm making by default (tell me to change before I start)
-
-1. **Paystack integration**: I'll use the official `@paystack/inline-js` SDK and require you to add `VITE_PAYSTACK_PUBLIC_KEY` as a secret. If you don't have a Paystack account yet, say so and I'll stub Step 5 to a "Payment coming soon — click to register without payment" button that still writes the registration.
-2. **Placeholder logos**: I'll use `via.placeholder.com` URLs labelled with sponsor names. Swap to real assets later by replacing the URL strings in `Partners.tsx`.
-3. **Hex pattern**: subtle inline SVG, no extra asset file.
-4. **Confirmation route path**: `/register/$id` (not a separate `/confirmation` page) so links are shareable and idempotent.
-
-Confirm and I'll execute end-to-end.
+Once you pick the starting phase and answer the 3 questions, I'll switch to build mode and execute that phase only, then check back in.
