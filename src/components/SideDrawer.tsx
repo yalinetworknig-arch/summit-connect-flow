@@ -3,7 +3,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import {
   Home,
   CalendarDays,
-  Clock,
+  BookOpen,
   Users,
   UserCircle,
   Menu,
@@ -18,8 +18,8 @@ type Item = { to: string; label: string; icon: LucideIcon };
 const items: Item[] = [
   { to: "/", label: "Home", icon: Home },
   { to: "/summit", label: "Summit", icon: CalendarDays },
-  { to: "/schedule", label: "Schedule", icon: Clock },
   { to: "/network", label: "Network", icon: Users },
+  { to: "/tracks", label: "Resources", icon: BookOpen },
   { to: "/profile", label: "Profile", icon: UserCircle },
 ];
 
@@ -38,20 +38,19 @@ export function SideDrawer() {
 
   return (
     <aside
-      className="hidden md:flex fixed left-0 top-0 h-screen z-40 flex-col border-r transition-[width] duration-300"
-      style={{ width, background: "var(--surface)", borderColor: "var(--border)" }}
+      className="hidden md:flex fixed left-0 top-0 h-dvh z-40 flex-col border-r border-border-strong bg-surface transition-[width] duration-300"
+      style={{ width }}
       aria-label="Primary"
     >
       <div className="flex items-center justify-between p-4">
         {!collapsed && (
-          <span className="text-rainbow font-bold text-2xl" style={{ fontFamily: "Space Grotesk, sans-serif" }}>
+          <span className="text-rainbow font-bold text-2xl font-display">
             YALI NG
           </span>
         )}
         <button
           onClick={() => setCollapsed((c) => !c)}
-          className="p-2 rounded-lg hover:bg-white/5 transition-colors"
-          style={{ color: "var(--text-primary)" }}
+          className="p-2 rounded-lg hover:bg-white/5 transition-colors text-text-primary"
           aria-label="Toggle navigation"
         >
           <Menu className="w-5 h-5" />
@@ -65,12 +64,11 @@ export function SideDrawer() {
             <Link
               key={to}
               to={to}
-              className="flex items-center gap-3 p-3 rounded-lg transition-colors relative"
-              style={{
-                background: active ? "color-mix(in oklab, var(--accent-cyan) 12%, transparent)" : "transparent",
-                color: active ? "var(--accent-cyan)" : "var(--text-primary)",
-                borderLeft: active ? "2px solid var(--accent-cyan)" : "2px solid transparent",
-              }}
+              className={`flex items-center gap-3 p-3 rounded-lg transition-colors relative border-l-2 ${
+                active
+                  ? "bg-accent-cyan/10 text-accent-cyan border-accent-cyan"
+                  : "text-text-primary border-transparent hover:bg-white/5"
+              }`}
               title={collapsed ? label : undefined}
             >
               <Icon className="w-5 h-5 shrink-0" />
@@ -80,7 +78,7 @@ export function SideDrawer() {
         })}
       </nav>
 
-      <div className="mt-auto p-4 flex items-center gap-2" style={{ color: "var(--text-secondary)" }}>
+      <div className="mt-auto p-4 flex items-center gap-2 text-text-secondary">
         <button
           onClick={toggleTheme}
           className="p-2 rounded-lg hover:bg-white/5 transition-colors"

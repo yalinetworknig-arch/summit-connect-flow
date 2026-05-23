@@ -1,15 +1,17 @@
 import { Outlet } from "@tanstack/react-router";
 import { TopNav } from "@/components/TopNav";
 import { Footer } from "@/components/Footer";
+import { BottomTabBar } from "@/components/BottomTabBar";
 
 export function AppShell() {
   return (
-    <div className="min-h-screen" style={{ background: "var(--background)", color: "var(--text-primary)" }}>
+    <div className="min-h-dvh bg-background text-text-primary">
       <TopNav />
-      <main className="pt-16 min-h-[calc(100vh-4rem)]">
+      <main className="pt-16 pb-20 md:pb-0 min-h-[calc(100dvh-4rem)]">
         <Outlet />
       </main>
       <Footer />
+      <BottomTabBar />
     </div>
   );
 }

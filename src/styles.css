@@ -66,6 +66,9 @@
   --color-text-secondary: var(--text-secondary);
   --color-success: var(--success);
   --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-brand-navy: var(--brand-navy);
+  --color-border-strong: var(--border-strong);
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-display: 'Space Grotesk', system-ui, sans-serif;
 }
@@ -93,15 +96,17 @@
   --ring: oklch(0.704 0.04 256.788);
 
   /* Brand tokens (Light Mode) */
-  --accent-cyan: #00D9FF;
-  --surface: #F8FAFB;
-  --text-primary: #0A1128;
-  --text-secondary: #64748B;
-  --success: #10B981;
-  --warning: #F59E0B;
-  --error: #EF4444;
-  --border-strong: #E4E7EB;
-  --brand-navy: #0A1128;
+  --accent-cyan: oklch(0.82 0.18 220);
+  --surface: oklch(0.985 0.005 247);
+  --text-primary: oklch(0.16 0.05 265);
+  --text-secondary: oklch(0.554 0.046 257);
+  --success: oklch(0.696 0.17 162);
+  --warning: oklch(0.79 0.16 70);
+  --error: oklch(0.637 0.237 25);
+  --border-strong: oklch(0.929 0.013 255);
+  --brand-navy: oklch(0.16 0.05 265);
+  --gradient-rainbow: linear-gradient(90deg, #6366F1 0%, #3B82F6 25%, #10B981 50%, #FBBF24 75%, #F97316 100%);
+  --shadow-elegant: 0 10px 30px -10px color-mix(in oklab, var(--accent-cyan) 30%, transparent);
 
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -140,15 +145,17 @@
   --ring: oklch(0.551 0.027 264.364);
 
   /* Brand tokens (Dark Mode — default) */
-  --accent-cyan: #00D9FF;
-  --surface: #141B2D;
-  --text-primary: #FFFFFF;
-  --text-secondary: #94A3B8;
-  --success: #10B981;
-  --warning: #F59E0B;
-  --error: #EF4444;
-  --border-strong: #2A3447;
-  --brand-navy: #0A1128;
+  --accent-cyan: oklch(0.82 0.18 220);
+  --surface: oklch(0.19 0.04 260);
+  --text-primary: oklch(1 0 0);
+  --text-secondary: oklch(0.704 0.04 256);
+  --success: oklch(0.696 0.17 162);
+  --warning: oklch(0.79 0.16 70);
+  --error: oklch(0.637 0.237 25);
+  --border-strong: oklch(0.3 0.04 255);
+  --brand-navy: oklch(0.13 0.05 265);
+  --gradient-rainbow: linear-gradient(90deg, #6366F1 0%, #3B82F6 25%, #10B981 50%, #FBBF24 75%, #F97316 100%);
+  --shadow-elegant: 0 10px 30px -10px color-mix(in oklab, var(--accent-cyan) 40%, transparent);
 
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
@@ -185,9 +192,27 @@
 
 /* Rainbow gradient for AIDIFILN / YALI NG wordmark */
 .text-rainbow {
-  background: linear-gradient(90deg, #6366F1 0%, #3B82F6 25%, #10B981 50%, #FBBF24 75%, #F97316 100%);
+  background: var(--gradient-rainbow);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
+}
+
+/* Safe-area insets for installed PWA (iOS notch, Android gesture bar) */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+  .pt-safe { padding-top: env(safe-area-inset-top); }
+  .pl-safe { padding-left: env(safe-area-inset-left); }
+  .pr-safe { padding-right: env(safe-area-inset-right); }
+}
+
+/* Honor reduced-motion preference globally (pattern: motion-framer-patterns.md) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
