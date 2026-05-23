@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { motion, type Variants } from "framer-motion";
 import { Countdown } from "./Countdown";
-import wordmark from "@/assets/new-wordmark.svg";
+import wordmark from "@/assets/new-wordmark.png";
 import usFlag from "@/assets/us-flag.png";
 import yaliLogo from "@/assets/yali-logo.png";
 
