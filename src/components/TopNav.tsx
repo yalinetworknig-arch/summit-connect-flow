@@ -63,13 +63,11 @@ function NavLinks({
             key={to}
             to={to}
             onClick={onNavigate}
-            className={`${vertical ? "px-3 py-3 text-base" : "px-4 py-2 text-sm"} rounded-lg font-medium transition-colors`}
-            style={{
-              color: active ? "var(--accent-cyan)" : "var(--text-primary)",
-              background: active
-                ? "color-mix(in oklab, var(--accent-cyan) 10%, transparent)"
-                : "transparent",
-            }}
+            className={`${vertical ? "px-3 py-3 text-base" : "px-4 py-2 text-sm"} rounded-lg font-medium transition-colors ${
+              active
+                ? "text-accent-cyan bg-accent-cyan/10"
+                : "text-text-primary hover:bg-white/5"
+            }`}
           >
             {label}
           </Link>
@@ -86,17 +84,12 @@ export function TopNav() {
 
   return (
     <header
-      className="fixed top-0 inset-x-0 z-40 h-16 border-b backdrop-blur-md"
-      style={{
-        background: "color-mix(in oklab, var(--surface) 85%, transparent)",
-        borderColor: "var(--border-strong)",
-      }}
+      className="fixed top-0 inset-x-0 z-40 h-16 border-b border-border-strong backdrop-blur-md bg-surface/85"
     >
       <div className="max-w-7xl mx-auto h-full px-4 md:px-8 flex items-center justify-between gap-4">
         <Link
           to="/"
-          className="text-rainbow font-bold text-2xl"
-          style={{ fontFamily: "Space Grotesk, sans-serif" }}
+          className="text-rainbow font-bold text-2xl font-display"
         >
           AIDIFILN
         </Link>
@@ -108,23 +101,20 @@ export function TopNav() {
         <div className="hidden md:flex items-center gap-3">
           <button
             onClick={toggle}
-            className="p-2 rounded-lg hover:bg-white/5 transition-colors"
-            style={{ color: "var(--text-secondary)" }}
+            className="p-2 rounded-lg hover:bg-white/5 transition-colors text-text-secondary"
             aria-label="Toggle theme"
           >
             {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
           <Link
             to="/register"
-            className="px-5 py-2 rounded-full text-sm font-semibold transition-transform hover:scale-105"
-            style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
+            className="px-5 py-2 rounded-full text-sm font-semibold transition-transform hover:scale-105 active:scale-95 bg-accent-cyan text-brand-navy"
           >
             Register
           </Link>
           <Link
             to="/sponsors"
-            className="px-5 py-2 rounded-full text-sm font-semibold border transition-colors"
-            style={{ borderColor: "var(--accent-cyan)", color: "var(--accent-cyan)" }}
+            className="px-5 py-2 rounded-full text-sm font-semibold border border-accent-cyan text-accent-cyan transition-colors hover:bg-accent-cyan/10"
           >
             Sponsor
           </Link>
@@ -133,8 +123,7 @@ export function TopNav() {
         <div className="md:hidden flex items-center gap-2">
           <button
             onClick={toggle}
-            className="p-2 rounded-lg hover:bg-white/5 transition-colors"
-            style={{ color: "var(--text-secondary)" }}
+            className="p-2 rounded-lg hover:bg-white/5 transition-colors text-text-secondary"
             aria-label="Toggle theme"
           >
             {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -142,8 +131,7 @@ export function TopNav() {
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <button
-                className="p-2 rounded-lg hover:bg-white/5 transition-colors"
-                style={{ color: "var(--text-primary)" }}
+                className="p-2 rounded-lg hover:bg-white/5 transition-colors text-text-primary"
                 aria-label="Open menu"
               >
                 <Menu className="w-6 h-6" />
@@ -151,13 +139,11 @@ export function TopNav() {
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="w-full sm:max-w-sm"
-              style={{ background: "var(--surface)", borderColor: "var(--border-strong)" }}
+              className="w-full sm:max-w-sm bg-surface border-border-strong"
             >
               <SheetHeader>
                 <SheetTitle
-                  className="text-rainbow text-2xl font-bold text-left"
-                  style={{ fontFamily: "Space Grotesk, sans-serif" }}
+                  className="text-rainbow text-2xl font-bold text-left font-display"
                 >
                   AIDIFILN
                 </SheetTitle>
@@ -172,16 +158,14 @@ export function TopNav() {
                   <Link
                     to="/register"
                     onClick={() => setOpen(false)}
-                    className="px-5 py-3 rounded-full text-sm font-semibold text-center"
-                    style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
+                    className="px-5 py-3 rounded-full text-sm font-semibold text-center bg-accent-cyan text-brand-navy active:scale-95"
                   >
                     Register
                   </Link>
                   <Link
                     to="/sponsors"
                     onClick={() => setOpen(false)}
-                    className="px-5 py-3 rounded-full text-sm font-semibold text-center border"
-                    style={{ borderColor: "var(--accent-cyan)", color: "var(--accent-cyan)" }}
+                    className="px-5 py-3 rounded-full text-sm font-semibold text-center border border-accent-cyan text-accent-cyan"
                   >
                     Sponsor
                   </Link>
