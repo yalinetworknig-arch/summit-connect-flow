@@ -4,8 +4,7 @@ import { Countdown } from "./Countdown";
 export function Hero() {
   return (
     <section
-      className="relative overflow-hidden"
-      style={{ background: "var(--brand-navy)", color: "#FFFFFF" }}
+      className="relative overflow-hidden bg-brand-navy text-white"
     >
       {/* Hex pattern overlay */}
       <svg
@@ -34,9 +33,8 @@ export function Hero() {
 
       <div className="relative max-w-5xl mx-auto px-6 py-20 md:py-28 min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center text-center gap-8">
         <h2
-          className="font-bold uppercase tracking-wide"
+          className="font-bold uppercase tracking-wide font-display"
           style={{
-            fontFamily: "Space Grotesk, sans-serif",
             fontSize: "clamp(32px, 5.5vw, 64px)",
             lineHeight: 1.05,
           }}
@@ -45,9 +43,8 @@ export function Hero() {
         </h2>
 
         <h1
-          className="text-rainbow font-bold leading-none"
+          className="text-rainbow font-bold leading-none font-display"
           style={{
-            fontFamily: "Space Grotesk, sans-serif",
             fontSize: "clamp(48px, 9vw, 96px)",
             letterSpacing: "-0.02em",
           }}
@@ -56,8 +53,8 @@ export function Hero() {
         </h1>
 
         <p
-          className="max-w-2xl text-base sm:text-lg"
-          style={{ color: "var(--text-secondary)", fontSize: "18px", lineHeight: 1.6 }}
+          className="max-w-2xl text-white/70"
+          style={{ fontSize: "18px", lineHeight: 1.6 }}
         >
           Artificial Intelligence, Digital Innovation and the Future of Inclusive
           Leadership in Nigeria.
@@ -68,15 +65,13 @@ export function Hero() {
         <div className="flex flex-col sm:flex-row items-center gap-3 mt-2">
           <Link
             to="/register"
-            className="px-7 py-3 rounded-full text-base font-semibold transition-transform hover:scale-105"
-            style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
+            className="px-7 py-3 rounded-full text-base font-semibold transition-transform hover:scale-105 active:scale-95 bg-accent-cyan text-brand-navy min-h-12"
           >
             Register Now
           </Link>
           <Link
             to="/sponsors"
-            className="px-7 py-3 rounded-full text-base font-semibold border-2 transition-colors hover:bg-white/5"
-            style={{ borderColor: "var(--accent-cyan)", color: "var(--accent-cyan)" }}
+            className="px-7 py-3 rounded-full text-base font-semibold border-2 border-accent-cyan text-accent-cyan transition-colors hover:bg-white/5 min-h-12"
           >
             Become a Sponsor
           </Link>
