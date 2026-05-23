@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-const TARGET = new Date("2026-09-11T00:00:00+01:00").getTime();
+// Canonical summit start: Sept 10, 2026 (Lagos, WAT)
+const TARGET = new Date("2026-09-10T00:00:00+01:00").getTime();
 
 function diff(now: number) {
   const ms = Math.max(0, TARGET - now);
@@ -34,26 +35,17 @@ export function Countdown() {
       {cells.map(([label, value]) => (
         <div
           key={label}
-          className="rounded-xl border px-4 sm:px-6 py-3 sm:py-4 min-w-[80px] sm:min-w-[110px] text-center"
-          style={{
-            background: "color-mix(in oklab, var(--accent-cyan) 8%, transparent)",
-            borderColor: "var(--border-strong)",
-          }}
+          className="rounded-xl border border-border-strong bg-accent-cyan/10 px-4 sm:px-6 py-3 sm:py-4 min-w-[80px] sm:min-w-[110px] text-center"
         >
           <div
-            className="tabular-nums font-bold leading-none"
+            className="tabular-nums font-bold leading-none text-accent-cyan font-display"
             style={{
-              color: "var(--accent-cyan)",
-              fontFamily: "Space Grotesk, sans-serif",
               fontSize: "clamp(28px, 5vw, 48px)",
             }}
           >
             {mounted ? String(value).padStart(2, "0") : "--"}
           </div>
-          <div
-            className="mt-2 text-[12px] sm:text-[14px] uppercase tracking-widest"
-            style={{ color: "var(--text-secondary)" }}
-          >
+          <div className="mt-2 text-[12px] sm:text-[14px] uppercase tracking-widest text-text-secondary">
             {label}
           </div>
         </div>
