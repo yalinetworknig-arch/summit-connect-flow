@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Countdown } from "./Countdown";
 import logoRainbow from "@/assets/aidifiln-lockup-rainbow.png";
-import logoNavy from "@/assets/aidifiln-lockup-navy.png";
 
 export function Hero() {
   return (
