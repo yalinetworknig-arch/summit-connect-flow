@@ -98,7 +98,7 @@ function ContactPage() {
               </p>
             </div>
           ) : (
-            <Reveal as="form" delay={0.1}>
+            <Reveal delay={0.1}>
               <form
               onSubmit={onSubmit}
               className="rounded-3xl border border-border-strong bg-surface p-6 md:p-8 space-y-4"
