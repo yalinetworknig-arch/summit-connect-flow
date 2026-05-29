@@ -221,3 +221,7 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Hide scrollbars on horizontal rails (day pills, etc.) */
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }

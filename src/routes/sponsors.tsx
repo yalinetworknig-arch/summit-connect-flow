@@ -9,6 +9,15 @@ import {
   BUDGET_RANGES,
   DECISION_TIMELINES,
 } from "@/lib/event-data";
+import { motion } from "framer-motion";
+import {
+  Reveal,
+  Stagger,
+  staggerChild,
+  SideLabel,
+  HalftoneBackdrop,
+  Eyebrow,
+} from "@/components/motion-primitives";
 
 export const Route = createFileRoute("/sponsors")({
   head: () => ({
@@ -45,67 +54,94 @@ function SponsorsPage() {
 
   return (
     <>
-      <section className="px-6 py-16 md:py-20 bg-background text-text-primary">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-accent-cyan font-semibold tracking-widest uppercase text-sm mb-4">
-            Partner with AIDIFILN
-          </p>
-          <h1 className="font-display font-bold text-4xl md:text-5xl mb-6">
-            Reach Nigeria's next generation of leaders.
-          </h1>
-          <p className="text-lg text-text-secondary">
-            2,000+ delegates. 7 sector tracks. National and international press.
-            Choose the tier that matches your goals — or tell us what you want
-            and we'll build a custom package.
-          </p>
+      <section className="relative px-6 py-20 md:py-28 bg-background text-text-primary overflow-hidden">
+        <HalftoneBackdrop />
+        <SideLabel>Partner · Sponsor · Co-host</SideLabel>
+        <SideLabel side="right" tone="muted">2,000+ delegates · 7 tracks</SideLabel>
+        <div className="relative max-w-4xl mx-auto text-center">
+          <Reveal><Eyebrow>Partner with AIDIFILN</Eyebrow></Reveal>
+          <Reveal delay={0.08}>
+            <h1 className="font-display font-bold text-4xl md:text-6xl mt-5 mb-6 leading-[1.05]">
+              Reach Nigeria's next generation of{" "}
+              <span className="text-accent-cyan">leaders.</span>
+            </h1>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <p className="text-lg text-text-secondary max-w-2xl mx-auto">
+              2,000+ delegates. 7 sector tracks. National and international press.
+              Choose the tier that matches your goals — or tell us what you want
+              and we'll build a custom package.
+            </p>
+          </Reveal>
         </div>
       </section>
 
-      <section className="px-6 pb-16 md:pb-20 bg-background text-text-primary">
-        <div className="max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {SPONSOR_TIERS.map((t) => (
-            <div
+      <section className="px-6 pb-20 bg-background text-text-primary">
+        <Stagger className="max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {SPONSOR_TIERS.map((t, i) => (
+            <motion.div
               key={t.name}
-              className={`relative rounded-2xl border p-6 flex flex-col ${
+              variants={staggerChild}
+              whileHover={{ y: -6 }}
+              transition={{ type: "spring", stiffness: 320, damping: 24 }}
+              className={`relative rounded-3xl border p-7 flex flex-col overflow-hidden transition-colors ${
                 t.highlight
-                  ? "border-accent-cyan bg-surface"
-                  : "border-border-strong bg-surface"
+                  ? "border-accent-cyan bg-surface ring-1 ring-accent-cyan/40"
+                  : "border-border-strong bg-surface hover:border-accent-cyan/60"
               }`}
             >
               {t.highlight && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-xs font-bold bg-accent-cyan text-brand-navy">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase bg-accent-cyan text-brand-navy">
                   Most popular
                 </span>
               )}
-              <h3 className="font-display font-bold text-xl mb-1">{t.name}</h3>
-              <p className="text-3xl font-display font-bold text-accent-cyan mb-5">
+              <span
+                aria-hidden
+                className="absolute top-3 right-4 font-mono text-[10px] tracking-[0.3em] text-text-secondary/60"
+              >
+                0{i + 1}
+              </span>
+              <h3 className="font-display font-bold text-xl mb-2">{t.name}</h3>
+              <p className="text-3xl font-display font-bold text-accent-cyan mb-6">
                 {t.price}
               </p>
-              <ul className="space-y-2 text-sm text-text-primary flex-1">
+              <ul className="space-y-2.5 text-sm text-text-primary flex-1">
                 {t.benefits.map((b) => (
-                  <li key={b} className="flex gap-2">
+                  <li key={b} className="flex gap-2 leading-snug">
                     <Check className="w-4 h-4 text-accent-cyan flex-shrink-0 mt-0.5" />
                     <span>{b}</span>
                   </li>
                 ))}
               </ul>
-            </div>
+              <a
+                href="#inquiry"
+                className="mt-6 inline-flex items-center justify-center px-4 py-2 rounded-full text-xs font-semibold tracking-wide uppercase border border-accent-cyan/60 text-accent-cyan hover:bg-accent-cyan hover:text-brand-navy transition-colors self-start"
+              >
+                Choose tier
+              </a>
+            </motion.div>
           ))}
-        </div>
+        </Stagger>
       </section>
 
       <section
         id="inquiry"
-        className="px-6 py-16 md:py-24 bg-surface text-text-primary"
+        className="relative px-6 py-20 md:py-28 bg-surface text-text-primary overflow-hidden"
       >
-        <div className="max-w-2xl mx-auto">
-          <h2 className="font-display font-bold text-3xl md:text-4xl mb-2">
-            Become a sponsor
-          </h2>
-          <p className="text-text-secondary mb-8">
-            Share a few details and our partnerships team will be in touch within
-            48 hours.
-          </p>
+        <SideLabel tone="muted">Inquiry · 48-hour reply</SideLabel>
+        <div className="relative max-w-2xl mx-auto">
+          <Reveal><Eyebrow>Become a sponsor</Eyebrow></Reveal>
+          <Reveal delay={0.06}>
+            <h2 className="font-display font-bold text-3xl md:text-5xl mt-4 mb-3 leading-tight">
+              Tell us what you want to <span className="text-accent-cyan">build with us.</span>
+            </h2>
+          </Reveal>
+          <Reveal delay={0.12}>
+            <p className="text-text-secondary mb-8 text-lg">
+              Share a few details and our partnerships team will be in touch within
+              48 hours.
+            </p>
+          </Reveal>
 
           {status === "ok" ? (
             <div className="rounded-2xl border border-accent-cyan bg-background p-8 text-center">

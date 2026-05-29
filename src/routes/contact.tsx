@@ -3,6 +3,12 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Mail, MapPin, Phone, Check } from "lucide-react";
 import { submitContactMessage } from "@/lib/inquiries.functions";
+import {
+  Reveal,
+  SideLabel,
+  HalftoneBackdrop,
+  Eyebrow,
+} from "@/components/motion-primitives";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -39,24 +45,29 @@ function ContactPage() {
 
   return (
     <>
-      <section className="px-6 py-16 md:py-20 bg-background text-text-primary">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-accent-cyan font-semibold tracking-widest uppercase text-sm mb-4">
-            Get in touch
-          </p>
-          <h1 className="font-display font-bold text-4xl md:text-5xl mb-6">
-            We'd love to hear from you.
-          </h1>
-          <p className="text-lg text-text-secondary">
-            Questions about registration, sponsorship, media accreditation or
-            partnerships? Drop us a note.
-          </p>
+      <section className="relative px-6 py-20 md:py-28 bg-background text-text-primary overflow-hidden">
+        <HalftoneBackdrop />
+        <SideLabel>Reach out · hello@yalinetworknigeria.org</SideLabel>
+        <SideLabel side="right" tone="muted">Reply within 2 business days</SideLabel>
+        <div className="relative max-w-4xl mx-auto text-center">
+          <Reveal><Eyebrow>Get in touch</Eyebrow></Reveal>
+          <Reveal delay={0.08}>
+            <h1 className="font-display font-bold text-4xl md:text-6xl mt-5 mb-6 leading-[1.05]">
+              We'd love to <span className="text-accent-cyan">hear from you.</span>
+            </h1>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <p className="text-lg text-text-secondary max-w-2xl mx-auto">
+              Questions about registration, sponsorship, media accreditation or
+              partnerships? Drop us a note.
+            </p>
+          </Reveal>
         </div>
       </section>
 
-      <section className="px-6 pb-20 md:pb-28 bg-background text-text-primary">
+      <section className="px-6 pb-24 md:pb-32 bg-background text-text-primary">
         <div className="max-w-5xl mx-auto grid md:grid-cols-[1fr_1.4fr] gap-8">
-          <aside className="space-y-4">
+          <Reveal as="aside" className="space-y-4">
             <InfoCard
               Icon={Mail}
               label="Email"
@@ -74,7 +85,7 @@ function ContactPage() {
               label="Venue"
               value="Lagos, Nigeria · Sept 10–13, 2026"
             />
-          </aside>
+          </Reveal>
 
           {status === "ok" ? (
             <div className="rounded-2xl border border-accent-cyan bg-surface p-10 text-center flex flex-col items-center justify-center">
@@ -87,9 +98,10 @@ function ContactPage() {
               </p>
             </div>
           ) : (
-            <form
+            <Reveal delay={0.1}>
+              <form
               onSubmit={onSubmit}
-              className="rounded-2xl border border-border-strong bg-surface p-6 md:p-8 space-y-4"
+              className="rounded-3xl border border-border-strong bg-surface p-6 md:p-8 space-y-4"
             >
               <div className="grid sm:grid-cols-2 gap-4">
                 <Field label="Your name" name="name" required />
@@ -117,7 +129,8 @@ function ContactPage() {
               >
                 {status === "submitting" ? "Sending…" : "Send message"}
               </button>
-            </form>
+              </form>
+            </Reveal>
           )}
         </div>
       </section>
