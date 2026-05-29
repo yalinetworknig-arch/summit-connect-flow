@@ -22,7 +22,7 @@ export function Reveal({
     <Comp
       initial={{ opacity: 0, y: reduce ? 0 : y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, amount: 0.05 }}
       transition={{ duration: 0.7, ease: EASE, delay }}
       className={className}
     >
@@ -60,7 +60,7 @@ export function Stagger({
       variants={staggerParent}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, margin: "-60px" }}
+      viewport={{ once: true, amount: 0.05 }}
       className={className}
     >
       {children}
