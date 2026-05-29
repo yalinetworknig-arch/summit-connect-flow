@@ -1,24 +1,54 @@
-## Goal
-Remove the blurry glass plate around the AIDIFILN wordmark. Keep the wordmark crisp and still feel premium and animated — no frosted container behind it.
+# Where we are — AIDIFILN Summit 2026
 
-## Change (one file: `src/components/home/Hero.tsx`)
+## ✅ Solid / shipped
+- **Shell & nav**: `TopNav` (light = white lockup, dark = rainbow lockup, both `h-10 md:h-12`, no dark glow), `Footer`, mobile `BottomTabBar`, `AppShell`
+- **Home (`/`)**: real `Hero` + `Countdown`, `Stats`, `Partners`, `FAQ`
+- **Registration flow (`/register`)**: 5 steps (attendee type → personal info → track → logistics → review/pay), Zod validation, draft autosave, Paystack inline (early-bird ₦15k / regular ₦20k / free for delegates), success page at `/register/$id`
+- **Backend**: Supabase `registrations` table, `submitRegistration` + `getRegistrationById` server functions, ticket codes
 
-Strip the glass plate wrapper. Render the PNG directly on the hero background, lifted by light/shadow instead of a panel.
+## ⚠️ Stubs (just a heading + one-line placeholder)
+- `/about`, `/contact`, `/schedule`, `/tracks`, `/sponsors`, `/network`, `/profile`, `/summit`
+- Index page's inline `Schedule` and `Sector Tracks` sections are also placeholder text
+- `/summit` is essentially a duplicate of `/` — needs a purpose or removal
 
-Specifically:
-- Remove the `bg-white/[0.06] backdrop-blur-xl border` plate div, the top sheen, and the diagonal sheen overlay.
-- Keep the entrance animation (spring scale 0.92 → 1) and the gentle infinite `y: [0, -6, 0]` float on the image itself.
-- Keep a soft cyan halo behind the wordmark, but tighter and lower opacity so it reads as "glow" not "fog":
-  - radial cyan→transparent, ~20% opacity, blur ~32px, sits behind the image, breathes between 0.35 and 0.7 opacity.
-- Apply a layered `drop-shadow` filter on the image so the rainbow letters get embossed depth without a panel:
-  - `drop-shadow(0 2px 0 rgba(255,255,255,0.15))` top highlight
-  - `drop-shadow(0 12px 24px rgba(0,0,0,0.55))` grounding shadow
-  - `drop-shadow(0 0 28px rgba(0,217,255,0.35))` cyan glow
-- Hover: subtle `scale: 1.015`, brighten the halo.
-- Respect `prefers-reduced-motion` (disable the float and halo pulse).
+## 🧩 Gaps worth noting
+- No auth → `/profile` can't show "your registration" yet
+- No speakers data/page
+- No admin view of registrations
+- Paystack key still optional fallback (saves as "free" if missing)
 
-## Out of scope
-- No changes to the wordmark image, countdown, nav, partners bar, or background halftone wave.
-- No new dependencies.
+---
 
-Ready to switch to build mode?
+# Proposed next phase — "Fill the empty rooms"
+
+Goal: turn every stub route into real, shareable content so the site is presentable end-to-end before layering in auth/admin.
+
+### Phase 2A — Content pages (highest ROI, no backend work)
+1. **`/about`** — mission, why AIDIFILN, organizing body, theme pillars, location/dates, CTA to register
+2. **`/tracks`** — full 7-track grid (Health, Agriculture, Education, FinTech, Energy & Climate, Governance, Creative Economy) with icon, description, sample sessions, "register for this track" link. Replace the index placeholder with a condensed teaser linking here.
+3. **`/schedule`** — 4-day timeline (Sept 10–13, 2026): Day 1 arrivals/opening, Day 2–3 tracks & workshops, Day 4 closing showcase. Tabbed by day, time-block cards.
+4. **`/sponsors`** — tiers (Platinum/Gold/Silver/Community), benefits table, "Become a sponsor" inquiry form (writes to a `sponsor_inquiries` table) + downloadable deck placeholder
+5. **`/contact`** — contact form (writes to `contact_messages` table), email, socials, venue map placeholder
+6. **`/summit`** — either delete the route or repurpose as a "Summit overview" hub linking About/Schedule/Tracks/Sponsors
+
+### Phase 2B — Cleanup
+- Drop the placeholder Schedule/Tracks sections on the index in favor of richer teaser cards that link out
+- Remove `/network` and `/profile` from `BottomTabBar` until they have real content, OR mark them clearly as "Coming soon" pages with a teaser
+
+### Phase 3 (later, after content is in)
+- Auth (Supabase) → real `/profile` showing the user's ticket, QR code, track selection
+- Admin route (`/_authenticated/admin`) for registration list/export
+- `/network` member directory (post-auth)
+- Speakers page + data model
+
+---
+
+# Technical details
+- New tables for 2A: `sponsor_inquiries`, `contact_messages` (both insert-only via server functions, with grants + RLS as per template rules)
+- Tracks/schedule data: static TS files in `src/lib/` (no DB needed)
+- Each new route gets its own `head()` meta (title, description, og:title, og:description)
+
+---
+
+# Question for you
+Which slice do you want first? Suggested order: **2A in one pass** (About → Tracks → Schedule → Sponsors → Contact), then cleanup, then auth. Or pick a single page to start narrow.
