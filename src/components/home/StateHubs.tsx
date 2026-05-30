@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   Dialog,
   DialogContent,
@@ -13,7 +7,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import Autoplay from "embla-carousel-autoplay";
 
 import abiaLogo from "@/assets/hubs/abia.webp";
 import anambraLogo from "@/assets/hubs/anambra.webp";
@@ -101,7 +94,7 @@ function HubCard({ hub, onSelect }: { hub: Hub; onSelect: () => void }) {
     <button
       type="button"
       onClick={onSelect}
-      className="group w-full rounded-2xl border p-4 flex flex-col items-center justify-center gap-3 h-[200px] md:h-[220px] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-[color:var(--brand-accent,#079992)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+      className="group w-[160px] md:w-[180px] shrink-0 rounded-2xl border p-4 flex flex-col items-center justify-center gap-3 h-[210px] md:h-[230px] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-[color:var(--brand-accent,#079992)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
       style={{
         background: "var(--surface)",
         borderColor: "var(--border-strong)",
@@ -109,7 +102,7 @@ function HubCard({ hub, onSelect }: { hub: Hub; onSelect: () => void }) {
       aria-label={`View ${hub.state} State Hub details`}
     >
       <div
-        className="w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center font-bold text-white overflow-hidden bg-white ring-1 ring-black/5 shadow-[0_6px_18px_-8px_rgba(10,61,98,0.35)] group-hover:shadow-[0_10px_24px_-10px_rgba(7,153,146,0.55)] transition-shadow"
+        className="w-24 h-24 md:w-28 md:h-28 rounded-2xl flex items-center justify-center font-bold text-white overflow-hidden bg-white ring-1 ring-black/5 shadow-[0_6px_18px_-8px_rgba(10,61,98,0.35)] group-hover:shadow-[0_10px_24px_-10px_rgba(7,153,146,0.55)] transition-shadow"
         style={
           hub.logo
             ? undefined
@@ -118,6 +111,7 @@ function HubCard({ hub, onSelect }: { hub: Hub; onSelect: () => void }) {
                   "linear-gradient(135deg, var(--brand-primary, #0a3d62), var(--brand-accent, #079992))",
                 fontFamily: "Space Grotesk, sans-serif",
                 fontSize: "20px",
+                borderRadius: "9999px",
               }
         }
         aria-hidden="true"
@@ -126,7 +120,7 @@ function HubCard({ hub, onSelect }: { hub: Hub; onSelect: () => void }) {
           <img
             src={hub.logo}
             alt={`YALI Network ${hub.state} logo`}
-            className="w-full h-full object-contain p-1"
+            className="w-full h-full object-contain"
             loading="lazy"
             decoding="async"
           />
@@ -154,6 +148,10 @@ function HubCard({ hub, onSelect }: { hub: Hub; onSelect: () => void }) {
 
 export function StateHubs() {
   const [selected, setSelected] = useState<Hub | null>(null);
+  const reduce = useReducedMotion();
+  // Duplicate the list so the marquee can loop seamlessly.
+  const loop = [...hubs, ...hubs];
+  const durationMs = hubs.length * 2.2; // ~2.2s per logo
 
   return (
     <section className="py-16 md:py-24 px-6" style={{ background: "var(--surface-muted, var(--background))" }}>
@@ -184,24 +182,41 @@ export function StateHubs() {
           </p>
         </div>
 
-        <Carousel
-          opts={{ align: "start", loop: true }}
-          plugins={[Autoplay({ delay: 3500, stopOnInteraction: true })]}
-          className="w-full"
+        <div
+          className="relative overflow-hidden group"
+          style={{
+            maskImage:
+              "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
+          }}
+          aria-label="YALI State Hubs marquee"
         >
-          <CarouselContent className="-ml-3">
-            {hubs.map((hub) => (
-              <CarouselItem
-                key={hub.state}
-                className="pl-3 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6"
-              >
-                <HubCard hub={hub} onSelect={() => setSelected(hub)} />
-              </CarouselItem>
+          <motion.div
+            className="flex gap-4 w-max"
+            animate={
+              reduce ? undefined : { x: ["0%", "-50%"] }
+            }
+            transition={
+              reduce
+                ? undefined
+                : {
+                    duration: durationMs,
+                    ease: "linear",
+                    repeat: Infinity,
+                  }
+            }
+            style={{ willChange: "transform" }}
+          >
+            {loop.map((hub, i) => (
+              <HubCard
+                key={`${hub.state}-${i}`}
+                hub={hub}
+                onSelect={() => setSelected(hub)}
+              />
             ))}
-          </CarouselContent>
-          <CarouselPrevious className="hidden sm:flex" />
-          <CarouselNext className="hidden sm:flex" />
-        </Carousel>
+          </motion.div>
+        </div>
 
         <Dialog open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
           <DialogContent className="max-w-md">
@@ -210,7 +225,7 @@ export function StateHubs() {
                 <DialogHeader>
                   <div className="flex items-center gap-4 mb-2">
                     <div
-                      className="w-28 h-28 rounded-full flex items-center justify-center font-bold text-white overflow-hidden bg-white ring-1 ring-black/5 shadow-[0_8px_20px_-10px_rgba(10,61,98,0.4)] shrink-0"
+                      className="w-28 h-28 rounded-2xl flex items-center justify-center font-bold text-white overflow-hidden bg-white ring-1 ring-black/5 shadow-[0_8px_20px_-10px_rgba(10,61,98,0.4)] shrink-0"
                       style={
                         selected.logo
                           ? undefined
@@ -219,6 +234,7 @@ export function StateHubs() {
                                 "linear-gradient(135deg, var(--brand-primary, #0a3d62), var(--brand-accent, #079992))",
                               fontFamily: "Space Grotesk, sans-serif",
                               fontSize: "24px",
+                              borderRadius: "9999px",
                             }
                       }
                     >
@@ -226,7 +242,7 @@ export function StateHubs() {
                         <img
                           src={selected.logo}
                           alt={`YALI Network ${selected.state} logo`}
-                          className="w-full h-full object-contain p-1.5"
+                          className="w-full h-full object-contain"
                         />
                       ) : (
                         initials(selected.state)
