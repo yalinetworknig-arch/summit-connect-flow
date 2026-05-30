@@ -1,41 +1,43 @@
-const titleSponsor = { name: "First Bank Nigeria" };
-const keySponsors = [
-  { name: "MTN Nigeria" },
-  { name: "Microsoft Africa" },
-  { name: "Dangote Group" },
-];
-const partners = [
-  { name: "Andela" },
-  { name: "Flutterwave" },
-  { name: "Paystack" },
-  { name: "Interswitch" },
-  { name: "NITDA" },
-  { name: "Co-Creation Hub" },
+type Partner = { name: string; logo: string };
+
+const titleSponsor: Partner = {
+  name: "HP",
+  logo: "https://upload.wikimedia.org/wikipedia/commons/a/ad/HP_logo_2012.svg",
+};
+const keySponsors: Partner[] = [
+  {
+    name: "U.S. Mission Nigeria",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Seal_of_an_Embassy_of_the_United_States_of_America.svg/1200px-Seal_of_an_Embassy_of_the_United_States_of_America.svg.png",
+  },
+  {
+    name: "U.S. Consulate General Lagos",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Seal_of_a_Consulate_General_of_the_United_States_of_America.svg/1200px-Seal_of_a_Consulate_General_of_the_United_States_of_America.svg.png",
+  },
+  {
+    name: "UNFPA",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/UNFPA_logo.svg/1200px-UNFPA_logo.svg.png",
+  },
 ];
 
-function logoUrl(name: string) {
-  return `https://placehold.co/200x100/141B2D/94A3B8?text=${encodeURIComponent(name)}`;
-}
-
-function LogoCard({ name }: { name: string }) {
+function LogoCard({ name, logo }: Partner) {
   return (
     <div
       className="rounded-xl border p-4 flex items-center justify-center h-[120px]"
       style={{ background: "var(--surface)", borderColor: "var(--border-strong)" }}
     >
       <img
-        src={logoUrl(name)}
+        src={logo}
         alt={`${name} logo`}
         width={200}
         height={100}
         loading="lazy"
-        className="grayscale hover:grayscale-0 transition duration-300 max-h-[80px] object-contain"
+        className="grayscale hover:grayscale-0 transition duration-300 max-h-[80px] object-contain bg-white/90 rounded-md p-2"
       />
     </div>
   );
 }
 
-function Group({ heading, items, cols }: { heading: string; items: Array<{ name: string }>; cols: string }) {
+function Group({ heading, items, cols }: { heading: string; items: Partner[]; cols: string }) {
   return (
     <div>
       <h3
@@ -46,7 +48,7 @@ function Group({ heading, items, cols }: { heading: string; items: Array<{ name:
       </h3>
       <div className={`grid gap-6 ${cols}`}>
         {items.map((i) => (
-          <LogoCard key={i.name} name={i.name} />
+          <LogoCard key={i.name} name={i.name} logo={i.logo} />
         ))}
       </div>
     </div>
@@ -69,8 +71,7 @@ export function Partners() {
         </h2>
         <div className="space-y-12">
           <Group heading="Title Sponsor" items={[titleSponsor]} cols="grid-cols-1 max-w-sm mx-auto" />
-          <Group heading="Key Sponsors" items={keySponsors} cols="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" />
-          <Group heading="Partners" items={partners} cols="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" />
+          <Group heading="Partners" items={keySponsors} cols="grid-cols-1 sm:grid-cols-3" />
         </div>
       </div>
     </section>
