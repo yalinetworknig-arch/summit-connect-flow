@@ -87,14 +87,7 @@ export function TopNav() {
           <img
             src={logoRainbow}
             alt="AIDIFILN"
-            className="hidden dark:block h-10 md:h-12 w-auto select-none"
-            loading="eager"
-            decoding="async"
-          />
-          <img
-            src={logoNavy}
-            alt="AIDIFILN"
-            className="block dark:hidden h-10 md:h-12 w-auto select-none drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]"
+            className="h-10 md:h-12 w-auto select-none"
             loading="eager"
             decoding="async"
           />
@@ -143,8 +136,17 @@ export function TopNav() {
             >
               <SheetHeader>
                 <SheetTitle className="text-left">
-                  <img src={logoRainbow} alt="AIDIFILN" className="hidden dark:block h-10 w-auto" />
-                  <img src={logoNavy} alt="AIDIFILN" className="block dark:hidden h-10 w-auto" />
+                  <img src={logoNavy} alt="AIDIFILN" className="hidden dark:hidden h-10 w-auto" />
+                  <img
+                    src={logoNavy}
+                    alt="AIDIFILN"
+                    className="block dark:hidden h-10 w-auto"
+                  />
+                  <img
+                    src={logoRainbow}
+                    alt="AIDIFILN"
+                    className="hidden dark:block h-10 w-auto"
+                  />
                 </SheetTitle>
               </SheetHeader>
               <div className="mt-6 flex flex-col gap-6">
