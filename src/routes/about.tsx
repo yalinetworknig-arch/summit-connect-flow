@@ -25,14 +25,14 @@ export const Route = createFileRoute("/about")({
 function AboutPage() {
   return (
     <>
-      <section className="relative px-6 py-20 md:py-28 bg-background text-text-primary overflow-hidden">
+      <section className="relative px-5 sm:px-6 lg:px-8 py-20 md:py-24 lg:py-28 bg-background text-text-primary overflow-hidden">
         <HalftoneBackdrop />
         <SideLabel>Presents · AIDIFILN 2026</SideLabel>
         <SideLabel side="right" tone="muted">YALI Network Nigeria</SideLabel>
         <div className="relative max-w-4xl mx-auto">
           <Reveal><Eyebrow>About the Summit</Eyebrow></Reveal>
           <Reveal delay={0.08}>
-            <h1 className="font-display font-bold text-4xl md:text-6xl leading-[1.05] mt-5 mb-7">
+            <h1 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl leading-[1.05] mt-5 mb-7">
               AI, Digital Innovation & the Future of{" "}
               <span className="text-accent-cyan">Inclusive Leadership</span> in
               Nigeria.
@@ -49,8 +49,8 @@ function AboutPage() {
         </div>
       </section>
 
-      <section className="px-6 py-14 md:py-20 bg-surface text-text-primary">
-        <Stagger className="max-w-5xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <section className="px-5 sm:px-6 lg:px-8 py-14 md:py-20 bg-surface text-text-primary">
+        <Stagger className="max-w-5xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
           {[
             { Icon: CalendarDays, label: "Dates", value: "Sept 10 – 13, 2026" },
             { Icon: MapPin, label: "Location", value: "Lagos, Nigeria" },
@@ -72,11 +72,11 @@ function AboutPage() {
         </Stagger>
       </section>
 
-      <section className="px-6 py-20 md:py-28 bg-background text-text-primary">
+      <section className="px-5 sm:px-6 lg:px-8 py-20 md:py-24 lg:py-28 bg-background text-text-primary">
         <div className="max-w-4xl mx-auto">
           <Reveal><Eyebrow>Why now</Eyebrow></Reveal>
           <Reveal delay={0.06}>
-            <h2 className="font-display font-bold text-3xl md:text-5xl mt-5 mb-10 leading-tight">
+            <h2 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl mt-5 mb-10 leading-tight">
               Nigeria's AI inflection point is{" "}
               <span className="text-accent-cyan">already underway.</span>
             </h2>
@@ -98,17 +98,17 @@ function AboutPage() {
         </div>
       </section>
 
-      <section className="px-6 py-20 md:py-28 bg-surface text-text-primary">
+      <section className="px-5 sm:px-6 lg:px-8 py-20 md:py-24 lg:py-28 bg-surface text-text-primary">
         <div className="max-w-5xl mx-auto">
           <Reveal>
             <div className="text-center mb-12">
               <Eyebrow>Theme pillars</Eyebrow>
-              <h2 className="font-display font-bold text-3xl md:text-5xl mt-5">
+              <h2 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl mt-5">
                 Three commitments. <span className="text-accent-cyan">No flinching.</span>
               </h2>
             </div>
           </Reveal>
-          <Stagger className="grid md:grid-cols-3 gap-5 md:gap-6">
+          <Stagger className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
             {[
               {
                 Icon: Sparkles,
@@ -148,11 +148,11 @@ function AboutPage() {
         </div>
       </section>
 
-      <section className="relative px-6 py-20 md:py-24 bg-background text-text-primary text-center overflow-hidden">
+      <section className="relative px-5 sm:px-6 lg:px-8 py-20 md:py-24 bg-background text-text-primary text-center overflow-hidden">
         <HalftoneBackdrop intensity="soft" />
         <div className="relative max-w-2xl mx-auto">
           <Reveal>
-            <h2 className="font-display font-bold text-3xl md:text-5xl mb-5 leading-tight">
+            <h2 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl mb-5 leading-tight">
               Be part of it.
             </h2>
           </Reveal>
