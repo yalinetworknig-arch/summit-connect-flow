@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Hero } from "@/components/home/Hero";
 import { Partners } from "@/components/home/Partners";
+import { StateHubs } from "@/components/home/StateHubs";
 import { FAQ } from "@/components/home/FAQ";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { ScheduleSection } from "@/components/sections/ScheduleSection";
@@ -38,6 +39,9 @@ function Index() {
       <SponsorsSection />
       <section id="partners" className="scroll-mt-24">
         <Partners />
+      </section>
+      <section id="state-hubs" className="scroll-mt-24">
+        <StateHubs />
       </section>
       <ContactSection />
       <section id="faq" className="scroll-mt-24">
