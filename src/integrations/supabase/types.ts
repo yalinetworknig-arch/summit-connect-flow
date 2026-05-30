@@ -82,6 +82,7 @@ export type Database = {
           accommodation_needed: boolean
           amount_kobo: number | null
           attendee_type: string
+          audience_reach: string | null
           calendar_downloaded: boolean
           checked_in_at: string | null
           checked_in_by: string | null
@@ -92,19 +93,32 @@ export type Database = {
           full_name: string
           heard_about_summit: string | null
           id: string
+          media_coverage_focus: string | null
+          media_outlet: string | null
+          media_type: string | null
+          organization: string | null
           payment_status: string
           paystack_reference: string | null
           phone: string
+          prior_volunteer_experience: string | null
+          profession: string | null
           pwa_installed: boolean
+          reason_for_attending: string | null
+          role_title: string | null
+          sponsor_goals: string | null
+          sponsor_tier: string | null
           state: string
           ticket_code: string
           track_selection: string | null
           travel_support_needed: boolean
+          tshirt_size: string | null
           verification_checked_at: string | null
           verification_confidence: number | null
           verification_model: string | null
           verification_reason: string | null
           verification_status: string
+          volunteer_availability: string | null
+          volunteer_skills: string | null
           whatsapp_notified: boolean
           yali_certificate_url: string | null
           yali_id: string | null
@@ -113,6 +127,7 @@ export type Database = {
           accommodation_needed?: boolean
           amount_kobo?: number | null
           attendee_type: string
+          audience_reach?: string | null
           calendar_downloaded?: boolean
           checked_in_at?: string | null
           checked_in_by?: string | null
@@ -123,19 +138,32 @@ export type Database = {
           full_name: string
           heard_about_summit?: string | null
           id?: string
+          media_coverage_focus?: string | null
+          media_outlet?: string | null
+          media_type?: string | null
+          organization?: string | null
           payment_status?: string
           paystack_reference?: string | null
           phone: string
+          prior_volunteer_experience?: string | null
+          profession?: string | null
           pwa_installed?: boolean
+          reason_for_attending?: string | null
+          role_title?: string | null
+          sponsor_goals?: string | null
+          sponsor_tier?: string | null
           state: string
           ticket_code?: string
           track_selection?: string | null
           travel_support_needed?: boolean
+          tshirt_size?: string | null
           verification_checked_at?: string | null
           verification_confidence?: number | null
           verification_model?: string | null
           verification_reason?: string | null
           verification_status?: string
+          volunteer_availability?: string | null
+          volunteer_skills?: string | null
           whatsapp_notified?: boolean
           yali_certificate_url?: string | null
           yali_id?: string | null
@@ -144,6 +172,7 @@ export type Database = {
           accommodation_needed?: boolean
           amount_kobo?: number | null
           attendee_type?: string
+          audience_reach?: string | null
           calendar_downloaded?: boolean
           checked_in_at?: string | null
           checked_in_by?: string | null
@@ -154,19 +183,32 @@ export type Database = {
           full_name?: string
           heard_about_summit?: string | null
           id?: string
+          media_coverage_focus?: string | null
+          media_outlet?: string | null
+          media_type?: string | null
+          organization?: string | null
           payment_status?: string
           paystack_reference?: string | null
           phone?: string
+          prior_volunteer_experience?: string | null
+          profession?: string | null
           pwa_installed?: boolean
+          reason_for_attending?: string | null
+          role_title?: string | null
+          sponsor_goals?: string | null
+          sponsor_tier?: string | null
           state?: string
           ticket_code?: string
           track_selection?: string | null
           travel_support_needed?: boolean
+          tshirt_size?: string | null
           verification_checked_at?: string | null
           verification_confidence?: number | null
           verification_model?: string | null
           verification_reason?: string | null
           verification_status?: string
+          volunteer_availability?: string | null
+          volunteer_skills?: string | null
           whatsapp_notified?: boolean
           yali_certificate_url?: string | null
           yali_id?: string | null
