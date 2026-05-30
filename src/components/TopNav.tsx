@@ -93,11 +93,11 @@ export function TopNav() {
           />
         </a>
 
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <NavLinks />
         </div>
 
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden lg:flex items-center gap-2">
           <button
             onClick={toggle}
             className="p-2 rounded-full hover:bg-accent-cyan/10 transition-colors text-text-secondary"
@@ -113,7 +113,7 @@ export function TopNav() {
           </Link>
         </div>
 
-        <div className="md:hidden flex items-center gap-2">
+        <div className="lg:hidden flex items-center gap-2">
           <button
             onClick={toggle}
             className="p-2 rounded-full hover:bg-accent-cyan/10 transition-colors text-text-secondary"
