@@ -50,6 +50,7 @@ export function StepPayment({ value }: { value: FormState }) {
         await persist(null, "free");
         return;
       }
+      const { default: PaystackPop } = await import("@paystack/inline-js");
       const popup = new PaystackPop();
       popup.newTransaction({
         key: PAYSTACK_PUBLIC_KEY,
