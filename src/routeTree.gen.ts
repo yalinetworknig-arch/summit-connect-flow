@@ -19,9 +19,11 @@ import { Route as NetworkRouteImport } from './routes/network'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TicketCodeRouteImport } from './routes/ticket.$code'
 import { Route as RegisterIdRouteImport } from './routes/register.$id'
+import { Route as AuthenticatedAdminCheckInRouteImport } from './routes/_authenticated.admin.check-in'
 
 const TracksRoute = TracksRouteImport.update({
   id: '/tracks',
@@ -73,6 +75,10 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -88,6 +94,12 @@ const RegisterIdRoute = RegisterIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => RegisterRoute,
 } as any)
+const AuthenticatedAdminCheckInRoute =
+  AuthenticatedAdminCheckInRouteImport.update({
+    id: '/admin/check-in',
+    path: '/admin/check-in',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -103,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/tracks': typeof TracksRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
+  '/admin/check-in': typeof AuthenticatedAdminCheckInRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -118,10 +131,12 @@ export interface FileRoutesByTo {
   '/tracks': typeof TracksRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
+  '/admin/check-in': typeof AuthenticatedAdminCheckInRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
@@ -134,6 +149,7 @@ export interface FileRoutesById {
   '/tracks': typeof TracksRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
+  '/_authenticated/admin/check-in': typeof AuthenticatedAdminCheckInRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -151,6 +167,7 @@ export interface FileRouteTypes {
     | '/tracks'
     | '/register/$id'
     | '/ticket/$code'
+    | '/admin/check-in'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -166,9 +183,11 @@ export interface FileRouteTypes {
     | '/tracks'
     | '/register/$id'
     | '/ticket/$code'
+    | '/admin/check-in'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/about'
     | '/contact'
     | '/login'
@@ -181,10 +200,12 @@ export interface FileRouteTypes {
     | '/tracks'
     | '/register/$id'
     | '/ticket/$code'
+    | '/_authenticated/admin/check-in'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   LoginRoute: typeof LoginRoute
@@ -270,6 +291,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -291,8 +319,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterIdRouteImport
       parentRoute: typeof RegisterRoute
     }
+    '/_authenticated/admin/check-in': {
+      id: '/_authenticated/admin/check-in'
+      path: '/admin/check-in'
+      fullPath: '/admin/check-in'
+      preLoaderRoute: typeof AuthenticatedAdminCheckInRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
+
+interface AuthenticatedRouteChildren {
+  AuthenticatedAdminCheckInRoute: typeof AuthenticatedAdminCheckInRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAdminCheckInRoute: AuthenticatedAdminCheckInRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
 
 interface RegisterRouteChildren {
   RegisterIdRoute: typeof RegisterIdRoute
@@ -308,6 +355,7 @@ const RegisterRouteWithChildren = RegisterRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   LoginRoute: LoginRoute,
@@ -323,3 +371,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
