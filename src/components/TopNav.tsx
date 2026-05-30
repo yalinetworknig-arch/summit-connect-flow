@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Sun, Moon, Menu } from "lucide-react";
 import logoRainbow from "@/assets/aidifiln-logo-rainbow.png";
-import logoNavy from "@/assets/aidifiln-lockup-navy.svg";
+import lockupFull from "@/assets/aidifiln-lockup-full.png";
 import {
   Sheet,
   SheetContent,
@@ -137,9 +137,9 @@ export function TopNav() {
               <SheetHeader>
                 <SheetTitle className="text-left">
                   <img
-                    src={logoNavy}
+                    src={lockupFull}
                     alt="AIDIFILN"
-                    className="block dark:hidden h-10 w-auto"
+                    className="block dark:hidden w-full max-w-[240px] h-auto"
                   />
                   <img
                     src={logoRainbow}
