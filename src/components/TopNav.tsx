@@ -66,7 +66,7 @@ function NavLinks({
           } font-medium uppercase tracking-wide transition-colors ${
             vertical
               ? "text-text-primary hover:text-accent-cyan"
-              : "text-white/80 hover:text-[#00D9FF]"
+              : "text-brand-navy/80 hover:text-accent-cyan dark:text-white/80 dark:hover:text-[#00D9FF]"
           } relative after:absolute after:left-3 after:right-3 after:bottom-0 after:h-0.5 after:bg-accent-cyan after:scale-x-0 hover:after:scale-x-100 after:transition-transform`}
         >
           {label}
