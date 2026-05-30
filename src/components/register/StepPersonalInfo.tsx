@@ -344,7 +344,12 @@ function CertificateUpload({
     setBusy(true);
     setProgress(0);
     try {
-      const ext = file.name.split(".").pop()?.toLowerCase() || "bin";
+      const extByMime: Record<string, string> = {
+        "application/pdf": "pdf",
+        "image/png": "png",
+        "image/jpeg": "jpg",
+      };
+      const ext = extByMime[file.type] ?? "bin";
       const path = `${crypto.randomUUID()}.${ext}`;
       const { data: signed, error: signErr } = await supabase.storage
         .from("yali-certificates")
