@@ -51,10 +51,12 @@ function NavLinks({
   onNavigate,
   vertical,
   activeId,
+  onLinkClick,
 }: {
   onNavigate?: () => void;
   vertical?: boolean;
   activeId?: string;
+  onLinkClick?: (id: string) => void;
 }) {
   return (
     <nav className={vertical ? "flex flex-col gap-1" : "flex items-center gap-1"}>
@@ -65,7 +67,18 @@ function NavLinks({
           <a
             key={href}
             href={href}
-            onClick={onNavigate}
+            onClick={(e) => {
+              const el = typeof document !== "undefined" ? document.getElementById(id) : null;
+              if (el) {
+                e.preventDefault();
+                onLinkClick?.(id);
+                el.scrollIntoView({ behavior: "smooth", block: "start" });
+                if (typeof history !== "undefined") {
+                  history.replaceState(null, "", `#${id}`);
+                }
+              }
+              onNavigate?.();
+            }}
             aria-current={isActive ? "page" : undefined}
             className={`${
               vertical ? "px-3 py-3 text-base" : "px-4 py-2 text-sm"
@@ -91,6 +104,7 @@ function NavLinks({
 
 function useScrollSpy(ids: string[]) {
   const [activeId, setActiveId] = useState<string>(ids[0] ?? "");
+  const lockUntilRef = (useState<{ t: number }>(() => ({ t: 0 }))[0]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -102,6 +116,13 @@ function useScrollSpy(ids: string[]) {
     const visibility = new Map<string, number>();
     const observer = new IntersectionObserver(
       (entries) => {
+        if (Date.now() < lockUntilRef.t) {
+          // Ignore intersection updates while a programmatic scroll is in flight
+          for (const entry of entries) {
+            visibility.set(entry.target.id, entry.intersectionRatio);
+          }
+          return;
+        }
         for (const entry of entries) {
           visibility.set(entry.target.id, entry.intersectionRatio);
         }
@@ -126,13 +147,19 @@ function useScrollSpy(ids: string[]) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ids.join("|")]);
 
-  return activeId;
+  const setActive = (id: string) => {
+    // Lock observer briefly so the clicked link stays highlighted through smooth scroll
+    lockUntilRef.t = Date.now() + 900;
+    setActiveId(id);
+  };
+
+  return [activeId, setActive] as const;
 }
 
 export function TopNav() {
   const { isDark, toggle } = useTheme();
   const [open, setOpen] = useState(false);
-  const activeId = useScrollSpy(items.map((i) => i.href.slice(1)));
+  const [activeId, setActiveId] = useScrollSpy(items.map((i) => i.href.slice(1)));
 
   return (
     <header className="fixed top-3 md:top-5 inset-x-0 z-40 px-3 md:px-6 pointer-events-none">
@@ -155,7 +182,7 @@ export function TopNav() {
         </a>
 
         <div className="hidden lg:block">
-          <NavLinks activeId={activeId} />
+          <NavLinks activeId={activeId} onLinkClick={setActiveId} />
         </div>
 
         <div className="hidden lg:flex items-center gap-2">
@@ -214,6 +241,7 @@ export function TopNav() {
                   vertical
                   onNavigate={() => setOpen(false)}
                   activeId={activeId}
+                  onLinkClick={setActiveId}
                 />
                 <div className="flex flex-col gap-3">
                   <Link
