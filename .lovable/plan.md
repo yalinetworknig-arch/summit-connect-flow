@@ -1,73 +1,36 @@
 ## Goal
 
-Turn the existing `ticket_code` on `registrations` into a full Eventbrite/Tix Africa-style ticketing flow: every delegate gets a branded QR ticket immediately after registering, receives it by email, can pull it up at the door, and on-site staff scan it with a phone-based check-in app. The AI certificate verification status is shown as a badge on the ticket and surfaced to staff at check-in.
+After a successful registration, automatically email the delegate a branded confirmation containing their ticket code, QR-friendly link to `/ticket/:code`, and event details — sent through Resend via Lovable's connector gateway.
 
-## What the user gets
+## Approach
 
-1. **Public ticket page** at `/ticket/:code`
-   - Big QR code (encodes the ticket URL), attendee name, attendee type, track, ticket code (short, copyable), event date/venue
-   - Verification badge: Verified (green), Pending review (amber), Suspicious (amber + tooltip), Rejected (red)
-   - Buttons: "Add to Calendar" (.ics download), "Save as PDF" (browser print to PDF with print stylesheet), "Share"
-   - Works offline once loaded (cached); accessible without login
+Use the **Resend connector** (gateway-based), so no API key handling on our side beyond linking the connection. The send happens server-side from `submitRegistration` immediately after the row is inserted. Failures are logged but never block the registration response — the user still gets their ticket page.
 
-2. **Ticket email** sent automatically on successful registration
-   - Branded React Email template with QR code (rendered as inline image data URL), summit dates, link to full ticket page, "Add to Calendar" link
-   - Subject: "Your YALI Summit ticket — [Name]"
-   - Sent via Lovable Email infrastructure (no extra setup the user pays for)
+## Steps
 
-3. **Registration success screen update**
-   - Replaces the current generic confirmation with a mini ticket preview + "View your ticket" + "We've emailed your ticket to <email>"
+1. **Connect Resend** via the standard connector picker. This exposes `RESEND_API_KEY` + `LOVABLE_API_KEY` to server functions.
 
-4. **Admin check-in scanner** at `/admin/check-in`
-   - Camera-based QR scanner (works on phones in browser)
-   - Shows attendee details, verification badge, and check-in status on scan
-   - "Check in" button marks `checked_in_at`; second scan shows "Already checked in at HH:MM"
-   - Warning banner if verification_status is suspicious/rejected/pending so staff can ask follow-up questions
-   - Manual lookup by ticket code as fallback
-   - Protected by admin role
+2. **Create `src/lib/email/ticket-email.ts`** — server-only helper that:
+   - Builds the absolute ticket URL from the request origin (or a `VITE_PUBLIC_SITE_URL` fallback, defaulting to the published lovable.app URL).
+   - Renders a branded HTML email (inline styles, navy + cyan to match the app, white body background) with: greeting, attendee type + track, ticket code in a monospace pill, big CTA button → `/ticket/:code`, event dates/venue, "show this at the door" note, plain-text fallback.
+   - Calls `https://connector-gateway.lovable.dev/resend/emails` with `Authorization: Bearer LOVABLE_API_KEY` and `X-Connection-Api-Key: RESEND_API_KEY`.
+   - `from`: `"YALI Summit <onboarding@resend.dev>"` initially (works without domain verification); leaves a TODO comment to swap to a verified domain later.
+   - Returns `{ ok, id?, error? }` — never throws.
 
-5. **Admin registrations list** at `/admin/registrations`
-   - Table of all registrations with filter by verification_status and checked_in
-   - Row actions: view certificate, override verification (verified / rejected), open ticket
-   - Required because verification needs admin review
+3. **Wire it into `src/lib/registrations.functions.ts`** — after the successful insert in `submitRegistration`, fire-and-await the email send wrapped in try/catch; log errors with `console.error` so they surface in server-function-logs but the function still returns the registration row. Skip if `row.email` is empty.
 
-## Technical plan
+4. **Tiny confirmation copy update** on `src/routes/register.$id.tsx` — add a line "We've emailed your ticket to <email>" beneath the existing ticket preview (no functional change beyond text).
 
-**Database (one migration)**
-- `registrations`: add `checked_in_at timestamptz`, `checked_in_by uuid` (auth.users), index on `ticket_code`
-- New `user_roles` table + `app_role` enum (`admin`, `staff`) + `has_role()` security definer function (following the user-roles pattern; required to gate admin pages and the check-in mutation)
-- RLS: add `SELECT` policy on `registrations` for admins/staff via `has_role`; add `UPDATE` policy for check-in (admins/staff, only `checked_in_at` / `checked_in_by` columns via a dedicated server function using the admin client)
-- Public ticket lookup happens through a server function that returns a sanitized DTO (name, type, track, verification_status, checked_in flag, event info) — no RLS-readable policy for anon on the full row
+## Out of scope
 
-**Server functions (`src/lib/`)**
-- `tickets.functions.ts`
-  - `getTicketByCode({ code })` — public, returns sanitized ticket DTO or 404
-  - `checkInTicket({ code })` — admin-only (`requireSupabaseAuth` + role check), sets `checked_in_at`
-  - `listRegistrations({ filter })` — admin-only
-  - `overrideVerification({ id, status, reason })` — admin-only
-- `tickets.ics.ts` — server route at `/api/public/ticket/:code/calendar.ics` returning an .ics file
+- React Email templates / Lovable Email infrastructure (user asked for Resend specifically).
+- Domain verification on Resend (uses `onboarding@resend.dev` sender until user adds a verified domain).
+- Retries / queue / suppression list — single best-effort send; safe to add later.
+- Re-send button or admin "resend ticket" action.
 
-**Frontend routes**
-- `src/routes/ticket.$code.tsx` — public ticket page (QR via `qrcode` package, print stylesheet)
-- `src/routes/_authenticated/admin/check-in.tsx` — scanner page (uses `@yudiel/react-qr-scanner` or `html5-qrcode`)
-- `src/routes/_authenticated/admin/registrations.tsx` — admin table
-- `src/routes/login.tsx` — basic Supabase email/password login (required because there's no auth yet and admin pages need it)
-- Update `src/components/register/StepConfirm.tsx` (or equivalent) to redirect to `/ticket/:code` and show the email-sent confirmation
+## Technical notes
 
-**Email**
-- Run email infra + transactional scaffold tools
-- Add `ticket-confirmation` template with QR (inline data URL generated server-side via `qrcode` package)
-- Call from existing `submitRegistration` server function right after successful insert, with idempotency key `ticket-${registration.id}`
-
-**Packages**
-- `qrcode` (server-side QR generation for email + ticket DTO)
-- `html5-qrcode` or `@yudiel/react-qr-scanner` (camera scanner)
-
-**Important caveat to flag**
-- This adds authentication to the project for the first time. The admin scanner and registrations pages won't work until you create an admin user and assign the `admin` role. After the migration runs, I'll walk you through inserting your admin row.
-
-## Out of scope (call out, don't build)
-- Paid ticketing / Paystack tie-in beyond what's already in `registrations`
-- SMS/WhatsApp delivery of tickets
-- Multiple ticket tiers, transfers, refunds
-- Native mobile scanner app (browser camera works fine on phones)
+- Resend is a gateway connector → must call `connector-gateway.lovable.dev/resend/emails`, NOT `api.resend.com` directly.
+- Email body background: `#ffffff` per email rules; accent colors inline.
+- No new packages required (native `fetch`).
+- No DB changes.
