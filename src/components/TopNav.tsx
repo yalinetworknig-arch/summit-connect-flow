@@ -136,7 +136,6 @@ export function TopNav() {
             >
               <SheetHeader>
                 <SheetTitle className="text-left">
-                  <img src={logoNavy} alt="AIDIFILN" className="hidden dark:hidden h-10 w-auto" />
                   <img
                     src={logoNavy}
                     alt="AIDIFILN"
