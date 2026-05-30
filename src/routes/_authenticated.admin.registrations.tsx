@@ -63,7 +63,7 @@ function RegistrationsPage() {
     <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold" style={{ color: "var(--text-primary)", fontFamily: "Space Grotesk, sans-serif" }}>Registrations</h1>
-        <Link to="/_authenticated/admin/check-in" className="text-sm underline" style={{ color: "var(--accent-cyan)" }}>Check-in scanner</Link>
+        <Link to="/admin/check-in" className="text-sm underline" style={{ color: "var(--accent-cyan)" }}>Check-in scanner</Link>
       </div>
 
       <div className="flex flex-wrap gap-2 mb-4 text-sm">

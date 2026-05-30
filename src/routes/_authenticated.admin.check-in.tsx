@@ -84,7 +84,7 @@ function CheckInPage() {
     <section className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold" style={{ color: "var(--text-primary)", fontFamily: "Space Grotesk, sans-serif" }}>Check-in</h1>
-        <Link to="/_authenticated/admin/registrations" className="text-sm underline" style={{ color: "var(--accent-cyan)" }}>Registrations</Link>
+        <Link to="/admin/registrations" className="text-sm underline" style={{ color: "var(--accent-cyan)" }}>Registrations</Link>
       </div>
 
       <div className="rounded-2xl border p-4 mb-4" style={{ background: "var(--card)", borderColor: "var(--border-strong)" }}>
