@@ -8,35 +8,43 @@ import {
 const faqs = [
   {
     q: "What is YALI Summit?",
-    a: "The YALI Network Nigeria National Summit (AIDIFILN) is the country's largest annual gathering of young leaders working at the intersection of AI, digital innovation and inclusive leadership.",
+    a: "It's Nigeria's flagship gathering of young leaders working at the intersection of AI, digital innovation and inclusive leadership — hosted by the YALI Network Nigeria.",
   },
   {
     q: "When does it take place?",
-    a: "Friday 11 to Monday 14 September 2026, with a 4-day program of keynotes, sector tracks, workshops and a closing showcase.",
+    a: "Thursday 10 to Sunday 13 September 2026. Four days of keynotes, sector tracks, workshops, a hackathon and a closing showcase.",
   },
   {
     q: "Who should attend?",
-    a: "Active YALI Network members, founders, policymakers, civil-society leaders, sponsors, media, and members of the public who are passionate about Nigeria's digital future.",
+    a: "Founders, policymakers, educators, civil-society leaders, investors, media — and anyone serious about Nigeria's digital future. You don't have to be a YALI member.",
+  },
+  {
+    q: "Can I attend if I'm not a YALI member?",
+    a: "Yes. General-public tickets are open. Verified YALI delegates get in free; everyone else pays the ticket price below.",
   },
   {
     q: "What are the sector tracks?",
-    a: "Seven tracks: Health, Agriculture, Education, FinTech & Inclusive Finance, Energy & Climate, Governance & Policy, and Creative Economy.",
+    a: "Seven: Health & Wellbeing, Agriculture & Food, Education & Skills, FinTech & Inclusive Finance, Energy & Climate, Governance & Policy, and Creative Economy.",
   },
   {
     q: "How do I register?",
-    a: "Click 'Register Now' on this page and complete the 5-step registration. Free for YALI delegates; paid for general public.",
+    a: "Hit \"Claim your seat\" and walk through the 5 short steps. It takes about three minutes.",
   },
   {
     q: "Is there a fee?",
-    a: "Verified YALI delegates attend free. General public tickets are ₦15,000 (early bird, until 30 June 2026) and ₦20,000 thereafter.",
+    a: "Free for verified YALI delegates. General public: ₦15,000 early-bird until 30 June 2026, ₦20,000 after.",
   },
   {
     q: "Where is the venue?",
     a: "Eko Convention Centre, Eko Hotels & Suites, Victoria Island, Lagos. Travel and accommodation support is available for selected delegates.",
   },
   {
+    q: "What do I leave with?",
+    a: "Named commitments from your track, the contacts that can deliver them, and a 12-month YALI follow-through plan — not a tote bag of slides.",
+  },
+  {
     q: "How do I sponsor?",
-    a: "Visit the Sponsors page or email partnerships@summit.yalinetwork.ng for the sponsor prospectus and tier options.",
+    a: "Open the Sponsors page, pick a tier (or tell us your outcome) and we'll reply within 48 hours. Email: partnerships@summit.yalinetwork.ng.",
   },
 ];
 
