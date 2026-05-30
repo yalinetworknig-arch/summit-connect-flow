@@ -21,6 +21,7 @@ export const step2Schema = z
       .regex(/^[\d+\-\s()]+$/, "Digits, spaces, +, - and () only"),
     state: z.string().min(1, "Select your state").max(40),
     yali_id: z.string().trim().max(40).optional().or(z.literal("")),
+    yali_certificate_url: z.string().trim().max(500).optional().or(z.literal("")),
     attendee_type: z.enum(ATTENDEE_TYPES),
   })
   .superRefine((val, ctx) => {
@@ -29,6 +30,13 @@ export const step2Schema = z
         code: z.ZodIssueCode.custom,
         path: ["yali_id"],
         message: "YALI ID is required for delegates",
+      });
+    }
+    if (val.attendee_type === "delegate" && !val.yali_certificate_url?.trim()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["yali_certificate_url"],
+        message: "Upload your YALI membership certificate",
       });
     }
   });
@@ -50,6 +58,7 @@ export const fullRegistrationSchema = z.object({
   phone: z.string().trim().min(7).max(20),
   state: z.string().min(1).max(40),
   yali_id: z.string().trim().max(40).nullable().optional(),
+  yali_certificate_url: z.string().trim().max(500).nullable().optional(),
   track_selection: z.string().min(1).max(40),
   accommodation_needed: z.boolean(),
   travel_support_needed: z.boolean(),

@@ -99,6 +99,7 @@ export type Database = {
           track_selection: string | null
           travel_support_needed: boolean
           whatsapp_notified: boolean
+          yali_certificate_url: string | null
           yali_id: string | null
         }
         Insert: {
@@ -122,6 +123,7 @@ export type Database = {
           track_selection?: string | null
           travel_support_needed?: boolean
           whatsapp_notified?: boolean
+          yali_certificate_url?: string | null
           yali_id?: string | null
         }
         Update: {
@@ -145,6 +147,7 @@ export type Database = {
           track_selection?: string | null
           travel_support_needed?: boolean
           whatsapp_notified?: boolean
+          yali_certificate_url?: string | null
           yali_id?: string | null
         }
         Relationships: []
