@@ -1,54 +1,51 @@
-# Where we are — AIDIFILN Summit 2026
+## Problem
 
-## ✅ Solid / shipped
-- **Shell & nav**: `TopNav` (light = white lockup, dark = rainbow lockup, both `h-10 md:h-12`, no dark glow), `Footer`, mobile `BottomTabBar`, `AppShell`
-- **Home (`/`)**: real `Hero` + `Countdown`, `Stats`, `Partners`, `FAQ`
-- **Registration flow (`/register`)**: 5 steps (attendee type → personal info → track → logistics → review/pay), Zod validation, draft autosave, Paystack inline (early-bird ₦15k / regular ₦20k / free for delegates), success page at `/register/$id`
-- **Backend**: Supabase `registrations` table, `submitRegistration` + `getRegistrationById` server functions, ticket codes
+At the tablet viewport (~768px) the marketing pages break in several ways. The clearest is About: the rotated `SideLabel` strips ("PRESENTS · AIDIFILN 2026" / "YALI NETWORK NIGERIA") activate at `md` (≥768px) and sit at `left-4 / right-4`, which collides directly with the headline because section padding is only `px-6` and the content max-width has no horizontal room left for them. The same primitive is reused on Tracks, Schedule and Sponsors, so the issue repeats.
 
-## ⚠️ Stubs (just a heading + one-line placeholder)
-- `/about`, `/contact`, `/schedule`, `/tracks`, `/sponsors`, `/network`, `/profile`, `/summit`
-- Index page's inline `Schedule` and `Sector Tracks` sections are also placeholder text
-- `/summit` is essentially a duplicate of `/` — needs a purpose or removal
+Other tablet-range issues in the same files:
+- Hero typography jumps straight from `text-4xl` to `text-6xl` with no `md` step, so headlines wrap awkwardly at 768.
+- `HalftoneBackdrop` mask is tuned for wide hero, looks heavy and off-center at tablet width.
+- Card grids use `md:grid-cols-2` / `md:grid-cols-3` / `lg:grid-cols-4` with `gap-5 md:gap-6`, but section padding stays `px-6`, leaving cramped gutters and cards that touch the viewport edge.
+- Tracks card has a `text-[7rem]` number watermark that overflows the card at narrow widths.
+- Contact form fields and Schedule day-tab row don't reflow cleanly at 768.
 
-## 🧩 Gaps worth noting
-- No auth → `/profile` can't show "your registration" yet
-- No speakers data/page
-- No admin view of registrations
-- Paystack key still optional fallback (saves as "free" if missing)
+## Fix plan
 
----
+Single pass, presentation-only edits. No business logic.
 
-# Proposed next phase — "Fill the empty rooms"
+1. **`SideLabel` primitive** (`src/components/motion-primitives.tsx`)
+   - Promote visibility breakpoint from `md:flex` to `xl:flex` (≥1280px) so labels only appear when the layout actually has room.
+   - Move position to `xl:left-6 2xl:left-10` (and mirror on right) and add `max-w-[40vh]` so the rotated text can never overlap content.
 
-Goal: turn every stub route into real, shareable content so the site is presentable end-to-end before layering in auth/admin.
+2. **Section padding scale** (About, Tracks, Schedule, Sponsors, Contact heroes + content sections)
+   - Change `px-6` → `px-5 sm:px-6 lg:px-8` and add a consistent `md:` step on hero type (`text-4xl md:text-5xl lg:text-6xl`) so the headline reflows cleanly at 768.
+   - Tighten hero vertical rhythm at tablet: `py-20 md:py-24 lg:py-28`.
 
-### Phase 2A — Content pages (highest ROI, no backend work)
-1. **`/about`** — mission, why AIDIFILN, organizing body, theme pillars, location/dates, CTA to register
-2. **`/tracks`** — full 7-track grid (Health, Agriculture, Education, FinTech, Energy & Climate, Governance, Creative Economy) with icon, description, sample sessions, "register for this track" link. Replace the index placeholder with a condensed teaser linking here.
-3. **`/schedule`** — 4-day timeline (Sept 10–13, 2026): Day 1 arrivals/opening, Day 2–3 tracks & workshops, Day 4 closing showcase. Tabbed by day, time-block cards.
-4. **`/sponsors`** — tiers (Platinum/Gold/Silver/Community), benefits table, "Become a sponsor" inquiry form (writes to a `sponsor_inquiries` table) + downloadable deck placeholder
-5. **`/contact`** — contact form (writes to `contact_messages` table), email, socials, venue map placeholder
-6. **`/summit`** — either delete the route or repurpose as a "Summit overview" hub linking About/Schedule/Tracks/Sponsors
+3. **Card grids**
+   - About theme pillars and stat row: keep `sm:grid-cols-2 lg:grid-cols-4` but add `md:grid-cols-2` explicitly and bump gap at lg only.
+   - Tracks: `grid-cols-1 lg:grid-cols-2` (was `md:grid-cols-2`) so each track card has full width at 768 and the long copy + sessions list breathe. Shrink the number watermark to `text-[5rem] md:text-[7rem]` and clamp with `overflow-hidden` already present.
+   - Sponsors tier grids: add `md:` intermediate step where missing.
 
-### Phase 2B — Cleanup
-- Drop the placeholder Schedule/Tracks sections on the index in favor of richer teaser cards that link out
-- Remove `/network` and `/profile` from `BottomTabBar` until they have real content, OR mark them clearly as "Coming soon" pages with a teaser
+4. **Schedule**
+   - Day tabs: make the tab row horizontally scrollable on narrow widths (`overflow-x-auto`, `snap-x`) so they never wrap into two lines at 768.
+   - Session cards: stack time + title vertically below `md`, side-by-side from `md` up.
 
-### Phase 3 (later, after content is in)
-- Auth (Supabase) → real `/profile` showing the user's ticket, QR code, track selection
-- Admin route (`/_authenticated/admin`) for registration list/export
-- `/network` member directory (post-auth)
-- Speakers page + data model
+5. **Contact**
+   - Form grid: `grid-cols-1 md:grid-cols-2` for name/email row; full-width for message. Ensure inputs have `min-h-12` for touch.
+   - Contact info cards: single column under `md`, two columns from `md`.
 
----
+6. **`HalftoneBackdrop`**
+   - Soften mask on tablet: change `radial-gradient(ellipse 60% 50% ...)` to `radial-gradient(ellipse 80% 60% ...)` so the dot field doesn't bunch behind the headline at 768.
 
-# Technical details
-- New tables for 2A: `sponsor_inquiries`, `contact_messages` (both insert-only via server functions, with grants + RLS as per template rules)
-- Tracks/schedule data: static TS files in `src/lib/` (no DB needed)
-- Each new route gets its own `head()` meta (title, description, og:title, og:description)
+### Files touched
 
----
+- `src/components/motion-primitives.tsx`
+- `src/routes/about.tsx`
+- `src/routes/tracks.tsx`
+- `src/routes/schedule.tsx`
+- `src/routes/sponsors.tsx`
+- `src/routes/contact.tsx`
 
-# Question for you
-Which slice do you want first? Suggested order: **2A in one pass** (About → Tracks → Schedule → Sponsors → Contact), then cleanup, then auth. Or pick a single page to start narrow.
+### Verification
+
+After edits, screenshot About, Tracks, Schedule, Sponsors, Contact at 768×900 and 390×844 to confirm no overlap, no horizontal scroll, and headlines fit on two lines max.

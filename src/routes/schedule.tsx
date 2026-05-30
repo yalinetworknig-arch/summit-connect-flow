@@ -28,7 +28,7 @@ function SchedulePage() {
   const day = SCHEDULE[active];
   return (
     <>
-      <section className="relative px-6 py-20 md:py-28 bg-background text-text-primary overflow-hidden">
+      <section className="relative px-5 sm:px-6 lg:px-8 py-20 md:py-24 lg:py-28 bg-background text-text-primary overflow-hidden">
         <HalftoneBackdrop />
         <SideLabel>Programme · Sept 10–13 · Lagos</SideLabel>
         <SideLabel side="right" tone="muted">AIDIFILN / Day 01 → 04</SideLabel>
@@ -37,7 +37,7 @@ function SchedulePage() {
             <Eyebrow>Four-day programme</Eyebrow>
           </Reveal>
           <Reveal delay={0.08}>
-            <h1 className="font-display font-bold text-4xl md:text-6xl mt-5 mb-6 leading-[1.05]">
+            <h1 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl mt-5 mb-6 leading-[1.05]">
               The full <span className="text-accent-cyan">programme.</span>
             </h1>
           </Reveal>
@@ -50,11 +50,11 @@ function SchedulePage() {
         </div>
       </section>
 
-      <section className="px-6 pb-24 md:pb-32 bg-background text-text-primary">
+      <section className="px-5 sm:px-6 lg:px-8 pb-24 md:pb-32 bg-background text-text-primary">
         <div className="max-w-5xl mx-auto">
           {/* Sticky day rail */}
-          <div className="sticky top-16 md:top-20 z-20 -mx-6 px-6 py-3 bg-background/85 backdrop-blur-md border-b border-border-strong mb-10">
-            <div className="flex gap-1 overflow-x-auto no-scrollbar justify-center">
+          <div className="sticky top-16 md:top-20 z-20 -mx-5 sm:-mx-6 lg:-mx-8 px-5 sm:px-6 lg:px-8 py-3 bg-background/85 backdrop-blur-md border-b border-border-strong mb-10">
+            <div className="flex gap-1 overflow-x-auto no-scrollbar md:justify-center snap-x">
               {SCHEDULE.map((d, i) => (
                 <button
                   key={d.day}

@@ -45,14 +45,14 @@ function ContactPage() {
 
   return (
     <>
-      <section className="relative px-6 py-20 md:py-28 bg-background text-text-primary overflow-hidden">
+      <section className="relative px-5 sm:px-6 lg:px-8 py-20 md:py-24 lg:py-28 bg-background text-text-primary overflow-hidden">
         <HalftoneBackdrop />
         <SideLabel>Reach out · hello@yalinetworknigeria.org</SideLabel>
         <SideLabel side="right" tone="muted">Reply within 2 business days</SideLabel>
         <div className="relative max-w-4xl mx-auto text-center">
           <Reveal><Eyebrow>Get in touch</Eyebrow></Reveal>
           <Reveal delay={0.08}>
-            <h1 className="font-display font-bold text-4xl md:text-6xl mt-5 mb-6 leading-[1.05]">
+            <h1 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl mt-5 mb-6 leading-[1.05]">
               We'd love to <span className="text-accent-cyan">hear from you.</span>
             </h1>
           </Reveal>
@@ -65,7 +65,7 @@ function ContactPage() {
         </div>
       </section>
 
-      <section className="px-6 pb-24 md:pb-32 bg-background text-text-primary">
+      <section className="px-5 sm:px-6 lg:px-8 pb-24 md:pb-32 bg-background text-text-primary">
         <div className="max-w-5xl mx-auto grid md:grid-cols-[1fr_1.4fr] gap-8">
           <Reveal as="aside" className="space-y-4">
             <InfoCard

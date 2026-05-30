@@ -82,14 +82,14 @@ export function SideLabel({
   return (
     <div
       aria-hidden
-      className={`hidden md:flex absolute top-1/2 ${
-        side === "left" ? "left-4 lg:left-8" : "right-4 lg:right-8"
+      className={`hidden xl:flex absolute top-1/2 ${
+        side === "left" ? "left-6 2xl:left-10" : "right-6 2xl:right-10"
       } -translate-y-1/2 origin-center ${
         side === "left" ? "-rotate-90" : "rotate-90"
       } select-none pointer-events-none`}
     >
       <span
-        className={`font-mono text-[10px] tracking-[0.4em] uppercase whitespace-nowrap ${
+        className={`font-mono text-[10px] tracking-[0.4em] uppercase whitespace-nowrap max-w-[40vh] ${
           tone === "cyan" ? "text-accent-cyan" : "text-text-secondary/60"
         }`}
       >
@@ -126,9 +126,9 @@ export function HalftoneBackdrop({
           color: "var(--accent-cyan)",
           opacity,
           maskImage:
-            "radial-gradient(ellipse 60% 50% at 50% 40%, black, transparent 75%)",
+            "radial-gradient(ellipse 85% 65% at 50% 40%, black, transparent 78%)",
           WebkitMaskImage:
-            "radial-gradient(ellipse 60% 50% at 50% 40%, black, transparent 75%)",
+            "radial-gradient(ellipse 85% 65% at 50% 40%, black, transparent 78%)",
         }}
       />
     </div>

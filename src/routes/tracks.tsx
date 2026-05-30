@@ -26,14 +26,14 @@ export const Route = createFileRoute("/tracks")({
 function TracksPage() {
   return (
     <>
-      <section className="relative px-6 py-20 md:py-28 bg-background text-text-primary overflow-hidden">
+      <section className="relative px-5 sm:px-6 lg:px-8 py-20 md:py-24 lg:py-28 bg-background text-text-primary overflow-hidden">
         <HalftoneBackdrop />
         <SideLabel>Seven sectors · One stage</SideLabel>
         <SideLabel side="right" tone="muted">Tracks / 01 → 07</SideLabel>
         <div className="relative max-w-4xl mx-auto text-center">
           <Reveal><Eyebrow>Seven sector tracks</Eyebrow></Reveal>
           <Reveal delay={0.08}>
-            <h1 className="font-display font-bold text-4xl md:text-6xl mt-5 mb-6 leading-[1.05]">
+            <h1 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl mt-5 mb-6 leading-[1.05]">
               Pick the room you want to{" "}
               <span className="text-accent-cyan">shape.</span>
             </h1>
@@ -47,8 +47,8 @@ function TracksPage() {
         </div>
       </section>
 
-      <section className="px-6 pb-20 md:pb-28 bg-background text-text-primary">
-        <Stagger className="max-w-6xl mx-auto grid md:grid-cols-2 gap-5 md:gap-6">
+      <section className="px-5 sm:px-6 lg:px-8 pb-20 md:pb-28 bg-background text-text-primary">
+        <Stagger className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-5 lg:gap-6">
           {TRACK_DETAILS.map(({ slug, title, long, sessions, Icon }, i) => (
             <motion.article
               key={slug}
@@ -60,7 +60,7 @@ function TracksPage() {
               {/* Track number watermark */}
               <span
                 aria-hidden
-                className="absolute -top-2 -right-2 font-display font-bold text-[7rem] leading-none text-accent-cyan/[0.06] select-none pointer-events-none"
+                className="absolute -top-2 -right-2 font-display font-bold text-[5rem] md:text-[7rem] leading-none text-accent-cyan/[0.06] select-none pointer-events-none"
               >
                 {String(i + 1).padStart(2, "0")}
               </span>
