@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/select";
 import { NIGERIAN_STATES } from "@/lib/register/states";
 import type { FormState } from "@/lib/register/schema";
+import { supabase } from "@/integrations/supabase/client";
+import { useState } from "react";
 
 export function StepPersonalInfo({
   value,
@@ -63,15 +65,101 @@ export function StepPersonalInfo({
         </Select>
       </Field>
       {isDelegate && (
-        <Field label="YALI ID" error={errors.yali_id} className="sm:col-span-2">
-          <Input
-            value={value.yali_id ?? ""}
-            onChange={(e) => onChange({ yali_id: e.target.value })}
-            maxLength={40}
-            placeholder="YALI-NG-XXXXXX"
-          />
-        </Field>
+        <>
+          <Field label="YALI ID" error={errors.yali_id} className="sm:col-span-2">
+            <Input
+              value={value.yali_id ?? ""}
+              onChange={(e) => onChange({ yali_id: e.target.value })}
+              maxLength={40}
+              placeholder="YALI-NG-XXXXXX"
+            />
+          </Field>
+          <Field
+            label="YALI membership certificate (required)"
+            error={errors.yali_certificate_url}
+            className="sm:col-span-2"
+          >
+            <CertificateUpload
+              value={value.yali_certificate_url ?? ""}
+              onChange={(url) => onChange({ yali_certificate_url: url })}
+            />
+          </Field>
+        </>
       )}
+    </div>
+  );
+}
+
+function CertificateUpload({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (url: string) => void;
+}) {
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  async function handleFile(file: File) {
+    setErr(null);
+    if (file.size > 5 * 1024 * 1024) {
+      setErr("File must be 5MB or less");
+      return;
+    }
+    const allowed = ["application/pdf", "image/png", "image/jpeg"];
+    if (!allowed.includes(file.type)) {
+      setErr("Upload a PDF, PNG, or JPG file");
+      return;
+    }
+    setBusy(true);
+    try {
+      const ext = file.name.split(".").pop()?.toLowerCase() || "bin";
+      const path = `${crypto.randomUUID()}.${ext}`;
+      const { error } = await supabase.storage
+        .from("yali-certificates")
+        .upload(path, file, { contentType: file.type, upsert: false });
+      if (error) throw error;
+      onChange(path);
+    } catch (e: unknown) {
+      setErr(e instanceof Error ? e.message : "Upload failed");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      <input
+        type="file"
+        accept="application/pdf,image/png,image/jpeg"
+        disabled={busy}
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          if (f) handleFile(f);
+        }}
+        className="text-sm file:mr-3 file:rounded-full file:border-0 file:px-4 file:py-1.5 file:text-sm file:font-semibold file:cursor-pointer"
+        style={{
+          color: "var(--text-secondary)",
+        }}
+      />
+      {busy && (
+        <span className="text-xs" style={{ color: "var(--text-secondary)" }}>
+          Uploading…
+        </span>
+      )}
+      {!busy && value && (
+        <span className="text-xs" style={{ color: "var(--text-secondary)" }}>
+          Uploaded ✓ ({value.split("/").pop()})
+        </span>
+      )}
+      {err && (
+        <span className="text-xs" style={{ color: "var(--error)" }}>
+          {err}
+        </span>
+      )}
+      <span className="text-xs" style={{ color: "var(--text-secondary)" }}>
+        Accepted: PDF, PNG, or JPG — max 5MB.
+      </span>
     </div>
   );
 }
