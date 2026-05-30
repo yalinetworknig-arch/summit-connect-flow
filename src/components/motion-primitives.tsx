@@ -21,7 +21,8 @@ export function Reveal({
   return (
     <Comp
       initial={{ opacity: 0, y: reduce ? 0 : y }}
-      animate={{ opacity: 1, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.7, ease: EASE, delay }}
       className={className}
     >
@@ -58,7 +59,8 @@ export function Stagger({
     <motion.div
       variants={staggerParent}
       initial="hidden"
-      animate="show"
+      whileInView="show"
+      viewport={{ once: true, margin: "-80px" }}
       className={className}
     >
       {children}
