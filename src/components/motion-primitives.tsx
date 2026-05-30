@@ -126,9 +126,9 @@ export function HalftoneBackdrop({
           color: "var(--accent-cyan)",
           opacity,
           maskImage:
-            "radial-gradient(ellipse 60% 50% at 50% 40%, black, transparent 75%)",
+            "radial-gradient(ellipse 85% 65% at 50% 40%, black, transparent 78%)",
           WebkitMaskImage:
-            "radial-gradient(ellipse 60% 50% at 50% 40%, black, transparent 75%)",
+            "radial-gradient(ellipse 85% 65% at 50% 40%, black, transparent 78%)",
         }}
       />
     </div>
