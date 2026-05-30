@@ -53,13 +53,12 @@ function ContactPage() {
           <Reveal><Eyebrow>Get in touch</Eyebrow></Reveal>
           <Reveal delay={0.08}>
             <h1 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl mt-5 mb-6 leading-[1.05]">
-              We'd love to <span className="text-accent-cyan">hear from you.</span>
+              Talk to a <span className="text-accent-cyan">real human, fast.</span>
             </h1>
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              Questions about registration, sponsorship, media accreditation or
-              partnerships? Drop us a note.
+              Registration, sponsorship, media accreditation, partnerships — drop a note and we'll route it to the right person the same day.
             </p>
           </Reveal>
         </div>
@@ -91,10 +90,10 @@ function ContactPage() {
             <div className="rounded-2xl border border-accent-cyan bg-surface p-10 text-center flex flex-col items-center justify-center">
               <Check className="w-10 h-10 text-accent-cyan mb-3" />
               <h3 className="font-display font-semibold text-xl mb-1">
-                Message sent
+                Message sent.
               </h3>
               <p className="text-text-secondary">
-                Thanks for reaching out — we'll reply within 2 business days.
+                Got it. A real person will reply within 2 business days.
               </p>
             </div>
           ) : (
@@ -127,7 +126,7 @@ function ContactPage() {
                 disabled={status === "submitting"}
                 className="w-full px-7 py-3 rounded-full text-base font-semibold bg-accent-cyan text-brand-navy hover:scale-[1.01] transition-transform disabled:opacity-60"
               >
-                {status === "submitting" ? "Sending…" : "Send message"}
+                {status === "submitting" ? "Sending…" : "Send it over"}
               </button>
               </form>
             </Reveal>
