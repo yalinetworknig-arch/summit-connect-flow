@@ -18,19 +18,22 @@ export function AboutSection({ id = "about" }: { id?: string }) {
         <SideLabel>Presents · AIDIFILN 2026</SideLabel>
         <SideLabel side="right" tone="muted">YALI Network Nigeria</SideLabel>
         <div className="relative max-w-4xl mx-auto">
-          <Reveal><Eyebrow>About the Summit</Eyebrow></Reveal>
+          <Reveal><Eyebrow>For Nigeria's civic &amp; social-impact leaders</Eyebrow></Reveal>
           <Reveal delay={0.08}>
             <h2 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl leading-[1.05] mt-5 mb-7">
-              AI, Digital Innovation & the Future of{" "}
-              <span className="text-accent-cyan">Inclusive Leadership</span> in
-              Nigeria.
+              Inclusive leadership is the work.{" "}
+              <span className="text-accent-cyan">
+                AI and digital innovation are the new tools on the table.
+              </span>
             </h2>
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-lg text-text-secondary leading-relaxed max-w-3xl">
-              Nigeria's AI decade has already started. AIDIFILN is where the people
-              actually building it — founders, policymakers, educators, sponsors — meet
-              for four days to align on what "inclusive" really means in code, policy and capital.
+              AIDIFILN brings together the people who already lead Nigerian
+              communities — civic actors, social entrepreneurs, educators,
+              organisers, public servants — for four days of getting fluent,
+              getting connected, and deciding together how AI and digital systems
+              get built around the people we serve.
             </p>
           </Reveal>
         </div>
@@ -61,40 +64,57 @@ export function AboutSection({ id = "about" }: { id?: string }) {
 
       <section className="px-5 sm:px-6 lg:px-8 py-20 md:py-24 lg:py-28 bg-background text-text-primary">
         <div className="max-w-4xl mx-auto">
-          <Reveal><Eyebrow>Why now</Eyebrow></Reveal>
+          <Reveal><Eyebrow>Why this, why now</Eyebrow></Reveal>
           <Reveal delay={0.06}>
             <h3 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl mt-5 mb-10 leading-tight">
-              The shift has already started.{" "}
-              <span className="text-accent-cyan">The terms haven't been set.</span>
+              The systems shaping Nigerian lives are being rewritten.{" "}
+              <span className="text-accent-cyan">
+                Civic leadership has to be in the room.
+              </span>
             </h3>
           </Reveal>
           <Reveal delay={0.12}>
             <div className="space-y-6 text-text-secondary leading-relaxed text-lg">
               <p>
-                Nigeria didn't wait for permission. The National AI Strategy was
-                published in August 2024. The Data Protection Act has been law since
-                July 2023. 3MTT has put 360,000+ Nigerians into technical training across
-                all 774 LGAs, on the way to three million. Awarri shipped a
-                government-backed LLM trained on Yoruba, Igbo, Hausa, Pidgin and
-                Ibibio. OPay clears nine million transactions a day. The infrastructure
-                is being poured.
+                <span className="text-text-primary font-medium">
+                  What's already shifted.
+                </span>{" "}
+                The National AI Strategy was published in August 2024. The Data
+                Protection Act has been law since July 2023. 3MTT has put 360,000+
+                Nigerians into technical training across all 774 LGAs, on the way
+                to three million. Awarri's government-backed LLM speaks Yoruba,
+                Igbo, Hausa, Pidgin and Ibibio. OPay clears nine million
+                transactions a day. The infrastructure is being poured — fast.
               </p>
               <p>
-                What's still open is who designs the building. Whose data trains the
-                models. Whose languages they speak. Whose problems they solve first —
-                and whose they ignore. Whose hands are on the policy pen when the next
-                NDPA amendment or AI bill lands.
+                <span className="text-text-primary font-medium">
+                  What that means for civic leaders.
+                </span>{" "}
+                Welfare decisions, credit scores, classroom assessments,
+                healthcare triage, voter information, identity systems —
+                increasingly mediated by models and platforms whose defaults
+                nobody in your community signed off on. Inclusion isn't a value
+                statement anymore; it's a design choice someone is making whether
+                you're at the table or not.
               </p>
               <p>
-                That's why this room matters. Founders shipping product. Civil servants
-                drafting policy. Educators reskilling at scale. Investors writing the
-                cheques. Communities the technology is supposed to serve — in the
-                room, not in the footnotes.
+                <span className="text-text-primary font-medium">
+                  Why this summit, this room.
+                </span>{" "}
+                Civic actors, social-impact founders, educators, community
+                organisers, public servants — the people Nigerians already trust
+                — getting fluent enough in AI and digital systems to lead them,
+                challenge them, procure them, regulate them, and build with them.
+                Not to become engineers. To stop being end-users of decisions
+                made elsewhere.
               </p>
               <p>
-                What leaves the room: named commitments, working partnerships, and a
-                12-month follow-through plan owned by YALI Network Nigeria. Not a tote
-                bag of slides.
+                <span className="text-text-primary font-medium">
+                  What leaves the room.
+                </span>{" "}
+                Named commitments. Working partnerships across civic, tech,
+                policy and capital. A 12-month follow-through plan owned by YALI
+                Network Nigeria. Not a tote bag of slides.
               </p>
             </div>
           </Reveal>
@@ -114,26 +134,29 @@ export function AboutSection({ id = "about" }: { id?: string }) {
             <div className="text-center mb-12">
               <Eyebrow>Theme pillars</Eyebrow>
               <h3 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl mt-5">
-                Three commitments. <span className="text-accent-cyan">No flinching.</span>
+                Three commitments.{" "}
+                <span className="text-accent-cyan">
+                  Inclusive leadership is the anchor.
+                </span>
               </h3>
             </div>
           </Reveal>
           <Stagger className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
             {[
               {
-                Icon: Sparkles,
-                title: "Applied AI",
-                body: "Past the demos. Real deployments solving Nigerian problems at Nigerian scale.",
+                Icon: Users,
+                title: "Inclusive leadership (the anchor)",
+                body: "Women, youth, persons with disabilities, rural communities, frontline organisers — leadership that looks like, and answers to, the Nigeria it serves.",
               },
               {
-                Icon: Users,
-                title: "Inclusive Leadership",
-                body: "Women, youth, persons with disabilities, rural communities — leadership that looks like Nigeria.",
+                Icon: Sparkles,
+                title: "Applied AI & digital innovation",
+                body: "Past the demos. Real deployments solving civic and social-impact problems at Nigerian scale — health, education, livelihoods, governance, climate.",
               },
               {
                 Icon: Target,
                 title: "Action over talk",
-                body: "Every track closes with named commitments, working partnerships and follow-through.",
+                body: "Every track closes with named commitments, working partnerships, and a 12-month follow-through plan. No exceptions.",
               },
             ].map(({ Icon, title, body }, i) => (
               <motion.div
@@ -168,7 +191,9 @@ export function AboutSection({ id = "about" }: { id?: string }) {
           </Reveal>
           <Reveal delay={0.08}>
             <p className="text-text-secondary mb-8 text-lg">
-              Registration is open. Verified YALI delegates attend free — everyone else pays the ticket price.
+              Civic actors, social-impact founders, educators, organisers, public
+              servants — registration is open. Verified YALI delegates attend
+              free; everyone else pays the ticket price.
             </p>
           </Reveal>
           <Reveal delay={0.16}>
