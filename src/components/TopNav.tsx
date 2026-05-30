@@ -82,12 +82,19 @@ export function TopNav() {
 
   return (
     <header className="fixed top-3 md:top-5 inset-x-0 z-40 px-3 md:px-6 pointer-events-none">
-      <div className="pointer-events-auto mx-auto max-w-[1180px] flex items-center justify-between gap-4 px-3 md:px-5 h-14 md:h-16 rounded-full border border-white/10 bg-brand-navy/85 dark:bg-[#0A1128]/70 backdrop-blur-xl shadow-[0_10px_40px_-12px_rgba(0,0,0,0.6)]">
+      <div className="pointer-events-auto mx-auto max-w-[1180px] flex items-center justify-between gap-4 px-3 md:px-5 h-14 md:h-16 rounded-full border border-brand-navy/10 dark:border-white/10 bg-white/85 dark:bg-[#0A1128]/70 backdrop-blur-xl shadow-[0_10px_40px_-12px_rgba(15,27,61,0.18)] dark:shadow-[0_10px_40px_-12px_rgba(0,0,0,0.6)]">
         <a href="#home" aria-label="AIDIFILN — Home" className="flex items-center shrink-0">
+          <img
+            src={lockupFull}
+            alt="AIDIFILN"
+            className="block dark:hidden h-9 md:h-11 w-auto select-none"
+            loading="eager"
+            decoding="async"
+          />
           <img
             src={logoRainbow}
             alt="AIDIFILN"
-            className="h-10 md:h-12 w-auto select-none"
+            className="hidden dark:block h-10 md:h-12 w-auto select-none"
             loading="eager"
             decoding="async"
           />
@@ -100,7 +107,7 @@ export function TopNav() {
         <div className="hidden lg:flex items-center gap-2">
           <button
             onClick={toggle}
-            className="p-2 rounded-full hover:bg-accent-cyan/10 transition-colors text-text-secondary"
+            className="p-2 rounded-full hover:bg-accent-cyan/10 transition-colors text-brand-navy/70 dark:text-white/80"
             aria-label="Toggle theme"
           >
             {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -116,7 +123,7 @@ export function TopNav() {
         <div className="lg:hidden flex items-center gap-2">
           <button
             onClick={toggle}
-            className="p-2 rounded-full hover:bg-accent-cyan/10 transition-colors text-text-secondary"
+            className="p-2 rounded-full hover:bg-accent-cyan/10 transition-colors text-brand-navy/70 dark:text-white/80"
             aria-label="Toggle theme"
           >
             {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -124,7 +131,7 @@ export function TopNav() {
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <button
-                className="p-2 rounded-full hover:bg-accent-cyan/10 transition-colors text-text-primary"
+                className="p-2 rounded-full hover:bg-accent-cyan/10 transition-colors text-brand-navy dark:text-white"
                 aria-label="Open menu"
               >
                 <Menu className="w-6 h-6" />
