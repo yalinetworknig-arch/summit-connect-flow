@@ -40,10 +40,9 @@ function AboutPage() {
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-lg text-text-secondary leading-relaxed max-w-3xl">
-              AIDIFILN is the flagship national summit of the YALI Network Nigeria —
-              four days where Nigerian young leaders, technologists, policymakers and
-              sponsors converge to shape what an inclusive AI-powered future looks like
-              for our country.
+              Nigeria's AI decade has already started. AIDIFILN is where the people
+              actually building it — founders, policymakers, educators, sponsors — meet
+              for four days to align on what "inclusive" really means in code, policy and capital.
             </p>
           </Reveal>
         </div>
@@ -53,7 +52,7 @@ function AboutPage() {
         <Stagger className="max-w-5xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
           {[
             { Icon: CalendarDays, label: "Dates", value: "Sept 10 – 13, 2026" },
-            { Icon: MapPin, label: "Location", value: "Lagos, Nigeria" },
+            { Icon: MapPin, label: "Venue", value: "Eko Convention Centre, Lagos" },
             { Icon: Users, label: "Delegates", value: "2,000+ expected" },
             { Icon: Globe, label: "Reach", value: "All 36 states + FCT" },
           ].map(({ Icon, label, value }) => (
@@ -84,14 +83,16 @@ function AboutPage() {
           <Reveal delay={0.12}>
             <div className="space-y-6 text-text-secondary leading-relaxed text-lg">
               <p>
-                Decisions made in the next 24 months — about data, infrastructure,
-                talent and regulation — will shape the next two decades of inclusive
-                growth.
+                The next 24 months will lock in the rules — on data, infrastructure,
+                talent and regulation — that shape Nigeria's next two decades.
               </p>
               <p>
-                AIDIFILN brings together the people actually building that future:
-                founders shipping product, civil servants drafting policy, educators
-                reskilling millions, and sponsors funding the pipeline.
+                The people in the room: founders shipping product, civil servants drafting
+                policy, educators reskilling millions, sponsors funding the pipeline.
+              </p>
+              <p>
+                What leaves the room: named commitments, working partnerships, and a
+                12-month follow-through plan led by YALI Network Nigeria.
               </p>
             </div>
           </Reveal>
@@ -113,17 +114,17 @@ function AboutPage() {
               {
                 Icon: Sparkles,
                 title: "Applied AI",
-                body: "Beyond demos — real deployments solving Nigerian problems at scale.",
+                body: "Past the demos. Real deployments solving Nigerian problems at Nigerian scale.",
               },
               {
                 Icon: Users,
                 title: "Inclusive Leadership",
-                body: "Women, youth, persons with disabilities, rural communities — leadership that reflects Nigeria.",
+                body: "Women, youth, persons with disabilities, rural communities — leadership that looks like Nigeria.",
               },
               {
                 Icon: Target,
                 title: "Action over talk",
-                body: "Every track ends in commitments, partnerships, and follow-through.",
+                body: "Every track closes with named commitments, working partnerships and follow-through.",
               },
             ].map(({ Icon, title, body }, i) => (
               <motion.div
@@ -153,12 +154,12 @@ function AboutPage() {
         <div className="relative max-w-2xl mx-auto">
           <Reveal>
             <h2 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl mb-5 leading-tight">
-              Be part of it.
+              Take a seat at the table.
             </h2>
           </Reveal>
           <Reveal delay={0.08}>
             <p className="text-text-secondary mb-8 text-lg">
-              Registration is open. Verified YALI delegates attend free.
+              Registration is open. Verified YALI delegates attend free — everyone else pays the ticket price.
             </p>
           </Reveal>
           <Reveal delay={0.16}>
@@ -166,7 +167,7 @@ function AboutPage() {
               to="/register"
               className="inline-flex items-center justify-center px-8 min-h-12 rounded-full text-base font-semibold bg-accent-cyan text-brand-navy hover:scale-[1.03] active:scale-100 transition-transform"
             >
-              Register now
+              Claim your seat
             </Link>
           </Reveal>
         </div>
