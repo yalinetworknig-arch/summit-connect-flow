@@ -40,8 +40,7 @@ function TracksPage() {
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              Every track is curated with founders, policymakers and operators
-              who are already moving the needle in that sector.
+              Seven sector rooms. Each one ends with named commitments — not closing remarks. Pick the one you can move.
             </p>
           </Reveal>
         </div>
@@ -101,7 +100,7 @@ function TracksPage() {
                 to="/register"
                 className="relative mt-auto inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold border border-accent-cyan/60 text-accent-cyan hover:bg-accent-cyan hover:text-brand-navy transition-colors self-start"
               >
-                Register for this track
+                Hold a seat in this room
                 <ArrowUpRight className="w-4 h-4" />
               </Link>
             </motion.article>
