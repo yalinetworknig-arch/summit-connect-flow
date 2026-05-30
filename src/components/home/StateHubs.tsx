@@ -15,16 +15,25 @@ import {
 } from "@/components/ui/dialog";
 import Autoplay from "embla-carousel-autoplay";
 
-import abiaLogo from "@/assets/hubs/anambra.jpeg"; // placeholder unused
+import abiaLogo from "@/assets/hubs/abia.jpeg";
 import anambraLogo from "@/assets/hubs/anambra.jpeg";
 import benueLogo from "@/assets/hubs/benue.jpeg";
 import bornoLogo from "@/assets/hubs/borno.jpeg";
+import crossRiverLogo from "@/assets/hubs/cross-river.jpeg";
 import deltaLogo from "@/assets/hubs/delta.jpeg";
 import edoLogo from "@/assets/hubs/edo.jpeg";
+import ekitiLogo from "@/assets/hubs/ekiti.jpeg";
 import enuguLogo from "@/assets/hubs/enugu.jpeg";
 import imoLogo from "@/assets/hubs/imo.jpeg";
 import kadunaLogo from "@/assets/hubs/kaduna.jpeg";
+import kogiLogo from "@/assets/hubs/kogi.jpeg";
+import kwaraLogo from "@/assets/hubs/kwara.jpeg";
+import nasarawaLogo from "@/assets/hubs/nasarawa.jpeg";
+import ondoLogo from "@/assets/hubs/ondo.jpeg";
+import osunLogo from "@/assets/hubs/osun.jpeg";
+import oyoLogo from "@/assets/hubs/oyo.jpeg";
 import plateauLogo from "@/assets/hubs/plateau.jpeg";
+import sokotoLogo from "@/assets/hubs/sokoto.jpeg";
 
 type Hub = {
   state: string;
@@ -35,7 +44,7 @@ type Hub = {
 };
 
 const hubs: Hub[] = [
-  { state: "Abia", region: "South East" },
+  { state: "Abia", region: "South East", logo: abiaLogo },
   { state: "Adamawa", region: "North East" },
   { state: "Akwa Ibom", region: "South South" },
   { state: "Anambra", region: "South East", logo: anambraLogo },
@@ -43,11 +52,11 @@ const hubs: Hub[] = [
   { state: "Bayelsa", region: "South South" },
   { state: "Benue", region: "North Central", logo: benueLogo },
   { state: "Borno", region: "North East", logo: bornoLogo },
-  { state: "Cross River", region: "South South" },
+  { state: "Cross River", region: "South South", logo: crossRiverLogo },
   { state: "Delta", region: "South South", logo: deltaLogo },
   { state: "Ebonyi", region: "South East" },
   { state: "Edo", region: "South South", logo: edoLogo },
-  { state: "Ekiti", region: "South West" },
+  { state: "Ekiti", region: "South West", logo: ekitiLogo },
   { state: "Enugu", region: "South East", logo: enuguLogo },
   { state: "FCT Abuja", region: "Federal Capital" },
   { state: "Gombe", region: "North East" },
@@ -57,18 +66,18 @@ const hubs: Hub[] = [
   { state: "Kano", region: "North West" },
   { state: "Katsina", region: "North West" },
   { state: "Kebbi", region: "North West" },
-  { state: "Kogi", region: "North Central" },
-  { state: "Kwara", region: "North Central" },
+  { state: "Kogi", region: "North Central", logo: kogiLogo },
+  { state: "Kwara", region: "North Central", logo: kwaraLogo },
   { state: "Lagos", region: "South West" },
-  { state: "Nasarawa", region: "North Central" },
+  { state: "Nasarawa", region: "North Central", logo: nasarawaLogo },
   { state: "Niger", region: "North Central" },
   { state: "Ogun", region: "South West" },
-  { state: "Ondo", region: "South West" },
-  { state: "Osun", region: "South West" },
-  { state: "Oyo", region: "South West" },
+  { state: "Ondo", region: "South West", logo: ondoLogo },
+  { state: "Osun", region: "South West", logo: osunLogo },
+  { state: "Oyo", region: "South West", logo: oyoLogo },
   { state: "Plateau", region: "North Central", logo: plateauLogo },
   { state: "Rivers", region: "South South" },
-  { state: "Sokoto", region: "North West" },
+  { state: "Sokoto", region: "North West", logo: sokotoLogo },
   { state: "Taraba", region: "North East" },
   { state: "Yobe", region: "North East" },
   { state: "Zamfara", region: "North West" },
@@ -88,7 +97,7 @@ function HubCard({ hub, onSelect }: { hub: Hub; onSelect: () => void }) {
     <button
       type="button"
       onClick={onSelect}
-      className="group w-full rounded-xl border p-4 flex flex-col items-center justify-center gap-3 h-[160px] transition-all hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2"
+      className="group w-full rounded-2xl border p-4 flex flex-col items-center justify-center gap-3 h-[200px] md:h-[220px] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-[color:var(--brand-accent,#079992)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
       style={{
         background: "var(--surface)",
         borderColor: "var(--border-strong)",
@@ -96,7 +105,7 @@ function HubCard({ hub, onSelect }: { hub: Hub; onSelect: () => void }) {
       aria-label={`View ${hub.state} State Hub details`}
     >
       <div
-        className="w-16 h-16 rounded-full flex items-center justify-center font-bold text-white shadow-md overflow-hidden bg-white"
+        className="w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center font-bold text-white overflow-hidden bg-white ring-1 ring-black/5 shadow-[0_6px_18px_-8px_rgba(10,61,98,0.35)] group-hover:shadow-[0_10px_24px_-10px_rgba(7,153,146,0.55)] transition-shadow"
         style={
           hub.logo
             ? undefined
@@ -104,7 +113,7 @@ function HubCard({ hub, onSelect }: { hub: Hub; onSelect: () => void }) {
                 background:
                   "linear-gradient(135deg, var(--brand-primary, #0a3d62), var(--brand-accent, #079992))",
                 fontFamily: "Space Grotesk, sans-serif",
-                fontSize: "18px",
+                fontSize: "20px",
               }
         }
         aria-hidden="true"
@@ -113,8 +122,9 @@ function HubCard({ hub, onSelect }: { hub: Hub; onSelect: () => void }) {
           <img
             src={hub.logo}
             alt={`YALI Network ${hub.state} logo`}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain p-1"
             loading="lazy"
+            decoding="async"
           />
         ) : (
           initials(hub.state)
@@ -196,7 +206,7 @@ export function StateHubs() {
                 <DialogHeader>
                   <div className="flex items-center gap-4 mb-2">
                     <div
-                      className="w-14 h-14 rounded-full flex items-center justify-center font-bold text-white overflow-hidden bg-white"
+                      className="w-28 h-28 rounded-full flex items-center justify-center font-bold text-white overflow-hidden bg-white ring-1 ring-black/5 shadow-[0_8px_20px_-10px_rgba(10,61,98,0.4)] shrink-0"
                       style={
                         selected.logo
                           ? undefined
@@ -204,6 +214,7 @@ export function StateHubs() {
                               background:
                                 "linear-gradient(135deg, var(--brand-primary, #0a3d62), var(--brand-accent, #079992))",
                               fontFamily: "Space Grotesk, sans-serif",
+                              fontSize: "24px",
                             }
                       }
                     >
@@ -211,7 +222,7 @@ export function StateHubs() {
                         <img
                           src={selected.logo}
                           alt={`YALI Network ${selected.state} logo`}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-contain p-1.5"
                         />
                       ) : (
                         initials(selected.state)
