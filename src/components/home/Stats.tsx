@@ -1,8 +1,8 @@
 const stats = [
-  { number: "740+", label: "Attendees Expected" },
-  { number: "7", label: "Sector Tracks" },
-  { number: "4", label: "Days of Innovation" },
-  { number: "180+", label: "Speakers (TBC)" },
+  { number: "2,000+", label: "Delegates expected" },
+  { number: "7", label: "Sector rooms shaping policy" },
+  { number: "4 days", label: "Keynotes, workshops, a hackathon" },
+  { number: "36 + FCT", label: "States in the room" },
 ];
 
 export function Stats() {
