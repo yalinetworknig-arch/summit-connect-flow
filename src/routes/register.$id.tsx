@@ -101,6 +101,11 @@ function ConfirmationPage() {
         <p className="mt-2" style={{ color: "var(--text-secondary)" }}>
           Your registration for AIDIFILN 2026 is confirmed.
         </p>
+        {data.email && (
+          <p className="mt-1 text-sm" style={{ color: "var(--text-secondary)" }}>
+            We've emailed your ticket to <span style={{ color: "var(--text-primary)" }}>{data.email}</span>.
+          </p>
+        )}
         <Link
           to="/ticket/$code"
           params={{ code: data.ticket_code }}

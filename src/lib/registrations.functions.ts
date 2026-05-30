@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { fullRegistrationSchema } from "@/lib/register/schema";
+import { sendTicketEmail } from "@/lib/email/ticket-email.server";
 
 export const submitRegistration = createServerFn({ method: "POST" })
   .inputValidator((input) => fullRegistrationSchema.parse(input))
@@ -20,6 +21,16 @@ export const submitRegistration = createServerFn({ method: "POST" })
       .select("id, full_name, email, ticket_code, track_selection, attendee_type, created_at, payment_status, amount_kobo")
       .single();
     if (error) throw new Error(error.message);
+    if (row?.email) {
+      const result = await sendTicketEmail({
+        to: row.email,
+        fullName: row.full_name,
+        ticketCode: row.ticket_code,
+        track: row.track_selection,
+        attendeeType: row.attendee_type,
+      });
+      if (!result.ok) console.error("ticket email failed:", result.error);
+    }
     return row;
   });
 
