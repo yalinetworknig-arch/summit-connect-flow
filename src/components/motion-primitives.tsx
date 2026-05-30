@@ -82,8 +82,8 @@ export function SideLabel({
   return (
     <div
       aria-hidden
-      className={`hidden md:flex absolute top-1/2 ${
-        side === "left" ? "left-4 lg:left-8" : "right-4 lg:right-8"
+      className={`hidden xl:flex absolute top-1/2 ${
+        side === "left" ? "left-6 2xl:left-10" : "right-6 2xl:right-10"
       } -translate-y-1/2 origin-center ${
         side === "left" ? "-rotate-90" : "rotate-90"
       } select-none pointer-events-none`}
