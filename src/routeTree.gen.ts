@@ -19,6 +19,7 @@ import { Route as NetworkRouteImport } from './routes/network'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TicketCodeRouteImport } from './routes/ticket.$code'
 import { Route as RegisterIdRouteImport } from './routes/register.$id'
 
 const TracksRoute = TracksRouteImport.update({
@@ -71,6 +72,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TicketCodeRoute = TicketCodeRouteImport.update({
+  id: '/ticket/$code',
+  path: '/ticket/$code',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegisterIdRoute = RegisterIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
   '/register/$id': typeof RegisterIdRoute
+  '/ticket/$code': typeof TicketCodeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
   '/register/$id': typeof RegisterIdRoute
+  '/ticket/$code': typeof TicketCodeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
   '/register/$id': typeof RegisterIdRoute
+  '/ticket/$code': typeof TicketCodeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
     | '/summit'
     | '/tracks'
     | '/register/$id'
+    | '/ticket/$code'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/summit'
     | '/tracks'
     | '/register/$id'
+    | '/ticket/$code'
   id:
     | '__root__'
     | '/'
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '/summit'
     | '/tracks'
     | '/register/$id'
+    | '/ticket/$code'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -170,6 +182,7 @@ export interface RootRouteChildren {
   SponsorsRoute: typeof SponsorsRoute
   SummitRoute: typeof SummitRoute
   TracksRoute: typeof TracksRoute
+  TicketCodeRoute: typeof TicketCodeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -244,6 +257,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ticket/$code': {
+      id: '/ticket/$code'
+      path: '/ticket/$code'
+      fullPath: '/ticket/$code'
+      preLoaderRoute: typeof TicketCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register/$id': {
       id: '/register/$id'
       path: '/$id'
@@ -277,7 +297,18 @@ const rootRouteChildren: RootRouteChildren = {
   SponsorsRoute: SponsorsRoute,
   SummitRoute: SummitRoute,
   TracksRoute: TracksRoute,
+  TicketCodeRoute: TicketCodeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
