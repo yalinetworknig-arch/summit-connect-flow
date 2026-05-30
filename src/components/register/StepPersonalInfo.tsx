@@ -55,7 +55,7 @@ export function StepPersonalInfo({
           value={value.phone ?? ""}
           onChange={(e) => onChange({ phone: e.target.value })}
           maxLength={20}
-          placeholder="+234 800 000 0000"
+          placeholder="+234 803 520 9226"
         />
       </Field>
       <Field label="State" error={errors.state}>

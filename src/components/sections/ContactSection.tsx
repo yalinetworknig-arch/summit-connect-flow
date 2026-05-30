@@ -34,7 +34,7 @@ export function ContactSection({ id = "contact" }: { id?: string }) {
     <div id={id} className="scroll-mt-24">
       <section className="relative px-5 sm:px-6 lg:px-8 py-20 md:py-24 lg:py-28 bg-background text-text-primary overflow-hidden">
         <HalftoneBackdrop />
-        <SideLabel>Reach out · hello@yalinetworknigeria.org</SideLabel>
+        <SideLabel>Reach out · yalinetworknig@gmail.com</SideLabel>
         <SideLabel side="right" tone="muted">Reply within 2 business days</SideLabel>
         <div className="relative max-w-4xl mx-auto text-center">
           <Reveal><Eyebrow>Get in touch</Eyebrow></Reveal>
@@ -57,14 +57,14 @@ export function ContactSection({ id = "contact" }: { id?: string }) {
             <InfoCard
               Icon={Mail}
               label="Email"
-              value="hello@yalinetworknigeria.org"
-              href="mailto:hello@yalinetworknigeria.org"
+              value="yalinetworknig@gmail.com"
+              href="mailto:yalinetworknig@gmail.com"
             />
             <InfoCard
               Icon={Phone}
               label="Phone"
-              value="+234 800 000 0000"
-              href="tel:+2348000000000"
+              value="+234 803 520 9226,\n+234 803 883 8094"
+              href="tel:+2348035209226"
             />
             <InfoCard
               Icon={MapPin}
@@ -144,7 +144,7 @@ function InfoCard({
         <p className="text-xs uppercase tracking-widest text-text-secondary">
           {label}
         </p>
-        <p className="font-semibold text-text-primary">{value}</p>
+        <p className="font-semibold text-text-primary whitespace-pre-line">{value}</p>
       </div>
     </div>
   );
