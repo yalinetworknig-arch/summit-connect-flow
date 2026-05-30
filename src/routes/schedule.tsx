@@ -38,13 +38,12 @@ function SchedulePage() {
           </Reveal>
           <Reveal delay={0.08}>
             <h1 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl mt-5 mb-6 leading-[1.05]">
-              The full <span className="text-accent-cyan">programme.</span>
+              The four days, <span className="text-accent-cyan">hour by hour.</span>
             </h1>
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              Keynotes, parallel sector tracks, hands-on workshops, a hackathon,
-              and a closing showcase. Detailed speaker lineups land closer to event.
+              Keynotes, parallel sector rooms, hands-on workshops, a hackathon and a closing showcase — at the Eko Convention Centre, Lagos. Speaker lineups land closer to event.
             </p>
           </Reveal>
         </div>
@@ -142,7 +141,7 @@ function SchedulePage() {
                 to="/register"
                 className="inline-flex items-center justify-center px-8 min-h-12 rounded-full text-base font-semibold bg-accent-cyan text-brand-navy hover:scale-[1.03] active:scale-100 transition-transform"
               >
-                Reserve your seat
+                Claim your seat
               </Link>
             </div>
           </Reveal>
