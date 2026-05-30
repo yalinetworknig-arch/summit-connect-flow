@@ -29,11 +29,11 @@ export const Route = createFileRoute("/register")({
 });
 
 const TITLES = [
-  "Select Your Attendee Type",
-  "Personal Information",
-  "Choose Your Track",
-  "Logistics & Preferences",
-  "Review & Payment",
+  "First — who's coming?",
+  "Tell us about you",
+  "Pick the room you want to shape",
+  "Logistics and preferences",
+  "Review and confirm your seat",
 ];
 
 function RegisterPage() {
@@ -109,7 +109,7 @@ function RegisterPage() {
             color: "var(--text-primary)",
           }}
         >
-          Register for AIDIFILN 2026
+          Claim your seat at AIDIFILN 2026
         </h1>
         <p style={{ color: "var(--text-secondary)" }}>{TITLES[step - 1]}</p>
       </header>
