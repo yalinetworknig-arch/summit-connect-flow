@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   Dialog,
   DialogContent,
@@ -13,7 +7,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import Autoplay from "embla-carousel-autoplay";
 
 import abiaLogo from "@/assets/hubs/abia.webp";
 import anambraLogo from "@/assets/hubs/anambra.webp";
