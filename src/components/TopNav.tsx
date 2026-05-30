@@ -50,35 +50,89 @@ function useTheme() {
 function NavLinks({
   onNavigate,
   vertical,
+  activeId,
 }: {
   onNavigate?: () => void;
   vertical?: boolean;
+  activeId?: string;
 }) {
   return (
     <nav className={vertical ? "flex flex-col gap-1" : "flex items-center gap-1"}>
-      {items.map(({ href, label }) => (
-        <a
-          key={href}
-          href={href}
-          onClick={onNavigate}
-          className={`${
-            vertical ? "px-3 py-3 text-base" : "px-4 py-2 text-sm"
-          } font-medium uppercase tracking-wide transition-colors ${
-            vertical
-              ? "text-text-primary hover:text-accent-cyan"
-              : "text-brand-navy/80 hover:text-accent-cyan dark:text-white/80 dark:hover:text-[#00D9FF]"
-          } relative after:absolute after:left-3 after:right-3 after:bottom-0 after:h-0.5 after:bg-accent-cyan after:scale-x-0 hover:after:scale-x-100 after:transition-transform`}
-        >
-          {label}
-        </a>
-      ))}
+      {items.map(({ href, label }) => {
+        const id = href.slice(1);
+        const isActive = activeId === id;
+        return (
+          <a
+            key={href}
+            href={href}
+            onClick={onNavigate}
+            aria-current={isActive ? "page" : undefined}
+            className={`${
+              vertical ? "px-3 py-3 text-base" : "px-4 py-2 text-sm"
+            } font-medium uppercase tracking-wide transition-colors ${
+              vertical
+                ? isActive
+                  ? "text-accent-cyan"
+                  : "text-text-primary hover:text-accent-cyan"
+                : isActive
+                  ? "text-accent-cyan dark:text-[#00D9FF]"
+                  : "text-brand-navy/80 hover:text-accent-cyan dark:text-white/80 dark:hover:text-[#00D9FF]"
+            } relative after:absolute after:left-3 after:right-3 after:bottom-0 after:h-0.5 after:bg-accent-cyan after:transition-transform ${
+              isActive ? "after:scale-x-100" : "after:scale-x-0 hover:after:scale-x-100"
+            }`}
+          >
+            {label}
+          </a>
+        );
+      })}
     </nav>
   );
+}
+
+function useScrollSpy(ids: string[]) {
+  const [activeId, setActiveId] = useState<string>(ids[0] ?? "");
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const elements = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => Boolean(el));
+    if (!elements.length) return;
+
+    const visibility = new Map<string, number>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          visibility.set(entry.target.id, entry.intersectionRatio);
+        }
+        let bestId = activeId;
+        let bestRatio = 0;
+        for (const [id, ratio] of visibility) {
+          if (ratio > bestRatio) {
+            bestRatio = ratio;
+            bestId = id;
+          }
+        }
+        if (bestRatio > 0 && bestId !== activeId) setActiveId(bestId);
+      },
+      {
+        rootMargin: "-30% 0px -55% 0px",
+        threshold: [0, 0.25, 0.5, 0.75, 1],
+      },
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ids.join("|")]);
+
+  return activeId;
 }
 
 export function TopNav() {
   const { isDark, toggle } = useTheme();
   const [open, setOpen] = useState(false);
+  const activeId = useScrollSpy(items.map((i) => i.href.slice(1)));
 
   return (
     <header className="fixed top-3 md:top-5 inset-x-0 z-40 px-3 md:px-6 pointer-events-none">
@@ -101,7 +155,7 @@ export function TopNav() {
         </a>
 
         <div className="hidden lg:block">
-          <NavLinks />
+          <NavLinks activeId={activeId} />
         </div>
 
         <div className="hidden lg:flex items-center gap-2">
@@ -159,6 +213,7 @@ export function TopNav() {
                 <NavLinks
                   vertical
                   onNavigate={() => setOpen(false)}
+                  activeId={activeId}
                 />
                 <div className="flex flex-col gap-3">
                   <Link
