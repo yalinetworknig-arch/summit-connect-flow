@@ -89,7 +89,7 @@ export function SideLabel({
       } select-none pointer-events-none`}
     >
       <span
-        className={`font-mono text-[10px] tracking-[0.4em] uppercase whitespace-nowrap ${
+        className={`font-mono text-[10px] tracking-[0.4em] uppercase whitespace-nowrap max-w-[40vh] ${
           tone === "cyan" ? "text-accent-cyan" : "text-text-secondary/60"
         }`}
       >
