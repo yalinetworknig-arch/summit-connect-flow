@@ -64,25 +64,46 @@ export function AboutSection({ id = "about" }: { id?: string }) {
           <Reveal><Eyebrow>Why now</Eyebrow></Reveal>
           <Reveal delay={0.06}>
             <h3 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl mt-5 mb-10 leading-tight">
-              Nigeria's AI inflection point is{" "}
-              <span className="text-accent-cyan">already underway.</span>
+              The shift has already started.{" "}
+              <span className="text-accent-cyan">The terms haven't been set.</span>
             </h3>
           </Reveal>
           <Reveal delay={0.12}>
             <div className="space-y-6 text-text-secondary leading-relaxed text-lg">
               <p>
-                The next 24 months will lock in the rules — on data, infrastructure,
-                talent and regulation — that shape Nigeria's next two decades.
+                Nigeria didn't wait for permission. The National AI Strategy was
+                published in August 2024. The Data Protection Act has been law since
+                July 2023. 3MTT has put 360,000+ Nigerians into technical training across
+                all 774 LGAs, on the way to three million. Awarri shipped a
+                government-backed LLM trained on Yoruba, Igbo, Hausa, Pidgin and
+                Ibibio. OPay clears nine million transactions a day. The infrastructure
+                is being poured.
               </p>
               <p>
-                The people in the room: founders shipping product, civil servants drafting
-                policy, educators reskilling millions, sponsors funding the pipeline.
+                What's still open is who designs the building. Whose data trains the
+                models. Whose languages they speak. Whose problems they solve first —
+                and whose they ignore. Whose hands are on the policy pen when the next
+                NDPA amendment or AI bill lands.
+              </p>
+              <p>
+                That's why this room matters. Founders shipping product. Civil servants
+                drafting policy. Educators reskilling at scale. Investors writing the
+                cheques. Communities the technology is supposed to serve — in the
+                room, not in the footnotes.
               </p>
               <p>
                 What leaves the room: named commitments, working partnerships, and a
-                12-month follow-through plan led by YALI Network Nigeria.
+                12-month follow-through plan owned by YALI Network Nigeria. Not a tote
+                bag of slides.
               </p>
             </div>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <p className="mt-8 font-mono text-xs leading-relaxed text-text-secondary/60">
+              Sources: FMCIDE National AI Strategy (2024) · NDPA 2023 · 3MTT programme
+              data (FMCIDE, 2024) · DataReportal Digital Nigeria 2024 · Awarri / NITDA
+              (2024).
+            </p>
           </Reveal>
         </div>
       </section>
