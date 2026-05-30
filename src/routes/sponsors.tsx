@@ -68,9 +68,7 @@ function SponsorsPage() {
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              2,000+ delegates. 7 sector tracks. National and international press.
-              Choose the tier that matches your goals — or tell us what you want
-              and we'll build a custom package.
+              2,000+ delegates from all 36 states. 7 sector rooms. National and diplomatic press. Pick a tier — or tell us the outcome you want and we'll build the package around it.
             </p>
           </Reveal>
         </div>
@@ -138,8 +136,7 @@ function SponsorsPage() {
           </Reveal>
           <Reveal delay={0.12}>
             <p className="text-text-secondary mb-8 text-lg">
-              Share a few details and our partnerships team will be in touch within
-              48 hours.
+              Three minutes to fill. 48 hours to a human reply. No deck downloads required.
             </p>
           </Reveal>
 
@@ -147,10 +144,10 @@ function SponsorsPage() {
             <div className="rounded-2xl border border-accent-cyan bg-background p-8 text-center">
               <Check className="w-10 h-10 text-accent-cyan mx-auto mb-3" />
               <h3 className="font-display font-semibold text-xl mb-1">
-                Inquiry received
+                Got it — we're on it.
               </h3>
               <p className="text-text-secondary">
-                We'll be in touch shortly. Thank you for partnering with us.
+                A real human from the partnerships team will reply within 48 hours.
               </p>
             </div>
           ) : (
@@ -187,7 +184,7 @@ function SponsorsPage() {
                 disabled={status === "submitting"}
                 className="w-full px-7 py-3 rounded-full text-base font-semibold bg-accent-cyan text-brand-navy hover:scale-[1.01] transition-transform disabled:opacity-60"
               >
-                {status === "submitting" ? "Sending…" : "Submit inquiry"}
+                {status === "submitting" ? "Sending…" : "Start the conversation"}
               </button>
             </form>
           )}

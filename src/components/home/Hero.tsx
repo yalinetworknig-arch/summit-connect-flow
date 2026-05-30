@@ -205,7 +205,7 @@ export function Hero() {
           className="text-[#00D9FF] text-xs font-medium uppercase mb-6"
           style={{ letterSpacing: "0.2em" }}
         >
-          Presents:
+          YALI Network Nigeria presents
         </motion.p>
 
         {/* Title */}
@@ -234,7 +234,7 @@ export function Hero() {
           className="text-[#00D9FF] text-xs font-medium uppercase mt-10 mb-5"
           style={{ letterSpacing: "0.2em" }}
         >
-          Theme:
+          The 2026 theme
         </motion.p>
 
         {/* AIDIFILN wordmark image (contains tagline) */}
@@ -310,18 +310,18 @@ export function Hero() {
             to="/register"
             className="px-7 min-h-12 inline-flex items-center justify-center rounded-full text-base font-semibold bg-[#00D9FF] text-[#0A1128] transition-transform hover:scale-[1.03] active:scale-95"
           >
-            Register Now
+            Claim your seat
           </Link>
           <a
             href="#sponsors"
             className="px-7 min-h-12 inline-flex items-center justify-center rounded-full text-base font-semibold border-2 border-[#00D9FF] transition-colors text-slate-50 bg-[#f1f2f9]/0"
           >
-            Become a Sponsor
+            Partner with us
           </a>
         </motion.div>
 
-        <p className="mt-10 text-[#00D9FF]/80 text-sm">
-          &nbsp;
+        <p className="mt-10 text-white/65 text-sm">
+          Free for verified YALI delegates · 2,000+ delegates expected · Lagos · Sept 10–13, 2026
         </p>
       </div>
 

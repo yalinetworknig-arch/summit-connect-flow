@@ -45,7 +45,7 @@ function Index() {
                 Sept 10 – 13, 2026
               </p>
               <h2 className="font-display font-bold text-3xl md:text-4xl">
-                Four days, one mission.
+                Four days. Built to ship outcomes, not slides.
               </h2>
             </div>
             <Link
@@ -81,11 +81,14 @@ function Index() {
           <div className="flex items-end justify-between gap-4 mb-8 flex-wrap">
             <div>
               <p className="text-accent-cyan font-semibold tracking-widest uppercase text-sm mb-2">
-                Seven sector tracks
+                Seven rooms · Seven decisions
               </p>
               <h2 className="font-display font-bold text-3xl md:text-4xl">
                 Pick the room you want to shape.
               </h2>
+              <p className="mt-3 text-text-secondary max-w-xl">
+                Each track ends with named commitments — not closing remarks.
+              </p>
             </div>
             <Link
               to="/tracks"
