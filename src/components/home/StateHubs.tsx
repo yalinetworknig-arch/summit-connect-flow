@@ -24,11 +24,15 @@ import deltaLogo from "@/assets/hubs/delta.jpeg";
 import edoLogo from "@/assets/hubs/edo.jpeg";
 import ekitiLogo from "@/assets/hubs/ekiti.jpeg";
 import enuguLogo from "@/assets/hubs/enugu.jpeg";
+import fctAbujaLogo from "@/assets/hubs/fct-abuja.jpeg";
 import imoLogo from "@/assets/hubs/imo.jpeg";
 import kadunaLogo from "@/assets/hubs/kaduna.jpeg";
+import kebbiLogo from "@/assets/hubs/kebbi.jpeg";
 import kogiLogo from "@/assets/hubs/kogi.jpeg";
 import kwaraLogo from "@/assets/hubs/kwara.jpeg";
+import lagosLogo from "@/assets/hubs/lagos.jpeg";
 import nasarawaLogo from "@/assets/hubs/nasarawa.jpeg";
+import ogunLogo from "@/assets/hubs/ogun.jpeg";
 import ondoLogo from "@/assets/hubs/ondo.jpeg";
 import osunLogo from "@/assets/hubs/osun.jpeg";
 import oyoLogo from "@/assets/hubs/oyo.jpeg";
@@ -58,20 +62,20 @@ const hubs: Hub[] = [
   { state: "Edo", region: "South South", logo: edoLogo },
   { state: "Ekiti", region: "South West", logo: ekitiLogo },
   { state: "Enugu", region: "South East", logo: enuguLogo },
-  { state: "FCT Abuja", region: "Federal Capital" },
+  { state: "FCT Abuja", region: "Federal Capital", logo: fctAbujaLogo },
   { state: "Gombe", region: "North East" },
   { state: "Imo", region: "South East", logo: imoLogo },
   { state: "Jigawa", region: "North West" },
   { state: "Kaduna", region: "North West", logo: kadunaLogo },
   { state: "Kano", region: "North West" },
   { state: "Katsina", region: "North West" },
-  { state: "Kebbi", region: "North West" },
+  { state: "Kebbi", region: "North West", logo: kebbiLogo },
   { state: "Kogi", region: "North Central", logo: kogiLogo },
   { state: "Kwara", region: "North Central", logo: kwaraLogo },
-  { state: "Lagos", region: "South West" },
+  { state: "Lagos", region: "South West", logo: lagosLogo },
   { state: "Nasarawa", region: "North Central", logo: nasarawaLogo },
   { state: "Niger", region: "North Central" },
-  { state: "Ogun", region: "South West" },
+  { state: "Ogun", region: "South West", logo: ogunLogo },
   { state: "Ondo", region: "South West", logo: ondoLogo },
   { state: "Osun", region: "South West", logo: osunLogo },
   { state: "Oyo", region: "South West", logo: oyoLogo },
