@@ -9,6 +9,7 @@ export const submitRegistration = createServerFn({ method: "POST" })
     const payload = {
       ...data,
       yali_id: data.yali_id?.trim() || null,
+      yali_certificate_url: data.yali_certificate_url?.trim() || null,
       dietary_restrictions: data.dietary_restrictions?.trim() || null,
       heard_about_summit: data.heard_about_summit?.trim() || null,
       paystack_reference: data.paystack_reference || null,
