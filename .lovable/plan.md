@@ -1,41 +1,64 @@
-# Rewrite "Why Now" — research-backed, nuanced
+# Reframe the narrative around inclusive leadership
 
-You're right: the inflection point isn't 24 months away. It started in 2022–2024. The current copy oversells a deadline and undersells what's already on the ground. Here's the revised section.
+You're right. YALI's gravity is civic and social-impact leadership — that's the audience already in the room. AI and digital innovation are the *new layer* we're asking them to pick up, not the headline act. The current copy reads like an AI summit that happens to mention leaders. It should read like a leadership summit that is choosing, on purpose, to take AI and digital innovation seriously this year.
 
-## Scope
+Scope: copy-only rewrite of `src/components/sections/AboutSection.tsx`. Surrounding sections, hero, schedule, tracks, sponsors stay as-is. Single file, no new components, no new deps.
 
-Only `src/components/sections/AboutSection.tsx` — the "Why now" block (lines ~62–88). Surrounding sections (hero stats, theme pillars, CTA) stay as-is.
+## The reframe (anchor → layer)
 
-## New copy
+- **Anchor:** Inclusive leadership — civic actors, social-impact founders, educators, community organisers, public servants. People who already lead.
+- **New layer this year:** AI and digital innovation — not as a separate identity, but as tools these leaders now have to wield (or be ruled by).
+- **Tension that earns the summit:** AI is being built around Nigerians faster than it's being built *with* them. Civic and social-impact leaders are the ones who can change that — but only if they show up fluent, not flattered.
 
-**Eyebrow:** Why now
+## Section-by-section rewrite
 
-**Headline:** The shift has already started. <span class="accent">The terms haven't been set.</span>
+### 1. Opening (eyebrow + headline + lede)
 
-**Body (4 short paragraphs, scannable, with anchored facts):**
+- Eyebrow: `For Nigeria's civic & social-impact leaders`
+- Headline: *Inclusive leadership is the work. <span class="accent">AI and digital innovation are the new tools on the table.</span>*
+- Lede: AIDIFILN brings together the people who already lead Nigerian communities — civic actors, social entrepreneurs, educators, organisers, public servants — for four days of getting fluent, getting connected, and deciding together how AI and digital systems get built around the people we serve.
 
-> Nigeria didn't wait for permission. The National AI Strategy was published in August 2024. The Data Protection Act has been law since July 2023. 3MTT has put 360,000+ Nigerians into technical training across all 774 LGAs, on the way to three million. Awarri shipped a government-backed LLM trained on Yoruba, Igbo, Hausa, Pidgin and Ibibio. OPay clears nine million transactions a day. The infrastructure is being poured.
+### 2. "Why now" — rewritten around leadership, not infrastructure
 
-> What's still open is who designs the building. Whose data trains the models. Whose languages they speak. Whose problems they solve first — and whose they ignore. Whose hands are on the policy pen when the next NDPA amendment or AI bill lands.
+Keep the research anchors (NAIS 2024, NDPA 2023, 3MTT, Awarri, OPay) — they're still load-bearing — but reframe them as *the conditions civic leaders now have to lead inside*, not as a tech progress report.
 
-> That's why this room matters. Founders shipping product. Civil servants drafting policy. Educators reskilling at scale. Investors writing the cheques. Communities the technology is supposed to serve — in the room, not in the footnotes.
+- Eyebrow: `Why this, why now`
+- Headline: *The systems shaping Nigerian lives are being rewritten. <span class="accent">Civic leadership has to be in the room.</span>*
+- Body (4 paragraphs):
+  1. **What's already shifted.** National AI Strategy (Aug 2024). NDPA in force since 2023. 3MTT has trained 360,000+ Nigerians, on the way to three million. Awarri's government-backed LLM speaks Yoruba, Igbo, Hausa, Pidgin and Ibibio. OPay clears 9M transactions a day. The infrastructure is being poured — fast.
+  2. **What that means for civic leaders.** Welfare decisions, credit scores, classroom assessments, healthcare triage, voter information, identity systems — increasingly mediated by models and platforms whose defaults nobody in your community signed off on. Inclusion isn't a value statement anymore; it's a design choice someone is making whether you're at the table or not.
+  3. **Why this summit, this room.** Civic actors, social-impact founders, educators, community organisers, public servants — the people Nigerians already trust — getting fluent enough in AI and digital systems to lead them, challenge them, procure them, regulate them, and build with them. Not to become engineers. To stop being end-users of decisions made elsewhere.
+  4. **What leaves the room.** Named commitments. Working partnerships across civic + tech + policy + capital. A 12-month follow-through plan owned by YALI Network Nigeria. Not a tote bag of slides.
 
-> What leaves the room: named commitments, working partnerships, and a 12-month follow-through plan owned by YALI Network Nigeria. Not a tote bag of slides.
+- Footnote: keep existing sources line.
 
-**Optional footnote line under the block (small, muted):**
-> Sources: FMCIDE National AI Strategy (2024) · NDPA 2023 · 3MTT programme data (FMCIDE, 2024) · DataReportal Digital Nigeria 2024 · Awarri / NITDA (2024).
+### 3. Pillars — re-titled to match the reframe
 
-## Why this is better
+Replace the three current pillars with:
 
-- **Honest timeline**: "already started" instead of "next 24 months will lock in everything" — your instinct is right, the lock-in is a slow rolling process, not a cliff.
-- **Specific, citable**: every claim ties to a real artefact (NAIS doc, NDPA, 3MTT numbers, Awarri LLM, OPay scale) — defensible if a delegate Googles it.
-- **Reframes "why now"** from urgency-by-deadline to urgency-by-agency: the question isn't *if* but *who shapes it*.
-- **Keeps the closing beat** ("what leaves the room…") because that line is working — it's the summit's promise.
+1. **Inclusive leadership (anchor).** Women, youth, persons with disabilities, rural communities, frontline organisers — leadership that looks like, and answers to, the Nigeria it serves.
+2. **Applied AI & digital innovation.** Past the demos. Real deployments solving civic and social-impact problems at Nigerian scale — health, education, livelihoods, governance, climate.
+3. **Action over talk.** Every track closes with named commitments, working partnerships, and a 12-month follow-through plan. No exceptions.
 
-## Technical notes
+Section heading: *Three commitments. <span class="accent">Inclusive leadership is the anchor.</span>*
 
-Single-file edit in `AboutSection.tsx`. Markup stays the same (Reveal + Eyebrow + h3 + space-y-6 paragraph stack). The headline gets an `<span class="text-accent-cyan">` accent on the second clause to match the existing visual rhythm. The footnote uses `text-sm text-text-secondary/60 font-mono` to read as a citation, not body copy.
+### 4. CTA section — sharpen the audience
 
-No new dependencies, no other files touched.
+- Headline stays: *Take a seat at the table.*
+- Sub: *Civic actors, social-impact founders, educators, organisers, public servants — registration is open. Verified YALI delegates attend free; everyone else pays the ticket price.*
+
+## What does NOT change
+
+- Layout, motion, Reveal/Stagger/Eyebrow primitives, halftone backdrop, side labels.
+- Stats strip (dates, venue, delegates, reach).
+- Sources footnote (already correct).
+- All other sections (Hero, Schedule, Tracks, Sponsors, Partners, Contact, FAQ).
+
+## Why this works
+
+- Puts YALI's actual audience at the centre. AI stops being the protagonist; civic leadership is.
+- Keeps the research-anchored credibility you asked for last turn — same facts, repurposed as *stakes for leaders* instead of *progress for the sector*.
+- "Inclusive leadership is the anchor" becomes a line you can repeat in pillars, in pitch decks, in sponsor conversations. It does work beyond this page.
+- Single-file edit. Low risk. Reversible.
 
 Approve and I'll apply it.
