@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import PaystackPop from "@paystack/inline-js";
 import { useServerFn } from "@tanstack/react-start";
 import { useNavigate } from "@tanstack/react-router";
 import { submitRegistration } from "@/lib/registrations.functions";
