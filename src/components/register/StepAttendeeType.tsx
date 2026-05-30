@@ -1,4 +1,4 @@
-import { GraduationCap, Building2, Newspaper, Users, type LucideIcon } from "lucide-react";
+import { GraduationCap, Building2, Newspaper, Users, HeartHandshake, type LucideIcon } from "lucide-react";
 import type { AttendeeType, FormState } from "@/lib/register/schema";
 
 const options: Array<{ value: AttendeeType; title: string; desc: string; Icon: LucideIcon }> = [
@@ -6,6 +6,7 @@ const options: Array<{ value: AttendeeType; title: string; desc: string; Icon: L
   { value: "sponsor", title: "Sponsor Representative", desc: "Attending on behalf of a sponsoring organisation.", Icon: Building2 },
   { value: "media", title: "Media", desc: "Press, broadcast, or content creator covering the summit.", Icon: Newspaper },
   { value: "public", title: "General Public", desc: "Open to anyone passionate about Nigeria's digital future.", Icon: Users },
+  { value: "volunteer", title: "Volunteer", desc: "Help run the summit on the ground — registration, hospitality, tech, comms.", Icon: HeartHandshake },
 ];
 
 export function StepAttendeeType({
