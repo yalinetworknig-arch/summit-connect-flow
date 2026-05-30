@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Sun, Moon, Menu } from "lucide-react";
 import logoRainbow from "@/assets/aidifiln-logo-rainbow.png";
-import logoNavy from "@/assets/aidifiln-lockup-white.png";
+import logoNavy from "@/assets/aidifiln-lockup-navy.svg";
 import {
   Sheet,
   SheetContent,
@@ -63,7 +63,11 @@ function NavLinks({
           onClick={onNavigate}
           className={`${
             vertical ? "px-3 py-3 text-base" : "px-4 py-2 text-sm"
-          } font-medium uppercase tracking-wide transition-colors text-white/80 hover:text-[#00D9FF] relative after:absolute after:left-3 after:right-3 after:bottom-0 after:h-0.5 after:bg-[#00D9FF] after:scale-x-0 hover:after:scale-x-100 after:transition-transform`}
+          } font-medium uppercase tracking-wide transition-colors ${
+            vertical
+              ? "text-text-primary hover:text-accent-cyan"
+              : "text-white/80 hover:text-[#00D9FF]"
+          } relative after:absolute after:left-3 after:right-3 after:bottom-0 after:h-0.5 after:bg-accent-cyan after:scale-x-0 hover:after:scale-x-100 after:transition-transform`}
         >
           {label}
         </a>
@@ -78,19 +82,12 @@ export function TopNav() {
 
   return (
     <header className="fixed top-3 md:top-5 inset-x-0 z-40 px-3 md:px-6 pointer-events-none">
-      <div className="pointer-events-auto mx-auto max-w-[1180px] flex items-center justify-between gap-4 px-3 md:px-5 h-14 md:h-16 rounded-full border border-white/10 bg-[#0A1128]/70 backdrop-blur-xl shadow-[0_10px_40px_-12px_rgba(0,0,0,0.6)]">
+      <div className="pointer-events-auto mx-auto max-w-[1180px] flex items-center justify-between gap-4 px-3 md:px-5 h-14 md:h-16 rounded-full border border-white/10 bg-brand-navy/85 dark:bg-[#0A1128]/70 backdrop-blur-xl shadow-[0_10px_40px_-12px_rgba(0,0,0,0.6)]">
         <a href="#home" aria-label="AIDIFILN — Home" className="flex items-center shrink-0">
           <img
             src={logoRainbow}
             alt="AIDIFILN"
-            className="hidden dark:block h-10 md:h-12 w-auto select-none"
-            loading="eager"
-            decoding="async"
-          />
-          <img
-            src={logoNavy}
-            alt="AIDIFILN"
-            className="block dark:hidden h-10 md:h-12 w-auto select-none drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]"
+            className="h-10 md:h-12 w-auto select-none"
             loading="eager"
             decoding="async"
           />
@@ -139,8 +136,16 @@ export function TopNav() {
             >
               <SheetHeader>
                 <SheetTitle className="text-left">
-                  <img src={logoRainbow} alt="AIDIFILN" className="hidden dark:block h-10 w-auto" />
-                  <img src={logoNavy} alt="AIDIFILN" className="block dark:hidden h-10 w-auto" />
+                  <img
+                    src={logoNavy}
+                    alt="AIDIFILN"
+                    className="block dark:hidden h-10 w-auto"
+                  />
+                  <img
+                    src={logoRainbow}
+                    alt="AIDIFILN"
+                    className="hidden dark:block h-10 w-auto"
+                  />
                 </SheetTitle>
               </SheetHeader>
               <div className="mt-6 flex flex-col gap-6">

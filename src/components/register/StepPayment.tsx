@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import PaystackPop from "@paystack/inline-js";
 import { useServerFn } from "@tanstack/react-start";
 import { useNavigate } from "@tanstack/react-router";
 import { submitRegistration } from "@/lib/registrations.functions";
@@ -51,6 +50,7 @@ export function StepPayment({ value }: { value: FormState }) {
         await persist(null, "free");
         return;
       }
+      const { default: PaystackPop } = await import("@paystack/inline-js");
       const popup = new PaystackPop();
       popup.newTransaction({
         key: PAYSTACK_PUBLIC_KEY,
