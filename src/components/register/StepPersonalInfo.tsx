@@ -215,11 +215,6 @@ function CertificateUpload({
           Required for delegates. Accepted formats: PDF, PNG, or JPG. Maximum size: 5MB.
         </span>
       )}
-      {!value && !busy && (
-        <span className="text-xs" style={{ color: "var(--text-secondary)" }}>
-          Accepted: PDF, PNG, or JPG · Max 5MB
-        </span>
-      )}
     </div>
   );
 }
