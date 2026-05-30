@@ -1,64 +1,73 @@
-# Reframe the narrative around inclusive leadership
+## Goal
 
-You're right. YALI's gravity is civic and social-impact leadership — that's the audience already in the room. AI and digital innovation are the *new layer* we're asking them to pick up, not the headline act. The current copy reads like an AI summit that happens to mention leaders. It should read like a leadership summit that is choosing, on purpose, to take AI and digital innovation seriously this year.
+Turn the existing `ticket_code` on `registrations` into a full Eventbrite/Tix Africa-style ticketing flow: every delegate gets a branded QR ticket immediately after registering, receives it by email, can pull it up at the door, and on-site staff scan it with a phone-based check-in app. The AI certificate verification status is shown as a badge on the ticket and surfaced to staff at check-in.
 
-Scope: copy-only rewrite of `src/components/sections/AboutSection.tsx`. Surrounding sections, hero, schedule, tracks, sponsors stay as-is. Single file, no new components, no new deps.
+## What the user gets
 
-## The reframe (anchor → layer)
+1. **Public ticket page** at `/ticket/:code`
+   - Big QR code (encodes the ticket URL), attendee name, attendee type, track, ticket code (short, copyable), event date/venue
+   - Verification badge: Verified (green), Pending review (amber), Suspicious (amber + tooltip), Rejected (red)
+   - Buttons: "Add to Calendar" (.ics download), "Save as PDF" (browser print to PDF with print stylesheet), "Share"
+   - Works offline once loaded (cached); accessible without login
 
-- **Anchor:** Inclusive leadership — civic actors, social-impact founders, educators, community organisers, public servants. People who already lead.
-- **New layer this year:** AI and digital innovation — not as a separate identity, but as tools these leaders now have to wield (or be ruled by).
-- **Tension that earns the summit:** AI is being built around Nigerians faster than it's being built *with* them. Civic and social-impact leaders are the ones who can change that — but only if they show up fluent, not flattered.
+2. **Ticket email** sent automatically on successful registration
+   - Branded React Email template with QR code (rendered as inline image data URL), summit dates, link to full ticket page, "Add to Calendar" link
+   - Subject: "Your YALI Summit ticket — [Name]"
+   - Sent via Lovable Email infrastructure (no extra setup the user pays for)
 
-## Section-by-section rewrite
+3. **Registration success screen update**
+   - Replaces the current generic confirmation with a mini ticket preview + "View your ticket" + "We've emailed your ticket to <email>"
 
-### 1. Opening (eyebrow + headline + lede)
+4. **Admin check-in scanner** at `/admin/check-in`
+   - Camera-based QR scanner (works on phones in browser)
+   - Shows attendee details, verification badge, and check-in status on scan
+   - "Check in" button marks `checked_in_at`; second scan shows "Already checked in at HH:MM"
+   - Warning banner if verification_status is suspicious/rejected/pending so staff can ask follow-up questions
+   - Manual lookup by ticket code as fallback
+   - Protected by admin role
 
-- Eyebrow: `For Nigeria's civic & social-impact leaders`
-- Headline: *Inclusive leadership is the work. <span class="accent">AI and digital innovation are the new tools on the table.</span>*
-- Lede: AIDIFILN brings together the people who already lead Nigerian communities — civic actors, social entrepreneurs, educators, organisers, public servants — for four days of getting fluent, getting connected, and deciding together how AI and digital systems get built around the people we serve.
+5. **Admin registrations list** at `/admin/registrations`
+   - Table of all registrations with filter by verification_status and checked_in
+   - Row actions: view certificate, override verification (verified / rejected), open ticket
+   - Required because verification needs admin review
 
-### 2. "Why now" — rewritten around leadership, not infrastructure
+## Technical plan
 
-Keep the research anchors (NAIS 2024, NDPA 2023, 3MTT, Awarri, OPay) — they're still load-bearing — but reframe them as *the conditions civic leaders now have to lead inside*, not as a tech progress report.
+**Database (one migration)**
+- `registrations`: add `checked_in_at timestamptz`, `checked_in_by uuid` (auth.users), index on `ticket_code`
+- New `user_roles` table + `app_role` enum (`admin`, `staff`) + `has_role()` security definer function (following the user-roles pattern; required to gate admin pages and the check-in mutation)
+- RLS: add `SELECT` policy on `registrations` for admins/staff via `has_role`; add `UPDATE` policy for check-in (admins/staff, only `checked_in_at` / `checked_in_by` columns via a dedicated server function using the admin client)
+- Public ticket lookup happens through a server function that returns a sanitized DTO (name, type, track, verification_status, checked_in flag, event info) — no RLS-readable policy for anon on the full row
 
-- Eyebrow: `Why this, why now`
-- Headline: *The systems shaping Nigerian lives are being rewritten. <span class="accent">Civic leadership has to be in the room.</span>*
-- Body (4 paragraphs):
-  1. **What's already shifted.** National AI Strategy (Aug 2024). NDPA in force since 2023. 3MTT has trained 360,000+ Nigerians, on the way to three million. Awarri's government-backed LLM speaks Yoruba, Igbo, Hausa, Pidgin and Ibibio. OPay clears 9M transactions a day. The infrastructure is being poured — fast.
-  2. **What that means for civic leaders.** Welfare decisions, credit scores, classroom assessments, healthcare triage, voter information, identity systems — increasingly mediated by models and platforms whose defaults nobody in your community signed off on. Inclusion isn't a value statement anymore; it's a design choice someone is making whether you're at the table or not.
-  3. **Why this summit, this room.** Civic actors, social-impact founders, educators, community organisers, public servants — the people Nigerians already trust — getting fluent enough in AI and digital systems to lead them, challenge them, procure them, regulate them, and build with them. Not to become engineers. To stop being end-users of decisions made elsewhere.
-  4. **What leaves the room.** Named commitments. Working partnerships across civic + tech + policy + capital. A 12-month follow-through plan owned by YALI Network Nigeria. Not a tote bag of slides.
+**Server functions (`src/lib/`)**
+- `tickets.functions.ts`
+  - `getTicketByCode({ code })` — public, returns sanitized ticket DTO or 404
+  - `checkInTicket({ code })` — admin-only (`requireSupabaseAuth` + role check), sets `checked_in_at`
+  - `listRegistrations({ filter })` — admin-only
+  - `overrideVerification({ id, status, reason })` — admin-only
+- `tickets.ics.ts` — server route at `/api/public/ticket/:code/calendar.ics` returning an .ics file
 
-- Footnote: keep existing sources line.
+**Frontend routes**
+- `src/routes/ticket.$code.tsx` — public ticket page (QR via `qrcode` package, print stylesheet)
+- `src/routes/_authenticated/admin/check-in.tsx` — scanner page (uses `@yudiel/react-qr-scanner` or `html5-qrcode`)
+- `src/routes/_authenticated/admin/registrations.tsx` — admin table
+- `src/routes/login.tsx` — basic Supabase email/password login (required because there's no auth yet and admin pages need it)
+- Update `src/components/register/StepConfirm.tsx` (or equivalent) to redirect to `/ticket/:code` and show the email-sent confirmation
 
-### 3. Pillars — re-titled to match the reframe
+**Email**
+- Run email infra + transactional scaffold tools
+- Add `ticket-confirmation` template with QR (inline data URL generated server-side via `qrcode` package)
+- Call from existing `submitRegistration` server function right after successful insert, with idempotency key `ticket-${registration.id}`
 
-Replace the three current pillars with:
+**Packages**
+- `qrcode` (server-side QR generation for email + ticket DTO)
+- `html5-qrcode` or `@yudiel/react-qr-scanner` (camera scanner)
 
-1. **Inclusive leadership (anchor).** Women, youth, persons with disabilities, rural communities, frontline organisers — leadership that looks like, and answers to, the Nigeria it serves.
-2. **Applied AI & digital innovation.** Past the demos. Real deployments solving civic and social-impact problems at Nigerian scale — health, education, livelihoods, governance, climate.
-3. **Action over talk.** Every track closes with named commitments, working partnerships, and a 12-month follow-through plan. No exceptions.
+**Important caveat to flag**
+- This adds authentication to the project for the first time. The admin scanner and registrations pages won't work until you create an admin user and assign the `admin` role. After the migration runs, I'll walk you through inserting your admin row.
 
-Section heading: *Three commitments. <span class="accent">Inclusive leadership is the anchor.</span>*
-
-### 4. CTA section — sharpen the audience
-
-- Headline stays: *Take a seat at the table.*
-- Sub: *Civic actors, social-impact founders, educators, organisers, public servants — registration is open. Verified YALI delegates attend free; everyone else pays the ticket price.*
-
-## What does NOT change
-
-- Layout, motion, Reveal/Stagger/Eyebrow primitives, halftone backdrop, side labels.
-- Stats strip (dates, venue, delegates, reach).
-- Sources footnote (already correct).
-- All other sections (Hero, Schedule, Tracks, Sponsors, Partners, Contact, FAQ).
-
-## Why this works
-
-- Puts YALI's actual audience at the centre. AI stops being the protagonist; civic leadership is.
-- Keeps the research-anchored credibility you asked for last turn — same facts, repurposed as *stakes for leaders* instead of *progress for the sector*.
-- "Inclusive leadership is the anchor" becomes a line you can repeat in pillars, in pitch decks, in sponsor conversations. It does work beyond this page.
-- Single-file edit. Low risk. Reversible.
-
-Approve and I'll apply it.
+## Out of scope (call out, don't build)
+- Paid ticketing / Paystack tie-in beyond what's already in `registrations`
+- SMS/WhatsApp delivery of tickets
+- Multiple ticket tiers, transfers, refunds
+- Native mobile scanner app (browser camera works fine on phones)
