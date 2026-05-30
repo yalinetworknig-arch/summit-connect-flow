@@ -100,6 +100,11 @@ export type Database = {
           ticket_code: string
           track_selection: string | null
           travel_support_needed: boolean
+          verification_checked_at: string | null
+          verification_confidence: number | null
+          verification_model: string | null
+          verification_reason: string | null
+          verification_status: string
           whatsapp_notified: boolean
           yali_certificate_url: string | null
           yali_id: string | null
@@ -126,6 +131,11 @@ export type Database = {
           ticket_code?: string
           track_selection?: string | null
           travel_support_needed?: boolean
+          verification_checked_at?: string | null
+          verification_confidence?: number | null
+          verification_model?: string | null
+          verification_reason?: string | null
+          verification_status?: string
           whatsapp_notified?: boolean
           yali_certificate_url?: string | null
           yali_id?: string | null
@@ -152,6 +162,11 @@ export type Database = {
           ticket_code?: string
           track_selection?: string | null
           travel_support_needed?: boolean
+          verification_checked_at?: string | null
+          verification_confidence?: number | null
+          verification_model?: string | null
+          verification_reason?: string | null
+          verification_status?: string
           whatsapp_notified?: boolean
           yali_certificate_url?: string | null
           yali_id?: string | null
