@@ -101,6 +101,14 @@ function ConfirmationPage() {
         <p className="mt-2" style={{ color: "var(--text-secondary)" }}>
           Your registration for AIDIFILN 2026 is confirmed.
         </p>
+        <Link
+          to="/ticket/$code"
+          params={{ code: data.ticket_code }}
+          className="mt-3 text-sm underline"
+          style={{ color: "var(--accent-cyan)" }}
+        >
+          Open shareable ticket page →
+        </Link>
       </div>
 
       <div
