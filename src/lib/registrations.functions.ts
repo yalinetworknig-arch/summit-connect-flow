@@ -7,13 +7,28 @@ import { sendTicketEmail } from "@/lib/email/ticket-email.server";
 export const submitRegistration = createServerFn({ method: "POST" })
   .inputValidator((input) => fullRegistrationSchema.parse(input))
   .handler(async ({ data }) => {
+    const nn = (v: string | null | undefined) => (v?.trim() ? v.trim() : null);
     const payload = {
       ...data,
-      yali_id: data.yali_id?.trim() || null,
-      yali_certificate_url: data.yali_certificate_url?.trim() || null,
-      dietary_restrictions: data.dietary_restrictions?.trim() || null,
-      heard_about_summit: data.heard_about_summit?.trim() || null,
+      yali_id: nn(data.yali_id),
+      yali_certificate_url: nn(data.yali_certificate_url),
+      dietary_restrictions: nn(data.dietary_restrictions),
+      heard_about_summit: nn(data.heard_about_summit),
       paystack_reference: data.paystack_reference || null,
+      organization: nn(data.organization),
+      role_title: nn(data.role_title),
+      sponsor_tier: nn(data.sponsor_tier),
+      sponsor_goals: nn(data.sponsor_goals),
+      media_outlet: nn(data.media_outlet),
+      media_type: nn(data.media_type),
+      media_coverage_focus: nn(data.media_coverage_focus),
+      audience_reach: nn(data.audience_reach),
+      profession: nn(data.profession),
+      reason_for_attending: nn(data.reason_for_attending),
+      volunteer_skills: nn(data.volunteer_skills),
+      volunteer_availability: nn(data.volunteer_availability),
+      tshirt_size: nn(data.tshirt_size),
+      prior_volunteer_experience: nn(data.prior_volunteer_experience),
     };
     const { data: row, error } = await supabaseAdmin
       .from("registrations")
