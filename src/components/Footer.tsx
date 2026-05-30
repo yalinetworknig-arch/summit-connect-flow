@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
+import lockupFull from "@/assets/aidifiln-lockup-full.png";
 
 const navItems = [
   { to: "/", label: "Home" },
@@ -24,16 +25,14 @@ export function Footer() {
       style={{ borderColor: "var(--border-strong)", background: "var(--surface)" }}
     >
       <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-10">
-        <div>
-          <div
-            className="text-rainbow font-bold text-2xl mb-3"
-            style={{ fontFamily: "Space Grotesk, sans-serif" }}
-          >
-            AIDIFILN
-          </div>
-          <p className="text-sm leading-relaxed max-w-xs" style={{ color: "var(--text-secondary)" }}>
-            AI, Digital Innovation and the Future of Inclusive Leadership in Nigeria.
-          </p>
+        <div className="md:col-span-1">
+          <img
+            src={lockupFull}
+            alt="AIDIFILN — Artificial Intelligence, Digital Innovation and the Future of Inclusive Leadership in Nigeria"
+            className="w-full max-w-[320px] h-auto select-none dark:invert dark:brightness-110 opacity-90"
+            loading="lazy"
+            decoding="async"
+          />
         </div>
 
         <div>
