@@ -15,33 +15,45 @@ import {
 } from "@/components/ui/dialog";
 import Autoplay from "embla-carousel-autoplay";
 
+import abiaLogo from "@/assets/hubs/anambra.jpeg"; // placeholder unused
+import anambraLogo from "@/assets/hubs/anambra.jpeg";
+import benueLogo from "@/assets/hubs/benue.jpeg";
+import bornoLogo from "@/assets/hubs/borno.jpeg";
+import deltaLogo from "@/assets/hubs/delta.jpeg";
+import edoLogo from "@/assets/hubs/edo.jpeg";
+import enuguLogo from "@/assets/hubs/enugu.jpeg";
+import imoLogo from "@/assets/hubs/imo.jpeg";
+import kadunaLogo from "@/assets/hubs/kaduna.jpeg";
+import plateauLogo from "@/assets/hubs/plateau.jpeg";
+
 type Hub = {
   state: string;
   region: "North Central" | "North East" | "North West" | "South East" | "South South" | "South West" | "Federal Capital";
   coordinator?: string;
   focus?: string;
+  logo?: string;
 };
 
 const hubs: Hub[] = [
   { state: "Abia", region: "South East" },
   { state: "Adamawa", region: "North East" },
   { state: "Akwa Ibom", region: "South South" },
-  { state: "Anambra", region: "South East" },
+  { state: "Anambra", region: "South East", logo: anambraLogo },
   { state: "Bauchi", region: "North East" },
   { state: "Bayelsa", region: "South South" },
-  { state: "Benue", region: "North Central" },
-  { state: "Borno", region: "North East" },
+  { state: "Benue", region: "North Central", logo: benueLogo },
+  { state: "Borno", region: "North East", logo: bornoLogo },
   { state: "Cross River", region: "South South" },
-  { state: "Delta", region: "South South" },
+  { state: "Delta", region: "South South", logo: deltaLogo },
   { state: "Ebonyi", region: "South East" },
-  { state: "Edo", region: "South South" },
+  { state: "Edo", region: "South South", logo: edoLogo },
   { state: "Ekiti", region: "South West" },
-  { state: "Enugu", region: "South East" },
+  { state: "Enugu", region: "South East", logo: enuguLogo },
   { state: "FCT Abuja", region: "Federal Capital" },
   { state: "Gombe", region: "North East" },
-  { state: "Imo", region: "South East" },
+  { state: "Imo", region: "South East", logo: imoLogo },
   { state: "Jigawa", region: "North West" },
-  { state: "Kaduna", region: "North West" },
+  { state: "Kaduna", region: "North West", logo: kadunaLogo },
   { state: "Kano", region: "North West" },
   { state: "Katsina", region: "North West" },
   { state: "Kebbi", region: "North West" },
@@ -54,7 +66,7 @@ const hubs: Hub[] = [
   { state: "Ondo", region: "South West" },
   { state: "Osun", region: "South West" },
   { state: "Oyo", region: "South West" },
-  { state: "Plateau", region: "North Central" },
+  { state: "Plateau", region: "North Central", logo: plateauLogo },
   { state: "Rivers", region: "South South" },
   { state: "Sokoto", region: "North West" },
   { state: "Taraba", region: "North East" },
@@ -84,16 +96,29 @@ function HubCard({ hub, onSelect }: { hub: Hub; onSelect: () => void }) {
       aria-label={`View ${hub.state} State Hub details`}
     >
       <div
-        className="w-16 h-16 rounded-full flex items-center justify-center font-bold text-white shadow-md"
-        style={{
-          background:
-            "linear-gradient(135deg, var(--brand-primary, #0a3d62), var(--brand-accent, #079992))",
-          fontFamily: "Space Grotesk, sans-serif",
-          fontSize: "18px",
-        }}
+        className="w-16 h-16 rounded-full flex items-center justify-center font-bold text-white shadow-md overflow-hidden bg-white"
+        style={
+          hub.logo
+            ? undefined
+            : {
+                background:
+                  "linear-gradient(135deg, var(--brand-primary, #0a3d62), var(--brand-accent, #079992))",
+                fontFamily: "Space Grotesk, sans-serif",
+                fontSize: "18px",
+              }
+        }
         aria-hidden="true"
       >
-        {initials(hub.state)}
+        {hub.logo ? (
+          <img
+            src={hub.logo}
+            alt={`YALI Network ${hub.state} logo`}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        ) : (
+          initials(hub.state)
+        )}
       </div>
       <div className="text-center">
         <div
@@ -171,14 +196,26 @@ export function StateHubs() {
                 <DialogHeader>
                   <div className="flex items-center gap-4 mb-2">
                     <div
-                      className="w-14 h-14 rounded-full flex items-center justify-center font-bold text-white"
-                      style={{
-                        background:
-                          "linear-gradient(135deg, var(--brand-primary, #0a3d62), var(--brand-accent, #079992))",
-                        fontFamily: "Space Grotesk, sans-serif",
-                      }}
+                      className="w-14 h-14 rounded-full flex items-center justify-center font-bold text-white overflow-hidden bg-white"
+                      style={
+                        selected.logo
+                          ? undefined
+                          : {
+                              background:
+                                "linear-gradient(135deg, var(--brand-primary, #0a3d62), var(--brand-accent, #079992))",
+                              fontFamily: "Space Grotesk, sans-serif",
+                            }
+                      }
                     >
-                      {initials(selected.state)}
+                      {selected.logo ? (
+                        <img
+                          src={selected.logo}
+                          alt={`YALI Network ${selected.state} logo`}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        initials(selected.state)
+                      )}
                     </div>
                     <div>
                       <DialogTitle className="text-left">
