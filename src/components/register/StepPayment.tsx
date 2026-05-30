@@ -16,7 +16,11 @@ export function StepPayment({ value }: { value: FormState }) {
 
   const { amountNaira, isEarlyBird, isFree } = useMemo(() => {
     const earlyBird = Date.now() < EARLY_BIRD_DEADLINE;
-    const free = value.attendee_type === "delegate";
+    const free =
+      value.attendee_type === "delegate" ||
+      value.attendee_type === "volunteer" ||
+      value.attendee_type === "media" ||
+      value.attendee_type === "sponsor";
     return {
       amountNaira: free ? 0 : earlyBird ? 15000 : 20000,
       isEarlyBird: earlyBird,
@@ -87,7 +91,13 @@ export function StepPayment({ value }: { value: FormState }) {
       >
         <div className="text-sm" style={{ color: "var(--text-secondary)" }}>
           {isFree
-            ? "Verified YALI delegates attend free of charge."
+            ? value.attendee_type === "delegate"
+              ? "Verified YALI delegates attend free of charge."
+              : value.attendee_type === "volunteer"
+                ? "Volunteers attend free of charge — thank you for serving."
+                : value.attendee_type === "media"
+                  ? "Accredited media attend free of charge."
+                  : "Sponsor representatives attend as part of your partnership."
             : isEarlyBird
               ? "Early bird pricing (until 30 June 2026)"
               : "Regular pricing"}
