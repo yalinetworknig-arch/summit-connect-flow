@@ -43,8 +43,8 @@ export function AboutSection({ id = "about" }: { id?: string }) {
         <Stagger className="max-w-5xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
           {[
             { Icon: CalendarDays, label: "Dates", value: "Sept 10 – 13, 2026" },
-            { Icon: MapPin, label: "Venue", value: "Eko Convention Centre, Lagos" },
-            { Icon: Users, label: "Delegates", value: "2,000+ expected" },
+            { Icon: MapPin, label: "Venue", value: "Lagos · venue TBA" },
+            { Icon: Users, label: "Delegates", value: "700+ expected" },
             { Icon: Globe, label: "Reach", value: "All 36 states + FCT" },
           ].map(({ Icon, label, value }) => (
             <motion.div
