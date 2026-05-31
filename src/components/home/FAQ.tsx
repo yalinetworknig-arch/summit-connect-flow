@@ -36,7 +36,7 @@ const faqs = [
   },
   {
     q: "Where is the venue?",
-    a: "Eko Convention Centre, Eko Hotels & Suites, Victoria Island, Lagos. Travel and accommodation support is available for selected delegates.",
+    a: "Lagos — the exact venue will be announced closer to the date. Travel and accommodation support is available for selected delegates.",
   },
   {
     q: "What do I leave with?",
