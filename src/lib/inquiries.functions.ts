@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { supabase } from "@/integrations/supabase/client";
 
 const sponsorSchema = z.object({
   company_name: z.string().trim().min(2).max(160),
@@ -16,7 +16,7 @@ const sponsorSchema = z.object({
 export const submitSponsorInquiry = createServerFn({ method: "POST" })
   .inputValidator((input) => sponsorSchema.parse(input))
   .handler(async ({ data }) => {
-    const { error } = await supabaseAdmin.from("sponsor_inquiries").insert(data);
+    const { error } = await supabase.from("sponsor_inquiries").insert(data);
     if (error) throw new Error(error.message);
     return { ok: true } as const;
   });
@@ -31,7 +31,7 @@ const contactSchema = z.object({
 export const submitContactMessage = createServerFn({ method: "POST" })
   .inputValidator((input) => contactSchema.parse(input))
   .handler(async ({ data }) => {
-    const { error } = await supabaseAdmin.from("contact_submissions").insert(data);
+    const { error } = await supabase.from("contact_submissions").insert(data);
     if (error) throw new Error(error.message);
     return { ok: true } as const;
   });
