@@ -97,7 +97,7 @@ function SignupPage() {
           className="w-full px-4 py-2.5 rounded-full text-sm font-semibold disabled:opacity-60"
           style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
         >
-          {busy ? "Creating account…" : "Create account"}
+          {busy ? "Sending link…" : "Email me a sign-in link"}
         </button>
       </form>
       <p className="mt-6 text-sm text-center" style={{ color: "var(--text-secondary)" }}>
