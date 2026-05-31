@@ -52,6 +52,27 @@ async function assertAdmin(userId: string) {
   if (!roles.includes("admin")) throw new Error("Forbidden: requires admin role");
 }
 
+async function getUserRoles(supabase: any, userId: string) {
+  const { data, error } = await supabase
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", userId);
+  if (error) throw new Error(error.message);
+  return (data ?? []).map((r: any) => r.role) as string[];
+}
+
+function assertHasStaffRole(roles: string[]) {
+  if (!roles.includes("admin") && !roles.includes("staff")) {
+    throw new Error("Forbidden: requires admin or staff role");
+  }
+}
+
+function assertHasAdminRole(roles: string[]) {
+  if (!roles.includes("admin")) {
+    throw new Error("Forbidden: requires admin role");
+  }
+}
+
 export const getMyRoles = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
@@ -105,7 +126,8 @@ export const listRegistrations = createServerFn({ method: "POST" })
   .inputValidator((input) => listInput.parse(input ?? {}))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context as { supabase: any; userId: string };
-    await assertStaff(userId);
+    const roles = await getUserRoles(supabase, userId);
+    assertHasStaffRole(roles);
 
     let q = supabase
       .from("registrations")
