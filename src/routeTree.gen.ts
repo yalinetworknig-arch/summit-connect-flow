@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TracksRouteImport } from './routes/tracks'
 import { Route as SummitRouteImport } from './routes/summit'
 import { Route as SponsorsRouteImport } from './routes/sponsors'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ScheduleRouteImport } from './routes/schedule'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProfileRouteImport } from './routes/profile'
@@ -41,6 +42,11 @@ const SummitRoute = SummitRouteImport.update({
 const SponsorsRoute = SponsorsRouteImport.update({
   id: '/sponsors',
   path: '/sponsors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ScheduleRoute = ScheduleRouteImport.update({
@@ -129,6 +135,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRouteWithChildren
   '/schedule': typeof ScheduleRoute
+  '/signup': typeof SignupRoute
   '/sponsors': typeof SponsorsRoute
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
@@ -148,6 +155,7 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRouteWithChildren
   '/schedule': typeof ScheduleRoute
+  '/signup': typeof SignupRoute
   '/sponsors': typeof SponsorsRoute
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
@@ -168,6 +176,7 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRouteWithChildren
   '/schedule': typeof ScheduleRoute
+  '/signup': typeof SignupRoute
   '/sponsors': typeof SponsorsRoute
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
@@ -189,6 +198,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/register'
     | '/schedule'
+    | '/signup'
     | '/sponsors'
     | '/summit'
     | '/tracks'
@@ -208,6 +218,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/register'
     | '/schedule'
+    | '/signup'
     | '/sponsors'
     | '/summit'
     | '/tracks'
@@ -227,6 +238,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/register'
     | '/schedule'
+    | '/signup'
     | '/sponsors'
     | '/summit'
     | '/tracks'
@@ -248,6 +260,7 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRouteWithChildren
   ScheduleRoute: typeof ScheduleRoute
+  SignupRoute: typeof SignupRoute
   SponsorsRoute: typeof SponsorsRoute
   SummitRoute: typeof SummitRoute
   TracksRoute: typeof TracksRoute
@@ -275,6 +288,13 @@ declare module '@tanstack/react-router' {
       path: '/sponsors'
       fullPath: '/sponsors'
       preLoaderRoute: typeof SponsorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/schedule': {
@@ -434,6 +454,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRouteWithChildren,
   ScheduleRoute: ScheduleRoute,
+  SignupRoute: SignupRoute,
   SponsorsRoute: SponsorsRoute,
   SummitRoute: SummitRoute,
   TracksRoute: TracksRoute,
