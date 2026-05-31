@@ -68,10 +68,11 @@ export const checkInTicket = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => codeSchema.parse(input))
   .handler(async ({ data, context }) => {
-    const { userId } = context as { userId: string };
-    await assertStaff(userId);
+    const { supabase, userId } = context as { supabase: any; userId: string };
+    const roles = await getUserRoles(supabase, userId);
+    assertHasStaffRole(roles);
 
-    const { data: existing, error: e1 } = await sb
+    const { data: existing, error: e1 } = await supabase
       .from("registrations")
       .select("id, full_name, attendee_type, track_selection, verification_status, checked_in_at")
       .eq("ticket_code", data.code)
@@ -83,7 +84,7 @@ export const checkInTicket = createServerFn({ method: "POST" })
       return { alreadyCheckedIn: true, registration: existing };
     }
 
-    const { data: updated, error: e2 } = await sb
+    const { data: updated, error: e2 } = await supabase
       .from("registrations")
       .update({ checked_in_at: new Date().toISOString(), checked_in_by: userId })
       .eq("id", existing.id)
@@ -140,9 +141,10 @@ export const overrideVerification = createServerFn({ method: "POST" })
       .parse(input),
   )
   .handler(async ({ data, context }) => {
-    const { userId } = context as { userId: string };
-    await assertAdmin(userId);
-    const { error } = await sb
+    const { supabase, userId } = context as { supabase: any; userId: string };
+    const roles = await getUserRoles(supabase, userId);
+    assertHasAdminRole(roles);
+    const { error } = await supabase
       .from("registrations")
       .update({
         verification_status: data.status,
@@ -159,9 +161,10 @@ export const getCertificateSignedUrl = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({ path: z.string().min(1).max(500) }).parse(input))
   .handler(async ({ data, context }) => {
-    const { userId } = context as { userId: string };
-    await assertStaff(userId);
-    const { data: signed, error } = await supabaseAdmin.storage
+    const { supabase, userId } = context as { supabase: any; userId: string };
+    const roles = await getUserRoles(supabase, userId);
+    assertHasStaffRole(roles);
+    const { data: signed, error } = await supabase.storage
       .from("yali-certificates")
       .createSignedUrl(data.path, 60 * 10);
     if (error) throw new Error(error.message);
@@ -199,9 +202,10 @@ export type DashboardStats = {
 export const getAdminDashboard = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<DashboardStats> => {
-    const { userId } = context as { userId: string };
-    await assertStaff(userId);
-    const { data, error } = await sb.rpc("admin_dashboard_stats");
+    const { supabase, userId } = context as { supabase: any; userId: string };
+    const roles = await getUserRoles(supabase, userId);
+    assertHasStaffRole(roles);
+    const { data, error } = await supabase.rpc("admin_dashboard_stats");
     if (error) throw new Error(error.message);
     return data as DashboardStats;
   });
