@@ -1,10 +1,14 @@
+import { useRef } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
+
 type Partner = { name: string; logo: string };
 
-const titleSponsor: Partner = {
-  name: "HP",
-  logo: "https://upload.wikimedia.org/wikipedia/commons/a/ad/HP_logo_2012.svg",
-};
-const keySponsors: Partner[] = [
+const partners: Partner[] = [
+  {
+    name: "HP",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/a/ad/HP_logo_2012.svg",
+  },
   {
     name: "U.S. Mission Nigeria",
     logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Seal_of_an_Embassy_of_the_United_States_of_America.svg/1200px-Seal_of_an_Embassy_of_the_United_States_of_America.svg.png",
@@ -31,31 +35,24 @@ function LogoCard({ name, logo }: Partner) {
         width={200}
         height={100}
         loading="lazy"
-        className="grayscale hover:grayscale-0 transition duration-300 max-h-[80px] object-contain bg-white/90 rounded-md p-2"
+        className="max-h-[80px] object-contain bg-white/95 rounded-md p-2"
       />
     </div>
   );
 }
 
-function Group({ heading, items, cols }: { heading: string; items: Partner[]; cols: string }) {
-  return (
-    <div>
-      <h3
-        className="text-center text-sm uppercase tracking-widest mb-6"
-        style={{ color: "var(--text-secondary)" }}
-      >
-        {heading}
-      </h3>
-      <div className={`grid gap-6 ${cols}`}>
-        {items.map((i) => (
-          <LogoCard key={i.name} name={i.name} logo={i.logo} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export function Partners() {
+  const autoplay = useRef(
+    Autoplay({ delay: 2200, stopOnInteraction: false, stopOnMouseEnter: true }),
+  );
+  const [emblaRef] = useEmblaCarousel(
+    { loop: true, align: "start", dragFree: true },
+    [autoplay.current],
+  );
+
+  // duplicate the list so the loop is visually seamless even with few items
+  const items = [...partners, ...partners];
+
   return (
     <section className="py-16 md:py-24 px-6" style={{ background: "var(--background)" }}>
       <div className="max-w-6xl mx-auto">
@@ -69,9 +66,17 @@ export function Partners() {
         >
           Partners From Our Previous Edition
         </h2>
-        <div className="space-y-12">
-          <Group heading="Title Sponsor" items={[titleSponsor]} cols="grid-cols-1 max-w-sm mx-auto" />
-          <Group heading="Partners" items={keySponsors} cols="grid-cols-1 sm:grid-cols-3" />
+        <div className="overflow-hidden" ref={emblaRef}>
+          <div className="flex gap-6">
+            {items.map((p, i) => (
+              <div
+                key={`${p.name}-${i}`}
+                className="flex-[0_0_50%] sm:flex-[0_0_33.333%] lg:flex-[0_0_25%] min-w-0"
+              >
+                <LogoCard name={p.name} logo={p.logo} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
