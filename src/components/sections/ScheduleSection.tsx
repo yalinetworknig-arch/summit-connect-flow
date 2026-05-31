@@ -10,6 +10,8 @@ import {
   HalftoneBackdrop,
   Eyebrow,
 } from "@/components/motion-primitives";
+import { EditorialImage } from "@/components/editorial/EditorialImage";
+import scheduleAudience from "@/assets/editorial/schedule-audience.jpg";
 
 export function ScheduleSection({ id = "schedule" }: { id?: string }) {
   const [active, setActive] = useState(0);
@@ -32,6 +34,21 @@ export function ScheduleSection({ id = "schedule" }: { id?: string }) {
               Keynotes, parallel sector rooms, hands-on workshops, a hackathon and a closing showcase — in Lagos (venue announced soon). Speaker lineups land closer to event.
             </p>
           </Reveal>
+        </div>
+      </section>
+
+      {/* Wide editorial hero — what a day in the room looks like */}
+      <section className="px-5 sm:px-6 lg:px-8 -mt-6 md:-mt-10 mb-4 md:mb-8 bg-background">
+        <div className="max-w-6xl mx-auto">
+          <EditorialImage
+            src={scheduleAudience}
+            alt="A packed Nigerian summit audience in modern conference seating, facing a backlit panel stage"
+            aspect="aspect-[16/9] md:aspect-[21/9]"
+            caption="Main hall · panel session · summit reportage"
+            sizes="(min-width: 1280px) 1200px, (min-width: 768px) 90vw, 100vw"
+            width={1920}
+            height={1080}
+          />
         </div>
       </section>
 
