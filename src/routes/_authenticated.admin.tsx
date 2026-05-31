@@ -15,7 +15,7 @@ function AdminGate() {
   const fetchRoles = useServerFn(getMyRoles);
   const { data, isLoading } = useQuery({
     queryKey: ["my-roles", session?.user.id],
-    queryFn: () => fetchRoles({ data: undefined as never }),
+    queryFn: () => fetchRoles(),
     enabled: !!session,
   });
 

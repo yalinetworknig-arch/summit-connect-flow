@@ -14,7 +14,7 @@ function SettingsTab() {
   const fetchPortal = useServerFn(getMyPortal);
   const update = useServerFn(updateMyProfile);
   const qc = useQueryClient();
-  const { data } = useQuery({ queryKey: ["my-portal", session?.user.id], queryFn: () => fetchPortal({ data: undefined as never }), enabled: !!session });
+  const { data } = useQuery({ queryKey: ["my-portal", session?.user.id], queryFn: () => fetchPortal(), enabled: !!session });
   const [form, setForm] = useState({ display_name: "", headline: "", bio: "", linkedin_url: "", avatar_url: "", networking_opt_in: true });
   const [msg, setMsg] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
