@@ -44,7 +44,7 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
       <section className="relative px-5 sm:px-6 lg:px-8 py-20 md:py-24 lg:py-28 bg-background text-text-primary overflow-hidden">
         <HalftoneBackdrop />
         <SideLabel>Partner · Sponsor · Co-host</SideLabel>
-        <SideLabel side="right" tone="muted">2,000+ delegates · 7 tracks</SideLabel>
+        <SideLabel side="right" tone="muted">700+ delegates · 7 tracks</SideLabel>
         <div className="relative max-w-4xl mx-auto text-center">
           <Reveal><Eyebrow>Partner with AIDIFILN</Eyebrow></Reveal>
           <Reveal delay={0.08}>
@@ -55,7 +55,7 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              2,000+ delegates from all 36 states. 7 sector rooms. National and diplomatic press. Pick a tier — or tell us the outcome you want and we'll build the package around it.
+              700+ delegates from all 36 states. 7 sector rooms. National and diplomatic press. Pick a tier — or tell us the outcome you want and we'll build the package around it.
             </p>
           </Reveal>
         </div>
