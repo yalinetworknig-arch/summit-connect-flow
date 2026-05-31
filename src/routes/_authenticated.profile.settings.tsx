@@ -24,6 +24,7 @@ function SettingsTab() {
   const save = useMutation({ mutationFn: () => update({ data: form }), onSuccess: () => { setMsg("Saved."); setErr(null); qc.invalidateQueries({ queryKey: ["my-portal"] }); }, onError: (e: any) => { setMsg(null); setErr(e?.message ?? "Save failed"); } });
   const input = { borderColor: "var(--border-strong)", color: "var(--text-primary)" };
   return (
+    <>
     <form onSubmit={(e) => { e.preventDefault(); save.mutate(); }} className="rounded-2xl border p-6 max-w-2xl space-y-4" style={{ borderColor: "var(--border-strong)", background: "var(--card)" }}>
       <h2 className="text-lg font-bold" style={{ color: "var(--text-primary)", fontFamily: "Space Grotesk, sans-serif" }}>Profile settings</h2>
       {([["display_name","Display name","input"],["headline","Headline (e.g. Founder, ClimateAI)","input"],["bio","Short bio","textarea"],["linkedin_url","LinkedIn URL","input"],["avatar_url","Avatar image URL","input"]] as const).map(([k,label,kind]) => (
