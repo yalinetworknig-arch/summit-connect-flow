@@ -15,7 +15,6 @@ import { Route as SponsorsRouteImport } from './routes/sponsors'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ScheduleRouteImport } from './routes/schedule'
 import { Route as RegisterRouteImport } from './routes/register'
-import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as NetworkRouteImport } from './routes/network'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -58,11 +57,6 @@ const ScheduleRoute = ScheduleRouteImport.update({
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NetworkRoute = NetworkRouteImport.update({
@@ -139,7 +133,6 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/network': typeof NetworkRoute
-  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRouteWithChildren
   '/schedule': typeof ScheduleRoute
   '/signup': typeof SignupRoute
@@ -160,7 +153,6 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/network': typeof NetworkRoute
-  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRouteWithChildren
   '/schedule': typeof ScheduleRoute
   '/signup': typeof SignupRoute
@@ -182,7 +174,6 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/network': typeof NetworkRoute
-  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRouteWithChildren
   '/schedule': typeof ScheduleRoute
   '/signup': typeof SignupRoute
@@ -205,7 +196,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/login'
     | '/network'
-    | '/profile'
     | '/register'
     | '/schedule'
     | '/signup'
@@ -226,7 +216,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/login'
     | '/network'
-    | '/profile'
     | '/register'
     | '/schedule'
     | '/signup'
@@ -247,7 +236,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/login'
     | '/network'
-    | '/profile'
     | '/register'
     | '/schedule'
     | '/signup'
@@ -270,7 +258,6 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   LoginRoute: typeof LoginRoute
   NetworkRoute: typeof NetworkRoute
-  ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRouteWithChildren
   ScheduleRoute: typeof ScheduleRoute
   SignupRoute: typeof SignupRoute
@@ -322,13 +309,6 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/network': {
@@ -473,7 +453,6 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   LoginRoute: LoginRoute,
   NetworkRoute: NetworkRoute,
-  ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRouteWithChildren,
   ScheduleRoute: ScheduleRoute,
   SignupRoute: SignupRoute,
@@ -485,3 +464,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
