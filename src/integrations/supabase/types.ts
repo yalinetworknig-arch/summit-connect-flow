@@ -14,6 +14,53 @@ export type Database = {
   }
   public: {
     Tables: {
+      attendee_profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          created_at: string
+          display_name: string | null
+          headline: string | null
+          linkedin_url: string | null
+          networking_opt_in: boolean
+          registration_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          headline?: string | null
+          linkedin_url?: string | null
+          networking_opt_in?: boolean
+          registration_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          headline?: string | null
+          linkedin_url?: string | null
+          networking_opt_in?: boolean
+          registration_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "attendee_profiles_registration_id_fkey"
+            columns: ["registration_id"]
+            isOneToOne: true
+            referencedRelation: "registrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contact_submissions: {
         Row: {
           created_at: string
@@ -41,6 +88,116 @@ export type Database = {
           name?: string
           status?: string
           subject?: string
+        }
+        Relationships: []
+      }
+      hackathon_entries: {
+        Row: {
+          created_at: string
+          deck_url: string | null
+          id: string
+          problem: string | null
+          project_name: string | null
+          repo_url: string | null
+          solution: string | null
+          status: string
+          submitted_at: string | null
+          summary: string | null
+          track: string
+          updated_at: string
+          user_id: string
+          video_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          deck_url?: string | null
+          id?: string
+          problem?: string | null
+          project_name?: string | null
+          repo_url?: string | null
+          solution?: string | null
+          status?: string
+          submitted_at?: string | null
+          summary?: string | null
+          track: string
+          updated_at?: string
+          user_id: string
+          video_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          deck_url?: string | null
+          id?: string
+          problem?: string | null
+          project_name?: string | null
+          repo_url?: string | null
+          solution?: string | null
+          status?: string
+          submitted_at?: string | null
+          summary?: string | null
+          track?: string
+          updated_at?: string
+          user_id?: string
+          video_url?: string | null
+        }
+        Relationships: []
+      }
+      hackathon_team_members: {
+        Row: {
+          accepted_user_id: string | null
+          email: string
+          entry_id: string
+          full_name: string | null
+          id: string
+          invited_at: string
+          role: string | null
+        }
+        Insert: {
+          accepted_user_id?: string | null
+          email: string
+          entry_id: string
+          full_name?: string | null
+          id?: string
+          invited_at?: string
+          role?: string | null
+        }
+        Update: {
+          accepted_user_id?: string | null
+          email?: string
+          entry_id?: string
+          full_name?: string | null
+          id?: string
+          invited_at?: string
+          role?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hackathon_team_members_entry_id_fkey"
+            columns: ["entry_id"]
+            isOneToOne: false
+            referencedRelation: "hackathon_entries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      networking_connections: {
+        Row: {
+          created_at: string
+          from_user: string
+          note: string | null
+          to_user: string
+        }
+        Insert: {
+          created_at?: string
+          from_user: string
+          note?: string | null
+          to_user: string
+        }
+        Update: {
+          created_at?: string
+          from_user?: string
+          note?: string | null
+          to_user?: string
         }
         Relationships: []
       }
@@ -215,6 +372,24 @@ export type Database = {
         }
         Relationships: []
       }
+      session_bookmarks: {
+        Row: {
+          created_at: string
+          session_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          session_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          session_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       sponsor_inquiries: {
         Row: {
           assigned_to: string | null
@@ -318,6 +493,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_checked_in: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "staff"
