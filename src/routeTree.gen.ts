@@ -24,6 +24,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TicketCodeRouteImport } from './routes/ticket.$code'
 import { Route as RegisterIdRouteImport } from './routes/register.$id'
+import { Route as AuthenticatedClaimTicketRouteImport } from './routes/_authenticated.claim-ticket'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated.admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated.admin.index'
 import { Route as AuthenticatedAdminRegistrationsRouteImport } from './routes/_authenticated.admin.registrations'
@@ -103,6 +104,12 @@ const RegisterIdRoute = RegisterIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => RegisterRoute,
 } as any)
+const AuthenticatedClaimTicketRoute =
+  AuthenticatedClaimTicketRouteImport.update({
+    id: '/claim-ticket',
+    path: '/claim-ticket',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -140,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/claim-ticket': typeof AuthenticatedClaimTicketRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/admin/check-in': typeof AuthenticatedAdminCheckInRoute
@@ -159,6 +167,7 @@ export interface FileRoutesByTo {
   '/sponsors': typeof SponsorsRoute
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
+  '/claim-ticket': typeof AuthenticatedClaimTicketRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/admin/check-in': typeof AuthenticatedAdminCheckInRoute
@@ -181,6 +190,7 @@ export interface FileRoutesById {
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/_authenticated/claim-ticket': typeof AuthenticatedClaimTicketRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/_authenticated/admin/check-in': typeof AuthenticatedAdminCheckInRoute
@@ -203,6 +213,7 @@ export interface FileRouteTypes {
     | '/summit'
     | '/tracks'
     | '/admin'
+    | '/claim-ticket'
     | '/register/$id'
     | '/ticket/$code'
     | '/admin/check-in'
@@ -222,6 +233,7 @@ export interface FileRouteTypes {
     | '/sponsors'
     | '/summit'
     | '/tracks'
+    | '/claim-ticket'
     | '/register/$id'
     | '/ticket/$code'
     | '/admin/check-in'
@@ -243,6 +255,7 @@ export interface FileRouteTypes {
     | '/summit'
     | '/tracks'
     | '/_authenticated/admin'
+    | '/_authenticated/claim-ticket'
     | '/register/$id'
     | '/ticket/$code'
     | '/_authenticated/admin/check-in'
@@ -374,6 +387,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterIdRouteImport
       parentRoute: typeof RegisterRoute
     }
+    '/_authenticated/claim-ticket': {
+      id: '/_authenticated/claim-ticket'
+      path: '/claim-ticket'
+      fullPath: '/claim-ticket'
+      preLoaderRoute: typeof AuthenticatedClaimTicketRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
@@ -422,10 +442,12 @@ const AuthenticatedAdminRouteWithChildren =
 
 interface AuthenticatedRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+  AuthenticatedClaimTicketRoute: typeof AuthenticatedClaimTicketRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+  AuthenticatedClaimTicketRoute: AuthenticatedClaimTicketRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
