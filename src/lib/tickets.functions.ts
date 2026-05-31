@@ -1,10 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { supabase as publicSupabase } from "@/integrations/supabase/client";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-
-// Cast for newly added columns until generated types refresh.
-const sb: any = supabaseAdmin;
 
 const codeSchema = z.object({ code: z.string().trim().min(4).max(64) });
 
@@ -22,13 +19,10 @@ export type PublicTicket = {
 export const getTicketByCode = createServerFn({ method: "POST" })
   .inputValidator((input) => codeSchema.parse(input))
   .handler(async ({ data }): Promise<PublicTicket> => {
-    const { data: row, error } = await sb
-      .from("registrations")
-      .select(
-        "id, ticket_code, full_name, attendee_type, track_selection, verification_status, checked_in_at, created_at",
-      )
-      .eq("ticket_code", data.code)
-      .maybeSingle();
+    const { data: row, error } = await publicSupabase.rpc(
+      "get_public_ticket_by_code",
+      { ticket_code_input: data.code },
+    );
     if (error) throw new Error(error.message);
     if (!row) throw new Error("Ticket not found");
     return row as PublicTicket;

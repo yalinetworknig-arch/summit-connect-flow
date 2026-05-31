@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { supabase } from "@/integrations/supabase/client";
 import { fullRegistrationSchema } from "@/lib/register/schema";
 import { sendTicketEmail } from "@/lib/email/ticket-email.server";
 
@@ -30,7 +30,7 @@ export const submitRegistration = createServerFn({ method: "POST" })
       tshirt_size: nn(data.tshirt_size),
       prior_volunteer_experience: nn(data.prior_volunteer_experience),
     };
-    const { data: row, error } = await supabaseAdmin
+    const { data: row, error } = await supabase
       .from("registrations")
       .insert(payload)
       .select("id, full_name, email, ticket_code, track_selection, attendee_type, created_at, payment_status, amount_kobo")
@@ -52,12 +52,21 @@ export const submitRegistration = createServerFn({ method: "POST" })
 export const getRegistrationById = createServerFn({ method: "POST" })
   .inputValidator((input) => z.object({ id: z.string().uuid() }).parse(input))
   .handler(async ({ data }) => {
-    const { data: row, error } = await supabaseAdmin
-      .from("registrations")
-      .select("id, full_name, email, ticket_code, track_selection, attendee_type, created_at, payment_status, amount_kobo")
-      .eq("id", data.id)
-      .maybeSingle();
+    const { data: row, error } = await supabase.rpc(
+      "get_public_registration_confirmation",
+      { registration_id: data.id },
+    );
     if (error) throw new Error(error.message);
     if (!row) throw new Error("Registration not found");
-    return row;
+    return row as {
+      id: string;
+      full_name: string;
+      email: string;
+      ticket_code: string;
+      track_selection: string | null;
+      attendee_type: string;
+      created_at: string;
+      payment_status: string;
+      amount_kobo: number | null;
+    };
   });

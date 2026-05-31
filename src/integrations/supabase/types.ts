@@ -501,6 +501,14 @@ export type Database = {
     }
     Functions: {
       admin_dashboard_stats: { Args: never; Returns: Json }
+      get_public_registration_confirmation: {
+        Args: { registration_id: string }
+        Returns: Json
+      }
+      get_public_ticket_by_code: {
+        Args: { ticket_code_input: string }
+        Returns: Json
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
