@@ -1,11 +1,20 @@
 import { useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ExternalLink, FileCheck, FileX, RotateCcw } from "lucide-react";
+import { z } from "zod";
 import { listRegistrations, overrideVerification, getCertificateSignedUrl } from "@/lib/tickets.functions";
+import { AdminTabs } from "@/components/admin/AdminTabs";
+
+const searchSchema = z.object({
+  verification: z.enum(["all", "pending", "verified", "suspicious", "rejected", "error"]).optional(),
+  checkedIn: z.enum(["all", "yes", "no"]).optional(),
+  search: z.string().optional(),
+});
 
 export const Route = createFileRoute("/_authenticated/admin/registrations")({
+  validateSearch: (s) => searchSchema.parse(s),
   head: () => ({ meta: [{ title: "Registrations — Admin" }, { name: "robots", content: "noindex" }] }),
   component: RegistrationsPage,
 });
@@ -30,10 +39,10 @@ function RegistrationsPage() {
   const override = useServerFn(overrideVerification);
   const sign = useServerFn(getCertificateSignedUrl);
   const qc = useQueryClient();
-
-  const [verification, setVerification] = useState<"all" | "pending" | "verified" | "suspicious" | "rejected" | "error">("all");
-  const [checkedIn, setCheckedIn] = useState<"all" | "yes" | "no">("all");
-  const [search, setSearch] = useState("");
+  const initial = Route.useSearch();
+  const [verification, setVerification] = useState<"all" | "pending" | "verified" | "suspicious" | "rejected" | "error">(initial.verification ?? "all");
+  const [checkedIn, setCheckedIn] = useState<"all" | "yes" | "no">(initial.checkedIn ?? "all");
+  const [search, setSearch] = useState(initial.search ?? "");
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin-regs", verification, checkedIn, search],
@@ -61,10 +70,8 @@ function RegistrationsPage() {
 
   return (
     <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold" style={{ color: "var(--text-primary)", fontFamily: "Space Grotesk, sans-serif" }}>Registrations</h1>
-        <Link to="/admin/check-in" className="text-sm underline" style={{ color: "var(--accent-cyan)" }}>Check-in scanner</Link>
-      </div>
+      <h1 className="text-2xl font-bold mb-4" style={{ color: "var(--text-primary)", fontFamily: "Space Grotesk, sans-serif" }}>Registrations</h1>
+      <AdminTabs />
 
       <div className="flex flex-wrap gap-2 mb-4 text-sm">
         <select value={verification} onChange={(e) => setVerification(e.target.value as any)} className="px-3 py-2 rounded border bg-transparent" style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}>

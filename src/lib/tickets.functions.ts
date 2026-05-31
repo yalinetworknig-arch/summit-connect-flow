@@ -167,3 +167,41 @@ export const getCertificateSignedUrl = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { url: signed.signedUrl };
   });
+
+export type DashboardStats = {
+  totals: {
+    total: number;
+    paid: number;
+    pending_payment: number;
+    verified: number;
+    checked_in: number;
+    last_24h: number;
+    revenue_kobo: number;
+  };
+  byAttendeeType: Array<{ key: string; count: number }>;
+  byVerification: Array<{ key: string; count: number }>;
+  byPayment: Array<{ key: string; count: number }>;
+  byTrack: Array<{ key: string; count: number }>;
+  byState: Array<{ key: string; count: number }>;
+  trend30d: Array<{ date: string; count: number }>;
+  recent: Array<{
+    id: string;
+    full_name: string;
+    email: string;
+    attendee_type: string;
+    verification_status: string;
+    payment_status: string;
+    ticket_code: string;
+    created_at: string;
+  }>;
+};
+
+export const getAdminDashboard = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<DashboardStats> => {
+    const { userId } = context as { userId: string };
+    await assertStaff(userId);
+    const { data, error } = await sb.rpc("admin_dashboard_stats");
+    if (error) throw new Error(error.message);
+    return data as DashboardStats;
+  });

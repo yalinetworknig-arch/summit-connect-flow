@@ -27,7 +27,7 @@ function LoginPage() {
       setErr(error.message);
       return;
     }
-    navigate({ to: redirect ?? "/admin/check-in" });
+    navigate({ to: redirect ?? "/admin" });
   }
 
   return (

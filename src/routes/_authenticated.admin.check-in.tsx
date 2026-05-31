@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Camera, CheckCircle2, AlertTriangle, ShieldCheck, XCircle, Clock } from "lucide-react";
 import { checkInTicket } from "@/lib/tickets.functions";
+import { AdminTabs } from "@/components/admin/AdminTabs";
 
 export const Route = createFileRoute("/_authenticated/admin/check-in")({
   head: () => ({ meta: [{ title: "Check-in scanner — Admin" }, { name: "robots", content: "noindex" }] }),
@@ -82,10 +83,8 @@ function CheckInPage() {
 
   return (
     <section className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold" style={{ color: "var(--text-primary)", fontFamily: "Space Grotesk, sans-serif" }}>Check-in</h1>
-        <Link to="/admin/registrations" className="text-sm underline" style={{ color: "var(--accent-cyan)" }}>Registrations</Link>
-      </div>
+      <h1 className="text-2xl font-bold mb-4" style={{ color: "var(--text-primary)", fontFamily: "Space Grotesk, sans-serif" }}>Check-in</h1>
+      <AdminTabs />
 
       <div className="rounded-2xl border p-4 mb-4" style={{ background: "var(--card)", borderColor: "var(--border-strong)" }}>
         <button onClick={() => setScanning((s) => !s)} className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full text-sm font-semibold" style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}>
