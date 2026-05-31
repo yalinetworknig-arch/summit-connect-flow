@@ -17,6 +17,8 @@ import {
   HalftoneBackdrop,
   Eyebrow,
 } from "@/components/motion-primitives";
+import { EditorialImage } from "@/components/editorial/EditorialImage";
+import sponsorsImpact from "@/assets/editorial/sponsors-impact.jpg";
 
 export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
   const submit = useServerFn(submitSponsorInquiry);
@@ -58,6 +60,30 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
               700+ delegates from all 36 states. 7 sector rooms. National and diplomatic press. Pick a tier — or tell us the outcome you want and we'll build the package around it.
             </p>
           </Reveal>
+        </div>
+      </section>
+
+      {/* Impact strip — what sponsorship buys, visually */}
+      <section className="px-5 sm:px-6 lg:px-8 -mt-6 md:-mt-10 mb-4 md:mb-8 bg-background">
+        <div className="max-w-6xl mx-auto relative">
+          <EditorialImage
+            src={sponsorsImpact}
+            alt="A triptych of summit moments — a Nigerian woman leader at the lectern, an engaged delegate audience under stage lights, and press photographing the event"
+            aspect="aspect-[16/9] md:aspect-[21/9]"
+            sizes="(min-width: 1280px) 1200px, (min-width: 768px) 90vw, 100vw"
+            width={1920}
+            height={1080}
+          />
+          {/* Stat overlay band */}
+          <div className="hidden md:flex absolute inset-x-0 bottom-0 z-10 pointer-events-none">
+            <div className="mx-auto mb-5 px-6 py-3 rounded-full bg-background/80 backdrop-blur-md border border-border-strong flex items-center gap-8 font-mono text-[11px] uppercase tracking-[0.25em] text-text-primary">
+              <span><span className="text-accent-cyan">700+</span> delegates</span>
+              <span className="text-text-secondary/40">·</span>
+              <span><span className="text-accent-cyan">36</span> states</span>
+              <span className="text-text-secondary/40">·</span>
+              <span><span className="text-accent-cyan">7</span> sectors</span>
+            </div>
+          </div>
         </div>
       </section>
 

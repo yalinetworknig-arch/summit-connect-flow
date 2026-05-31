@@ -9,6 +9,10 @@ import {
   HalftoneBackdrop,
   Eyebrow,
 } from "@/components/motion-primitives";
+import { EditorialImage } from "@/components/editorial/EditorialImage";
+import civicGathering from "@/assets/editorial/about-civic-gathering.jpg";
+import techTraining from "@/assets/editorial/why-now-tech-training.jpg";
+import mobileMoney from "@/assets/editorial/why-now-mobile-money.jpg";
 
 export function AboutSection({ id = "about" }: { id?: string }) {
   return (
@@ -39,6 +43,21 @@ export function AboutSection({ id = "about" }: { id?: string }) {
         </div>
       </section>
 
+      {/* Full-bleed editorial break — sets the human stakes */}
+      <section className="px-5 sm:px-6 lg:px-8 bg-background">
+        <div className="max-w-6xl mx-auto -mt-6 md:-mt-10">
+          <EditorialImage
+            src={civicGathering}
+            alt="Nigerian civic leaders in animated discussion around a conference table in a sunlit Lagos meeting room"
+            aspect="aspect-[16/9] md:aspect-[21/9]"
+            caption="Civic leaders · Lagos · convening 2025"
+            sizes="(min-width: 1280px) 1200px, (min-width: 768px) 90vw, 100vw"
+            width={1920}
+            height={1080}
+          />
+        </div>
+      </section>
+
       <section className="px-5 sm:px-6 lg:px-8 py-14 md:py-20 bg-surface text-text-primary">
         <Stagger className="max-w-5xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
           {[
@@ -63,7 +82,7 @@ export function AboutSection({ id = "about" }: { id?: string }) {
       </section>
 
       <section className="px-5 sm:px-6 lg:px-8 py-20 md:py-24 lg:py-28 bg-background text-text-primary">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <Reveal><Eyebrow>Why this, why now</Eyebrow></Reveal>
           <Reveal delay={0.06}>
             <h3 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl mt-5 mb-10 leading-tight">
@@ -74,7 +93,7 @@ export function AboutSection({ id = "about" }: { id?: string }) {
             </h3>
           </Reveal>
           <Reveal delay={0.12}>
-            <div className="space-y-6 text-text-secondary leading-relaxed text-lg">
+            <div className="space-y-8 text-text-secondary leading-relaxed text-lg max-w-4xl">
               <p>
                 <span className="text-text-primary font-medium">
                   What's already shifted.
@@ -86,6 +105,19 @@ export function AboutSection({ id = "about" }: { id?: string }) {
                 Igbo, Hausa, Pidgin and Ibibio. OPay clears nine million
                 transactions a day. The infrastructure is being poured — fast.
               </p>
+
+              <div className="md:float-right md:ml-8 md:w-[42%] md:max-w-[420px] mb-2">
+                <EditorialImage
+                  src={techTraining}
+                  alt="A young Nigerian instructor teaching coding to attentive students with laptops in a digital skills classroom"
+                  aspect="aspect-[4/3]"
+                  caption="Digital skills training · 3MTT-style classroom"
+                  sizes="(min-width: 768px) 420px, 100vw"
+                  width={1280}
+                  height={960}
+                />
+              </div>
+
               <p>
                 <span className="text-text-primary font-medium">
                   What that means for civic leaders.
@@ -97,6 +129,19 @@ export function AboutSection({ id = "about" }: { id?: string }) {
                 statement anymore; it's a design choice someone is making whether
                 you're at the table or not.
               </p>
+
+              <div className="md:float-left md:mr-8 md:w-[42%] md:max-w-[420px] mb-2 clear-both">
+                <EditorialImage
+                  src={mobileMoney}
+                  alt="A Nigerian market trader in Ankara print accepting a mobile-money payment on a smartphone at her produce stall in Lagos"
+                  aspect="aspect-[4/3]"
+                  caption="Mobile money · Lagos market · 2024"
+                  sizes="(min-width: 768px) 420px, 100vw"
+                  width={1280}
+                  height={960}
+                />
+              </div>
+
               <p>
                 <span className="text-text-primary font-medium">
                   Why this summit, this room.
@@ -108,7 +153,7 @@ export function AboutSection({ id = "about" }: { id?: string }) {
                 Not to become engineers. To stop being end-users of decisions
                 made elsewhere.
               </p>
-              <p>
+              <p className="clear-both">
                 <span className="text-text-primary font-medium">
                   What leaves the room.
                 </span>{" "}
