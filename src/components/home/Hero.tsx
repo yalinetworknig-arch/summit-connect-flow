@@ -321,7 +321,7 @@ export function Hero() {
         </motion.div>
 
         <p className="mt-10 text-white/65 text-sm">
-          Free for verified YALI delegates · 2,000+ delegates expected · Lagos · Sept 10–13, 2026
+          Free for verified YALI delegates · 700+ delegates expected · Lagos · Sept 10–13, 2026
         </p>
       </div>
 
