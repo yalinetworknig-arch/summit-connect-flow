@@ -50,7 +50,7 @@ function renderHtml(input: TicketEmailInput, ticketUrl: string) {
           <p style="margin:24px 0 0;font-size:13px;color:#5b6577;line-height:1.55;">Or open this link: <br/><a href="${ticketUrl}" style="color:#0A1128;">${ticketUrl}</a></p>
         </td></tr>
         <tr><td style="padding:18px 32px;background:#0A1128;color:#ffffff;font-size:12px;">
-          Eko Convention Centre, Victoria Island, Lagos — Sept 11–14, 2026
+          Lagos (venue TBA) — Sept 11–14, 2026
         </td></tr>
       </table>
       <div style="font-size:11px;color:#8a93a6;margin-top:14px;">YALI Network Nigeria</div>
@@ -70,7 +70,7 @@ function renderText(input: TicketEmailInput, ticketUrl: string) {
     "",
     `View your ticket: ${ticketUrl}`,
     "",
-    "Eko Convention Centre, Victoria Island, Lagos — Sept 11–14, 2026",
+    "Lagos (venue TBA) — Sept 11–14, 2026",
   ].filter(Boolean).join("\n");
 }
 

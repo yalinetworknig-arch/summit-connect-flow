@@ -192,7 +192,7 @@ function buildIcs(name: string) {
     "DTEND:20260914T180000",
     "SUMMARY:YALI Network Nigeria National Summit (AIDIFILN) 2026",
     `DESCRIPTION:Registered as ${name}. AI\\, Digital Innovation and the Future of Inclusive Leadership in Nigeria.`,
-    "LOCATION:Eko Convention Centre, Victoria Island, Lagos, Nigeria",
+    "LOCATION:Lagos, Nigeria (venue TBA)",
     "END:VEVENT",
     "END:VCALENDAR",
   ].join("\r\n");
