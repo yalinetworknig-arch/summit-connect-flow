@@ -23,6 +23,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TicketCodeRouteImport } from './routes/ticket.$code'
 import { Route as RegisterIdRouteImport } from './routes/register.$id'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated.admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated.admin.index'
 import { Route as AuthenticatedAdminRegistrationsRouteImport } from './routes/_authenticated.admin.registrations'
 import { Route as AuthenticatedAdminCheckInRouteImport } from './routes/_authenticated.admin.check-in'
@@ -96,22 +97,27 @@ const RegisterIdRoute = RegisterIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => RegisterRoute,
 } as any)
-const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
 const AuthenticatedAdminRegistrationsRoute =
   AuthenticatedAdminRegistrationsRouteImport.update({
-    id: '/admin/registrations',
-    path: '/admin/registrations',
-    getParentRoute: () => AuthenticatedRoute,
+    id: '/registrations',
+    path: '/registrations',
+    getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminCheckInRoute =
   AuthenticatedAdminCheckInRouteImport.update({
-    id: '/admin/check-in',
-    path: '/admin/check-in',
-    getParentRoute: () => AuthenticatedRoute,
+    id: '/check-in',
+    path: '/check-in',
+    getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -126,6 +132,7 @@ export interface FileRoutesByFullPath {
   '/sponsors': typeof SponsorsRoute
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/admin/check-in': typeof AuthenticatedAdminCheckInRoute
@@ -164,6 +171,7 @@ export interface FileRoutesById {
   '/sponsors': typeof SponsorsRoute
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/_authenticated/admin/check-in': typeof AuthenticatedAdminCheckInRoute
@@ -184,6 +192,7 @@ export interface FileRouteTypes {
     | '/sponsors'
     | '/summit'
     | '/tracks'
+    | '/admin'
     | '/register/$id'
     | '/ticket/$code'
     | '/admin/check-in'
@@ -221,6 +230,7 @@ export interface FileRouteTypes {
     | '/sponsors'
     | '/summit'
     | '/tracks'
+    | '/_authenticated/admin'
     | '/register/$id'
     | '/ticket/$code'
     | '/_authenticated/admin/check-in'
@@ -344,40 +354,58 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterIdRouteImport
       parentRoute: typeof RegisterRoute
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/admin/': {
       id: '/_authenticated/admin/'
-      path: '/admin'
+      path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
-      parentRoute: typeof AuthenticatedRoute
+      parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/registrations': {
       id: '/_authenticated/admin/registrations'
-      path: '/admin/registrations'
+      path: '/registrations'
       fullPath: '/admin/registrations'
       preLoaderRoute: typeof AuthenticatedAdminRegistrationsRouteImport
-      parentRoute: typeof AuthenticatedRoute
+      parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/check-in': {
       id: '/_authenticated/admin/check-in'
-      path: '/admin/check-in'
+      path: '/check-in'
       fullPath: '/admin/check-in'
       preLoaderRoute: typeof AuthenticatedAdminCheckInRouteImport
-      parentRoute: typeof AuthenticatedRoute
+      parentRoute: typeof AuthenticatedAdminRoute
     }
   }
 }
 
-interface AuthenticatedRouteChildren {
+interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminCheckInRoute: typeof AuthenticatedAdminCheckInRoute
   AuthenticatedAdminRegistrationsRoute: typeof AuthenticatedAdminRegistrationsRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
-const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminCheckInRoute: AuthenticatedAdminCheckInRoute,
   AuthenticatedAdminRegistrationsRoute: AuthenticatedAdminRegistrationsRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
+interface AuthenticatedRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
@@ -414,3 +442,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
