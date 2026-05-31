@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createFileRoute, useNavigate, useSearch } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -21,19 +21,35 @@ function LoginPage() {
     e.preventDefault();
     setBusy(true);
     setErr(null);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data: signInData, error } = await supabase.auth.signInWithPassword({ email, password });
     setBusy(false);
     if (error) {
       setErr(error.message);
       return;
     }
-    navigate({ to: redirect ?? "/admin" });
+    if (redirect) {
+      navigate({ to: redirect });
+      return;
+    }
+    // Default landing: admins/staff → /admin, everyone else → /profile
+    try {
+      const uid = signInData.user?.id;
+      if (uid) {
+        const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", uid);
+        const list = (roles ?? []).map((r: any) => r.role);
+        if (list.includes("admin") || list.includes("staff")) {
+          navigate({ to: "/admin" });
+          return;
+        }
+      }
+    } catch { /* fall through */ }
+    navigate({ to: "/profile" });
   }
 
   return (
     <section className="max-w-md mx-auto px-6 py-16">
-      <h1 className="text-2xl font-bold mb-2" style={{ color: "var(--text-primary)", fontFamily: "Space Grotesk, sans-serif" }}>Staff sign in</h1>
-      <p className="text-sm mb-6" style={{ color: "var(--text-secondary)" }}>Access the check-in scanner and admin tools.</p>
+      <h1 className="text-2xl font-bold mb-2" style={{ color: "var(--text-primary)", fontFamily: "Space Grotesk, sans-serif" }}>Sign in</h1>
+      <p className="text-sm mb-6" style={{ color: "var(--text-secondary)" }}>Access your attendee profile, ticket and agenda.</p>
       <form onSubmit={onSubmit} className="space-y-4">
         <label className="block text-sm">
           <span style={{ color: "var(--text-secondary)" }}>Email</span>
@@ -48,6 +64,9 @@ function LoginPage() {
           {busy ? "Signing in…" : "Sign in"}
         </button>
       </form>
+      <p className="mt-6 text-sm text-center" style={{ color: "var(--text-secondary)" }}>
+        New attendee? <Link to="/signup" className="font-semibold" style={{ color: "var(--accent-cyan)" }}>Create an account</Link>
+      </p>
     </section>
   );
 }

@@ -15,6 +15,7 @@ import { Route as SponsorsRouteImport } from './routes/sponsors'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ScheduleRouteImport } from './routes/schedule'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as NetworkRouteImport } from './routes/network'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -26,7 +27,14 @@ import { Route as RegisterIdRouteImport } from './routes/register.$id'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
 import { Route as AuthenticatedClaimTicketRouteImport } from './routes/_authenticated.claim-ticket'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated.admin'
+import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated.profile.index'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated.admin.index'
+import { Route as AuthenticatedProfileTicketRouteImport } from './routes/_authenticated.profile.ticket'
+import { Route as AuthenticatedProfileSettingsRouteImport } from './routes/_authenticated.profile.settings'
+import { Route as AuthenticatedProfilePaymentsRouteImport } from './routes/_authenticated.profile.payments'
+import { Route as AuthenticatedProfileNetworkRouteImport } from './routes/_authenticated.profile.network'
+import { Route as AuthenticatedProfileHackathonRouteImport } from './routes/_authenticated.profile.hackathon'
+import { Route as AuthenticatedProfileAgendaRouteImport } from './routes/_authenticated.profile.agenda'
 import { Route as AuthenticatedAdminRegistrationsRouteImport } from './routes/_authenticated.admin.registrations'
 import { Route as AuthenticatedAdminCheckInRouteImport } from './routes/_authenticated.admin.check-in'
 
@@ -58,6 +66,11 @@ const ScheduleRoute = ScheduleRouteImport.update({
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NetworkRoute = NetworkRouteImport.update({
@@ -115,11 +128,53 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedProfileIndexRoute =
+  AuthenticatedProfileIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedProfileTicketRoute =
+  AuthenticatedProfileTicketRouteImport.update({
+    id: '/ticket',
+    path: '/ticket',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
+const AuthenticatedProfileSettingsRoute =
+  AuthenticatedProfileSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
+const AuthenticatedProfilePaymentsRoute =
+  AuthenticatedProfilePaymentsRouteImport.update({
+    id: '/payments',
+    path: '/payments',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
+const AuthenticatedProfileNetworkRoute =
+  AuthenticatedProfileNetworkRouteImport.update({
+    id: '/network',
+    path: '/network',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
+const AuthenticatedProfileHackathonRoute =
+  AuthenticatedProfileHackathonRouteImport.update({
+    id: '/hackathon',
+    path: '/hackathon',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
+const AuthenticatedProfileAgendaRoute =
+  AuthenticatedProfileAgendaRouteImport.update({
+    id: '/agenda',
+    path: '/agenda',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
 const AuthenticatedAdminRegistrationsRoute =
   AuthenticatedAdminRegistrationsRouteImport.update({
     id: '/registrations',
@@ -139,6 +194,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/network': typeof NetworkRoute
+  '/profile': typeof AuthenticatedProfileRouteWithChildren
   '/register': typeof RegisterRouteWithChildren
   '/schedule': typeof ScheduleRoute
   '/signup': typeof SignupRoute
@@ -147,12 +203,18 @@ export interface FileRoutesByFullPath {
   '/tracks': typeof TracksRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/claim-ticket': typeof AuthenticatedClaimTicketRoute
-  '/profile': typeof AuthenticatedProfileRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/admin/check-in': typeof AuthenticatedAdminCheckInRoute
   '/admin/registrations': typeof AuthenticatedAdminRegistrationsRoute
+  '/profile/agenda': typeof AuthenticatedProfileAgendaRoute
+  '/profile/hackathon': typeof AuthenticatedProfileHackathonRoute
+  '/profile/network': typeof AuthenticatedProfileNetworkRoute
+  '/profile/payments': typeof AuthenticatedProfilePaymentsRoute
+  '/profile/settings': typeof AuthenticatedProfileSettingsRoute
+  '/profile/ticket': typeof AuthenticatedProfileTicketRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/profile/': typeof AuthenticatedProfileIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -160,6 +222,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/network': typeof NetworkRoute
+  '/profile': typeof AuthenticatedProfileIndexRoute
   '/register': typeof RegisterRouteWithChildren
   '/schedule': typeof ScheduleRoute
   '/signup': typeof SignupRoute
@@ -167,11 +230,16 @@ export interface FileRoutesByTo {
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
   '/claim-ticket': typeof AuthenticatedClaimTicketRoute
-  '/profile': typeof AuthenticatedProfileRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/admin/check-in': typeof AuthenticatedAdminCheckInRoute
   '/admin/registrations': typeof AuthenticatedAdminRegistrationsRoute
+  '/profile/agenda': typeof AuthenticatedProfileAgendaRoute
+  '/profile/hackathon': typeof AuthenticatedProfileHackathonRoute
+  '/profile/network': typeof AuthenticatedProfileNetworkRoute
+  '/profile/payments': typeof AuthenticatedProfilePaymentsRoute
+  '/profile/settings': typeof AuthenticatedProfileSettingsRoute
+  '/profile/ticket': typeof AuthenticatedProfileTicketRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
@@ -182,6 +250,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/network': typeof NetworkRoute
+  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRouteWithChildren
   '/schedule': typeof ScheduleRoute
   '/signup': typeof SignupRoute
@@ -190,12 +259,19 @@ export interface FileRoutesById {
   '/tracks': typeof TracksRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/claim-ticket': typeof AuthenticatedClaimTicketRoute
-  '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRouteWithChildren
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/_authenticated/admin/check-in': typeof AuthenticatedAdminCheckInRoute
   '/_authenticated/admin/registrations': typeof AuthenticatedAdminRegistrationsRoute
+  '/_authenticated/profile/agenda': typeof AuthenticatedProfileAgendaRoute
+  '/_authenticated/profile/hackathon': typeof AuthenticatedProfileHackathonRoute
+  '/_authenticated/profile/network': typeof AuthenticatedProfileNetworkRoute
+  '/_authenticated/profile/payments': typeof AuthenticatedProfilePaymentsRoute
+  '/_authenticated/profile/settings': typeof AuthenticatedProfileSettingsRoute
+  '/_authenticated/profile/ticket': typeof AuthenticatedProfileTicketRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/profile/': typeof AuthenticatedProfileIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -205,6 +281,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/login'
     | '/network'
+    | '/profile'
     | '/register'
     | '/schedule'
     | '/signup'
@@ -213,12 +290,18 @@ export interface FileRouteTypes {
     | '/tracks'
     | '/admin'
     | '/claim-ticket'
-    | '/profile'
     | '/register/$id'
     | '/ticket/$code'
     | '/admin/check-in'
     | '/admin/registrations'
+    | '/profile/agenda'
+    | '/profile/hackathon'
+    | '/profile/network'
+    | '/profile/payments'
+    | '/profile/settings'
+    | '/profile/ticket'
     | '/admin/'
+    | '/profile/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -226,6 +309,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/login'
     | '/network'
+    | '/profile'
     | '/register'
     | '/schedule'
     | '/signup'
@@ -233,11 +317,16 @@ export interface FileRouteTypes {
     | '/summit'
     | '/tracks'
     | '/claim-ticket'
-    | '/profile'
     | '/register/$id'
     | '/ticket/$code'
     | '/admin/check-in'
     | '/admin/registrations'
+    | '/profile/agenda'
+    | '/profile/hackathon'
+    | '/profile/network'
+    | '/profile/payments'
+    | '/profile/settings'
+    | '/profile/ticket'
     | '/admin'
   id:
     | '__root__'
@@ -247,6 +336,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/login'
     | '/network'
+    | '/profile'
     | '/register'
     | '/schedule'
     | '/signup'
@@ -260,7 +350,14 @@ export interface FileRouteTypes {
     | '/ticket/$code'
     | '/_authenticated/admin/check-in'
     | '/_authenticated/admin/registrations'
+    | '/_authenticated/profile/agenda'
+    | '/_authenticated/profile/hackathon'
+    | '/_authenticated/profile/network'
+    | '/_authenticated/profile/payments'
+    | '/_authenticated/profile/settings'
+    | '/_authenticated/profile/ticket'
     | '/_authenticated/admin/'
+    | '/_authenticated/profile/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -270,6 +367,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   LoginRoute: typeof LoginRoute
   NetworkRoute: typeof NetworkRoute
+  ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRouteWithChildren
   ScheduleRoute: typeof ScheduleRoute
   SignupRoute: typeof SignupRoute
@@ -321,6 +419,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/network': {
@@ -400,12 +505,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/profile/': {
+      id: '/_authenticated/profile/'
+      path: '/'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof AuthenticatedProfileIndexRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
+    }
     '/_authenticated/admin/': {
       id: '/_authenticated/admin/'
       path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/profile/ticket': {
+      id: '/_authenticated/profile/ticket'
+      path: '/ticket'
+      fullPath: '/profile/ticket'
+      preLoaderRoute: typeof AuthenticatedProfileTicketRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
+    }
+    '/_authenticated/profile/settings': {
+      id: '/_authenticated/profile/settings'
+      path: '/settings'
+      fullPath: '/profile/settings'
+      preLoaderRoute: typeof AuthenticatedProfileSettingsRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
+    }
+    '/_authenticated/profile/payments': {
+      id: '/_authenticated/profile/payments'
+      path: '/payments'
+      fullPath: '/profile/payments'
+      preLoaderRoute: typeof AuthenticatedProfilePaymentsRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
+    }
+    '/_authenticated/profile/network': {
+      id: '/_authenticated/profile/network'
+      path: '/network'
+      fullPath: '/profile/network'
+      preLoaderRoute: typeof AuthenticatedProfileNetworkRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
+    }
+    '/_authenticated/profile/hackathon': {
+      id: '/_authenticated/profile/hackathon'
+      path: '/hackathon'
+      fullPath: '/profile/hackathon'
+      preLoaderRoute: typeof AuthenticatedProfileHackathonRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
+    }
+    '/_authenticated/profile/agenda': {
+      id: '/_authenticated/profile/agenda'
+      path: '/agenda'
+      fullPath: '/profile/agenda'
+      preLoaderRoute: typeof AuthenticatedProfileAgendaRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
     }
     '/_authenticated/admin/registrations': {
       id: '/_authenticated/admin/registrations'
@@ -439,16 +593,39 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
 const AuthenticatedAdminRouteWithChildren =
   AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
 
+interface AuthenticatedProfileRouteChildren {
+  AuthenticatedProfileAgendaRoute: typeof AuthenticatedProfileAgendaRoute
+  AuthenticatedProfileHackathonRoute: typeof AuthenticatedProfileHackathonRoute
+  AuthenticatedProfileNetworkRoute: typeof AuthenticatedProfileNetworkRoute
+  AuthenticatedProfilePaymentsRoute: typeof AuthenticatedProfilePaymentsRoute
+  AuthenticatedProfileSettingsRoute: typeof AuthenticatedProfileSettingsRoute
+  AuthenticatedProfileTicketRoute: typeof AuthenticatedProfileTicketRoute
+  AuthenticatedProfileIndexRoute: typeof AuthenticatedProfileIndexRoute
+}
+
+const AuthenticatedProfileRouteChildren: AuthenticatedProfileRouteChildren = {
+  AuthenticatedProfileAgendaRoute: AuthenticatedProfileAgendaRoute,
+  AuthenticatedProfileHackathonRoute: AuthenticatedProfileHackathonRoute,
+  AuthenticatedProfileNetworkRoute: AuthenticatedProfileNetworkRoute,
+  AuthenticatedProfilePaymentsRoute: AuthenticatedProfilePaymentsRoute,
+  AuthenticatedProfileSettingsRoute: AuthenticatedProfileSettingsRoute,
+  AuthenticatedProfileTicketRoute: AuthenticatedProfileTicketRoute,
+  AuthenticatedProfileIndexRoute: AuthenticatedProfileIndexRoute,
+}
+
+const AuthenticatedProfileRouteWithChildren =
+  AuthenticatedProfileRoute._addFileChildren(AuthenticatedProfileRouteChildren)
+
 interface AuthenticatedRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
   AuthenticatedClaimTicketRoute: typeof AuthenticatedClaimTicketRoute
-  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRouteWithChildren
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
   AuthenticatedClaimTicketRoute: AuthenticatedClaimTicketRoute,
-  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRouteWithChildren,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
@@ -474,6 +651,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   LoginRoute: LoginRoute,
   NetworkRoute: NetworkRoute,
+  ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRouteWithChildren,
   ScheduleRoute: ScheduleRoute,
   SignupRoute: SignupRoute,
@@ -485,3 +663,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
