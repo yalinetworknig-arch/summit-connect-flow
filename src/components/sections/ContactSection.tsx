@@ -63,7 +63,7 @@ export function ContactSection({ id = "contact" }: { id?: string }) {
             <InfoCard
               Icon={Phone}
               label="Phone"
-              value="+234 803 520 9226,\n+234 803 883 8094"
+              value={"+234 803 520 9226\n+234 803 883 8094"}
               href="tel:+2348035209226"
             />
             <InfoCard
