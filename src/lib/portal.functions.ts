@@ -14,6 +14,10 @@ export type AttendeeProfile = {
   avatar_url: string | null;
   linkedin_url: string | null;
   networking_opt_in: boolean;
+  home_state: string | null;
+  hub_affiliations: string[];
+  sectors: string[];
+  is_active_member: boolean;
 };
 
 export type RegistrationSummary = {
@@ -86,7 +90,7 @@ export const claimTicket = createServerFn({ method: "POST" })
     }
     const { data: reg, error } = await admin
       .from("registrations")
-      .select("id, email, ticket_code")
+      .select("id, email, ticket_code, state")
       .eq("ticket_code", data.ticketCode.trim())
       .ilike("email", data.email.trim())
       .maybeSingle();
@@ -106,7 +110,7 @@ export const claimTicket = createServerFn({ method: "POST" })
     await ensureProfile(userId);
     const { error: uErr } = await admin
       .from("attendee_profiles")
-      .update({ registration_id: reg.id })
+      .update({ registration_id: reg.id, home_state: (reg as any).state ?? null })
       .eq("user_id", userId);
     if (uErr) throw new Error(uErr.message);
     return { ok: true, registrationId: reg.id };
