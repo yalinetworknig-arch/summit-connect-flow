@@ -16,6 +16,30 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [magicSent, setMagicSent] = useState(false);
+
+  async function sendMagicLink() {
+    if (!email.trim()) {
+      setErr("Enter your email first, then tap the magic link button.");
+      return;
+    }
+    setBusy(true);
+    setErr(null);
+    const target = redirect ?? "/profile";
+    const { error } = await supabase.auth.signInWithOtp({
+      email: email.trim(),
+      options: {
+        shouldCreateUser: true,
+        emailRedirectTo: `${window.location.origin}${target}`,
+      },
+    });
+    setBusy(false);
+    if (error) {
+      setErr(error.message);
+      return;
+    }
+    setMagicSent(true);
+  }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -62,6 +86,18 @@ function LoginPage() {
         {err && <p className="text-sm" style={{ color: "var(--danger, #ef4444)" }}>{err}</p>}
         <button disabled={busy} type="submit" className="w-full px-4 py-2.5 rounded-full text-sm font-semibold disabled:opacity-60" style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}>
           {busy ? "Signing in…" : "Sign in"}
+        </button>
+        <div className="relative my-2 text-center text-xs" style={{ color: "var(--text-secondary)" }}>
+          <span className="px-2" style={{ background: "var(--background, transparent)" }}>or</span>
+        </div>
+        <button
+          type="button"
+          onClick={sendMagicLink}
+          disabled={busy}
+          className="w-full px-4 py-2.5 rounded-full text-sm font-semibold border disabled:opacity-60"
+          style={{ borderColor: "var(--accent-cyan)", color: "var(--accent-cyan)", background: "transparent" }}
+        >
+          {magicSent ? "Magic link sent — check your email" : "Email me a magic sign-in link"}
         </button>
       </form>
       <p className="mt-6 text-sm text-center" style={{ color: "var(--text-secondary)" }}>
