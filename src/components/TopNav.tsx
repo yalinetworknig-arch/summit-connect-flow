@@ -194,6 +194,12 @@ export function TopNav() {
             {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
           <Link
+            to="/login"
+            className="px-4 py-2 rounded-full text-sm font-semibold text-brand-navy/80 hover:text-accent-cyan dark:text-white/80 dark:hover:text-[#00D9FF] transition-colors"
+          >
+            Sign in
+          </Link>
+          <Link
             to="/register"
             className="px-5 py-2 rounded-full text-sm font-semibold transition-transform hover:scale-105 active:scale-95 bg-accent-cyan text-brand-navy shadow-elegant"
           >
@@ -244,6 +250,13 @@ export function TopNav() {
                   onLinkClick={setActiveId}
                 />
                 <div className="flex flex-col gap-3">
+                  <Link
+                    to="/login"
+                    onClick={() => setOpen(false)}
+                    className="px-5 py-3 rounded-full text-sm font-semibold text-center border border-brand-navy/20 dark:border-white/20 text-brand-navy dark:text-white active:scale-95"
+                  >
+                    Sign in
+                  </Link>
                   <Link
                     to="/register"
                     onClick={() => setOpen(false)}
