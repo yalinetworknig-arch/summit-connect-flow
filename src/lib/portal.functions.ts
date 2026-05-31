@@ -52,11 +52,44 @@ async function ensureProfile(userId: string) {
   return existing as AttendeeProfile;
 }
 
+// Try to auto-link an unlinked profile to a registration with the same email.
+// Safe because we only link when the registration has not been claimed yet,
+// and the auth email is verified by Supabase (magic link).
+async function autoLinkByEmail(userId: string, email: string | undefined | null) {
+  if (!email) return null;
+  const { data: reg, error } = await admin
+    .from("registrations")
+    .select("id, email, state")
+    .ilike("email", email)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error || !reg) return null;
+  const { data: taken } = await admin
+    .from("attendee_profiles")
+    .select("user_id")
+    .eq("registration_id", reg.id)
+    .maybeSingle();
+  if (taken && taken.user_id !== userId) return null;
+  const { error: uErr } = await admin
+    .from("attendee_profiles")
+    .update({ registration_id: reg.id, home_state: (reg as any).state ?? null })
+    .eq("user_id", userId);
+  if (uErr) return null;
+  return reg.id as string;
+}
+
 export const getMyPortal = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { userId } = context as { userId: string };
-    const profile = await ensureProfile(userId);
+    const { userId, claims } = context as { userId: string; claims: any };
+    let profile = await ensureProfile(userId);
+    if (!profile.registration_id) {
+      const linked = await autoLinkByEmail(userId, claims?.email);
+      if (linked) {
+        profile = { ...profile, registration_id: linked };
+      }
+    }
     let registration: RegistrationSummary | null = null;
     if (profile.registration_id) {
       const { data, error } = await admin
