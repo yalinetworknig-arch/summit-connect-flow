@@ -23,6 +23,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TicketCodeRouteImport } from './routes/ticket.$code'
 import { Route as RegisterIdRouteImport } from './routes/register.$id'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
 import { Route as AuthenticatedClaimTicketRouteImport } from './routes/_authenticated.claim-ticket'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated.admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated.admin.index'
@@ -98,6 +99,11 @@ const RegisterIdRoute = RegisterIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => RegisterRoute,
 } as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedClaimTicketRoute =
   AuthenticatedClaimTicketRouteImport.update({
     id: '/claim-ticket',
@@ -141,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/tracks': typeof TracksRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/claim-ticket': typeof AuthenticatedClaimTicketRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/admin/check-in': typeof AuthenticatedAdminCheckInRoute
@@ -160,6 +167,7 @@ export interface FileRoutesByTo {
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
   '/claim-ticket': typeof AuthenticatedClaimTicketRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/admin/check-in': typeof AuthenticatedAdminCheckInRoute
@@ -182,6 +190,7 @@ export interface FileRoutesById {
   '/tracks': typeof TracksRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/claim-ticket': typeof AuthenticatedClaimTicketRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/_authenticated/admin/check-in': typeof AuthenticatedAdminCheckInRoute
@@ -204,6 +213,7 @@ export interface FileRouteTypes {
     | '/tracks'
     | '/admin'
     | '/claim-ticket'
+    | '/profile'
     | '/register/$id'
     | '/ticket/$code'
     | '/admin/check-in'
@@ -223,6 +233,7 @@ export interface FileRouteTypes {
     | '/summit'
     | '/tracks'
     | '/claim-ticket'
+    | '/profile'
     | '/register/$id'
     | '/ticket/$code'
     | '/admin/check-in'
@@ -244,6 +255,7 @@ export interface FileRouteTypes {
     | '/tracks'
     | '/_authenticated/admin'
     | '/_authenticated/claim-ticket'
+    | '/_authenticated/profile'
     | '/register/$id'
     | '/ticket/$code'
     | '/_authenticated/admin/check-in'
@@ -367,6 +379,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterIdRouteImport
       parentRoute: typeof RegisterRoute
     }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/claim-ticket': {
       id: '/_authenticated/claim-ticket'
       path: '/claim-ticket'
@@ -423,11 +442,13 @@ const AuthenticatedAdminRouteWithChildren =
 interface AuthenticatedRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
   AuthenticatedClaimTicketRoute: typeof AuthenticatedClaimTicketRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
   AuthenticatedClaimTicketRoute: AuthenticatedClaimTicketRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
