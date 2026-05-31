@@ -1,94 +1,147 @@
 
-# AIDIFILN Attendee Portal — Phase 1
+# YALI Network Nigeria — Platform Roadmap
 
-Turn `/profile` into a real attendee account. Registrants sign up with email + password, claim their existing registration with their ticket code, and get a dashboard for tickets, payments, schedule, hackathon entry, and (after check-in) networking.
+The AIDIFILN 2026 attendee portal becomes v0 of a permanent platform for YALI Network Nigeria: connecting members across all 36 states + FCT, enabling inter-hub collaboration, running future events, and tracking real impact.
 
-## What ships
+This plan delivers two things:
 
-1. **Account + ticket claim**
-   - Email/password signup & login (Supabase Auth). Email verification on.
-   - After signup, a "Claim your ticket" screen asks for the ticket code emailed at registration. We match the code + email and link the registration to the user.
-2. **Profile dashboard (`/profile`)** — tabbed shell:
-   - **Ticket** — QR (ticket_code), attendee type, track, status, add-to-calendar, download brochure (PDF).
-   - **Payments** — amount, status (paid/pending), Paystack reference, receipt link for paid tickets; "Pay now" CTA for pending.
-   - **Agenda** — full event schedule; bookmark masterclasses & breakouts → "My Schedule" view; ICS export per session.
-   - **Hackathon / Pitch** — choose track (Hackathon or Pitch Competition), submit project info, optional team (invite by email), edit until deadline, see status (draft/submitted/under-review/shortlisted).
-   - **Network** — visible only to users whose registration is `checked_in_at IS NOT NULL`. Directory of other checked-in attendees (name, state, attendee type, bio, LinkedIn URL). "Connect on LinkedIn" deep-link + "Save contact" (vCard). Save private notes per contact.
-3. **Settings** — bio, headline, LinkedIn URL, photo, networking visibility toggle (default on once checked in), logout.
+1. **Future-proofing tweaks to the current Phase 1 build** so we don't have to rip up the schema in three months.
+2. **A committed `docs/ROADMAP.md`** capturing the 6-phase vision, decision log, and data-model evolution.
 
-## Routes
+---
 
-```text
-/login                       (exists — keep)
-/signup                      (new)
-/claim-ticket                (new, auth-required, run once)
-/_authenticated/profile      (renamed home of attendee portal, tabbed)
-  ├── ticket   (default)
-  ├── payments
-  ├── agenda
-  ├── hackathon
-  ├── network    (gated: requires checked_in)
-  └── settings
-```
+## Part A — Phase 1 future-proofing (ship now)
 
-Top-level `/profile` redirects to `/_authenticated/profile/ticket`. Bottom tab "Profile" points there.
+Tiny, additive changes to what we're already building. Zero UX impact on the summit.
 
-## Data model (new tables + columns)
+### 1. `attendee_profiles` → de-facto `members` table
+
+Add the columns we'll need to make this the permanent member identity:
 
 ```text
-attendee_profiles            1:1 with auth.users
-  user_id (pk, fk auth.users)
-  registration_id (fk registrations, unique, nullable until claimed)
-  display_name, headline, bio, avatar_url, linkedin_url
-  networking_opt_in (bool, default true)
-
-session_bookmarks            agenda picks
-  user_id, session_id, created_at  (pk: user_id+session_id)
-
-hackathon_entries
-  id, user_id, track ('hackathon'|'pitch'), project_name, summary,
-  problem, solution, deck_url, repo_url, video_url,
-  status ('draft'|'submitted'|'shortlisted'|'rejected'),
-  submitted_at, updated_at
-
-hackathon_team_members
-  entry_id, email, full_name, role, invited_at, accepted_user_id (nullable)
-
-networking_connections
-  id, from_user, to_user, note (private to from_user), created_at
-  (pk: from_user+to_user)
+attendee_profiles
+  + home_state        text       -- mirrored from registrations.state on claim
+  + hub_affiliations  text[]     -- empty for now; multi-hub model (e.g. ['Lagos','Diaspora'])
+  + linkedin_sub      text       -- nullable; populated once LinkedIn OAuth lands
+  + sectors           text[]     -- empty for now; ['climate','governance','edtech'…]
+  + is_active_member  boolean    -- default true; lets us archive without deleting
 ```
 
-`registrations` already has `checked_in_at` — used as the network gate.
+The claim-ticket server fn already copies `registration_id`; we extend it to also copy `state → home_state`. No new UI in Phase 1 — Settings just gets a disabled "Hubs" placeholder card so members know more is coming.
 
-Sessions live in `src/lib/event-data.ts` for now (static), so `session_bookmarks.session_id` is a stable slug — no new sessions table yet.
+### 2. Role enum extension
 
-## Security
+`app_role` gets `hub_admin` added now (unused in Phase 1) so we don't migrate the enum later when Phase 3 lands.
 
-- RLS on every new table:
-  - `attendee_profiles`: owner can select/update own row; checked-in users can `SELECT` other rows where `networking_opt_in=true` AND that user is also checked in. Enforced by a `SECURITY DEFINER` function `is_checked_in(uid)` + policy using it.
-  - `session_bookmarks`, `hackathon_entries`, `hackathon_team_members`: owner-only.
-  - `networking_connections`: owner reads/writes own outgoing rows; the target user can see who connected with them but not the private note.
-- Ticket claim runs server-side (`createServerFn` + `requireSupabaseAuth`): verifies `email === auth.user.email` AND `ticket_code` matches, then sets `attendee_profiles.registration_id`. One claim per registration; one registration per user.
-- Service-role writes only inside server functions; never imported in components.
+### 3. Naming convention discipline
 
-## Technical notes
+- `session_bookmarks.session_id` and `hackathon_entries` stay summit-scoped — documented in ROADMAP as "will migrate to generic `event_submissions` in Phase 4".
+- No premature generalization; just a paper trail.
 
-- Server functions in `src/lib/portal.functions.ts` (`claimTicket`, `getMyProfile`, `updateMyProfile`, `bookmarkSession`, `getMyAgenda`, `upsertHackathonEntry`, `submitHackathonEntry`, `listNetworkAttendees`, `connectWithAttendee`).
-- Use `requireSupabaseAuth` middleware; respect RLS — admin client only for the claim flow.
-- TanStack Query + `useSuspenseQuery` on each tab; loaders call `ensureQueryData`.
-- LinkedIn = `https://www.linkedin.com/in/<handle>` link the user pastes; no LinkedIn OAuth yet (can layer later via the LinkedIn connector).
-- Brochure PDF goes in `public/brochure.pdf` placeholder.
-- Bottom tab "Profile" stays; on auth redirect to `/login?redirect=/profile`.
+### 4. Settings tab teaser
 
-## Out of scope (Phase 2)
+A read-only "Your Hubs" + "Your Sectors" card on `/profile/settings` showing the member's `home_state` and an empty sectors list with copy: "Hub features launch after the summit." Sets expectations and validates the data model with a real render.
 
-- LinkedIn OAuth sign-in
-- In-app messaging
-- Per-session capacity & waitlist (you chose no caps for now)
-- Admin review UI for hackathon entries (data is captured; admins can read via existing admin shell next pass)
-- Push notifications & PWA badging
+---
 
-## Open question before build
+## Part B — `docs/ROADMAP.md` (commit to repo)
 
-The current `/login` redirects admins/staff to `/admin`. After this change, regular registrants who log in will land on `/profile`. Confirm that's the desired default, or specify a different landing route for non-staff users.
+Single source of truth, lives in the repo, updated as we ship phases.
+
+### Document structure
+
+```text
+docs/ROADMAP.md
+  ## Vision
+    Why the platform exists; what success looks like in 12/24 months.
+  ## Architectural principles
+    - Multi-hub identity (members ↔ many hubs, never forced to one)
+    - Events are generic; AIDIFILN is the first instance
+    - Hub autonomy + national rollup (federation, not centralization)
+    - PWA-first; works on low-bandwidth Android
+    - RLS everywhere; service_role only in server fns
+  ## Phases (1 → 6, see below)
+  ## Data model evolution
+    Per-phase diff of new tables + columns
+  ## Decision log
+    Append-only: dated decisions + tradeoffs (multi-hub model, LinkedIn OAuth deferral, etc.)
+  ## Open questions
+    Living list for each phase
+```
+
+### Phase 1 — Summit portal (now)
+Account + ticket claim, agenda, hackathon/pitch, checked-in networking, settings. Plus Part A tweaks above.
+
+### Phase 2 — Post-summit "stay connected" (Q1 after summit)
+- Member directory opens beyond checked-in (verified members)
+- LinkedIn OAuth (`linkedin_sub` populated, replaces pasted URLs)
+- Member-to-member messaging (lightweight, async)
+- Email digest: hub activity, opportunities
+
+### Phase 3 — State Hubs as first-class entities
+- `hubs` table (one per state + FCT, seeded from existing `StateHubs.tsx` data)
+- `hub_members` join table (multi-hub: a member can belong to many)
+- Hub pages (`/hubs/lagos`, `/hubs/kaduna`…) replacing the static marquee
+- `hub_admin` role activated; hub admins post updates, manage their hub page
+- Members join/leave hubs from `/profile/settings`
+
+### Phase 4 — Generic events platform
+Refactor summit-specific tables into reusable ones:
+
+```text
+events                  (id, slug, name, host_hub_ids[], starts_at, ends_at, …)
+event_registrations     (replaces registrations; FK to events)
+event_submissions       (replaces hackathon_entries; type='hackathon'|'pitch'|'project')
+event_sessions          (replaces static event-data.ts; FK to events)
+session_bookmarks       (already generic; just point session_id at event_sessions.id)
+```
+
+Migration is a one-shot: existing AIDIFILN data backfilled into `events` row id=1. Any hub can publish events; cross-hub events list multiple `host_hub_ids`.
+
+### Phase 5 — Inter-hub collaboration & impact
+- `projects` (sector-tagged, owned by 1+ hubs, 1+ members)
+- `collaborations` (project ↔ hub/member edges)
+- `impact_metrics` (people_reached, funds_raised_kobo, policy_wins, custom kpis)
+- Public impact dashboards per hub + national rollup at `/impact`
+- Sector pages (`/sectors/climate`) aggregate cross-hub work
+
+### Phase 6 — Engagement layer
+- On-demand masterclass library (video + materials)
+- Mentorship matching (skills/sectors based)
+- Opportunities board (grants, fellowships, jobs) — hub admins post
+- Push notifications (PWA already installed)
+- Public stats API for partners / press
+
+---
+
+## Risks & mitigations
+
+- **Schema sprawl** — every phase adds tables. Mitigation: each phase's ROADMAP section lists the exact diff; we resist adding columns mid-phase.
+- **Hub admin abuse** — Phase 3 onward. Mitigation: national admins can demote; hub admin actions logged in `audit_log` (added Phase 3).
+- **Privacy regression** — opening directory in Phase 2 must be opt-in per existing `networking_opt_in` flag (default flips to false post-summit until member confirms).
+- **Vendor lock** — staying on Supabase + TanStack Start; no platform-specific features that prevent self-hosting later.
+
+---
+
+## Out of scope for this planning round
+
+- Building any of Phase 2–6 now. We commit to the doc + Part A tweaks only.
+- LinkedIn OAuth wiring (just the column).
+- Mobile native apps — PWA is the strategy.
+
+---
+
+## What ships when you approve
+
+1. Migration adding 5 columns to `attendee_profiles` + `hub_admin` to `app_role` enum.
+2. `claimTicket` server fn updated to copy `state → home_state`.
+3. `/profile/settings` gets the "Your Hubs" / "Your Sectors" read-only teaser card.
+4. `docs/ROADMAP.md` committed with the full structure above.
+
+No changes to summit-critical flows (ticket, payment, agenda, hackathon, network) beyond the additive schema.
+
+---
+
+## One open question for you
+
+Before I write the migration: do you want hub coordinators (the YALI Network state coordinators you already know) to be seeded into `user_roles` as `hub_admin` now with placeholder accounts, or wait until Phase 3 when there's a UI for them to actually use? My recommendation: **wait** — seeding inactive admin accounts creates security surface area for no benefit.
