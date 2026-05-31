@@ -1,5 +1,5 @@
 const stats = [
-  { number: "2,000+", label: "Delegates expected" },
+  { number: "700+", label: "Delegates expected" },
   { number: "7", label: "Sector rooms shaping policy" },
   { number: "4 days", label: "Keynotes, workshops, a hackathon" },
   { number: "36 + FCT", label: "States in the room" },
