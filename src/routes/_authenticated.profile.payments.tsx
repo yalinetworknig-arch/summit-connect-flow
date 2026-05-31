@@ -13,7 +13,7 @@ function PaymentsTab() {
   const fetchPortal = useServerFn(getMyPortal);
   const { data } = useQuery({
     queryKey: ["my-portal", session?.user.id],
-    queryFn: () => fetchPortal({ data: undefined as never }),
+    queryFn: () => fetchPortal(),
     enabled: !!session,
   });
   const reg = data?.registration;
