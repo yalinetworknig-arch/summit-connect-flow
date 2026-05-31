@@ -79,7 +79,7 @@ async function autoLinkByEmail(userId: string, email: string | undefined | null)
   return reg.id as string;
 }
 
-export const getMyPortal = createServerFn({ method: "POST" })
+export const getMyPortal = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { userId, claims } = context as { userId: string; claims: any };
