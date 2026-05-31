@@ -55,8 +55,8 @@ async function assertAdmin(userId: string) {
 export const getMyRoles = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { userId } = context as { userId: string };
-    const { data, error } = await sb
+    const { supabase, userId } = context as { supabase: any; userId: string };
+    const { data, error } = await supabase
       .from("user_roles")
       .select("role")
       .eq("user_id", userId);
@@ -103,10 +103,10 @@ export const listRegistrations = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => listInput.parse(input ?? {}))
   .handler(async ({ data, context }) => {
-    const { userId } = context as { userId: string };
+    const { supabase, userId } = context as { supabase: any; userId: string };
     await assertStaff(userId);
 
-    let q = sb
+    let q = supabase
       .from("registrations")
       .select(
         "id, ticket_code, full_name, email, phone, attendee_type, track_selection, verification_status, verification_reason, yali_id, yali_certificate_url, checked_in_at, created_at",
