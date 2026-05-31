@@ -122,7 +122,7 @@ function TicketPage() {
           </div>
           <div className="col-span-2">
             <dt style={{ color: "var(--text-secondary)" }}>When & where</dt>
-            <dd className="font-medium" style={{ color: "var(--text-primary)" }}>11–14 Sep 2026 · Eko Convention Centre, Lagos</dd>
+            <dd className="font-medium" style={{ color: "var(--text-primary)" }}>11–14 Sep 2026 · Lagos (venue TBA)</dd>
           </div>
         </dl>
       </div>
@@ -158,7 +158,7 @@ function buildIcs(name: string, code: string) {
     "DTEND:20260914T180000",
     "SUMMARY:YALI Network Nigeria Summit (AIDIFILN) 2026",
     `DESCRIPTION:Ticket holder: ${name}. Ticket code: ${code}`,
-    "LOCATION:Eko Convention Centre, Victoria Island, Lagos, Nigeria",
+    "LOCATION:Lagos, Nigeria (venue TBA)",
     "END:VEVENT",
     "END:VCALENDAR",
   ].join("\r\n");
