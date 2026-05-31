@@ -34,24 +34,6 @@ export const getTicketByCode = createServerFn({ method: "POST" })
     return row as PublicTicket;
   });
 
-async function assertStaff(userId: string) {
-  const { data, error } = await sb
-    .from("user_roles")
-    .select("role")
-    .eq("user_id", userId);
-  if (error) throw new Error(error.message);
-  const roles = (data ?? []).map((r: any) => r.role);
-  if (!roles.includes("admin") && !roles.includes("staff")) {
-    throw new Error("Forbidden: requires admin or staff role");
-  }
-  return roles;
-}
-
-async function assertAdmin(userId: string) {
-  const roles = await assertStaff(userId);
-  if (!roles.includes("admin")) throw new Error("Forbidden: requires admin role");
-}
-
 async function getUserRoles(supabase: any, userId: string) {
   const { data, error } = await supabase
     .from("user_roles")
