@@ -90,7 +90,7 @@ export const claimTicket = createServerFn({ method: "POST" })
     }
     const { data: reg, error } = await admin
       .from("registrations")
-      .select("id, email, ticket_code")
+      .select("id, email, ticket_code, state")
       .eq("ticket_code", data.ticketCode.trim())
       .ilike("email", data.email.trim())
       .maybeSingle();
