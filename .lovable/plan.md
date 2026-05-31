@@ -1,64 +1,94 @@
-## Admin Dashboard
 
-Add a new landing page for the admin area at `/admin` that gives you a one-glance view of registrations broken down by every meaningful "level" (attendee type, verification status, payment, check-in, track, state), plus a trend over time. The existing `/admin/registrations` table and `/admin/check-in` scanner stay as drill-down pages — the dashboard links into them with filters pre-applied.
+# AIDIFILN Attendee Portal — Phase 1
 
-### What you'll see on the page
+Turn `/profile` into a real attendee account. Registrants sign up with email + password, claim their existing registration with their ticket code, and get a dashboard for tickets, payments, schedule, hackathon entry, and (after check-in) networking.
 
-1. **Top KPI cards** (6 tiles)
-   - Total registrations
-   - Paid (payment_status = 'paid') + total revenue (sum of amount_kobo → ₦)
-   - Pending payment count
-   - Verified delegates (verification_status = 'verified')
-   - Checked-in count (and % of total)
-   - Registrations in the last 24h
+## What ships
 
-2. **Breakdown cards** (grid of small bar/segment widgets)
-   - By **attendee type**: delegate / sponsor / media / volunteer
-   - By **verification status**: pending / verified / suspicious / rejected / error
-   - By **payment status**: paid / pending / failed
-   - By **track** (top 6 tracks + "Other")
-   - By **state** (top 10 states, scrollable)
+1. **Account + ticket claim**
+   - Email/password signup & login (Supabase Auth). Email verification on.
+   - After signup, a "Claim your ticket" screen asks for the ticket code emailed at registration. We match the code + email and link the registration to the user.
+2. **Profile dashboard (`/profile`)** — tabbed shell:
+   - **Ticket** — QR (ticket_code), attendee type, track, status, add-to-calendar, download brochure (PDF).
+   - **Payments** — amount, status (paid/pending), Paystack reference, receipt link for paid tickets; "Pay now" CTA for pending.
+   - **Agenda** — full event schedule; bookmark masterclasses & breakouts → "My Schedule" view; ICS export per session.
+   - **Hackathon / Pitch** — choose track (Hackathon or Pitch Competition), submit project info, optional team (invite by email), edit until deadline, see status (draft/submitted/under-review/shortlisted).
+   - **Network** — visible only to users whose registration is `checked_in_at IS NOT NULL`. Directory of other checked-in attendees (name, state, attendee type, bio, LinkedIn URL). "Connect on LinkedIn" deep-link + "Save contact" (vCard). Save private notes per contact.
+3. **Settings** — bio, headline, LinkedIn URL, photo, networking visibility toggle (default on once checked in), logout.
 
-3. **Registrations over time** — line/area chart of daily counts for the last 30 days (recharts, already a transitive dep via shadcn chart).
+## Routes
 
-4. **Recent registrations** — last 10 rows (name, type, status pill, time), each linking to `/admin/registrations?search=<email>`.
+```text
+/login                       (exists — keep)
+/signup                      (new)
+/claim-ticket                (new, auth-required, run once)
+/_authenticated/profile      (renamed home of attendee portal, tabbed)
+  ├── ticket   (default)
+  ├── payments
+  ├── agenda
+  ├── hackathon
+  ├── network    (gated: requires checked_in)
+  └── settings
+```
 
-5. **Quick actions** strip — links to "All registrations", "Check-in scanner", "Export CSV" (CSV export is a follow-up; the button can be stubbed or omitted in this pass — say which you prefer).
+Top-level `/profile` redirects to `/_authenticated/profile/ticket`. Bottom tab "Profile" points there.
 
-Each breakdown segment is clickable and deep-links into `/admin/registrations` with the matching filter (e.g. clicking "Verified" jumps to the table filtered by verification=verified). This requires teaching `/admin/registrations` to read its initial filter values from URL search params (small additive change, no behavior change for existing users).
+## Data model (new tables + columns)
 
-### Routes & navigation
+```text
+attendee_profiles            1:1 with auth.users
+  user_id (pk, fk auth.users)
+  registration_id (fk registrations, unique, nullable until claimed)
+  display_name, headline, bio, avatar_url, linkedin_url
+  networking_opt_in (bool, default true)
 
-- New route file: `src/routes/_authenticated.admin.index.tsx` → URL `/admin`. Already protected by the existing `_authenticated` gate which checks admin/staff roles.
-- Add a top header on this page with tabs/links to: Dashboard (current), Registrations, Check-in. Mirror the same tab strip on the two existing admin pages so navigation is consistent.
-- After login, admins land on `/admin` by default (update the post-login redirect logic in `src/routes/login.tsx` if it currently hardcodes `/`).
+session_bookmarks            agenda picks
+  user_id, session_id, created_at  (pk: user_id+session_id)
 
-### Data layer (server)
+hackathon_entries
+  id, user_id, track ('hackathon'|'pitch'), project_name, summary,
+  problem, solution, deck_url, repo_url, video_url,
+  status ('draft'|'submitted'|'shortlisted'|'rejected'),
+  submitted_at, updated_at
 
-Add one new server function in `src/lib/tickets.functions.ts`:
+hackathon_team_members
+  entry_id, email, full_name, role, invited_at, accepted_user_id (nullable)
 
-- `getAdminDashboard` — `createServerFn({ method: "POST" })`, protected by an admin/staff role check (same pattern used by `listRegistrations`). Returns a single payload:
-  - `totals`: `{ total, paid, pending_payment, verified, checked_in, last_24h, revenue_kobo }`
-  - `byAttendeeType`, `byVerification`, `byPayment`, `byTrack`, `byState` — each an array of `{ key, count }`
-  - `trend30d` — array of `{ date: 'YYYY-MM-DD', count }` for the last 30 days (zero-filled)
-  - `recent` — last 10 rows: `{ id, full_name, email, attendee_type, verification_status, payment_status, ticket_code, created_at }`
+networking_connections
+  id, from_user, to_user, note (private to from_user), created_at
+  (pk: from_user+to_user)
+```
 
-Implementation uses `supabaseAdmin` with grouped counts. Because PostgREST doesn't do GROUP BY directly, the function will either (a) run a few small parallel `select('col', { count: 'exact', head: true })` queries per bucket, or (b) call a new `public.admin_dashboard_stats()` SQL function for one round-trip. Recommendation: option (b) — one SECURITY DEFINER SQL function that returns JSON, called by the server fn. This keeps the server fn tiny and the SQL easy to audit. The function is gated by `has_role(auth.uid(),'admin' OR 'staff')` inside the SQL so it's safe even if invoked elsewhere.
+`registrations` already has `checked_in_at` — used as the network gate.
 
-No new tables. No RLS changes to `registrations`. One new DB function via migration.
+Sessions live in `src/lib/event-data.ts` for now (static), so `session_bookmarks.session_id` is a stable slug — no new sessions table yet.
 
-### Files touched
+## Security
 
-- **New** `src/routes/_authenticated.admin.index.tsx` — dashboard page, recharts area chart, KPI/breakdown cards using existing semantic tokens (`--card`, `--text-primary`, `--accent-cyan`, status colors already used in `StatusPill`).
-- **New** `src/components/admin/AdminTabs.tsx` — shared tab strip (Dashboard / Registrations / Check-in).
-- **Edit** `src/lib/tickets.functions.ts` — add `getAdminDashboard`.
-- **Edit** `src/routes/_authenticated.admin.registrations.tsx` — read initial `verification`, `checkedIn`, `search` from URL search params (via `validateSearch` + `Route.useSearch()`); render `<AdminTabs/>` at the top.
-- **Edit** `src/routes/_authenticated.admin.check-in.tsx` — render `<AdminTabs/>` at the top (replaces the lone "Registrations" link).
-- **Edit** `src/routes/login.tsx` — if user has admin/staff role, redirect to `/admin` instead of `/`.
-- **New migration** — `public.admin_dashboard_stats()` SECURITY DEFINER function returning JSON, plus `GRANT EXECUTE` to `authenticated`.
+- RLS on every new table:
+  - `attendee_profiles`: owner can select/update own row; checked-in users can `SELECT` other rows where `networking_opt_in=true` AND that user is also checked in. Enforced by a `SECURITY DEFINER` function `is_checked_in(uid)` + policy using it.
+  - `session_bookmarks`, `hackathon_entries`, `hackathon_team_members`: owner-only.
+  - `networking_connections`: owner reads/writes own outgoing rows; the target user can see who connected with them but not the private note.
+- Ticket claim runs server-side (`createServerFn` + `requireSupabaseAuth`): verifies `email === auth.user.email` AND `ticket_code` matches, then sets `attendee_profiles.registration_id`. One claim per registration; one registration per user.
+- Service-role writes only inside server functions; never imported in components.
 
-### Open questions
+## Technical notes
 
-1. CSV export of all registrations — include in this pass, or ship later?
-2. Date range picker on the trend chart, or fixed 30 days for now (simpler)?
-3. Should the dashboard auto-refresh every 30s, or only on manual refresh / route revisit?
+- Server functions in `src/lib/portal.functions.ts` (`claimTicket`, `getMyProfile`, `updateMyProfile`, `bookmarkSession`, `getMyAgenda`, `upsertHackathonEntry`, `submitHackathonEntry`, `listNetworkAttendees`, `connectWithAttendee`).
+- Use `requireSupabaseAuth` middleware; respect RLS — admin client only for the claim flow.
+- TanStack Query + `useSuspenseQuery` on each tab; loaders call `ensureQueryData`.
+- LinkedIn = `https://www.linkedin.com/in/<handle>` link the user pastes; no LinkedIn OAuth yet (can layer later via the LinkedIn connector).
+- Brochure PDF goes in `public/brochure.pdf` placeholder.
+- Bottom tab "Profile" stays; on auth redirect to `/login?redirect=/profile`.
+
+## Out of scope (Phase 2)
+
+- LinkedIn OAuth sign-in
+- In-app messaging
+- Per-session capacity & waitlist (you chose no caps for now)
+- Admin review UI for hackathon entries (data is captured; admins can read via existing admin shell next pass)
+- Push notifications & PWA badging
+
+## Open question before build
+
+The current `/login` redirects admins/staff to `/admin`. After this change, regular registrants who log in will land on `/profile`. Confirm that's the desired default, or specify a different landing route for non-staff users.
