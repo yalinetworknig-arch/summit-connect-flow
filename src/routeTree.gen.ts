@@ -29,7 +29,6 @@ import { Route as AuthenticatedClaimTicketRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated.admin'
 import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated.profile.index'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated.admin.index'
-import { Route as ApiPublicProvisionAdminRouteImport } from './routes/api/public/provision-admin'
 import { Route as AuthenticatedProfileTicketRouteImport } from './routes/_authenticated.profile.ticket'
 import { Route as AuthenticatedProfileSettingsRouteImport } from './routes/_authenticated.profile.settings'
 import { Route as AuthenticatedProfilePaymentsRouteImport } from './routes/_authenticated.profile.payments'
@@ -140,11 +139,6 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
-const ApiPublicProvisionAdminRoute = ApiPublicProvisionAdminRouteImport.update({
-  id: '/api/public/provision-admin',
-  path: '/api/public/provision-admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthenticatedProfileTicketRoute =
   AuthenticatedProfileTicketRouteImport.update({
     id: '/ticket',
@@ -219,7 +213,6 @@ export interface FileRoutesByFullPath {
   '/profile/payments': typeof AuthenticatedProfilePaymentsRoute
   '/profile/settings': typeof AuthenticatedProfileSettingsRoute
   '/profile/ticket': typeof AuthenticatedProfileTicketRoute
-  '/api/public/provision-admin': typeof ApiPublicProvisionAdminRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/profile/': typeof AuthenticatedProfileIndexRoute
 }
@@ -247,7 +240,6 @@ export interface FileRoutesByTo {
   '/profile/payments': typeof AuthenticatedProfilePaymentsRoute
   '/profile/settings': typeof AuthenticatedProfileSettingsRoute
   '/profile/ticket': typeof AuthenticatedProfileTicketRoute
-  '/api/public/provision-admin': typeof ApiPublicProvisionAdminRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
@@ -278,7 +270,6 @@ export interface FileRoutesById {
   '/_authenticated/profile/payments': typeof AuthenticatedProfilePaymentsRoute
   '/_authenticated/profile/settings': typeof AuthenticatedProfileSettingsRoute
   '/_authenticated/profile/ticket': typeof AuthenticatedProfileTicketRoute
-  '/api/public/provision-admin': typeof ApiPublicProvisionAdminRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/profile/': typeof AuthenticatedProfileIndexRoute
 }
@@ -309,7 +300,6 @@ export interface FileRouteTypes {
     | '/profile/payments'
     | '/profile/settings'
     | '/profile/ticket'
-    | '/api/public/provision-admin'
     | '/admin/'
     | '/profile/'
   fileRoutesByTo: FileRoutesByTo
@@ -337,7 +327,6 @@ export interface FileRouteTypes {
     | '/profile/payments'
     | '/profile/settings'
     | '/profile/ticket'
-    | '/api/public/provision-admin'
     | '/admin'
   id:
     | '__root__'
@@ -367,7 +356,6 @@ export interface FileRouteTypes {
     | '/_authenticated/profile/payments'
     | '/_authenticated/profile/settings'
     | '/_authenticated/profile/ticket'
-    | '/api/public/provision-admin'
     | '/_authenticated/admin/'
     | '/_authenticated/profile/'
   fileRoutesById: FileRoutesById
@@ -387,7 +375,6 @@ export interface RootRouteChildren {
   SummitRoute: typeof SummitRoute
   TracksRoute: typeof TracksRoute
   TicketCodeRoute: typeof TicketCodeRoute
-  ApiPublicProvisionAdminRoute: typeof ApiPublicProvisionAdminRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -532,13 +519,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
-    '/api/public/provision-admin': {
-      id: '/api/public/provision-admin'
-      path: '/api/public/provision-admin'
-      fullPath: '/api/public/provision-admin'
-      preLoaderRoute: typeof ApiPublicProvisionAdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_authenticated/profile/ticket': {
       id: '/_authenticated/profile/ticket'
       path: '/ticket'
@@ -679,7 +659,6 @@ const rootRouteChildren: RootRouteChildren = {
   SummitRoute: SummitRoute,
   TracksRoute: TracksRoute,
   TicketCodeRoute: TicketCodeRoute,
-  ApiPublicProvisionAdminRoute: ApiPublicProvisionAdminRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
