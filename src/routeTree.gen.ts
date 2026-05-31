@@ -29,7 +29,7 @@ import { Route as AuthenticatedClaimTicketRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated.admin'
 import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated.profile.index'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated.admin.index'
-import { Route as ApiPublicProvisionAdminRouteImport } from './routes/api/public/_provision-admin'
+import { Route as ApiPublicProvisionAdminRouteImport } from './routes/api/public/provision-admin'
 import { Route as AuthenticatedProfileTicketRouteImport } from './routes/_authenticated.profile.ticket'
 import { Route as AuthenticatedProfileSettingsRouteImport } from './routes/_authenticated.profile.settings'
 import { Route as AuthenticatedProfilePaymentsRouteImport } from './routes/_authenticated.profile.payments'
@@ -141,8 +141,8 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
 const ApiPublicProvisionAdminRoute = ApiPublicProvisionAdminRouteImport.update({
-  id: '/api/public/_provision-admin',
-  path: '/api/public',
+  id: '/api/public/provision-admin',
+  path: '/api/public/provision-admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedProfileTicketRoute =
@@ -219,7 +219,7 @@ export interface FileRoutesByFullPath {
   '/profile/payments': typeof AuthenticatedProfilePaymentsRoute
   '/profile/settings': typeof AuthenticatedProfileSettingsRoute
   '/profile/ticket': typeof AuthenticatedProfileTicketRoute
-  '/api/public': typeof ApiPublicProvisionAdminRoute
+  '/api/public/provision-admin': typeof ApiPublicProvisionAdminRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/profile/': typeof AuthenticatedProfileIndexRoute
 }
@@ -247,7 +247,7 @@ export interface FileRoutesByTo {
   '/profile/payments': typeof AuthenticatedProfilePaymentsRoute
   '/profile/settings': typeof AuthenticatedProfileSettingsRoute
   '/profile/ticket': typeof AuthenticatedProfileTicketRoute
-  '/api/public': typeof ApiPublicProvisionAdminRoute
+  '/api/public/provision-admin': typeof ApiPublicProvisionAdminRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
@@ -278,7 +278,7 @@ export interface FileRoutesById {
   '/_authenticated/profile/payments': typeof AuthenticatedProfilePaymentsRoute
   '/_authenticated/profile/settings': typeof AuthenticatedProfileSettingsRoute
   '/_authenticated/profile/ticket': typeof AuthenticatedProfileTicketRoute
-  '/api/public/_provision-admin': typeof ApiPublicProvisionAdminRoute
+  '/api/public/provision-admin': typeof ApiPublicProvisionAdminRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/profile/': typeof AuthenticatedProfileIndexRoute
 }
@@ -309,7 +309,7 @@ export interface FileRouteTypes {
     | '/profile/payments'
     | '/profile/settings'
     | '/profile/ticket'
-    | '/api/public'
+    | '/api/public/provision-admin'
     | '/admin/'
     | '/profile/'
   fileRoutesByTo: FileRoutesByTo
@@ -337,7 +337,7 @@ export interface FileRouteTypes {
     | '/profile/payments'
     | '/profile/settings'
     | '/profile/ticket'
-    | '/api/public'
+    | '/api/public/provision-admin'
     | '/admin'
   id:
     | '__root__'
@@ -367,7 +367,7 @@ export interface FileRouteTypes {
     | '/_authenticated/profile/payments'
     | '/_authenticated/profile/settings'
     | '/_authenticated/profile/ticket'
-    | '/api/public/_provision-admin'
+    | '/api/public/provision-admin'
     | '/_authenticated/admin/'
     | '/_authenticated/profile/'
   fileRoutesById: FileRoutesById
@@ -532,10 +532,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
-    '/api/public/_provision-admin': {
-      id: '/api/public/_provision-admin'
-      path: '/api/public'
-      fullPath: '/api/public'
+    '/api/public/provision-admin': {
+      id: '/api/public/provision-admin'
+      path: '/api/public/provision-admin'
+      fullPath: '/api/public/provision-admin'
       preLoaderRoute: typeof ApiPublicProvisionAdminRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -684,3 +684,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
