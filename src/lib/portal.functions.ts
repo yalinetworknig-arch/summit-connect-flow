@@ -35,15 +35,15 @@ export type RegistrationSummary = {
   created_at: string;
 };
 
-async function ensureProfile(userId: string) {
-  const { data, error } = await admin
+async function ensureProfile(client: any, userId: string) {
+  const { data, error } = await client
     .from("attendee_profiles")
     .upsert({ user_id: userId }, { onConflict: "user_id", ignoreDuplicates: true })
     .select("*")
     .maybeSingle();
   if (error) throw new Error(error.message);
   if (data) return data as AttendeeProfile;
-  const { data: existing, error: e2 } = await admin
+  const { data: existing, error: e2 } = await client
     .from("attendee_profiles")
     .select("*")
     .eq("user_id", userId)
@@ -98,7 +98,7 @@ export const getMyPortal = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { userId, claims, supabase } = context as { userId: string; claims: any; supabase: any };
-    let profile = await ensureProfile(userId);
+    let profile = await ensureProfile(supabase, userId);
     let emailMatchedRegistration: RegistrationSummary | null = null;
 
     if (!profile.registration_id && claims?.email) {
@@ -165,7 +165,7 @@ export const claimTicket = createServerFn({ method: "POST" })
       throw new Error("This ticket has already been claimed by another account.");
     }
 
-    await ensureProfile(userId);
+    await ensureProfile(admin, userId);
     const { error: uErr } = await admin
       .from("attendee_profiles")
       .update({ registration_id: reg.id, home_state: (reg as any).state ?? null })
@@ -197,7 +197,7 @@ export const updateMyProfile = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     const { userId } = context as { userId: string };
-    await ensureProfile(userId);
+    await ensureProfile(admin, userId);
     const patch: Record<string, unknown> = {};
     for (const [k, v] of Object.entries(data)) {
       if (v === undefined) continue;
