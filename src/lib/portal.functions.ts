@@ -79,17 +79,37 @@ async function autoLinkByEmail(userId: string, email: string | undefined | null)
   return reg.id as string;
 }
 
+async function getOwnRegistrationByEmail(supabase: any, email: string | undefined | null) {
+  if (!email) return null;
+  const { data, error } = await supabase
+    .from("registrations")
+    .select(
+      "id, ticket_code, full_name, email, attendee_type, track_selection, payment_status, amount_kobo, paystack_reference, verification_status, checked_in_at, created_at",
+    )
+    .ilike("email", email)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  return (data ?? null) as RegistrationSummary | null;
+}
+
 export const getMyPortal = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { userId, claims } = context as { userId: string; claims: any };
+    const { userId, claims, supabase } = context as { userId: string; claims: any; supabase: any };
     let profile = await ensureProfile(userId);
-    if (!profile.registration_id) {
+    let emailMatchedRegistration: RegistrationSummary | null = null;
+
+    if (!profile.registration_id && claims?.email) {
+      emailMatchedRegistration = await getOwnRegistrationByEmail(supabase, claims.email);
+    } else if (!profile.registration_id) {
       const linked = await autoLinkByEmail(userId, claims?.email);
       if (linked) {
         profile = { ...profile, registration_id: linked };
       }
     }
+
     let registration: RegistrationSummary | null = null;
     if (profile.registration_id) {
       const { data, error } = await admin
@@ -102,6 +122,11 @@ export const getMyPortal = createServerFn({ method: "GET" })
       if (error) throw new Error(error.message);
       registration = (data ?? null) as RegistrationSummary | null;
     }
+
+    if (!registration && emailMatchedRegistration) {
+      registration = emailMatchedRegistration;
+    }
+
     return { profile, registration };
   });
 
