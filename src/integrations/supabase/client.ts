@@ -13,16 +13,18 @@ function createSupabaseClient() {
       ...(!SUPABASE_URL ? ['SUPABASE_URL'] : []),
       ...(!SUPABASE_PUBLISHABLE_KEY ? ['SUPABASE_PUBLISHABLE_KEY'] : []),
     ];
-    const message = `Missing Supabase environment variable(s): ${missing.join(', ')}. Connect Supabase in Lovable Cloud.`;
+    const message = `Missing Supabase environment variable(s): ${missing.join(', ')}. Please set them in your .env file.`;
     console.error(`[Supabase] ${message}`);
     throw new Error(message);
   }
 
+  const isBrowser = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+
   return createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
     auth: {
-      storage: typeof window !== 'undefined' ? localStorage : undefined,
-      persistSession: true,
-      autoRefreshToken: true,
+      storage: isBrowser ? window.localStorage : undefined,
+      persistSession: isBrowser,
+      autoRefreshToken: isBrowser,
     }
   });
 }
