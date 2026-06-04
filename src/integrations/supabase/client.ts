@@ -18,6 +18,7 @@ function createSupabaseClient() {
     throw new Error(message);
   }
 
+  // SSR-safe: localStorage only exists in the browser
   const isBrowser = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
 
   return createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
@@ -39,4 +40,3 @@ export const supabase = new Proxy({} as ReturnType<typeof createSupabaseClient>,
     return Reflect.get(_supabase, prop, receiver);
   },
 });
-
