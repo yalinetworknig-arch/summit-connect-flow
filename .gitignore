@@ -20,6 +20,14 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# Environment variables (contain secrets — never commit)
+.env
+.env.*
+!.env.example
+
+# Claude Code session files
+.claude/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
