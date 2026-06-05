@@ -20,7 +20,7 @@ function resolveOrigin(): string {
   } catch {
     // not in request context
   }
-  return "https://summit-connect-flow.lovable.app";
+  return "https://summit-connect-flow.vercel.app";
 }
 
 function renderHtml(input: TicketEmailInput, ticketUrl: string) {
