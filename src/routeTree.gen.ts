@@ -24,6 +24,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TicketCodeRouteImport } from './routes/ticket.$code'
 import { Route as RegisterIdRouteImport } from './routes/register.$id'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
 import { Route as AuthenticatedClaimTicketRouteImport } from './routes/_authenticated.claim-ticket'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated.admin'
@@ -111,6 +112,11 @@ const RegisterIdRoute = RegisterIdRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => RegisterRoute,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
@@ -203,6 +209,7 @@ export interface FileRoutesByFullPath {
   '/tracks': typeof TracksRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/claim-ticket': typeof AuthenticatedClaimTicketRoute
+  '/admin/login': typeof AdminLoginRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/admin/check-in': typeof AuthenticatedAdminCheckInRoute
@@ -230,6 +237,7 @@ export interface FileRoutesByTo {
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
   '/claim-ticket': typeof AuthenticatedClaimTicketRoute
+  '/admin/login': typeof AdminLoginRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/admin/check-in': typeof AuthenticatedAdminCheckInRoute
@@ -260,6 +268,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/claim-ticket': typeof AuthenticatedClaimTicketRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/_authenticated/admin/check-in': typeof AuthenticatedAdminCheckInRoute
@@ -290,6 +299,7 @@ export interface FileRouteTypes {
     | '/tracks'
     | '/admin'
     | '/claim-ticket'
+    | '/admin/login'
     | '/register/$id'
     | '/ticket/$code'
     | '/admin/check-in'
@@ -317,6 +327,7 @@ export interface FileRouteTypes {
     | '/summit'
     | '/tracks'
     | '/claim-ticket'
+    | '/admin/login'
     | '/register/$id'
     | '/ticket/$code'
     | '/admin/check-in'
@@ -346,6 +357,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/claim-ticket'
     | '/_authenticated/profile'
+    | '/admin/login'
     | '/register/$id'
     | '/ticket/$code'
     | '/_authenticated/admin/check-in'
@@ -374,6 +386,7 @@ export interface RootRouteChildren {
   SponsorsRoute: typeof SponsorsRoute
   SummitRoute: typeof SummitRoute
   TracksRoute: typeof TracksRoute
+  AdminLoginRoute: typeof AdminLoginRoute
   TicketCodeRoute: typeof TicketCodeRoute
 }
 
@@ -483,6 +496,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/register/$id'
       preLoaderRoute: typeof RegisterIdRouteImport
       parentRoute: typeof RegisterRoute
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
@@ -658,18 +678,9 @@ const rootRouteChildren: RootRouteChildren = {
   SponsorsRoute: SponsorsRoute,
   SummitRoute: SummitRoute,
   TracksRoute: TracksRoute,
+  AdminLoginRoute: AdminLoginRoute,
   TicketCodeRoute: TicketCodeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
