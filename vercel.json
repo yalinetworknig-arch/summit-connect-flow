@@ -1,9 +1,3 @@
 {
-  "buildCommand": "bun run build",
-  "installCommand": "bun install --frozen-lockfile",
-  "outputDirectory": ".output/public",
-  "framework": null,
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
-  ]
+  "_comment": "This app uses @cloudflare/vite-plugin and is designed for Cloudflare Pages. Deploy via Cloudflare Pages dashboard connected to this GitHub repo. Build command: bun run build. Output directory: .output/static"
 }
