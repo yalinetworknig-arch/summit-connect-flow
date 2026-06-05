@@ -1,14 +1,7 @@
-import { cloudflare } from "@cloudflare/vite-plugin";
-import tailwindcss from "@tailwindcss/vite";
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
+import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
-  plugins: [
-    tanstackStart({ server: { entry: "server" } }),
-    cloudflare(),
-    tailwindcss(),
-    tsconfigPaths(),
-  ],
+  tanstackStart: {
+    server: { entry: "server" },
+  },
 });
