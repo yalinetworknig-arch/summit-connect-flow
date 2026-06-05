@@ -20,6 +20,7 @@ function PaymentsTab() {
   if (!reg) return null;
   const naira = reg.amount_kobo != null ? `₦${(reg.amount_kobo / 100).toLocaleString()}` : "—";
   const paid = reg.payment_status === "paid";
+  const pendingManual = reg.payment_status !== "paid" && reg.amount_kobo;
   return (
     <div className="rounded-2xl border p-6 max-w-2xl" style={{ borderColor: "var(--border-strong)", background: "var(--card)" }}>
       <p className="text-xs uppercase tracking-widest mb-2" style={{ color: "var(--text-secondary)" }}>Payment</p>
@@ -33,8 +34,10 @@ function PaymentsTab() {
         <dt style={{ color: "var(--text-secondary)" }}>Registered</dt>
         <dd style={{ color: "var(--text-primary)" }}>{new Date(reg.created_at).toLocaleDateString()}</dd>
       </dl>
-      {!paid && reg.amount_kobo ? (
-        <a href={`/register/${reg.id}`} className="mt-6 inline-flex items-center px-5 py-2.5 rounded-full text-sm font-semibold" style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}>Complete payment</a>
+      {pendingManual ? (
+        <p className="mt-6 text-sm" style={{ color: "var(--text-secondary)" }}>
+          Payment is being handled manually by the summit team. Your registration is already on record.
+        </p>
       ) : null}
     </div>
   );
