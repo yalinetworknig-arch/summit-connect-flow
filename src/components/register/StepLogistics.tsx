@@ -1,6 +1,4 @@
 import { Checkbox } from "@/components/ui/checkbox";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import type { FormState } from "@/lib/register/schema";
 
 export function StepLogistics({
@@ -42,22 +40,6 @@ export function StepLogistics({
           </div>
         </div>
       </label>
-      <div className="flex flex-col gap-1.5">
-        <Label className="text-sm" style={{ color: "var(--text-primary)" }}>
-          Dietary restrictions
-        </Label>
-        <Textarea
-          value={value.dietary_restrictions ?? ""}
-          onChange={(e) => onChange({ dietary_restrictions: e.target.value })}
-          maxLength={500}
-          rows={4}
-          placeholder="Halal, vegetarian, allergies, etc."
-        />
-        <div className="flex justify-between text-xs" style={{ color: "var(--text-secondary)" }}>
-          <span>{errors.dietary_restrictions ?? ""}</span>
-          <span>{(value.dietary_restrictions ?? "").length}/500</span>
-        </div>
-      </div>
     </div>
   );
 }
