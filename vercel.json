@@ -1,3 +1,6 @@
 {
-  "_comment": "This app uses @cloudflare/vite-plugin and is designed for Cloudflare Pages. Deploy via Cloudflare Pages dashboard connected to this GitHub repo. Build command: bun run build. Output directory: .output/static"
+  "buildCommand": "bun run build",
+  "installCommand": "bun install --frozen-lockfile",
+  "framework": null,
+  "outputDirectory": ".vercel/output"
 }
