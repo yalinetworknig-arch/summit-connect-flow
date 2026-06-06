@@ -13,7 +13,7 @@ function stripModuleDirectivesPlugin(): Plugin {
     transform(code, id) {
       if (!id.includes("node_modules")) return null;
       const stripped = code.replace(
-        /^\s*["'](use client|use server)["'];?\s*\n?/gm,
+        /^\s*["']use client["'];?\s*\n?/gm,
         ""
       );
       if (stripped === code) return null;
