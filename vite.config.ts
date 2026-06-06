@@ -25,12 +25,12 @@ function stripModuleDirectivesPlugin(): Plugin {
 export default defineConfig({
   plugins: [
     stripModuleDirectivesPlugin(),
-    react(),
     tanstackStart({
       server: {
         preset: "netlify",
       },
     }),
+    react(),
     tailwindcss(),
     tsconfigPaths(),
   ],
