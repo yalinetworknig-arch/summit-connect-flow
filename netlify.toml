@@ -1,11 +1,12 @@
 [build]
-  command = "npm run build 2>&1; BUILD_EXIT=$?; echo '--- BUILD DONE exit='$BUILD_EXIT; ls -la .netlify/ 2>/dev/null || echo 'NO .netlify DIR'; ls -la .output/ 2>/dev/null || echo 'NO .output DIR'; exit $BUILD_EXIT"
-  publish = ".netlify/static"
+  command = "npm run build"
+  publish = "dist/client"
 
 [build.environment]
   NODE_VERSION = "20"
 
 [functions]
+  directory = "netlify/functions"
   node_bundler = "esbuild"
 
 [[redirects]]
