@@ -13,4 +13,20 @@ export default defineConfig({
     tailwindcss(),
     tsconfigPaths(),
   ],
+  build: {
+    rollupOptions: {
+      external: [
+        /^@tanstack\/.*/,
+        /^framer-motion(\/.*)?$/,
+        /^@radix-ui\/.*/,
+      ],
+    },
+  },
+  ssr: {
+    external: [
+      /^@tanstack\/.*/,
+      /^framer-motion(\/.*)?$/,
+      /^@radix-ui\/.*/,
+    ],
+  },
 });
