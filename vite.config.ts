@@ -1,11 +1,11 @@
 import tailwindcss from "@tailwindcss/vite";
+import react from "@vitejs/plugin-react";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { defineConfig, type Plugin } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 // Strips "use client" / "use server" directives from node_modules before
-// Vite/esbuild tries to bundle them — prevents "Module level directives
-// cause errors when bundled" build failures with React ecosystem packages.
+// Vite/esbuild tries to bundle them — prevents build failures.
 function stripModuleDirectivesPlugin(): Plugin {
   return {
     name: "strip-module-directives",
@@ -25,6 +25,7 @@ function stripModuleDirectivesPlugin(): Plugin {
 export default defineConfig({
   plugins: [
     stripModuleDirectivesPlugin(),
+    react(),
     tanstackStart({
       server: {
         preset: "netlify",
@@ -33,9 +34,6 @@ export default defineConfig({
     tailwindcss(),
     tsconfigPaths(),
   ],
-  ssr: {
-    external: true,
-  },
   build: {
     rollupOptions: {
       onwarn(warning, warn) {
