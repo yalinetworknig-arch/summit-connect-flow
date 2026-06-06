@@ -87,8 +87,13 @@ export async function sendTicketEmail(input: TicketEmailInput): Promise<{ ok: bo
   const ticketUrl = `${origin}/ticket/${encodeURIComponent(input.ticketCode)}`;
 
   try {
+    // 8-second timeout — don't let a slow/failing email block registration
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
+      signal: controller.signal,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
@@ -101,6 +106,8 @@ export async function sendTicketEmail(input: TicketEmailInput): Promise<{ ok: bo
         text: renderText(input, ticketUrl),
       }),
     });
+    clearTimeout(timeout);
+
     if (!res.ok) {
       const body = await res.text();
       return { ok: false, error: `Resend ${res.status}: ${body}` };
@@ -108,6 +115,7 @@ export async function sendTicketEmail(input: TicketEmailInput): Promise<{ ok: bo
     const json = (await res.json()) as { id?: string };
     return { ok: true, id: json.id };
   } catch (e) {
-    return { ok: false, error: e instanceof Error ? e.message : String(e) };
+    const msg = e instanceof Error ? e.message : String(e);
+    return { ok: false, error: msg.includes("abort") ? "Email timed out (registration still saved)" : msg };
   }
 }
