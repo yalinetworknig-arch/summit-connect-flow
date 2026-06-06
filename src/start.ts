@@ -3,19 +3,20 @@ import { createStart, createMiddleware } from "@tanstack/react-start";
 import { renderErrorPage } from "./lib/error-page";
 import { attachSupabaseAuth } from "@/integrations/supabase/auth-attacher";
 
-// Startup check: fail fast (and log clearly) if required Supabase server
-// env vars are missing, instead of crashing the first server function call.
+// Guard: only run server-side checks when not in the browser
+const isServer = typeof window === "undefined";
+
 const REQUIRED_SUPABASE_ENV = [
   "SUPABASE_URL",
   "SUPABASE_PUBLISHABLE_KEY",
   "SUPABASE_SERVICE_ROLE_KEY",
 ] as const;
 
-const missingSupabaseEnv = REQUIRED_SUPABASE_ENV.filter(
-  (name) => !process.env[name],
-);
+const missingSupabaseEnv = isServer
+  ? REQUIRED_SUPABASE_ENV.filter((name) => !process.env[name])
+  : [];
 
-if (missingSupabaseEnv.length > 0) {
+if (isServer && missingSupabaseEnv.length > 0) {
   const message =
     `[Startup] Missing Supabase environment variable(s): ${missingSupabaseEnv.join(", ")}. ` +
     `Add these to Netlify Environment Variables (Site Configuration → Environment Variables), then redeploy.`;
@@ -30,17 +31,9 @@ const errorMiddleware = createMiddleware().server(async ({ next }) => {
       throw error;
     }
     console.error(error);
-    const friendly =
-      missingSupabaseEnv.length > 0
-        ? `Server is missing required environment variables: ${missingSupabaseEnv.join(", ")}. ` +
-          `Add these to Netlify Environment Variables (Site Configuration → Environment Variables), then redeploy.`
-        : undefined;
     return new Response(renderErrorPage(), {
       status: 500,
-      headers: {
-        "content-type": "text/html; charset=utf-8",
-        ...(friendly ? { "x-startup-error": friendly } : {}),
-      },
+      headers: { "content-type": "text/html; charset=utf-8" },
     });
   }
 });
