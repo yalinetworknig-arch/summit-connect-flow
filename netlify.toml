@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build"
+  command = "npm run build 2>&1; BUILD_EXIT=$?; echo '--- BUILD DONE exit='$BUILD_EXIT; ls -la .netlify/ 2>/dev/null || echo 'NO .netlify DIR'; ls -la .output/ 2>/dev/null || echo 'NO .output DIR'; exit $BUILD_EXIT"
   publish = ".netlify/static"
 
 [build.environment]
