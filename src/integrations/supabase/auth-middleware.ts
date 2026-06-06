@@ -17,7 +17,7 @@ export const requireSupabaseAuth = createMiddleware({ type: 'function' }).server
         ...(!SUPABASE_URL ? ['SUPABASE_URL'] : []),
         ...(!SUPABASE_PUBLISHABLE_KEY ? ['SUPABASE_PUBLISHABLE_KEY'] : []),
       ];
-      const message = `Missing Supabase environment variable(s): ${missing.join(', ')}. Add these to Vercel Environment Variables (Project Settings → Environment Variables).`;
+      const message = `Missing Supabase environment variable(s): ${missing.join(', ')}. Add these to Netlify Environment Variables (Site Configuration → Environment Variables).`;
       console.error(`[Supabase] ${message}`);
       throw new Error(message);
     }

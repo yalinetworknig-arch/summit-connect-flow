@@ -18,7 +18,7 @@ const missingSupabaseEnv = REQUIRED_SUPABASE_ENV.filter(
 if (missingSupabaseEnv.length > 0) {
   const message =
     `[Startup] Missing Supabase environment variable(s): ${missingSupabaseEnv.join(", ")}. ` +
-    `Add these to your Vercel Environment Variables (Project Settings → Environment Variables), then redeploy.`;
+    `Add these to Netlify Environment Variables (Site Configuration → Environment Variables), then redeploy.`;
   console.error("\n" + "=".repeat(80) + "\n" + message + "\n" + "=".repeat(80) + "\n");
 }
 
@@ -33,7 +33,7 @@ const errorMiddleware = createMiddleware().server(async ({ next }) => {
     const friendly =
       missingSupabaseEnv.length > 0
         ? `Server is missing required environment variables: ${missingSupabaseEnv.join(", ")}. ` +
-          `Add these to your Vercel Environment Variables (Project Settings → Environment Variables), then redeploy.`
+          `Add these to Netlify Environment Variables (Site Configuration → Environment Variables), then redeploy.`
         : undefined;
     return new Response(renderErrorPage(), {
       status: 500,

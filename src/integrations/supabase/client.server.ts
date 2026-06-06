@@ -14,7 +14,7 @@ function createSupabaseAdminClient() {
       ...(!SUPABASE_URL ? ['SUPABASE_URL'] : []),
       ...(!SUPABASE_SERVICE_ROLE_KEY ? ['SUPABASE_SERVICE_ROLE_KEY'] : []),
     ];
-    const message = `Missing Supabase environment variable(s): ${missing.join(', ')}. Add these to Vercel Environment Variables (Project Settings → Environment Variables).`;
+    const message = `Missing Supabase environment variable(s): ${missing.join(', ')}. Add these to Netlify Environment Variables (Site Configuration → Environment Variables).`;
     console.error(`[Supabase] ${message}`);
     throw new Error(message);
   }
