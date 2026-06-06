@@ -51,15 +51,17 @@ export const submitRegistration = createServerFn({ method: "POST" })
       .select("id, full_name, email, ticket_code, track_selection, attendee_type, created_at, payment_status, amount_kobo")
       .single();
     if (error) throw new Error(error.message);
+    // Fire-and-forget — do NOT await the email so it never blocks registration
     if (row?.email) {
-      const result = await sendTicketEmail({
+      sendTicketEmail({
         to: row.email,
         fullName: row.full_name,
         ticketCode: row.ticket_code,
         track: row.track_selection,
         attendeeType: row.attendee_type,
-      });
-      if (!result.ok) console.error("ticket email failed:", result.error);
+      }).then((result) => {
+        if (!result.ok) console.error("ticket email failed:", result.error);
+      }).catch((e) => console.error("ticket email threw:", e));
     }
     return row;
   });
