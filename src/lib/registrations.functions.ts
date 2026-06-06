@@ -3,6 +3,20 @@ import { z } from "zod";
 import { fullRegistrationSchema } from "@/lib/register/schema";
 import { sendTicketEmail } from "@/lib/email/ticket-email.server";
 
+/** Normalize Nigerian phone numbers to +234XXXXXXXXXX.
+ *  Accepts: 08012345678, 8012345678, +2348012345678, 234-801-234-5678, etc.
+ *  Falls back to the original value if it doesn't look Nigerian. */
+function normalizeNigerianPhone(raw: string): string {
+  const digits = raw.replace(/\D/g, ""); // strip everything except digits
+  if (digits.startsWith("234") && digits.length === 13) return `+${digits}`;
+  if (digits.startsWith("0") && digits.length === 11) return `+234${digits.slice(1)}`;
+  if (digits.length === 10) return `+234${digits}`;
+  // already has + prefix?
+  const cleaned = raw.trim();
+  if (cleaned.startsWith("+")) return cleaned;
+  return raw.trim(); // unknown format — pass through, constraint is now relaxed
+}
+
 export const submitRegistration = createServerFn({ method: "POST" })
   .inputValidator((input) => fullRegistrationSchema.parse(input))
   .handler(async ({ data }) => {
@@ -10,6 +24,7 @@ export const submitRegistration = createServerFn({ method: "POST" })
     const nn = (v: string | null | undefined) => (v?.trim() ? v.trim() : null);
     const payload = {
       ...data,
+      phone: normalizeNigerianPhone(data.phone),
       yali_id: nn(data.yali_id),
       yali_certificate_url: nn(data.yali_certificate_url),
       dietary_restrictions: nn(data.dietary_restrictions),
