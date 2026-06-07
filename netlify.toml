@@ -8,7 +8,9 @@
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
-  timeout = 30
+
+[functions."*"]
+  timeout = 26
 
 # Serve static assets directly
 [[redirects]]
