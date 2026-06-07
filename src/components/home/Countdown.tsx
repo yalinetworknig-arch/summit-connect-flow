@@ -31,21 +31,21 @@ export function Countdown() {
   ];
 
   return (
-    <div className="flex items-center gap-3 sm:gap-6 flex-wrap justify-center">
+    <div className="flex items-center gap-2 sm:gap-6 flex-nowrap justify-center w-full">
       {cells.map(([label, value]) => (
         <div
           key={label}
-          className="rounded-xl border border-white/15 bg-white/5 backdrop-blur-md px-4 sm:px-6 py-3 sm:py-4 min-w-[80px] sm:min-w-[110px] text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_24px_-12px_rgba(0,217,255,0.35)]"
+          className="rounded-xl border border-white/15 bg-white/5 backdrop-blur-md flex-1 min-w-0 sm:min-w-[110px] sm:flex-none px-1 sm:px-6 py-3 sm:py-4 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_8px_24px_-12px_rgba(0,217,255,0.35)]"
         >
           <div
             className="tabular-nums font-bold leading-none text-white font-display"
             style={{
-              fontSize: "clamp(28px, 5vw, 48px)",
+              fontSize: "clamp(22px, 6.5vw, 48px)",
             }}
           >
             {mounted ? String(value).padStart(2, "0") : "--"}
           </div>
-          <div className="mt-2 text-[12px] sm:text-[14px] uppercase tracking-widest text-white/70">
+          <div className="mt-1.5 text-[9px] sm:text-[14px] uppercase tracking-widest text-white/70">
             {label}
           </div>
         </div>
