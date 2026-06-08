@@ -1,5 +1,4 @@
 import { Checkbox } from "@/components/ui/checkbox";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -65,27 +64,6 @@ export function StepLogistics({
             </div>
           </div>
         </label>
-      </div>
-
-      {/* Dietary restrictions */}
-      <div className="flex flex-col gap-1.5">
-        <Label htmlFor="dietary_restrictions" className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>
-          Dietary restrictions or allergies{" "}
-          <span className="font-normal" style={{ color: "var(--text-secondary)" }}>(optional)</span>
-        </Label>
-        <Textarea
-          id="dietary_restrictions"
-          value={value.dietary_restrictions ?? ""}
-          onChange={(e) => onChange({ dietary_restrictions: e.target.value })}
-          maxLength={500}
-          rows={2}
-          placeholder="e.g. vegetarian, no pork, nut allergy…"
-        />
-        {errors.dietary_restrictions && (
-          <span className="text-xs" style={{ color: "var(--error)" }}>
-            {errors.dietary_restrictions}
-          </span>
-        )}
       </div>
 
       {/* How did you hear about the summit */}

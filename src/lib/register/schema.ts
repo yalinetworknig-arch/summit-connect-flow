@@ -82,7 +82,6 @@ export const step3Schema = z.object({
 export const step4Schema = z.object({
   accommodation_needed: z.boolean(),
   travel_support_needed: z.boolean(),
-  dietary_restrictions: z.string().trim().max(500).optional().or(z.literal("")),
 });
 
 export const fullRegistrationSchema = z.object({
@@ -110,7 +109,6 @@ export const fullRegistrationSchema = z.object({
   track_selection: z.string().min(1).max(40),
   accommodation_needed: z.boolean(),
   travel_support_needed: z.boolean(),
-  dietary_restrictions: z.string().trim().max(500).nullable().optional(),
   heard_about_summit: z.string().trim().max(120).nullable().optional(),
   paystack_reference: z.string().trim().max(120).nullable().optional(),
   amount_kobo: z.number().int().nonnegative().nullable().optional(),
