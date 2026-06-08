@@ -6,6 +6,15 @@ import { ProfileTabs } from "@/components/portal/ProfileTabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/hooks/use-session";
 import { LogOut } from "lucide-react";
+import { TRACKS } from "@/lib/register/tracks";
+
+const ATTENDEE_LABELS: Record<string, string> = {
+  delegate: "YALI Delegate",
+  sponsor: "Sponsor Representative",
+  media: "Media",
+  public: "General Public",
+  volunteer: "Volunteer",
+};
 
 export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({ meta: [{ title: "My profile — AIDIFILN" }] }),
@@ -24,9 +33,21 @@ function ProfileShell() {
 
   if (isLoading || !data) {
     return (
-      <div className="max-w-2xl mx-auto px-6 py-16 text-center" style={{ color: "var(--text-secondary)" }}>
-        Loading your profile…
-      </div>
+      <section className="max-w-5xl mx-auto px-6 py-10 animate-pulse">
+        <div className="flex items-start justify-between gap-4 mb-6">
+          <div className="space-y-2">
+            <div className="h-3 w-24 rounded" style={{ background: "var(--surface)" }} />
+            <div className="h-8 w-48 rounded-lg" style={{ background: "var(--surface)" }} />
+            <div className="h-4 w-36 rounded" style={{ background: "var(--surface)" }} />
+          </div>
+        </div>
+        <div className="flex gap-2 mb-6">
+          {[1,2,3,4,5].map(i => (
+            <div key={i} className="h-9 w-20 rounded-full" style={{ background: "var(--surface)" }} />
+          ))}
+        </div>
+        <div className="rounded-2xl border p-6 h-48" style={{ background: "var(--card)", borderColor: "var(--border-strong)" }} />
+      </section>
     );
   }
 
@@ -61,7 +82,9 @@ function ProfileShell() {
             {data.profile.display_name || data.registration.full_name}
           </h1>
           <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-            {data.registration.attendee_type} · {data.registration.track_selection ?? "No track yet"}
+            {ATTENDEE_LABELS[data.registration.attendee_type] ?? data.registration.attendee_type}
+            {" · "}
+            {TRACKS.find(t => t.slug === data.registration.track_selection)?.title ?? data.registration.track_selection ?? "No track yet"}
           </p>
         </div>
         <button

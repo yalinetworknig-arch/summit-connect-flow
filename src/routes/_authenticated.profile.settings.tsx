@@ -31,17 +31,28 @@ function SettingsTab() {
         <label key={k} className="block text-sm">
           <span style={{ color: "var(--text-secondary)" }}>{label}</span>
           {kind === "textarea" ? (
-            <textarea rows={3} value={(form as any)[k]} onChange={(e) => setForm((f) => ({ ...f, [k]: e.target.value }))} className="mt-1 w-full px-3 py-2 rounded-md border bg-transparent" style={input} />
+            <textarea rows={3} value={(form as any)[k]} onChange={(e) => setForm((f) => ({ ...f, [k]: e.target.value }))} className="mt-1 w-full px-3 py-3 rounded-md border bg-transparent min-h-[48px]" style={input} />
           ) : (
-            <input value={(form as any)[k]} onChange={(e) => setForm((f) => ({ ...f, [k]: e.target.value }))} className="mt-1 w-full px-3 py-2 rounded-md border bg-transparent" style={input} />
+            <input value={(form as any)[k]} onChange={(e) => setForm((f) => ({ ...f, [k]: e.target.value }))} className="mt-1 w-full px-3 py-3 rounded-md border bg-transparent min-h-[48px]" style={input} />
           )}
         </label>
       ))}
-      <label className="flex items-center gap-3 text-sm">
-        <input type="checkbox" checked={form.networking_opt_in} onChange={(e) => setForm((f) => ({ ...f, networking_opt_in: e.target.checked }))} />
+      <label className="flex items-start gap-3 text-sm cursor-pointer min-h-[44px]">
+        <input
+          type="checkbox"
+          checked={form.networking_opt_in}
+          onChange={(e) => setForm((f) => ({ ...f, networking_opt_in: e.target.checked }))}
+          className="mt-0.5 w-4 h-4 accent-cyan-400 cursor-pointer"
+          style={{ accentColor: "var(--accent-cyan)" }}
+        />
         <span style={{ color: "var(--text-primary)" }}>List me in the attendee directory once I'm checked in</span>
       </label>
-      {msg && <p className="text-sm" style={{ color: "#10b981" }}>{msg}</p>}
+      {msg && (
+        <p className="text-sm flex items-center gap-1.5 px-3 py-2 rounded-md" role="status" style={{ color: "#10b981", background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.3)" }}>
+          <svg className="w-4 h-4 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd"/></svg>
+          Profile saved successfully.
+        </p>
+      )}
       {err && <p className="text-sm" style={{ color: "var(--danger, #ef4444)" }}>{err}</p>}
       <button type="submit" disabled={save.isPending} className="px-5 py-2.5 rounded-full text-sm font-semibold disabled:opacity-60" style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}>{save.isPending ? "Saving…" : "Save changes"}</button>
     </form>

@@ -4,6 +4,15 @@ import { useQuery } from "@tanstack/react-query";
 import { getMyPortal } from "@/lib/portal.functions";
 import { useSession } from "@/hooks/use-session";
 import { Download, BookOpen } from "lucide-react";
+import { TRACKS } from "@/lib/register/tracks";
+
+const ATTENDEE_LABELS: Record<string, string> = {
+  delegate: "YALI Delegate",
+  sponsor: "Sponsor Representative",
+  media: "Media",
+  public: "General Public",
+  volunteer: "Volunteer",
+};
 
 export const Route = createFileRoute("/_authenticated/profile/ticket")({
   component: TicketTab,
@@ -27,9 +36,9 @@ function TicketTab() {
         <h2 className="text-xl font-bold mb-4" style={{ color: "var(--text-primary)", fontFamily: "Space Grotesk, sans-serif" }}>{reg.full_name}</h2>
         <dl className="grid grid-cols-2 gap-y-3 text-sm">
           <dt style={{ color: "var(--text-secondary)" }}>Attendee type</dt>
-          <dd style={{ color: "var(--text-primary)" }} className="capitalize">{reg.attendee_type}</dd>
+          <dd style={{ color: "var(--text-primary)" }}>{ATTENDEE_LABELS[reg.attendee_type] ?? reg.attendee_type}</dd>
           <dt style={{ color: "var(--text-secondary)" }}>Track</dt>
-          <dd style={{ color: "var(--text-primary)" }}>{reg.track_selection ?? "—"}</dd>
+          <dd style={{ color: "var(--text-primary)" }}>{TRACKS.find(t => t.slug === reg.track_selection)?.title ?? reg.track_selection ?? "—"}</dd>
           <dt style={{ color: "var(--text-secondary)" }}>Verification</dt>
           <dd style={{ color: "var(--text-primary)" }} className="capitalize">{reg.verification_status}</dd>
           <dt style={{ color: "var(--text-secondary)" }}>Check-in</dt>

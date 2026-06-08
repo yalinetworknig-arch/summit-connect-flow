@@ -80,21 +80,22 @@ function SignupPage() {
             type="email"
             required
             autoComplete="email"
+            inputMode="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full px-3 py-2 rounded-md border bg-transparent"
+            className="mt-1 w-full px-3 py-3 rounded-md border bg-transparent min-h-[48px]"
             style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
           />
         </label>
         {err && (
-          <p className="text-sm" style={{ color: "var(--danger, #ef4444)" }}>
+          <p className="text-sm px-3 py-2 rounded-md" role="alert" style={{ color: "#fecaca", background: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.35)" }}>
             {err}
           </p>
         )}
         <button
           disabled={busy}
           type="submit"
-          className="w-full px-4 py-2.5 rounded-full text-sm font-semibold disabled:opacity-60"
+          className="w-full px-4 py-3 rounded-full text-sm font-semibold disabled:opacity-60 min-h-[48px]"
           style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
         >
           {busy ? "Sending link…" : "Email me a sign-in link"}

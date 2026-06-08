@@ -83,8 +83,9 @@ function LoginPage() {
       <p className="text-sm mb-6" style={{ color: "var(--text-secondary)" }}>Access your attendee profile, ticket and agenda.</p>
 
       {resetSent && (
-        <div className="mb-4 px-4 py-3 rounded-lg text-sm" style={{ background: "rgba(34,211,238,0.1)", border: "1px solid var(--accent-cyan)", color: "var(--accent-cyan)" }}>
-          ✅ Password reset email sent — check your inbox.
+        <div className="mb-4 px-4 py-3 rounded-lg text-sm flex items-center gap-2" role="status" style={{ background: "rgba(34,211,238,0.1)", border: "1px solid var(--accent-cyan)", color: "var(--accent-cyan)" }}>
+          <svg className="w-4 h-4 shrink-0" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd"/></svg>
+          Password reset email sent — check your inbox.
         </div>
       )}
 
@@ -92,9 +93,9 @@ function LoginPage() {
         <label className="block text-sm">
           <span style={{ color: "var(--text-secondary)" }}>Email</span>
           <input
-            type="email" required autoComplete="email" value={email}
+            type="email" required autoComplete="email" inputMode="email" value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full px-3 py-2 rounded-md border bg-transparent"
+            className="mt-1 w-full px-3 py-3 rounded-md border bg-transparent min-h-[48px]"
             style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
           />
         </label>
@@ -106,7 +107,7 @@ function LoginPage() {
               type="button"
               onClick={sendPasswordReset}
               disabled={busy}
-              className="text-xs underline disabled:opacity-50"
+              className="text-xs underline disabled:opacity-50 min-h-[44px] px-1 flex items-center"
               style={{ color: "var(--accent-cyan)" }}
             >
               Forgot password?
@@ -118,24 +119,24 @@ function LoginPage() {
               required autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 rounded-md border bg-transparent pr-10"
+              className="w-full px-3 py-3 rounded-md border bg-transparent pr-12 min-h-[48px]"
               style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
             />
             <button
               type="button"
               onClick={() => setShowPassword((v) => !v)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 opacity-60 hover:opacity-100"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              className="absolute right-1 top-1/2 -translate-y-1/2 opacity-60 hover:opacity-100 p-2 rounded"
               style={{ color: "var(--text-secondary)" }}
-              tabIndex={-1}
             >
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>
         </label>
 
-        {err && <p className="text-sm" style={{ color: "var(--danger, #ef4444)" }}>{err}</p>}
+        {err && <p className="text-sm px-3 py-2 rounded-md" role="alert" style={{ color: "#fecaca", background: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.35)" }}>{err}</p>}
 
-        <button disabled={busy} type="submit" className="w-full px-4 py-2.5 rounded-full text-sm font-semibold disabled:opacity-60" style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}>
+        <button disabled={busy} type="submit" className="w-full px-4 py-3 rounded-full text-sm font-semibold disabled:opacity-60 min-h-[48px]" style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}>
           {busy ? "Signing in…" : "Sign in"}
         </button>
 
@@ -145,7 +146,7 @@ function LoginPage() {
 
         <button
           type="button" onClick={sendMagicLink} disabled={busy}
-          className="w-full px-4 py-2.5 rounded-full text-sm font-semibold border disabled:opacity-60"
+          className="w-full px-4 py-3 rounded-full text-sm font-semibold border disabled:opacity-60 min-h-[48px]"
           style={{ borderColor: "var(--accent-cyan)", color: "var(--accent-cyan)", background: "transparent" }}
         >
           {magicSent ? "Magic link sent — check your email" : "Email me a magic sign-in link"}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Eye, EyeOff, ShieldCheck } from "lucide-react";
+import { Eye, EyeOff, ShieldCheck, CheckCircle2, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/reset-password")({
@@ -55,7 +55,7 @@ function ResetPasswordPage() {
   if (done) {
     return (
       <section className="max-w-md mx-auto px-6 py-24 text-center">
-        <div className="text-5xl mb-4">✅</div>
+        <CheckCircle2 className="w-14 h-14 mx-auto mb-4" style={{ color: "var(--success, #22C55E)" }} />
         <h1 className="text-2xl font-bold mb-2" style={{ color: "var(--text-primary)", fontFamily: "Space Grotesk, sans-serif" }}>
           Password updated!
         </h1>
@@ -69,12 +69,13 @@ function ResetPasswordPage() {
   if (!ready) {
     return (
       <section className="max-w-md mx-auto px-6 py-24 text-center">
-        <div className="text-4xl mb-4">🔐</div>
+        <Lock className="w-12 h-12 mx-auto mb-4" style={{ color: "var(--accent-cyan)" }} />
         <h1 className="text-xl font-bold mb-2" style={{ color: "var(--text-primary)", fontFamily: "Space Grotesk, sans-serif" }}>
           Verifying reset link…
         </h1>
         <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-          If this takes too long, your link may have expired. Request a new one from the login page.
+          If this takes too long, your link may have expired.{" "}
+          <a href="/login" className="underline" style={{ color: "var(--accent-cyan)" }}>Request a new one</a>.
         </p>
       </section>
     );
@@ -102,7 +103,7 @@ function ResetPasswordPage() {
               required minLength={8}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 rounded-md border bg-transparent pr-10"
+              className="w-full px-3 py-3 rounded-md border bg-transparent pr-12 min-h-[48px]"
               style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
               placeholder="Minimum 8 characters"
             />
@@ -125,7 +126,7 @@ function ResetPasswordPage() {
               required minLength={8}
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
-              className="w-full px-3 py-2 rounded-md border bg-transparent pr-10"
+              className="w-full px-3 py-3 rounded-md border bg-transparent pr-12 min-h-[48px]"
               style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
               placeholder="Repeat your new password"
             />
