@@ -14,6 +14,7 @@ import { Route as SummitRouteImport } from './routes/summit'
 import { Route as SponsorsRouteImport } from './routes/sponsors'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as ScheduleRouteImport } from './routes/schedule'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as NetworkRouteImport } from './routes/network'
@@ -62,6 +63,11 @@ const SignupRoute = SignupRouteImport.update({
 const ScheduleRoute = ScheduleRouteImport.update({
   id: '/schedule',
   path: '/schedule',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterRoute = RegisterRouteImport.update({
@@ -202,6 +208,7 @@ export interface FileRoutesByFullPath {
   '/network': typeof NetworkRoute
   '/profile': typeof AuthenticatedProfileRouteWithChildren
   '/register': typeof RegisterRouteWithChildren
+  '/reset-password': typeof ResetPasswordRoute
   '/schedule': typeof ScheduleRoute
   '/signup': typeof SignupRoute
   '/sponsors': typeof SponsorsRoute
@@ -231,6 +238,7 @@ export interface FileRoutesByTo {
   '/network': typeof NetworkRoute
   '/profile': typeof AuthenticatedProfileIndexRoute
   '/register': typeof RegisterRouteWithChildren
+  '/reset-password': typeof ResetPasswordRoute
   '/schedule': typeof ScheduleRoute
   '/signup': typeof SignupRoute
   '/sponsors': typeof SponsorsRoute
@@ -260,6 +268,7 @@ export interface FileRoutesById {
   '/network': typeof NetworkRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRouteWithChildren
+  '/reset-password': typeof ResetPasswordRoute
   '/schedule': typeof ScheduleRoute
   '/signup': typeof SignupRoute
   '/sponsors': typeof SponsorsRoute
@@ -292,6 +301,7 @@ export interface FileRouteTypes {
     | '/network'
     | '/profile'
     | '/register'
+    | '/reset-password'
     | '/schedule'
     | '/signup'
     | '/sponsors'
@@ -321,6 +331,7 @@ export interface FileRouteTypes {
     | '/network'
     | '/profile'
     | '/register'
+    | '/reset-password'
     | '/schedule'
     | '/signup'
     | '/sponsors'
@@ -349,6 +360,7 @@ export interface FileRouteTypes {
     | '/network'
     | '/profile'
     | '/register'
+    | '/reset-password'
     | '/schedule'
     | '/signup'
     | '/sponsors'
@@ -381,6 +393,7 @@ export interface RootRouteChildren {
   NetworkRoute: typeof NetworkRoute
   ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRouteWithChildren
+  ResetPasswordRoute: typeof ResetPasswordRoute
   ScheduleRoute: typeof ScheduleRoute
   SignupRoute: typeof SignupRoute
   SponsorsRoute: typeof SponsorsRoute
@@ -425,6 +438,13 @@ declare module '@tanstack/react-router' {
       path: '/schedule'
       fullPath: '/schedule'
       preLoaderRoute: typeof ScheduleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register': {
@@ -673,6 +693,7 @@ const rootRouteChildren: RootRouteChildren = {
   NetworkRoute: NetworkRoute,
   ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRouteWithChildren,
+  ResetPasswordRoute: ResetPasswordRoute,
   ScheduleRoute: ScheduleRoute,
   SignupRoute: SignupRoute,
   SponsorsRoute: SponsorsRoute,
