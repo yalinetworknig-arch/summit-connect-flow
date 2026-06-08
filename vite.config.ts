@@ -27,7 +27,7 @@ export default defineConfig({
     stripModuleDirectivesPlugin(),
     tanstackStart({
       server: {
-        preset: "netlify",
+        preset: "vercel",
       },
     }),
     react(),
