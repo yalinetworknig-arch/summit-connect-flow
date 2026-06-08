@@ -1,10 +1,12 @@
 import { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useServerFn } from "@tanstack/react-start";
 import { useNavigate } from "@tanstack/react-router";
 import { submitRegistration } from "@/lib/registrations.functions";
 import { clearDraft } from "@/lib/register/storage";
 import type { FormState } from "@/lib/register/schema";
 import { TRACKS } from "@/lib/register/tracks";
+import { staggerContainer, staggerChild, ctaButton, ease } from "@/lib/motion";
 
 const ATTENDEE_LABELS: Record<string, string> = {
   delegate: "YALI Delegate",
@@ -59,16 +61,19 @@ export function StepPayment({ value }: { value: FormState }) {
 
   return (
     <div className="space-y-5">
-      {/* Registration summary */}
-      <div
-        className="rounded-xl border divide-y"
+      {/* Registration summary — staggered entrance */}
+      <motion.div
+        className="rounded-xl border divide-y overflow-hidden"
         style={{ borderColor: "var(--border-strong)", background: "var(--surface)" }}
+        variants={staggerContainer(0.07)}
+        initial="hidden"
+        animate="visible"
       >
-        <div className="px-4 py-2.5">
-          <p className="text-xs uppercase tracking-widest mb-1" style={{ color: "var(--text-secondary)" }}>
+        <motion.div variants={staggerChild} className="px-4 py-2.5">
+          <p className="text-xs uppercase tracking-widest" style={{ color: "var(--text-secondary)" }}>
             Your registration summary
           </p>
-        </div>
+        </motion.div>
         <SummaryRow label="Name" value={value.full_name} />
         <SummaryRow label="Email" value={value.email} />
         <SummaryRow label="Type" value={value.attendee_type ? ATTENDEE_LABELS[value.attendee_type] : undefined} />
@@ -76,7 +81,7 @@ export function StepPayment({ value }: { value: FormState }) {
         <SummaryRow label="State" value={value.state} />
         {value.accommodation_needed && <SummaryRow label="Accommodation" value="Requested" />}
         {value.travel_support_needed && <SummaryRow label="Travel support" value="Requested" />}
-      </div>
+      </motion.div>
 
       {/* Price block */}
       <div
@@ -106,36 +111,47 @@ export function StepPayment({ value }: { value: FormState }) {
         )}
       </div>
 
-      {error && (
-        <div
-          className="rounded-lg border px-4 py-3 text-sm"
-          role="alert"
-          style={{
-            background: "rgba(239,68,68,0.08)",
-            borderColor: "rgba(239,68,68,0.35)",
-            color: "var(--error)",
-          }}
-        >
-          {error}
-          {error.includes("already registered") && (
-            <div className="mt-2">
-              <a
-                href="/login"
-                className="underline font-semibold"
-                style={{ color: "var(--accent-cyan)" }}
-              >
-                Sign in to view your ticket →
-              </a>
-            </div>
-          )}
-        </div>
-      )}
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            key="error"
+            initial={{ opacity: 0, y: -8, height: 0 }}
+            animate={{ opacity: 1, y: 0, height: "auto" }}
+            exit={{ opacity: 0, y: -6, height: 0 }}
+            transition={{ duration: 0.22, ease: ease.out }}
+            className="rounded-lg border px-4 py-3 text-sm overflow-hidden"
+            role="alert"
+            style={{
+              background: "rgba(239,68,68,0.08)",
+              borderColor: "rgba(239,68,68,0.35)",
+              color: "var(--error)",
+            }}
+          >
+            {error}
+            {error.includes("already registered") && (
+              <div className="mt-2">
+                <a
+                  href="/login"
+                  className="underline font-semibold"
+                  style={{ color: "var(--accent-cyan)" }}
+                >
+                  Sign in to view your ticket →
+                </a>
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      <button
+      <motion.button
         type="button"
         onClick={handleSubmit}
         disabled={busy}
-        className="w-full px-7 py-4 rounded-full text-base font-semibold transition-transform hover:scale-[1.01] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-h-[56px]"
+        variants={ctaButton}
+        initial="rest"
+        whileHover={busy ? {} : "hover"}
+        whileTap={busy ? {} : "tap"}
+        className="w-full px-7 py-4 rounded-full text-base font-semibold disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-h-[56px]"
         style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
       >
         {busy ? (
@@ -149,7 +165,7 @@ export function StepPayment({ value }: { value: FormState }) {
         ) : (
           "Complete registration"
         )}
-      </button>
+      </motion.button>
 
       <p className="text-center text-xs" style={{ color: "var(--text-secondary)" }}>
         By registering you agree to the summit's terms and privacy policy.
@@ -161,7 +177,10 @@ export function StepPayment({ value }: { value: FormState }) {
 function SummaryRow({ label, value }: { label: string; value: string | undefined | null }) {
   if (!value) return null;
   return (
-    <div className="flex items-center justify-between gap-4 px-4 py-2.5">
+    <motion.div
+      variants={staggerChild}
+      className="flex items-center justify-between gap-4 px-4 py-2.5"
+    >
       <span className="text-sm shrink-0" style={{ color: "var(--text-secondary)" }}>
         {label}
       </span>
@@ -171,6 +190,6 @@ function SummaryRow({ label, value }: { label: string; value: string | undefined
       >
         {value}
       </span>
-    </div>
+    </motion.div>
   );
 }

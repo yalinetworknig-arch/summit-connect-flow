@@ -224,3 +224,55 @@
 /* Hide scrollbars on horizontal rails (day pills, etc.) */
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* ─── Input focus glow ───────────────────────────────────────────────────── */
+input:focus-visible,
+textarea:focus-visible,
+[data-radix-select-trigger]:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 1px var(--accent-cyan),
+    0 0 0 3px color-mix(in oklab, var(--accent-cyan) 20%, transparent),
+    0 0 12px color-mix(in oklab, var(--accent-cyan) 12%, transparent);
+  border-color: var(--accent-cyan) !important;
+  transition: box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s;
+}
+
+/* ─── Register page ambient glow background ──────────────────────────────── */
+.register-ambient {
+  position: relative;
+  isolation: isolate;
+}
+.register-ambient::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 20%, color-mix(in oklab, var(--accent-cyan) 6%, transparent) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 85% 75%, color-mix(in oklab, var(--accent-cyan) 4%, transparent) 0%, transparent 65%);
+}
+
+/* ─── Card glass shimmer (progress done steps) ───────────────────────────── */
+.step-done-ring {
+  box-shadow:
+    0 0 0 2px var(--accent-cyan),
+    0 0 8px color-mix(in oklab, var(--accent-cyan) 35%, transparent);
+}
+
+/* ─── Attendee / track card selected glow ────────────────────────────────── */
+.card-selected {
+  box-shadow:
+    0 0 0 1.5px var(--accent-cyan),
+    0 0 20px color-mix(in oklab, var(--accent-cyan) 18%, transparent),
+    inset 0 1px 0 color-mix(in oklab, var(--accent-cyan) 20%, transparent);
+}
+
+/* ─── Smooth cursor for interactive elements ────────────────────────────── */
+button, [role="button"], a, label[for], select {
+  cursor: pointer;
+}
+button:disabled, input:disabled {
+  cursor: not-allowed;
+}
