@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { ProgressIndicator } from "@/components/register/ProgressIndicator";
 import { StepAttendeeType } from "@/components/register/StepAttendeeType";
@@ -15,6 +15,7 @@ import {
   type FormState,
 } from "@/lib/register/schema";
 import { loadDraft, saveDraft } from "@/lib/register/storage";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/register")({
   head: () => ({
@@ -40,11 +41,18 @@ function RegisterPage() {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<FormState>(initialFormState);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [nextBusy, setNextBusy] = useState(false);
+  const topRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const draft = loadDraft();
     if (draft) setForm({ ...initialFormState, ...draft });
   }, []);
+
+  // Scroll to top of form on every step change
+  useEffect(() => {
+    topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [step]);
 
   function patch(p: FormState) {
     setForm((prev) => {
@@ -81,12 +89,36 @@ function RegisterPage() {
     };
   }, [step, form]);
 
-  function next() {
-    if (validateCurrent()) {
-      setErrors({});
-      setStep((s) => Math.min(5, s + 1));
+  async function next() {
+    if (!validateCurrent()) return;
+    setErrors({});
+
+    // On step 2: pre-check if email already exists so users find out NOW not at step 5
+    if (step === 2 && form.email) {
+      setNextBusy(true);
+      try {
+        const { data } = await supabase
+          .from("registrations")
+          .select("id")
+          .eq("email", form.email.trim().toLowerCase())
+          .maybeSingle();
+        if (data) {
+          setErrors({
+            email:
+              "This email is already registered. Sign in to view your ticket, or use a different email address.",
+          });
+          setNextBusy(false);
+          return;
+        }
+      } catch {
+        // If check fails just let them proceed — the insert will catch it
+      }
+      setNextBusy(false);
     }
+
+    setStep((s) => Math.min(5, s + 1));
   }
+
   function back() {
     setErrors({});
     setStep((s) => Math.max(1, s - 1));
@@ -99,7 +131,7 @@ function RegisterPage() {
     (step === 4 && step4Schema.safeParse(form).success);
 
   return (
-    <section className="max-w-3xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+    <section ref={topRef} className="max-w-3xl mx-auto px-4 sm:px-6 py-10 md:py-14 scroll-mt-20">
       <header className="mb-8">
         <h1
           className="font-bold mb-2"
@@ -130,12 +162,12 @@ function RegisterPage() {
       </div>
 
       {step < 5 ? (
-        <div className="flex items-center justify-between mt-6">
+        <div className="flex items-center justify-between mt-6 gap-3">
           <button
             type="button"
             onClick={back}
             disabled={step === 1}
-            className="px-5 py-2.5 rounded-full text-sm font-semibold border transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="px-6 py-3 rounded-full text-sm font-semibold border transition-colors disabled:opacity-40 disabled:cursor-not-allowed min-h-[48px]"
             style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
           >
             Back
@@ -143,11 +175,21 @@ function RegisterPage() {
           <button
             type="button"
             onClick={next}
-            disabled={!canAdvance}
-            className="px-7 py-2.5 rounded-full text-sm font-semibold transition-transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={!canAdvance || nextBusy}
+            className="flex-1 sm:flex-none px-8 py-3 rounded-full text-sm font-semibold transition-transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px] flex items-center justify-center gap-2"
             style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
           >
-            Next
+            {nextBusy ? (
+              <>
+                <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                </svg>
+                Checking…
+              </>
+            ) : (
+              "Next"
+            )}
           </button>
         </div>
       ) : (
@@ -155,10 +197,10 @@ function RegisterPage() {
           <button
             type="button"
             onClick={back}
-            className="px-5 py-2.5 rounded-full text-sm font-semibold border transition-colors"
+            className="px-6 py-3 rounded-full text-sm font-semibold border transition-colors min-h-[48px]"
             style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
           >
-            Back
+            ← Back
           </button>
         </div>
       )}

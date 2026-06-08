@@ -50,7 +50,15 @@ export const submitRegistration = createServerFn({ method: "POST" })
       .insert(payload)
       .select("id, full_name, email, ticket_code, track_selection, attendee_type, created_at, payment_status, amount_kobo")
       .single();
-    if (error) throw new Error(error.message);
+    if (error) {
+      const msg = error.message ?? "";
+      if (msg.includes("registrations_email_key") || msg.includes("duplicate key")) {
+        throw new Error(
+          "This email address is already registered. If you believe this is a mistake, please contact the summit team."
+        );
+      }
+      throw new Error(msg);
+    }
     // Fire-and-forget — do NOT await the email so it never blocks registration
     if (row?.email) {
       sendTicketEmail({

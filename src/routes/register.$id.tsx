@@ -51,8 +51,20 @@ function ConfirmationPage() {
 
   if (isLoading) {
     return (
-      <section className="max-w-2xl mx-auto px-6 py-16 text-center" style={{ color: "var(--text-secondary)" }}>
-        Loading your ticket…
+      <section className="max-w-2xl mx-auto px-4 sm:px-6 py-10 md:py-14 animate-pulse">
+        <div className="flex flex-col items-center gap-4 mb-8">
+          <div className="w-14 h-14 rounded-full" style={{ background: "var(--surface)" }} />
+          <div className="h-8 w-48 rounded-lg" style={{ background: "var(--surface)" }} />
+          <div className="h-4 w-64 rounded" style={{ background: "var(--surface)" }} />
+        </div>
+        <div
+          className="rounded-2xl border p-6 sm:p-8 flex flex-col items-center gap-4"
+          style={{ background: "var(--card)", borderColor: "var(--border-strong)" }}
+        >
+          <div className="w-[220px] h-[220px] rounded-xl" style={{ background: "var(--surface)" }} />
+          <div className="h-4 w-40 rounded" style={{ background: "var(--surface)" }} />
+          <div className="h-4 w-32 rounded" style={{ background: "var(--surface)" }} />
+        </div>
       </section>
     );
   }

@@ -18,6 +18,7 @@ import {
 } from "@/lib/register/schema";
 import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
+import { CheckCircle2 } from "lucide-react";
 
 export function StepPersonalInfo({
   value,
@@ -32,46 +33,54 @@ export function StepPersonalInfo({
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Field label="Full name" error={errors.full_name}>
-        <Input
-          value={value.full_name ?? ""}
-          onChange={(e) => onChange({ full_name: e.target.value })}
-          maxLength={120}
-          placeholder="Chinwe Okafor"
-        />
-      </Field>
-      <Field label="Email" error={errors.email}>
-        <Input
-          type="email"
-          value={value.email ?? ""}
-          onChange={(e) => onChange({ email: e.target.value })}
-          maxLength={255}
-          placeholder="you@example.com"
-        />
-      </Field>
-      <Field label="Phone" error={errors.phone}>
-        <Input
-          type="tel"
-          value={value.phone ?? ""}
-          onChange={(e) => onChange({ phone: e.target.value })}
-          maxLength={20}
-          placeholder="+234 803 520 9226"
-        />
-      </Field>
-      <Field label="State" error={errors.state}>
-        <Select value={value.state ?? ""} onValueChange={(v) => onChange({ state: v })}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select state" />
-          </SelectTrigger>
-          <SelectContent>
-            {NIGERIAN_STATES.map((s) => (
-              <SelectItem key={s} value={s}>
-                {s}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </Field>
+        <Field label="Full name" error={errors.full_name} fieldId="full_name">
+          <Input
+            id="full_name"
+            autoComplete="name"
+            value={value.full_name ?? ""}
+            onChange={(e) => onChange({ full_name: e.target.value })}
+            maxLength={120}
+            placeholder="Chinwe Okafor"
+          />
+        </Field>
+        <Field label="Email" error={errors.email} fieldId="email">
+          <Input
+            id="email"
+            type="email"
+            autoComplete="email"
+            inputMode="email"
+            value={value.email ?? ""}
+            onChange={(e) => onChange({ email: e.target.value })}
+            maxLength={255}
+            placeholder="you@example.com"
+          />
+        </Field>
+        <Field label="Phone" error={errors.phone} fieldId="phone">
+          <Input
+            id="phone"
+            type="tel"
+            autoComplete="tel"
+            inputMode="tel"
+            value={value.phone ?? ""}
+            onChange={(e) => onChange({ phone: e.target.value })}
+            maxLength={20}
+            placeholder="+234 800 000 0000"
+          />
+        </Field>
+        <Field label="State" error={errors.state} fieldId="state">
+          <Select value={value.state ?? ""} onValueChange={(v) => onChange({ state: v })}>
+            <SelectTrigger id="state">
+              <SelectValue placeholder="Select state" />
+            </SelectTrigger>
+            <SelectContent>
+              {NIGERIAN_STATES.map((s) => (
+                <SelectItem key={s} value={s}>
+                  {s}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </Field>
       </div>
 
       {type === "delegate" && (
@@ -420,8 +429,9 @@ function CertificateUpload({
         </div>
       )}
       {!busy && value && !err && (
-        <span className="text-xs" style={{ color: "var(--text-secondary)" }}>
-          ✓ Certificate uploaded successfully{fileName ? ` — ${fileName}` : ""}. You can replace it by choosing another file.
+        <span className="flex items-center gap-1 text-xs" style={{ color: "var(--success, #22C55E)" }}>
+          <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+          Certificate uploaded{fileName ? ` — ${fileName}` : ""}. Choose another file to replace it.
         </span>
       )}
       {err && (
@@ -443,20 +453,26 @@ function Field({
   error,
   children,
   className = "",
+  fieldId,
 }: {
   label: string;
   error?: string;
   children: React.ReactNode;
   className?: string;
+  fieldId?: string;
 }) {
   return (
     <div className={`flex flex-col gap-1.5 ${className}`}>
-      <Label className="text-sm" style={{ color: "var(--text-primary)" }}>
+      <Label
+        htmlFor={fieldId}
+        className="text-sm font-medium"
+        style={{ color: "var(--text-primary)" }}
+      >
         {label}
       </Label>
       {children}
       {error && (
-        <span className="text-xs" style={{ color: "var(--error)" }}>
+        <span className="text-xs" role="alert" style={{ color: "var(--error)" }}>
           {error}
         </span>
       )}

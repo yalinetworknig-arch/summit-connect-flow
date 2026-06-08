@@ -37,11 +37,18 @@ export function StepTrack({
                 <div className="font-semibold" style={{ color: "var(--text-primary)" }}>
                   {t.title}
                 </div>
-                {selected && (
-                  <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>
-                    {t.description}
-                  </p>
-                )}
+                <p
+                  className="text-sm mt-1 transition-all"
+                  style={{
+                    color: "var(--text-secondary)",
+                    display: "-webkit-box",
+                    WebkitLineClamp: selected ? "unset" : 2,
+                    WebkitBoxOrient: "vertical" as const,
+                    overflow: selected ? "visible" : "hidden",
+                  }}
+                >
+                  {t.description}
+                </p>
               </div>
             </div>
           </button>
