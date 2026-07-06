@@ -41,6 +41,10 @@ export default defineConfig({
     },
   },
   ssr: {
-    noExternal: true,
+    noExternal: ["h3-v2"],
+  },
+  server: {
+    port: 8080,
+    strictPort: true,
   },
 });
