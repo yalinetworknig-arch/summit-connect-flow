@@ -41,7 +41,7 @@ export default defineConfig({
     },
   },
   ssr: {
-    noExternal: ["h3-v2"],
+    noExternal: ["h3-v2", "rou3", "srvx", "seroval"],
   },
   server: {
     port: 8080,
