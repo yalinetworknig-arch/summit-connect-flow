@@ -20,7 +20,7 @@ function stripModuleDirectivesPlugin(): Plugin {
   };
 }
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [
     stripModuleDirectivesPlugin(),
     tanstackStart({
@@ -41,10 +41,14 @@ export default defineConfig({
     },
   },
   ssr: {
-    noExternal: ["h3-v2", "rou3", "srvx", "seroval"],
+    // scripts/build-vercel.mjs copies only dist/server into the Vercel
+    // function — no node_modules — so the production SSR build must be
+    // fully self-contained. Dev keeps a minimal list since forcing CJS
+    // packages like React through Vite's dev SSR runner breaks them.
+    noExternal: command === "build" ? true : ["h3-v2", "rou3", "srvx", "seroval"],
   },
   server: {
     port: 8080,
     strictPort: true,
   },
-});
+}));
