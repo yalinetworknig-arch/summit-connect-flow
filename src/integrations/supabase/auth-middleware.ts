@@ -50,13 +50,18 @@ export const requireSupabaseAuth = createMiddleware({ type: 'function' }).server
       if (parts.length !== 3) {
         throw new Error('Invalid JWT format');
       }
-      const payload = JSON.parse(Buffer.from(parts[1], 'base64').toString('utf-8'));
+      // Decode base64url payload (standard base64 with - and _ instead of + and /)
+      const base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+      const payload = JSON.parse(
+        typeof atob === 'function' ? atob(base64) : Buffer.from(base64, 'base64').toString('utf-8')
+      );
       userId = payload.sub;
       claims = payload;
       if (!userId) {
         throw new Error('No user ID in token');
       }
     } catch (e) {
+      console.error('[Auth] JWT decode error:', e);
       throw new Error('Unauthorized: Invalid token');
     }
 
