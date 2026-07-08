@@ -50,11 +50,15 @@ export const requireSupabaseAuth = createMiddleware({ type: 'function' }).server
       if (parts.length !== 3) {
         throw new Error('Invalid JWT format');
       }
-      // Decode base64url payload (standard base64 with - and _ instead of + and /)
-      const base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
-      const payload = JSON.parse(
-        typeof atob === 'function' ? atob(base64) : Buffer.from(base64, 'base64').toString('utf-8')
-      );
+      // Decode base64url: replace - with + and _ with /
+      let base64 = parts[1];
+      base64 = base64.replace(/-/g, '+').replace(/_/g, '/');
+      // Add padding if needed
+      base64 += '='.repeat((4 - (base64.length % 4)) % 4);
+
+      // Use Buffer.from for Node.js
+      const payloadStr = Buffer.from(base64, 'base64').toString('utf8');
+      const payload = JSON.parse(payloadStr);
       userId = payload.sub;
       claims = payload;
       if (!userId) {
