@@ -73,11 +73,6 @@ export const requireSupabaseAuth = createMiddleware({ type: 'function' }).server
       SUPABASE_URL!,
       SUPABASE_PUBLISHABLE_KEY!,
       {
-        global: {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
         auth: {
           storage: undefined,
           persistSession: false,
@@ -91,6 +86,7 @@ export const requireSupabaseAuth = createMiddleware({ type: 'function' }).server
         supabase,
         userId,
         claims,
+        token,
       },
     });
   },
