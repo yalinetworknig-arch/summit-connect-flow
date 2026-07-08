@@ -219,23 +219,71 @@ export const getAdminDashboard = createServerFn({ method: "POST" })
     const { userId } = context as { userId: string };
     const supabase = createServerSupabase();
 
-    try {
-      const roles = await getUserRoles(supabase, userId);
-      assertHasStaffRole(roles);
-    } catch (e) {
-      console.error("[getAdminDashboard] Role check failed:", e);
-      throw e;
-    }
+    const roles = await getUserRoles(supabase, userId);
+    assertHasStaffRole(roles);
 
-    try {
-      const { data, error } = await supabase.rpc("admin_dashboard_stats");
-      if (error) {
-        console.error("[getAdminDashboard] RPC error:", error);
-        throw new Error(`Failed to load dashboard: ${error.message}`);
-      }
-      return data as DashboardStats;
-    } catch (e) {
-      console.error("[getAdminDashboard] Exception:", e);
-      throw e;
-    }
+    const { data: registrations, error } = await supabase
+      .from("registrations")
+      .select("attendee_type, verification_status, payment_status, track_selection, state, created_at, checked_in_at");
+
+    if (error) throw new Error(error.message);
+    if (!registrations) return {} as DashboardStats;
+
+    const total = registrations.length;
+    const verified = registrations.filter(r => r.verification_status === "verified").length;
+    const checked_in = registrations.filter(r => r.checked_in_at).length;
+    const last_24h = registrations.filter(r => new Date(r.created_at).getTime() > Date.now() - 86400000).length;
+
+    const byAttendeeType = Object.entries(
+      registrations.reduce((acc, r) => ({ ...acc, [r.attendee_type]: (acc[r.attendee_type] || 0) + 1 }), {} as Record<string, number>)
+    ).map(([key, count]) => ({ key, count }));
+
+    const byVerification = Object.entries(
+      registrations.reduce((acc, r) => ({ ...acc, [r.verification_status]: (acc[r.verification_status] || 0) + 1 }), {} as Record<string, number>)
+    ).map(([key, count]) => ({ key, count }));
+
+    const byPayment = Object.entries(
+      registrations.reduce((acc, r) => ({ ...acc, [r.payment_status || "unknown"]: (acc[r.payment_status || "unknown"] || 0) + 1 }), {} as Record<string, number>)
+    ).map(([key, count]) => ({ key, count }));
+
+    const byTrack = Object.entries(
+      registrations.reduce((acc, r) => ({ ...acc, [r.track_selection || "none"]: (acc[r.track_selection || "none"] || 0) + 1 }), {} as Record<string, number>)
+    ).map(([key, count]) => ({ key, count }));
+
+    const byState = Object.entries(
+      registrations.reduce((acc, r) => ({ ...acc, [r.state || "unknown"]: (acc[r.state || "unknown"] || 0) + 1 }), {} as Record<string, number>)
+    ).map(([key, count]) => ({ key, count }));
+
+    const trend30d = Array.from({ length: 30 }, (_, i) => {
+      const date = new Date();
+      date.setDate(date.getDate() - (29 - i));
+      const dateStr = date.toISOString().split("T")[0];
+      const count = registrations.filter(r => r.created_at.startsWith(dateStr)).length;
+      return { date: dateStr, count };
+    });
+
+    const recent = registrations
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      .slice(0, 10)
+      .map(r => ({
+        id: r.id || "",
+        full_name: r.full_name || "",
+        email: r.email || "",
+        attendee_type: r.attendee_type || "",
+        verification_status: r.verification_status || "",
+        payment_status: r.payment_status || "",
+        ticket_code: r.ticket_code || "",
+        created_at: r.created_at,
+      }));
+
+    return {
+      totals: { total, paid: total, pending_payment: 0, verified, checked_in, last_24h, revenue_kobo: 0 },
+      byAttendeeType,
+      byVerification,
+      byPayment,
+      byTrack,
+      byState,
+      trend30d,
+      recent,
+    };
   });
