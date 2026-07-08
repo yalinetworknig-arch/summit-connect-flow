@@ -93,6 +93,11 @@ writeFileSync(join(funcDir, '.vc-config.json'), JSON.stringify({
   shouldAddHelpers: true,
 }, null, 2));
 
+// Write package.json to mark the function directory as an ES module
+writeFileSync(join(funcDir, 'package.json'), JSON.stringify({
+  type: 'module',
+}, null, 2));
+
 // 5. Write the top-level Vercel config
 writeFileSync(join(OUT, 'config.json'), JSON.stringify({
   version: 3,
