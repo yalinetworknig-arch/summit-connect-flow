@@ -44,7 +44,7 @@ mkdirSync(serverOut, { recursive: true });
 cpSync(join(DIST, 'server'), serverOut, { recursive: true });
 
 // Write the Vercel Node.js handler
-writeFileSync(join(funcDir, 'index.js'), `
+writeFileSync(join(funcDir, 'index.mjs'), `
 import serverModule from './dist/server/server.js';
 
 export default async function handler(req, res) {
@@ -88,7 +88,7 @@ export default async function handler(req, res) {
 // Write the function config
 writeFileSync(join(funcDir, '.vc-config.json'), JSON.stringify({
   runtime: 'nodejs22.x',
-  handler: 'index.js',
+  handler: 'index.mjs',
   launcherType: 'Nodejs',
   shouldAddHelpers: true,
 }, null, 2));
