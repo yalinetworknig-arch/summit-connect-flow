@@ -218,9 +218,24 @@ export const getAdminDashboard = createServerFn({ method: "POST" })
   .handler(async ({ context }): Promise<DashboardStats> => {
     const { userId } = context as { userId: string };
     const supabase = createServerSupabase();
-    const roles = await getUserRoles(supabase, userId);
-    assertHasStaffRole(roles);
-    const { data, error } = await supabase.rpc("admin_dashboard_stats");
-    if (error) throw new Error(error.message);
-    return data as DashboardStats;
+
+    try {
+      const roles = await getUserRoles(supabase, userId);
+      assertHasStaffRole(roles);
+    } catch (e) {
+      console.error("[getAdminDashboard] Role check failed:", e);
+      throw e;
+    }
+
+    try {
+      const { data, error } = await supabase.rpc("admin_dashboard_stats");
+      if (error) {
+        console.error("[getAdminDashboard] RPC error:", error);
+        throw new Error(`Failed to load dashboard: ${error.message}`);
+      }
+      return data as DashboardStats;
+    } catch (e) {
+      console.error("[getAdminDashboard] Exception:", e);
+      throw e;
+    }
   });
