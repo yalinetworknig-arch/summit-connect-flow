@@ -34,11 +34,13 @@ export const requireSupabaseAuth = createMiddleware({ type: 'function' }).server
       throw new Error('Unauthorized: No authorization header provided');
     }
 
-    if (!authHeader.startsWith('Bearer ')) {
+    // Safely extract Bearer token, handling potential Unicode characters
+    const bearerMatch = authHeader.match(/^Bearer\s+(.+)$/);
+    if (!bearerMatch) {
       throw new Error('Unauthorized: Only Bearer tokens are supported');
     }
 
-    const token = authHeader.replace('Bearer ', '');
+    const token = bearerMatch[1].trim();
     if (!token) {
       throw new Error('Unauthorized: No token provided');
     }
