@@ -5,13 +5,21 @@ import type { Database } from "@/integrations/supabase/types";
 import { supabase as publicSupabase } from "@/integrations/supabase/client";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-function createServerSupabase() {
+function createServerSupabase(userId?: string) {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) throw new Error("Missing Supabase env vars");
-  return createClient<Database>(url, key, {
+  const client = createClient<Database>(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
+  if (userId) {
+    client.auth.setSession({
+      access_token: "",
+      refresh_token: "",
+      user: { id: userId } as any,
+    });
+  }
+  return client;
 }
 
 const codeSchema = z.object({ code: z.string().trim().min(4).max(64) });
@@ -64,7 +72,7 @@ export const getMyRoles = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { userId } = context as { userId: string };
-    const supabase = createServerSupabase();
+    const supabase = createServerSupabase(userId);
     const { data, error } = await supabase
       .from("user_roles")
       .select("role")
@@ -78,7 +86,7 @@ export const checkInTicket = createServerFn({ method: "POST" })
   .inputValidator((input) => codeSchema.parse(input))
   .handler(async ({ data, context }) => {
     const { userId } = context as { userId: string };
-    const supabase = createServerSupabase();
+    const supabase = createServerSupabase(userId);
     const roles = await getUserRoles(supabase, userId);
     assertHasStaffRole(roles);
 
@@ -115,7 +123,7 @@ export const listRegistrations = createServerFn({ method: "POST" })
   .inputValidator((input) => listInput.parse(input ?? {}))
   .handler(async ({ data, context }) => {
     const { userId } = context as { userId: string };
-    const supabase = createServerSupabase();
+    const supabase = createServerSupabase(userId);
     const roles = await getUserRoles(supabase, userId);
     assertHasStaffRole(roles);
 
@@ -154,7 +162,7 @@ export const overrideVerification = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     const { userId } = context as { userId: string };
-    const supabase = createServerSupabase();
+    const supabase = createServerSupabase(userId);
     const roles = await getUserRoles(supabase, userId);
     assertHasAdminRole(roles);
     const { error } = await supabase
@@ -175,7 +183,7 @@ export const getCertificateSignedUrl = createServerFn({ method: "POST" })
   .inputValidator((input) => z.object({ path: z.string().min(1).max(500) }).parse(input))
   .handler(async ({ data, context }) => {
     const { userId } = context as { userId: string };
-    const supabase = createServerSupabase();
+    const supabase = createServerSupabase(userId);
     const roles = await getUserRoles(supabase, userId);
     assertHasStaffRole(roles);
     const { data: signed, error } = await supabase.storage
