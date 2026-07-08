@@ -43,6 +43,23 @@ export const requireSupabaseAuth = createMiddleware({ type: 'function' }).server
       throw new Error('Unauthorized: No token provided');
     }
 
+    let userId: string;
+    let claims: any;
+    try {
+      const parts = token.split('.');
+      if (parts.length !== 3) {
+        throw new Error('Invalid JWT format');
+      }
+      const payload = JSON.parse(Buffer.from(parts[1], 'base64').toString('utf-8'));
+      userId = payload.sub;
+      claims = payload;
+      if (!userId) {
+        throw new Error('No user ID in token');
+      }
+    } catch (e) {
+      throw new Error('Unauthorized: Invalid token');
+    }
+
     const supabase = createClient<Database>(
       SUPABASE_URL!,
       SUPABASE_PUBLISHABLE_KEY!,
@@ -60,20 +77,11 @@ export const requireSupabaseAuth = createMiddleware({ type: 'function' }).server
       }
     );
 
-    const { data, error } = await supabase.auth.getUser(token);
-    if (error || !data?.user) {
-      throw new Error('Unauthorized: Invalid token');
-    }
-
-    if (!data.user.id) {
-      throw new Error('Unauthorized: No user ID found in token');
-    }
-
     return next({
       context: {
         supabase,
-        userId: data.user.id,
-        claims: data.user,
+        userId,
+        claims,
       },
     });
   },
