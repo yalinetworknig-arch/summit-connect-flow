@@ -5,12 +5,11 @@ import type { Database } from "@/integrations/supabase/types";
 import { supabase as publicSupabase } from "@/integrations/supabase/client";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-function createServerSupabase(token: string) {
+function createServerSupabase() {
   const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_PUBLISHABLE_KEY;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) throw new Error("Missing Supabase env vars");
   return createClient<Database>(url, key, {
-    global: { headers: { Authorization: `Bearer ${token}` } },
     auth: { persistSession: false, autoRefreshToken: false },
   });
 }
@@ -64,8 +63,8 @@ function assertHasAdminRole(roles: string[]) {
 export const getMyRoles = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { userId, token } = context as { userId: string; token: string };
-    const supabase = createServerSupabase(token);
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
     const { data, error } = await supabase
       .from("user_roles")
       .select("role")
@@ -78,8 +77,8 @@ export const checkInTicket = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => codeSchema.parse(input))
   .handler(async ({ data, context }) => {
-    const { userId, token } = context as { userId: string; token: string };
-    const supabase = createServerSupabase(token);
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
     const roles = await getUserRoles(supabase, userId);
     assertHasStaffRole(roles);
 
@@ -115,8 +114,8 @@ export const listRegistrations = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => listInput.parse(input ?? {}))
   .handler(async ({ data, context }) => {
-    const { userId, token } = context as { userId: string; token: string };
-    const supabase = createServerSupabase(token);
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
     const roles = await getUserRoles(supabase, userId);
     assertHasStaffRole(roles);
 
@@ -154,8 +153,8 @@ export const overrideVerification = createServerFn({ method: "POST" })
       .parse(input),
   )
   .handler(async ({ data, context }) => {
-    const { userId, token } = context as { userId: string; token: string };
-    const supabase = createServerSupabase(token);
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
     const roles = await getUserRoles(supabase, userId);
     assertHasAdminRole(roles);
     const { error } = await supabase
@@ -175,8 +174,8 @@ export const getCertificateSignedUrl = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({ path: z.string().min(1).max(500) }).parse(input))
   .handler(async ({ data, context }) => {
-    const { userId, token } = context as { userId: string; token: string };
-    const supabase = createServerSupabase(token);
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
     const roles = await getUserRoles(supabase, userId);
     assertHasStaffRole(roles);
     const { data: signed, error } = await supabase.storage
