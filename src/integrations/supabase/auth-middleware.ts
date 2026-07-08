@@ -6,88 +6,47 @@ import type { Database } from './types'
 
 
 
+function decodeJWT(token: string) {
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) throw new Error('Invalid JWT format');
+
+    let base64 = parts[1];
+    base64 = base64.replace(/-/g, '+').replace(/_/g, '/');
+    base64 += '='.repeat((4 - (base64.length % 4)) % 4);
+
+    const payloadStr = Buffer.from(base64, 'base64').toString('utf8');
+    return JSON.parse(payloadStr);
+  } catch (e) {
+    throw new Error('Invalid token');
+  }
+}
+
 export const requireSupabaseAuth = createMiddleware({ type: 'function' }).server(
   async ({ next }) => {
-    
-    const SUPABASE_URL = process.env.SUPABASE_URL;
-    const SUPABASE_PUBLISHABLE_KEY = process.env.SUPABASE_PUBLISHABLE_KEY;
-
-    if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
-      const missing = [
-        ...(!SUPABASE_URL ? ['SUPABASE_URL'] : []),
-        ...(!SUPABASE_PUBLISHABLE_KEY ? ['SUPABASE_PUBLISHABLE_KEY'] : []),
-      ];
-      const message = `Missing Supabase environment variable(s): ${missing.join(', ')}. Add these to Netlify Environment Variables (Site Configuration → Environment Variables).`;
-      console.error(`[Supabase] ${message}`);
-      throw new Error(message);
-    }
-    
     const request = getRequest();
-
-    if (!request?.headers) {
-      throw new Error('Unauthorized: No request headers available');
-    }
-
-    const authHeader = request.headers.get('authorization');
+    const authHeader = request?.headers?.get('authorization');
 
     if (!authHeader) {
-      throw new Error('Unauthorized: No authorization header provided');
+      throw new Error('Unauthorized: No authorization header');
     }
 
-    // Safely extract Bearer token, handling potential Unicode characters
     const bearerMatch = authHeader.match(/^Bearer\s+(.+)$/);
     if (!bearerMatch) {
-      throw new Error('Unauthorized: Only Bearer tokens are supported');
+      throw new Error('Unauthorized: Invalid authorization header');
     }
 
-    const token = bearerMatch[1].trim();
-    if (!token) {
-      throw new Error('Unauthorized: No token provided');
-    }
+    const token = bearerMatch[1];
+    const payload = decodeJWT(token);
+    const userId = payload.sub;
 
-    let userId: string;
-    let claims: any;
-    try {
-      const parts = token.split('.');
-      if (parts.length !== 3) {
-        throw new Error('Invalid JWT format');
-      }
-      // Decode base64url: replace - with + and _ with /
-      let base64 = parts[1];
-      base64 = base64.replace(/-/g, '+').replace(/_/g, '/');
-      // Add padding if needed
-      base64 += '='.repeat((4 - (base64.length % 4)) % 4);
-
-      // Use Buffer.from for Node.js
-      const payloadStr = Buffer.from(base64, 'base64').toString('utf8');
-      const payload = JSON.parse(payloadStr);
-      userId = payload.sub;
-      claims = payload;
-      if (!userId) {
-        throw new Error('No user ID in token');
-      }
-    } catch (e) {
-      console.error('[Auth] JWT decode error:', e);
+    if (!userId) {
       throw new Error('Unauthorized: Invalid token');
     }
 
-    const supabase = createClient<Database>(
-      SUPABASE_URL!,
-      SUPABASE_PUBLISHABLE_KEY!,
-      {
-        auth: {
-          storage: undefined,
-          persistSession: false,
-          autoRefreshToken: false,
-        },
-      }
-    );
-
     return next({
       context: {
-        supabase,
         userId,
-        claims,
         token,
       },
     });
