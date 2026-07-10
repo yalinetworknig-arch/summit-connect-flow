@@ -1,26 +1,20 @@
 import { useRef } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
+import hpLogo from "@/assets/sponsors/hp-logo.png";
+import usEmbassySeal from "@/assets/sponsors/us-embassy-seal.png";
+import usDiplomaticMission from "@/assets/sponsors/us-diplomatic-mission.jpeg";
+import mwfaanLogo from "@/assets/sponsors/mwfaan-logo.png";
+import unfpaLogo from "@/assets/sponsors/unfpa-logo.png";
 
 type Partner = { name: string; logo: string };
 
 const partners: Partner[] = [
-  {
-    name: "HP",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/a/ad/HP_logo_2012.svg",
-  },
-  {
-    name: "U.S. Mission Nigeria",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Seal_of_an_Embassy_of_the_United_States_of_America.svg/1200px-Seal_of_an_Embassy_of_the_United_States_of_America.svg.png",
-  },
-  {
-    name: "U.S. Consulate General Lagos",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Seal_of_a_Consulate_General_of_the_United_States_of_America.svg/1200px-Seal_of_a_Consulate_General_of_the_United_States_of_America.svg.png",
-  },
-  {
-    name: "UNFPA",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/UNFPA_logo.svg/1200px-UNFPA_logo.svg.png",
-  },
+  { name: "Embassy of the United States, Nigeria", logo: usEmbassySeal },
+  { name: "United States Diplomatic Mission in Nigeria", logo: usDiplomaticMission },
+  { name: "Mandela Washington Fellowship Alumni Association of Nigeria", logo: mwfaanLogo },
+  { name: "HP", logo: hpLogo },
+  { name: "UNFPA", logo: unfpaLogo },
 ];
 
 function LogoCard({ name, logo }: Partner) {
