@@ -107,7 +107,7 @@ function renderText(input: TicketEmailInput, ticketUrl: string) {
     "",
     `View your ticket: ${ticketUrl}`,
     "",
-    "Lagos, Nigeria — Sept 10–13, 2026",
+    "Daystar Oregun, Ikeja, Lagos — Sept 24–26, 2026",
   ].filter(Boolean).join("\n");
 }
 

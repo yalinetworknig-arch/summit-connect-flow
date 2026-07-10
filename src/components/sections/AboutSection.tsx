@@ -10,9 +10,9 @@ import {
   Eyebrow,
 } from "@/components/motion-primitives";
 import { EditorialImage } from "@/components/editorial/EditorialImage";
-import civicGathering from "@/assets/editorial/about-civic-gathering.jpg";
-import techTraining from "@/assets/editorial/why-now-tech-training.jpg";
-import mobileMoney from "@/assets/editorial/why-now-mobile-money.jpg";
+import civicGathering from "@/assets/event-photos/edition-two-group.jpeg";
+import techTraining from "@/assets/event-photos/edition-two-crowd.jpeg";
+import mobileMoney from "@/assets/event-photos/edition-two-group.jpeg";
 
 export function AboutSection({ id = "about" }: { id?: string }) {
   return (
@@ -35,7 +35,7 @@ export function AboutSection({ id = "about" }: { id?: string }) {
             <p className="text-lg text-text-secondary leading-relaxed max-w-3xl">
               AIDIFILN brings together the people who already lead Nigerian
               communities — civic actors, social entrepreneurs, educators,
-              organisers, public servants — for four days of getting fluent,
+              organisers, public servants — for a 2-day summit of getting fluent,
               getting connected, and deciding together how AI and digital systems
               get built around the people we serve.
             </p>
@@ -48,9 +48,9 @@ export function AboutSection({ id = "about" }: { id?: string }) {
         <div className="max-w-6xl mx-auto -mt-6 md:-mt-10">
           <EditorialImage
             src={civicGathering}
-            alt="Nigerian civic leaders in animated discussion around a conference table in a sunlit Lagos meeting room"
+            alt="YALI delegates and dignitaries on stage together at the Y-LEEDS 2025 national summit"
             aspect="aspect-[16/9] md:aspect-[21/9]"
-            caption="Civic leaders · Lagos · convening 2025"
+            caption="YALI delegates · Y-LEEDS 2025 · Edition Two"
             sizes="(min-width: 1280px) 1200px, (min-width: 768px) 90vw, 100vw"
             width={1920}
             height={1080}
@@ -61,9 +61,9 @@ export function AboutSection({ id = "about" }: { id?: string }) {
       <section className="px-5 sm:px-6 lg:px-8 py-14 md:py-20 bg-surface text-text-primary">
         <Stagger className="max-w-5xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
           {[
-            { Icon: CalendarDays, label: "Dates", value: "Sept 10 – 13, 2026" },
-            { Icon: MapPin, label: "Venue", value: "Lagos · venue TBA" },
-            { Icon: Users, label: "Delegates", value: "700+ expected" },
+            { Icon: CalendarDays, label: "Dates", value: "Sept 24 – 26, 2026" },
+            { Icon: MapPin, label: "Venue", value: "Daystar Oregun, Ikeja, Lagos" },
+            { Icon: Users, label: "Delegates", value: "800–1,000 expected" },
             { Icon: Globe, label: "Reach", value: "All 36 states + FCT" },
           ].map(({ Icon, label, value }) => (
             <motion.div
@@ -109,9 +109,9 @@ export function AboutSection({ id = "about" }: { id?: string }) {
               <div className="md:float-right md:ml-8 md:w-[42%] md:max-w-[420px] mb-2">
                 <EditorialImage
                   src={techTraining}
-                  alt="A young Nigerian instructor teaching coding to attentive students with laptops in a digital skills classroom"
+                  alt="YALI delegates in a packed session room reacting to the stage at Y-LEEDS 2025"
                   aspect="aspect-[4/3]"
-                  caption="Digital skills training · 3MTT-style classroom"
+                  caption="Delegate crowd · Y-LEEDS 2025"
                   sizes="(min-width: 768px) 420px, 100vw"
                   width={1280}
                   height={960}
@@ -133,9 +133,9 @@ export function AboutSection({ id = "about" }: { id?: string }) {
               <div className="md:float-left md:mr-8 md:w-[42%] md:max-w-[420px] mb-2 clear-both">
                 <EditorialImage
                   src={mobileMoney}
-                  alt="A Nigerian market trader in Ankara print accepting a mobile-money payment on a smartphone at her produce stall in Lagos"
+                  alt="YALI Network Nigeria leadership and US Mission Nigeria representatives on stage at Y-LEEDS 2025"
                   aspect="aspect-[4/3]"
-                  caption="Mobile money · Lagos market · 2024"
+                  caption="Summit leadership · Y-LEEDS 2025"
                   sizes="(min-width: 768px) 420px, 100vw"
                   width={1280}
                   height={960}

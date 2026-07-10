@@ -285,7 +285,7 @@ export function Hero() {
           className="mt-6 text-white/70 font-semibold text-base"
           style={{ letterSpacing: "0.05em" }}
         >
-          September 10 – 13, 2026
+          September 24 – 26, 2026 · Daystar Oregun, Ikeja, Lagos
         </motion.p>
 
         <motion.div
@@ -321,7 +321,7 @@ export function Hero() {
         </motion.div>
 
         <p className="mt-10 text-white/65 text-sm">
-          Free for verified YALI delegates · 700+ delegates expected · Lagos · Sept 10–13, 2026
+          Free for verified YALI delegates · 800–1,000 delegates expected · Ikeja, Lagos · Sept 24–26, 2026
         </p>
       </div>
 

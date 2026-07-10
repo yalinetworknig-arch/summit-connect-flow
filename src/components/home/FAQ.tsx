@@ -12,7 +12,7 @@ const faqs = [
   },
   {
     q: "When does it take place?",
-    a: "Thursday 10 to Sunday 13 September 2026. Four days of keynotes, sector tracks, workshops, a hackathon and a closing showcase.",
+    a: "Delegates arrive Thursday 24 September 2026, with the 2-day summit running Friday 25 to Saturday 26 September — keynotes, sector tracks, workshops, a hackathon and a closing showcase.",
   },
   {
     q: "Who should attend?",
@@ -36,7 +36,7 @@ const faqs = [
   },
   {
     q: "Where is the venue?",
-    a: "Lagos — the exact venue will be announced closer to the date. Travel and accommodation support is available for selected delegates.",
+    a: "Daystar Oregun, Ikeja, Lagos. Travel and accommodation support is available for selected delegates.",
   },
   {
     q: "What do I leave with?",

@@ -11,7 +11,7 @@ import {
   Eyebrow,
 } from "@/components/motion-primitives";
 import { EditorialImage } from "@/components/editorial/EditorialImage";
-import scheduleAudience from "@/assets/editorial/schedule-audience.jpg";
+import scheduleAudience from "@/assets/event-photos/edition-two-crowd.jpeg";
 
 export function ScheduleSection({ id = "schedule" }: { id?: string }) {
   const [active, setActive] = useState(0);
@@ -20,18 +20,18 @@ export function ScheduleSection({ id = "schedule" }: { id?: string }) {
     <div id={id} className="scroll-mt-24">
       <section className="relative px-5 sm:px-6 lg:px-8 py-20 md:py-24 lg:py-28 bg-background text-text-primary overflow-hidden">
         <HalftoneBackdrop />
-        <SideLabel>Programme · Sept 10–13 · Lagos</SideLabel>
-        <SideLabel side="right" tone="muted">AIDIFILN / Day 01 → 04</SideLabel>
+        <SideLabel>Programme · Sept 24–26 · Ikeja, Lagos</SideLabel>
+        <SideLabel side="right" tone="muted">AIDIFILN / Arrival → Day 02</SideLabel>
         <div className="relative max-w-4xl mx-auto text-center">
-          <Reveal><Eyebrow>Four-day programme</Eyebrow></Reveal>
+          <Reveal><Eyebrow>2-day summit + arrival day</Eyebrow></Reveal>
           <Reveal delay={0.08}>
             <h2 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl mt-5 mb-6 leading-[1.05]">
-              The four days, <span className="text-accent-cyan">hour by hour.</span>
+              The full summit, <span className="text-accent-cyan">hour by hour.</span>
             </h2>
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              Keynotes, parallel sector rooms, hands-on workshops, a hackathon and a closing showcase — in Lagos (venue announced soon). Speaker lineups land closer to event.
+              Keynotes, parallel sector rooms, hands-on workshops, a hackathon and a closing showcase — at Daystar Oregun, Ikeja, Lagos. Speaker lineups land closer to event.
             </p>
           </Reveal>
         </div>
@@ -42,9 +42,9 @@ export function ScheduleSection({ id = "schedule" }: { id?: string }) {
         <div className="max-w-6xl mx-auto">
           <EditorialImage
             src={scheduleAudience}
-            alt="A packed Nigerian summit audience in modern conference seating, facing a backlit panel stage"
+            alt="A packed audience of YALI delegates in conference seating at Y-LEEDS 2025"
             aspect="aspect-[16/9] md:aspect-[21/9]"
-            caption="Main hall · panel session · summit reportage"
+            caption="Main hall · Y-LEEDS 2025"
             sizes="(min-width: 1280px) 1200px, (min-width: 768px) 90vw, 100vw"
             width={1920}
             height={1080}

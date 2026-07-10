@@ -26,7 +26,7 @@ export function renderEmailShell(input: {
   eyebrow?: string;
   bodyHtml: string;
 }): string {
-  const eyebrow = input.eyebrow ?? "YALI SUMMIT 2026 · SEPT 10–13 · LAGOS";
+  const eyebrow = input.eyebrow ?? "YALI SUMMIT 2026 · SEPT 24–26 · IKEJA, LAGOS";
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -82,7 +82,7 @@ export function renderEmailShell(input: {
                 <tr>
                   <td style="font-family:${FONT_STACK};font-size:12px;color:rgba(255,255,255,0.65);line-height:1.6;">
                     <strong style="color:#fff;">YALI Network Nigeria</strong><br/>
-                    AIDIFILN 2026 · Lagos, Nigeria · Sept 10–13<br/>
+                    AIDIFILN 2026 · Daystar Oregun, Ikeja, Lagos · Sept 24–26<br/>
                     <a href="mailto:info@summit.yalinetwork.ng" style="color:${COLORS.cyan};text-decoration:none;">info@summit.yalinetwork.ng</a>
                   </td>
                 </tr>

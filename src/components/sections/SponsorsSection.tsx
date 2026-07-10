@@ -18,7 +18,7 @@ import {
   Eyebrow,
 } from "@/components/motion-primitives";
 import { EditorialImage } from "@/components/editorial/EditorialImage";
-import sponsorsImpact from "@/assets/editorial/sponsors-impact.jpg";
+import sponsorsImpact from "@/assets/event-photos/edition-two-group.jpeg";
 
 export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
   const submit = useServerFn(submitSponsorInquiry);
@@ -46,7 +46,7 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
       <section className="relative px-5 sm:px-6 lg:px-8 py-20 md:py-24 lg:py-28 bg-background text-text-primary overflow-hidden">
         <HalftoneBackdrop />
         <SideLabel>Partner · Sponsor · Co-host</SideLabel>
-        <SideLabel side="right" tone="muted">700+ delegates · 7 tracks</SideLabel>
+        <SideLabel side="right" tone="muted">800–1,000 delegates · 7 tracks</SideLabel>
         <div className="relative max-w-4xl mx-auto text-center">
           <Reveal><Eyebrow>Partner with AIDIFILN</Eyebrow></Reveal>
           <Reveal delay={0.08}>
@@ -57,7 +57,7 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              700+ delegates from all 36 states. 7 sector rooms. National and diplomatic press. Pick a tier — or tell us the outcome you want and we'll build the package around it.
+              800–1,000 delegates from all 36 states. 7 sector rooms. National and diplomatic press. Pick a tier — or tell us the outcome you want and we'll build the package around it.
             </p>
           </Reveal>
         </div>
@@ -68,7 +68,7 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
         <div className="max-w-6xl mx-auto relative">
           <EditorialImage
             src={sponsorsImpact}
-            alt="A triptych of summit moments — a Nigerian woman leader at the lectern, an engaged delegate audience under stage lights, and press photographing the event"
+            alt="YALI Network Nigeria leadership, US Mission Nigeria representatives and summit organisers on stage at Y-LEEDS 2025"
             aspect="aspect-[16/9] md:aspect-[21/9]"
             sizes="(min-width: 1280px) 1200px, (min-width: 768px) 90vw, 100vw"
             width={1920}
@@ -77,7 +77,7 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
           {/* Stat overlay band */}
           <div className="hidden md:flex absolute inset-x-0 bottom-0 z-10 pointer-events-none">
             <div className="mx-auto mb-5 px-6 py-3 rounded-full bg-background/80 backdrop-blur-md border border-border-strong flex items-center gap-8 font-mono text-[11px] uppercase tracking-[0.25em] text-text-primary">
-              <span><span className="text-accent-cyan">700+</span> delegates</span>
+              <span><span className="text-accent-cyan">800–1,000</span> delegates</span>
               <span className="text-text-secondary/40">·</span>
               <span><span className="text-accent-cyan">36</span> states</span>
               <span className="text-text-secondary/40">·</span>

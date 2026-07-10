@@ -69,7 +69,7 @@ export function ContactSection({ id = "contact" }: { id?: string }) {
             <InfoCard
               Icon={MapPin}
               label="Venue"
-              value="Lagos, Nigeria · Sept 10–13, 2026"
+              value={"Daystar Oregun, Ikeja, Lagos\nSept 24–26, 2026"}
             />
           </Reveal>
 
