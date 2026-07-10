@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { motion } from "framer-motion";
-import { Check } from "lucide-react";
+import { Check, Download } from "lucide-react";
 import { submitSponsorInquiry } from "@/lib/inquiries.functions";
 import {
   SPONSOR_TIERS,
@@ -87,15 +87,15 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
         </div>
       </section>
 
-      <section className="px-5 sm:px-6 lg:px-8 pb-20 bg-background text-text-primary">
-        <Stagger className="max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <section className="px-5 sm:px-6 lg:px-8 pb-12 bg-background text-text-primary">
+        <Stagger className="max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
           {SPONSOR_TIERS.map((t, i) => (
             <motion.div
               key={t.name}
               variants={staggerChild}
               whileHover={{ y: -6 }}
               transition={{ type: "spring", stiffness: 320, damping: 24 }}
-              className={`relative rounded-3xl border p-7 flex flex-col overflow-hidden transition-colors ${
+              className={`relative rounded-3xl border p-6 flex flex-col overflow-hidden transition-colors ${
                 t.highlight
                   ? "border-accent-cyan bg-surface ring-1 ring-accent-cyan/40"
                   : "border-border-strong bg-surface hover:border-accent-cyan/60"
@@ -113,7 +113,7 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
                 0{i + 1}
               </span>
               <h3 className="font-display font-bold text-xl mb-2">{t.name}</h3>
-              <p className="text-3xl font-display font-bold text-accent-cyan mb-6">
+              <p className="text-2xl font-display font-bold text-accent-cyan mb-6 leading-tight">
                 {t.price}
               </p>
               <ul className="space-y-2.5 text-sm text-text-primary flex-1">
@@ -133,6 +133,29 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
             </motion.div>
           ))}
         </Stagger>
+      </section>
+
+      {/* Prospectus download — full tier breakdown, benefits and remittance details */}
+      <section className="px-5 sm:px-6 lg:px-8 pb-20 bg-background text-text-primary">
+        <div className="max-w-6xl mx-auto">
+          <div className="rounded-3xl border border-border-strong bg-surface p-7 md:p-9 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+            <div>
+              <h3 className="font-display font-bold text-xl md:text-2xl mb-1.5">
+                Want the full breakdown?
+              </h3>
+              <p className="text-text-secondary max-w-xl">
+                Every tier, benefit and remittance detail — in one PDF. Download the AIDIFILN 2026 partnership prospectus to review at your own pace or share with your team.
+              </p>
+            </div>
+            <a
+              href="/AIDIFILN-2026-Partnership-Prospectus.pdf"
+              download
+              className="flex-shrink-0 inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full text-sm font-semibold bg-accent-cyan text-brand-navy hover:scale-[1.03] active:scale-95 transition-transform"
+            >
+              <Download className="w-4 h-4" /> Learn more &amp; download prospectus
+            </a>
+          </div>
+        </div>
       </section>
 
       <section
