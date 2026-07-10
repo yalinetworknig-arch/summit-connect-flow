@@ -39,6 +39,7 @@ import { Route as AuthenticatedProfileNetworkRouteImport } from './routes/_authe
 import { Route as AuthenticatedProfileHackathonRouteImport } from './routes/_authenticated.profile.hackathon'
 import { Route as AuthenticatedProfileAgendaRouteImport } from './routes/_authenticated.profile.agenda'
 import { Route as AuthenticatedAdminRegistrationsRouteImport } from './routes/_authenticated.admin.registrations'
+import { Route as AuthenticatedAdminNetworkingRouteImport } from './routes/_authenticated.admin.networking'
 import { Route as AuthenticatedAdminCheckInRouteImport } from './routes/_authenticated.admin.check-in'
 
 const TracksRoute = TracksRouteImport.update({
@@ -199,6 +200,12 @@ const AuthenticatedAdminRegistrationsRoute =
     path: '/registrations',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminNetworkingRoute =
+  AuthenticatedAdminNetworkingRouteImport.update({
+    id: '/networking',
+    path: '/networking',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminCheckInRoute =
   AuthenticatedAdminCheckInRouteImport.update({
     id: '/check-in',
@@ -227,6 +234,7 @@ export interface FileRoutesByFullPath {
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/admin/check-in': typeof AuthenticatedAdminCheckInRoute
+  '/admin/networking': typeof AuthenticatedAdminNetworkingRoute
   '/admin/registrations': typeof AuthenticatedAdminRegistrationsRoute
   '/profile/agenda': typeof AuthenticatedProfileAgendaRoute
   '/profile/hackathon': typeof AuthenticatedProfileHackathonRoute
@@ -257,6 +265,7 @@ export interface FileRoutesByTo {
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/admin/check-in': typeof AuthenticatedAdminCheckInRoute
+  '/admin/networking': typeof AuthenticatedAdminNetworkingRoute
   '/admin/registrations': typeof AuthenticatedAdminRegistrationsRoute
   '/profile/agenda': typeof AuthenticatedProfileAgendaRoute
   '/profile/hackathon': typeof AuthenticatedProfileHackathonRoute
@@ -290,6 +299,7 @@ export interface FileRoutesById {
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/_authenticated/admin/check-in': typeof AuthenticatedAdminCheckInRoute
+  '/_authenticated/admin/networking': typeof AuthenticatedAdminNetworkingRoute
   '/_authenticated/admin/registrations': typeof AuthenticatedAdminRegistrationsRoute
   '/_authenticated/profile/agenda': typeof AuthenticatedProfileAgendaRoute
   '/_authenticated/profile/hackathon': typeof AuthenticatedProfileHackathonRoute
@@ -323,6 +333,7 @@ export interface FileRouteTypes {
     | '/register/$id'
     | '/ticket/$code'
     | '/admin/check-in'
+    | '/admin/networking'
     | '/admin/registrations'
     | '/profile/agenda'
     | '/profile/hackathon'
@@ -353,6 +364,7 @@ export interface FileRouteTypes {
     | '/register/$id'
     | '/ticket/$code'
     | '/admin/check-in'
+    | '/admin/networking'
     | '/admin/registrations'
     | '/profile/agenda'
     | '/profile/hackathon'
@@ -385,6 +397,7 @@ export interface FileRouteTypes {
     | '/register/$id'
     | '/ticket/$code'
     | '/_authenticated/admin/check-in'
+    | '/_authenticated/admin/networking'
     | '/_authenticated/admin/registrations'
     | '/_authenticated/profile/agenda'
     | '/_authenticated/profile/hackathon'
@@ -628,6 +641,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRegistrationsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/networking': {
+      id: '/_authenticated/admin/networking'
+      path: '/networking'
+      fullPath: '/admin/networking'
+      preLoaderRoute: typeof AuthenticatedAdminNetworkingRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/check-in': {
       id: '/_authenticated/admin/check-in'
       path: '/check-in'
@@ -640,12 +660,14 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminCheckInRoute: typeof AuthenticatedAdminCheckInRoute
+  AuthenticatedAdminNetworkingRoute: typeof AuthenticatedAdminNetworkingRoute
   AuthenticatedAdminRegistrationsRoute: typeof AuthenticatedAdminRegistrationsRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminCheckInRoute: AuthenticatedAdminCheckInRoute,
+  AuthenticatedAdminNetworkingRoute: AuthenticatedAdminNetworkingRoute,
   AuthenticatedAdminRegistrationsRoute: AuthenticatedAdminRegistrationsRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }

@@ -1,10 +1,11 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, Users, ScanLine } from "lucide-react";
+import { LayoutDashboard, Users, ScanLine, Mail } from "lucide-react";
 
 const tabs = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/registrations", label: "Registrations", icon: Users, exact: false },
   { to: "/admin/check-in", label: "Check-in", icon: ScanLine, exact: false },
+  { to: "/admin/networking", label: "Networking", icon: Mail, exact: false },
 ] as const;
 
 export function AdminTabs() {
