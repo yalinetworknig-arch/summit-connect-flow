@@ -16,9 +16,6 @@ import {
   VOLUNTEER_AVAILABILITY,
   type FormState,
 } from "@/lib/register/schema";
-import { supabase } from "@/integrations/supabase/client";
-import { useState } from "react";
-import { CheckCircle2 } from "lucide-react";
 
 export function StepPersonalInfo({
   value,
@@ -82,25 +79,6 @@ export function StepPersonalInfo({
           </Select>
         </Field>
       </div>
-
-      {type === "delegate" && (
-        <TypeSection title="YALI membership" subtitle="We verify every delegate against the YALI Network roster.">
-          <Field label="YALI ID" error={errors.yali_id}>
-            <Input
-              value={value.yali_id ?? ""}
-              onChange={(e) => onChange({ yali_id: e.target.value })}
-              maxLength={40}
-              placeholder="YALI-NG-XXXXXX"
-            />
-          </Field>
-          <Field label="YALI membership certificate (required)" error={errors.yali_certificate_url}>
-            <CertificateUpload
-              value={value.yali_certificate_url ?? ""}
-              onChange={(url) => onChange({ yali_certificate_url: url })}
-            />
-          </Field>
-        </TypeSection>
-      )}
 
       {type === "sponsor" && (
         <TypeSection title="Sponsor details" subtitle="Helps us tailor activations and brief our partnerships team.">
@@ -309,141 +287,6 @@ function TypeSection({
         )}
       </div>
       {children}
-    </div>
-  );
-}
-
-function CertificateUpload({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (url: string) => void;
-}) {
-  const [busy, setBusy] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
-  const [progress, setProgress] = useState(0);
-  const [fileName, setFileName] = useState<string | null>(null);
-
-  const MAX_BYTES = 5 * 1024 * 1024;
-  const ALLOWED = [
-    { mime: "application/pdf", label: "PDF" },
-    { mime: "image/png", label: "PNG" },
-    { mime: "image/jpeg", label: "JPG" },
-  ];
-
-  async function handleFile(file: File) {
-    setErr(null);
-    setFileName(file.name);
-    if (!ALLOWED.some((a) => a.mime === file.type)) {
-      setErr(
-        `"${file.name}" is a ${file.type || "unknown"} file. Please upload a PDF, PNG, or JPG.`,
-      );
-      return;
-    }
-    if (file.size > MAX_BYTES) {
-      const mb = (file.size / 1024 / 1024).toFixed(1);
-      setErr(`File is ${mb}MB — maximum allowed is 5MB. Please choose a smaller file.`);
-      return;
-    }
-    if (file.size === 0) {
-      setErr("This file appears to be empty. Please choose a different file.");
-      return;
-    }
-    setBusy(true);
-    setProgress(0);
-    try {
-      const extByMime: Record<string, string> = {
-        "application/pdf": "pdf",
-        "image/png": "png",
-        "image/jpeg": "jpg",
-      };
-      const ext = extByMime[file.type] ?? "bin";
-      const path = `${crypto.randomUUID()}.${ext}`;
-      const { data: signed, error: signErr } = await supabase.storage
-        .from("yali-certificates")
-        .createSignedUploadUrl(path);
-      if (signErr || !signed) throw signErr ?? new Error("Could not start upload");
-
-      await new Promise<void>((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open("PUT", signed.signedUrl, true);
-        xhr.setRequestHeader("Content-Type", file.type);
-        xhr.upload.onprogress = (e) => {
-          if (e.lengthComputable) setProgress(Math.round((e.loaded / e.total) * 100));
-        };
-        xhr.onload = () => {
-          if (xhr.status >= 200 && xhr.status < 300) {
-            setProgress(100);
-            resolve();
-          } else {
-            reject(new Error(`Upload failed (${xhr.status})`));
-          }
-        };
-        xhr.onerror = () => reject(new Error("Network error during upload"));
-        xhr.send(file);
-      });
-      onChange(path);
-    } catch (e: unknown) {
-      setErr(
-        e instanceof Error
-          ? `Upload failed: ${e.message}. Please try again.`
-          : "Upload failed. Please try again.",
-      );
-      setProgress(0);
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  return (
-    <div className="flex flex-col gap-2">
-      <input
-        type="file"
-        accept="application/pdf,image/png,image/jpeg"
-        disabled={busy}
-        onChange={(e) => {
-          const f = e.target.files?.[0];
-          if (f) handleFile(f);
-        }}
-        className="text-sm file:mr-3 file:rounded-full file:border-0 file:px-4 file:py-1.5 file:text-sm file:font-semibold file:cursor-pointer"
-        style={{
-          color: "var(--text-secondary)",
-        }}
-      />
-      {busy && (
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center justify-between text-xs" style={{ color: "var(--text-secondary)" }}>
-            <span>Uploading {fileName ? `"${fileName}"` : "file"}…</span>
-            <span>{progress}%</span>
-          </div>
-          <div
-            className="h-1.5 w-full rounded-full overflow-hidden"
-            style={{ background: "var(--border-strong)" }}
-          >
-            <div
-              className="h-full transition-all duration-150"
-              style={{ width: `${progress}%`, background: "var(--accent-cyan)" }}
-            />
-          </div>
-        </div>
-      )}
-      {!busy && value && !err && (
-        <span className="flex items-center gap-1 text-xs" style={{ color: "var(--success, #22C55E)" }}>
-          <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
-          Certificate uploaded{fileName ? ` — ${fileName}` : ""}. Choose another file to replace it.
-        </span>
-      )}
-      {err && (
-        <span className="text-xs" style={{ color: "var(--error)" }}>
-          {err}
-        </span>
-      )}
-      {!value && !busy && !err && (
-        <span className="text-xs" style={{ color: "var(--text-secondary)" }}>
-          Required for delegates. Accepted formats: PDF, PNG, or JPG. Maximum size: 5MB.
-        </span>
-      )}
     </div>
   );
 }

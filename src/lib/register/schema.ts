@@ -57,10 +57,6 @@ export const step2Schema = z
     const req = (key: string, val: string | undefined, message: string) => {
       if (!val?.trim()) ctx.addIssue({ code: z.ZodIssueCode.custom, path: [key], message });
     };
-    if (val.attendee_type === "delegate") {
-      req("yali_id", val.yali_id, "YALI ID is required for delegates");
-      req("yali_certificate_url", val.yali_certificate_url, "Upload your YALI membership certificate");
-    }
     if (val.attendee_type === "sponsor") {
       req("organization", val.organization, "Organization is required");
       req("role_title", val.role_title, "Your role at the organization is required");
