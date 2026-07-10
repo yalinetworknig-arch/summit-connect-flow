@@ -3,7 +3,7 @@ import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import QRCode from "qrcode";
-import { CheckCircle2, AlertTriangle, ShieldCheck, Clock, XCircle, Calendar, Share2, Home, Printer } from "lucide-react";
+import { CheckCircle2, AlertTriangle, ShieldCheck, Clock, XCircle, Calendar, Share2, Home, Printer, Users } from "lucide-react";
 import { getTicketByCode } from "@/lib/tickets.functions";
 import { TRACKS } from "@/lib/register/tracks";
 
@@ -51,7 +51,12 @@ function TicketPage() {
   });
 
   useEffect(() => {
-    if (!data || !canvasRef.current) return;
+    if (!data) return;
+    // Remember this device's ticket so the networking pages can one-tap save contacts.
+    try {
+      localStorage.setItem("yali_my_ticket_code", data.ticket_code);
+    } catch {}
+    if (!canvasRef.current) return;
     QRCode.toCanvas(canvasRef.current, data.ticket_code, {
       width: 260,
       margin: 1,
@@ -126,6 +131,15 @@ function TicketPage() {
           </div>
         </dl>
       </div>
+
+      <Link
+        to="/attendee/$code"
+        params={{ code: data.ticket_code }}
+        className="no-print mb-3 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full text-sm font-semibold"
+        style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
+      >
+        <Users className="w-4 h-4" /> Open my networking card
+      </Link>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 no-print">
         <a href={icsHref} download="yali-summit-2026.ics" className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full text-xs sm:text-sm font-semibold border" style={{ borderColor: "var(--accent-cyan)", color: "var(--accent-cyan)" }}>
