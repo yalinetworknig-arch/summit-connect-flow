@@ -99,7 +99,7 @@ export async function sendTicketEmail(input: TicketEmailInput): Promise<{ ok: bo
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        from: "YALI Summit <onboarding@resend.dev>",
+        from: process.env.RESEND_FROM || "YALI Summit <onboarding@resend.dev>",
         to: [input.to],
         subject: `Your YALI Summit 2026 ticket — ${input.ticketCode}`,
         html: renderHtml(input, ticketUrl),

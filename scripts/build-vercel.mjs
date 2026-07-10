@@ -91,6 +91,8 @@ writeFileSync(join(funcDir, '.vc-config.json'), JSON.stringify({
   handler: 'index.mjs',
   launcherType: 'Nodejs',
   shouldAddHelpers: true,
+  // Batch email sends (admin networking digests) need more than the 10s default
+  maxDuration: 60,
 }, null, 2));
 
 // Write package.json to mark the function directory as an ES module
