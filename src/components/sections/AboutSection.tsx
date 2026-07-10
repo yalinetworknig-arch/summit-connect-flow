@@ -10,9 +10,9 @@ import {
   Eyebrow,
 } from "@/components/motion-primitives";
 import { EditorialImage } from "@/components/editorial/EditorialImage";
-import civicGathering from "@/assets/event-photos/edition-two-group.jpeg";
-import techTraining from "@/assets/event-photos/edition-two-crowd.jpeg";
-import mobileMoney from "@/assets/event-photos/edition-two-group.jpeg";
+import civicGathering from "@/assets/event-photos/yleeds-leadership-group.jpg";
+import techTraining from "@/assets/event-photos/yleeds-crowd-engaged.jpg";
+import mobileMoney from "@/assets/event-photos/yleeds-panel-discussion.jpg";
 
 export function AboutSection({ id = "about" }: { id?: string }) {
   return (
@@ -48,9 +48,9 @@ export function AboutSection({ id = "about" }: { id?: string }) {
         <div className="max-w-6xl mx-auto -mt-6 md:-mt-10">
           <EditorialImage
             src={civicGathering}
-            alt="YALI delegates and dignitaries on stage together at the Y-LEEDS 2025 national summit"
+            alt="YALI Network Nigeria leadership and organisers pose together on stage at Y-LEEDS 2025"
             aspect="aspect-[16/9] md:aspect-[21/9]"
-            caption="YALI delegates · Y-LEEDS 2025 · Edition Two"
+            caption="Summit organisers · Y-LEEDS 2025 · Edition Two"
             sizes="(min-width: 1280px) 1200px, (min-width: 768px) 90vw, 100vw"
             width={1920}
             height={1080}
@@ -109,9 +109,9 @@ export function AboutSection({ id = "about" }: { id?: string }) {
               <div className="md:float-right md:ml-8 md:w-[42%] md:max-w-[420px] mb-2">
                 <EditorialImage
                   src={techTraining}
-                  alt="YALI delegates in a packed session room reacting to the stage at Y-LEEDS 2025"
+                  alt="YALI delegates applauding and engaged during a session at Y-LEEDS 2025"
                   aspect="aspect-[4/3]"
-                  caption="Delegate crowd · Y-LEEDS 2025"
+                  caption="Delegates engaged · Y-LEEDS 2025"
                   sizes="(min-width: 768px) 420px, 100vw"
                   width={1280}
                   height={960}
@@ -133,9 +133,9 @@ export function AboutSection({ id = "about" }: { id?: string }) {
               <div className="md:float-left md:mr-8 md:w-[42%] md:max-w-[420px] mb-2 clear-both">
                 <EditorialImage
                   src={mobileMoney}
-                  alt="YALI Network Nigeria leadership and US Mission Nigeria representatives on stage at Y-LEEDS 2025"
+                  alt="A five-person panel discussion on stage at Y-LEEDS 2025, with YALI Network Nigeria branding behind"
                   aspect="aspect-[4/3]"
-                  caption="Summit leadership · Y-LEEDS 2025"
+                  caption="Panel discussion · Y-LEEDS 2025"
                   sizes="(min-width: 768px) 420px, 100vw"
                   width={1280}
                   height={960}

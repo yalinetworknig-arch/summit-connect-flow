@@ -11,7 +11,7 @@ import {
   Eyebrow,
 } from "@/components/motion-primitives";
 import { EditorialImage } from "@/components/editorial/EditorialImage";
-import scheduleAudience from "@/assets/event-photos/edition-two-crowd.jpeg";
+import scheduleAudience from "@/assets/event-photos/yleeds-main-hall.jpg";
 
 export function ScheduleSection({ id = "schedule" }: { id?: string }) {
   const [active, setActive] = useState(0);

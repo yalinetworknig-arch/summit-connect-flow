@@ -18,7 +18,7 @@ import {
   Eyebrow,
 } from "@/components/motion-primitives";
 import { EditorialImage } from "@/components/editorial/EditorialImage";
-import sponsorsImpact from "@/assets/event-photos/edition-two-group.jpeg";
+import sponsorsImpact from "@/assets/event-photos/yleeds-keynote-speaker.jpg";
 
 export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
   const submit = useServerFn(submitSponsorInquiry);
@@ -68,7 +68,7 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
         <div className="max-w-6xl mx-auto relative">
           <EditorialImage
             src={sponsorsImpact}
-            alt="YALI Network Nigeria leadership, US Mission Nigeria representatives and summit organisers on stage at Y-LEEDS 2025"
+            alt="A YALI Network Nigeria speaker at the podium, backed by the United States Diplomatic Mission in Nigeria banner, at Y-LEEDS 2025"
             aspect="aspect-[16/9] md:aspect-[21/9]"
             sizes="(min-width: 1280px) 1200px, (min-width: 768px) 90vw, 100vw"
             width={1920}
