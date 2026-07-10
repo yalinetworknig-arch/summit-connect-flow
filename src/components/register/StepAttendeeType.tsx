@@ -4,7 +4,7 @@ import type { AttendeeType, FormState } from "@/lib/register/schema";
 import { staggerContainer, staggerChild, ease } from "@/lib/motion";
 
 const options: Array<{ value: AttendeeType; title: string; desc: string; Icon: LucideIcon }> = [
-  { value: "delegate", title: "YALI Delegate", desc: "Active YALI Network member with a valid YALI ID.", Icon: GraduationCap },
+  { value: "delegate", title: "YALI Delegate", desc: "Any YALI Network member, from any state hub.", Icon: GraduationCap },
   { value: "sponsor", title: "Sponsor Representative", desc: "Attending on behalf of a sponsoring organisation.", Icon: Building2 },
   { value: "media", title: "Media", desc: "Press, broadcast, or content creator covering the summit.", Icon: Newspaper },
   { value: "public", title: "General Public", desc: "Open to anyone passionate about Nigeria's digital future.", Icon: Users },
