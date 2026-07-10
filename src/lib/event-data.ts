@@ -114,44 +114,37 @@ export type ScheduleDay = {
 
 export const SCHEDULE: ScheduleDay[] = [
   {
-    day: "Day 1",
-    date: "Thu · Sept 10, 2026",
-    theme: "Open the room",
+    day: "Arrival",
+    date: "Thu · Sept 24, 2026",
+    theme: "Land, settle in, connect",
     blocks: [
-      { time: "12:00 – 17:00", title: "Delegate check-in", description: "Pick up your badge, swag and track briefing pack. Meet your YALI cohort lead." },
-      { time: "18:00 – 19:30", title: "Opening keynote", description: "YALI Network Nigeria leadership opens the summit, followed by the headline address on AI and inclusive leadership." },
-      { time: "19:30 – 21:30", title: "Welcome reception", description: "Working dinner with sponsors, alumni and invited dignitaries — name-tagged by track." },
+      { time: "All day", title: "Delegate arrival & check-in", description: "Fly or drive in, get settled at your accommodation, and pick up your badge, swag and track briefing pack." },
+      { time: "18:00 – 21:00", title: "Informal meetup", description: "Casual welcome mixer for early arrivals — meet your YALI cohort lead and fellow delegates before the summit opens." },
+    ],
+  },
+  {
+    day: "Day 1",
+    date: "Fri · Sept 25, 2026",
+    theme: "Understand → Build",
+    blocks: [
+      { time: "08:00 – 09:00", title: "Registration & badge pickup", description: "For delegates arriving morning-of. Coffee and networking in the main hall." },
+      { time: "09:00 – 10:30", title: "Opening keynote", description: "YALI Network Nigeria leadership opens the summit, followed by the headline address on AI and inclusive leadership." },
+      { time: "11:00 – 13:00", title: "Plenary: State of AI in Nigeria", description: "A data-led read of where we are, where the capital is moving, and what's blocking scale." },
+      { time: "14:00 – 16:30", title: "Track sessions · Round 1", description: "Health, Agriculture, Education, FinTech, Energy, Governance and Creative Economy rooms run in parallel. Pick one and commit." },
+      { time: "17:00 – 18:30", title: "Fireside chats", description: "Founders and policymakers, on the record. No deck-reading." },
+      { time: "19:00 – 21:30", title: "Welcome reception", description: "Working dinner with sponsors, alumni and invited dignitaries — name-tagged by track." },
     ],
   },
   {
     day: "Day 2",
-    date: "Fri · Sept 11, 2026",
-    theme: "Go deep, by sector",
+    date: "Sat · Sept 26, 2026",
+    theme: "Build → Lead",
     blocks: [
-      { time: "09:00 – 10:00", title: "Plenary: State of AI in Nigeria", description: "A data-led read of where we are, where the capital is moving, and what's blocking scale." },
-      { time: "10:30 – 13:00", title: "Track sessions · Round 1", description: "Health, Agriculture, Education and FinTech rooms run in parallel. Pick one and commit." },
-      { time: "14:00 – 16:30", title: "Track sessions · Round 2", description: "Energy, Governance and Creative Economy rooms run in parallel. Same rule: pick one and commit." },
-      { time: "17:00 – 18:30", title: "Fireside chats", description: "Founders and policymakers, on the record. No deck-reading." },
-    ],
-  },
-  {
-    day: "Day 3",
-    date: "Sat · Sept 12, 2026",
-    theme: "Build, hack, celebrate",
-    blocks: [
-      { time: "09:00 – 12:30", title: "Hands-on workshops", description: "Build with AI, ship a product, draft a policy memo. Practitioner-led, laptop-required." },
-      { time: "13:30 – 17:00", title: "AIDIFILN Hackathon", description: "Cross-disciplinary teams tackle a real sector challenge. Mentors on the floor, judges in the room." },
+      { time: "09:00 – 12:00", title: "Hands-on workshops & hackathon", description: "Build with AI, ship a product, draft a policy memo. Practitioner-led, laptop-required. Cross-disciplinary teams tackle a real sector challenge — mentors on the floor, judges in the room." },
+      { time: "13:00 – 15:00", title: "Hackathon final pitches", description: "Top teams pitch to a panel of investors, policymakers and operators. Cheques, MOUs and pilot slots on the line." },
+      { time: "15:30 – 17:00", title: "Closing keynote", description: "Public commitments from delegates, sponsors and partners — recorded, published, and tracked for 12 months." },
+      { time: "17:00 – 18:00", title: "Farewell and follow-through", description: "Year-round YALI programming, your post-summit cohort plan, and a first look at AIDIFILN 2027." },
       { time: "19:00 – 22:00", title: "Cultural night", description: "Afrobeats, Nollywood shorts, a fashion showcase. The reason the world keeps watching Nigeria." },
-    ],
-  },
-  {
-    day: "Day 4",
-    date: "Sun · Sept 13, 2026",
-    theme: "Commit and ship",
-    blocks: [
-      { time: "10:00 – 12:00", title: "Hackathon final pitches", description: "Top teams pitch to a panel of investors, policymakers and operators. Cheques, MOUs and pilot slots on the line." },
-      { time: "13:00 – 14:30", title: "Closing keynote", description: "Public commitments from delegates, sponsors and partners — recorded, published, and tracked for 12 months." },
-      { time: "14:30 – 15:30", title: "Farewell and follow-through", description: "Year-round YALI programming, your post-summit cohort plan, and a first look at AIDIFILN 2027." },
     ],
   },
 ];
@@ -170,7 +163,7 @@ export const SPONSOR_TIERS: SponsorTier[] = [
     highlight: false,
     benefits: [
       "Your logo on the website and venue signage",
-      "2 delegate passes (full 4 days)",
+      "2 delegate passes (full 2-day summit)",
       "Named mention during the opening keynote",
     ],
   },
@@ -180,8 +173,8 @@ export const SPONSOR_TIERS: SponsorTier[] = [
     highlight: false,
     benefits: [
       "Everything in Community",
-      "Your branded session or workshop on Day 2 or 3",
-      "5 delegate passes (full 4 days)",
+      "Your branded session or workshop on Day 1 or 2",
+      "5 delegate passes (full 2-day summit)",
       "Logo on every printed conference asset",
     ],
   },
@@ -192,8 +185,8 @@ export const SPONSOR_TIERS: SponsorTier[] = [
     benefits: [
       "Everything in Silver",
       "Title sponsor of a sector track (named on stage and in every comm)",
-      "Speaking slot in the Day 2 plenary",
-      "10 delegate passes (full 4 days)",
+      "Speaking slot in the Day 1 plenary",
+      "10 delegate passes (full 2-day summit)",
       "Premium booth in the expo hall",
     ],
   },
