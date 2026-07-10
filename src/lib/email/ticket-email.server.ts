@@ -1,4 +1,5 @@
 import { getRequestHost } from "@tanstack/react-start/server";
+import { renderEmailShell, ctaButtonRow, escapeHtml, emailColors } from "@/lib/email/shell.server";
 
 type TicketEmailInput = {
   to: string;
@@ -20,43 +21,79 @@ function resolveOrigin(): string {
   } catch {
     // not in request context
   }
-  return "https://summit-connect-flow.netlify.app";
+  return "https://summit.yalinetwork.ng";
 }
 
 function renderHtml(input: TicketEmailInput, ticketUrl: string) {
   const firstName = input.fullName.split(" ")[0] || input.fullName;
-  return `<!doctype html>
-<html><body style="margin:0;padding:0;background:#f4f6fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#0A1128;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f6fb;padding:32px 16px;">
-    <tr><td align="center">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:16px;overflow:hidden;border:1px solid #e5e9f2;">
-        <tr><td style="background:#0A1128;padding:28px 32px;color:#ffffff;">
-          <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;">YALI Summit 2026</div>
-          <div style="font-size:22px;font-weight:700;margin-top:6px;">You're in, ${escapeHtml(firstName)}!</div>
-        </td></tr>
-        <tr><td style="padding:28px 32px;">
-          <p style="margin:0 0 16px;font-size:15px;line-height:1.55;">Your registration for <strong>AIDIFILN 2026</strong> is confirmed. Bring this ticket to check-in.</p>
-          <div style="margin:20px 0;padding:14px 18px;border-radius:10px;background:#f1f5fb;border:1px dashed #0A1128;text-align:center;">
-            <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#5b6577;">Ticket code</div>
-            <div style="font-family:'SFMono-Regular',Consolas,monospace;font-size:16px;font-weight:600;margin-top:4px;word-break:break-all;">${escapeHtml(input.ticketCode)}</div>
-          </div>
-          ${input.track || input.attendeeType ? `<table role="presentation" width="100%" style="margin:8px 0 20px;font-size:14px;">
-            ${input.track ? `<tr><td style="color:#5b6577;padding:4px 0;">Track</td><td style="text-align:right;font-weight:600;">${escapeHtml(input.track)}</td></tr>` : ""}
-            ${input.attendeeType ? `<tr><td style="color:#5b6577;padding:4px 0;">Attendee</td><td style="text-align:right;font-weight:600;text-transform:capitalize;">${escapeHtml(input.attendeeType)}</td></tr>` : ""}
-          </table>` : ""}
-          <div style="text-align:center;margin:28px 0 8px;">
-            <a href="${ticketUrl}" style="display:inline-block;background:#22D3EE;color:#0A1128;text-decoration:none;font-weight:700;padding:14px 28px;border-radius:999px;font-size:15px;">View your ticket</a>
-          </div>
-          <p style="margin:24px 0 0;font-size:13px;color:#5b6577;line-height:1.55;">Or open this link: <br/><a href="${ticketUrl}" style="color:#0A1128;">${ticketUrl}</a></p>
-        </td></tr>
-        <tr><td style="padding:18px 32px;background:#0A1128;color:#ffffff;font-size:12px;">
-          Lagos (venue TBA) — Sept 11–14, 2026
-        </td></tr>
-      </table>
-      <div style="font-size:11px;color:#8a93a6;margin-top:14px;">YALI Network Nigeria</div>
-    </td></tr>
-  </table>
-</body></html>`;
+  const detailRows = [
+    input.track ? { label: "Track", value: input.track } : null,
+    input.attendeeType ? { label: "Attendee type", value: input.attendeeType, capitalize: true } : null,
+  ].filter((r): r is { label: string; value: string; capitalize?: boolean } => Boolean(r));
+
+  const bodyHtml = `
+    <tr>
+      <td style="padding:36px 32px 0;">
+        <table role="presentation" cellpadding="0" cellspacing="0" style="margin-bottom:14px;">
+          <tr>
+            <td width="40" height="40" align="center" valign="middle" style="width:40px;height:40px;border-radius:999px;background:${emailColors.cyan};font-size:18px;font-weight:800;color:${emailColors.navy};">✓</td>
+          </tr>
+        </table>
+        <div style="font-size:22px;font-weight:800;color:${emailColors.ink};letter-spacing:-0.3px;">You're in, ${escapeHtml(firstName)}!</div>
+        <p style="margin:8px 0 0;font-size:14.5px;line-height:1.6;color:${emailColors.sub};">
+          Your registration for <strong style="color:${emailColors.ink};">AIDIFILN 2026</strong> is confirmed. Bring your ticket QR to check-in on-site.
+        </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding:22px 32px 0;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${emailColors.bg};border:1.5px dashed ${emailColors.navy};border-radius:14px;">
+          <tr>
+            <td align="center" style="padding:18px 16px;">
+              <div style="font-size:10.5px;letter-spacing:1.6px;text-transform:uppercase;color:${emailColors.sub};font-weight:700;">Ticket code</div>
+              <div style="font-family:'SFMono-Regular',Consolas,Menlo,monospace;font-size:17px;font-weight:700;color:${emailColors.ink};margin-top:6px;word-break:break-all;">${escapeHtml(input.ticketCode)}</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    ${detailRows.length > 0 ? `
+    <tr>
+      <td style="padding:18px 32px 0;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:13.5px;">
+          ${detailRows.map((r, i) => `
+          <tr>
+            <td style="padding:8px 0;color:${emailColors.sub};${i > 0 ? `border-top:1px solid ${emailColors.border};` : ""}">${escapeHtml(r.label)}</td>
+            <td style="padding:8px 0;text-align:right;font-weight:700;color:${emailColors.ink};${r.capitalize ? "text-transform:capitalize;" : ""}${i > 0 ? `border-top:1px solid ${emailColors.border};` : ""}">${escapeHtml(r.value)}</td>
+          </tr>`).join("")}
+        </table>
+      </td>
+    </tr>` : ""}
+
+    <tr>
+      <td style="padding:26px 32px 6px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+          ${ctaButtonRow(ticketUrl, "View your ticket")}
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding:0 32px 34px;">
+        <p style="margin:0;font-size:12.5px;line-height:1.6;color:${emailColors.sub};text-align:center;">
+          Or paste this link in your browser:<br/>
+          <a href="${ticketUrl}" style="color:${emailColors.navy};word-break:break-all;">${ticketUrl}</a>
+        </p>
+      </td>
+    </tr>
+  `;
+
+  return renderEmailShell({
+    preheader: `Your AIDIFILN 2026 ticket is confirmed — code ${input.ticketCode}`,
+    bodyHtml,
+  });
 }
 
 function renderText(input: TicketEmailInput, ticketUrl: string) {
@@ -70,12 +107,8 @@ function renderText(input: TicketEmailInput, ticketUrl: string) {
     "",
     `View your ticket: ${ticketUrl}`,
     "",
-    "Lagos (venue TBA) — Sept 11–14, 2026",
+    "Lagos, Nigeria — Sept 10–13, 2026",
   ].filter(Boolean).join("\n");
-}
-
-function escapeHtml(s: string) {
-  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
 }
 
 export async function sendTicketEmail(input: TicketEmailInput): Promise<{ ok: boolean; id?: string; error?: string }> {

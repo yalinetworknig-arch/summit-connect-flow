@@ -1,3 +1,5 @@
+import { renderEmailShell, escapeHtml, emailColors } from "@/lib/email/shell.server";
+
 export type ContactEntry = {
   full_name: string;
   email: string;
@@ -7,44 +9,59 @@ export type ContactEntry = {
   linkedin_url: string | null;
 };
 
-function escapeHtml(s: string) {
-  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
+function initials(name: string): string {
+  return name.split(" ").map((w) => w[0]).filter(Boolean).slice(0, 2).join("").toUpperCase();
 }
 
-function renderContactRowHtml(c: ContactEntry) {
+function renderContactCardHtml(c: ContactEntry, isLast: boolean) {
   const meta = [c.attendee_type, c.state].filter(Boolean).join(" · ");
-  return `<tr><td style="padding:14px 0;border-bottom:1px solid #e5e9f2;">
-    <div style="font-size:15px;font-weight:700;">${escapeHtml(c.full_name)}</div>
-    <div style="font-size:12px;color:#5b6577;text-transform:capitalize;margin-top:2px;">${escapeHtml(meta)}</div>
-    <div style="font-size:13px;margin-top:6px;"><a href="mailto:${escapeHtml(c.email)}" style="color:#0A1128;">${escapeHtml(c.email)}</a>${c.phone ? ` · <a href="tel:${escapeHtml(c.phone)}" style="color:#0A1128;">${escapeHtml(c.phone)}</a>` : ""}</div>
-    ${c.linkedin_url ? `<div style="font-size:13px;margin-top:4px;"><a href="${escapeHtml(c.linkedin_url)}" style="color:#0A66C2;">LinkedIn profile</a></div>` : ""}
-  </td></tr>`;
+  return `
+  <tr>
+    <td style="padding:${isLast ? "0" : "0 0 12px"};">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${emailColors.bg};border:1px solid ${emailColors.border};border-radius:14px;">
+        <tr>
+          <td style="padding:16px 18px;" valign="top" width="46">
+            <div style="width:38px;height:38px;line-height:38px;border-radius:999px;background:${emailColors.cyan};color:${emailColors.navy};font-weight:800;font-size:14px;text-align:center;">
+              ${escapeHtml(initials(c.full_name))}
+            </div>
+          </td>
+          <td style="padding:16px 18px 16px 0;" valign="top">
+            <div style="font-size:15px;font-weight:700;color:${emailColors.ink};">${escapeHtml(c.full_name)}</div>
+            <div style="font-size:12px;color:${emailColors.sub};text-transform:capitalize;margin-top:2px;">${escapeHtml(meta)}</div>
+            <div style="font-size:13px;margin-top:8px;">
+              <a href="mailto:${escapeHtml(c.email)}" style="color:${emailColors.navy};text-decoration:none;font-weight:600;">${escapeHtml(c.email)}</a>${c.phone ? `<span style="color:${emailColors.sub};"> · </span><a href="tel:${escapeHtml(c.phone)}" style="color:${emailColors.navy};text-decoration:none;font-weight:600;">${escapeHtml(c.phone)}</a>` : ""}
+            </div>
+            ${c.linkedin_url ? `<div style="font-size:13px;margin-top:4px;"><a href="${escapeHtml(c.linkedin_url)}" style="color:#0A66C2;text-decoration:none;font-weight:600;">LinkedIn profile →</a></div>` : ""}
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>`;
 }
 
 function renderHtml(firstName: string, contacts: ContactEntry[]) {
-  return `<!doctype html>
-<html><body style="margin:0;padding:0;background:#f4f6fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#0A1128;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f6fb;padding:32px 16px;">
-    <tr><td align="center">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:16px;overflow:hidden;border:1px solid #e5e9f2;">
-        <tr><td style="background:#0A1128;padding:28px 32px;color:#ffffff;">
-          <div style="font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:0.7;">YALI Summit 2026</div>
-          <div style="font-size:22px;font-weight:700;margin-top:6px;">Your summit connections, ${escapeHtml(firstName)}</div>
-        </td></tr>
-        <tr><td style="padding:28px 32px;">
-          <p style="margin:0 0 8px;font-size:15px;line-height:1.55;">Here ${contacts.length === 1 ? "is the contact you" : `are the ${contacts.length} contacts you`} exchanged at AIDIFILN 2026. Keep the conversation going!</p>
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-            ${contacts.map(renderContactRowHtml).join("")}
-          </table>
-        </td></tr>
-        <tr><td style="padding:18px 32px;background:#0A1128;color:#ffffff;font-size:12px;">
-          YALI Network Nigeria — see you next year.
-        </td></tr>
-      </table>
-      <div style="font-size:11px;color:#8a93a6;margin-top:14px;">You received this because you swapped QR contacts at the summit.</div>
-    </td></tr>
-  </table>
-</body></html>`;
+  const bodyHtml = `
+    <tr>
+      <td style="padding:36px 32px 6px;">
+        <div style="font-size:22px;font-weight:800;color:${emailColors.ink};letter-spacing:-0.3px;">Your summit connections, ${escapeHtml(firstName)}</div>
+        <p style="margin:8px 0 0;font-size:14.5px;line-height:1.6;color:${emailColors.sub};">
+          Here ${contacts.length === 1 ? "is the contact you" : `are the ${contacts.length} contacts you`} exchanged QR codes with at AIDIFILN 2026. Keep the conversation going!
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:20px 32px 34px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+          ${contacts.map((c, i) => renderContactCardHtml(c, i === contacts.length - 1)).join("")}
+        </table>
+      </td>
+    </tr>
+  `;
+
+  return renderEmailShell({
+    preheader: `You made ${contacts.length} connection${contacts.length === 1 ? "" : "s"} at AIDIFILN 2026 — here are their details`,
+    bodyHtml,
+  });
 }
 
 function renderText(firstName: string, contacts: ContactEntry[]) {
