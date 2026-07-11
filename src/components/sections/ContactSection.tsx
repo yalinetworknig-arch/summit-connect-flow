@@ -136,7 +136,7 @@ function InfoCard({
   href?: string;
 }) {
   const body = (
-    <div className="rounded-2xl border border-border-strong bg-surface p-5 flex items-start gap-3 h-full">
+    <div className="rounded-2xl border border-border-strong bg-surface p-5 flex items-start gap-3">
       <span className="w-10 h-10 rounded-xl bg-accent-cyan/10 flex items-center justify-center flex-shrink-0">
         <Icon className="w-5 h-5 text-accent-cyan" />
       </span>
