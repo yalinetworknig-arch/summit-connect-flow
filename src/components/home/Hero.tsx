@@ -2,8 +2,9 @@ import { Link } from "@tanstack/react-router";
 import { motion, type Variants } from "framer-motion";
 import { Countdown } from "./Countdown";
 import wordmark from "@/assets/new-wordmark.png";
-import usFlag from "@/assets/us-flag.png";
-import yaliLogo from "@/assets/yali-logo.png";
+import usMissionLockup from "@/assets/sponsors/us-mission-lockup.png";
+import yaliRoundel from "@/assets/sponsors/yali-roundel.png";
+import mwfaanLockup from "@/assets/sponsors/mwfaan-lockup.png";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -164,36 +165,30 @@ export function Hero() {
 
       {/* Content */}
       <div className="relative max-w-[1200px] mx-auto px-6 md:px-12 py-20 md:py-28 min-h-[100dvh] flex flex-col items-center justify-center text-center">
-        {/* Partners bar */}
+        {/* Partners bar — official lockups on uniform white tiles, prospectus-style */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-10 inline-flex items-center gap-6 px-6 py-3 rounded-2xl border border-white/10 bg-white/[0.03]"
+          className="mb-10 inline-flex flex-wrap items-center justify-center gap-3 px-4 py-3 rounded-2xl border border-white/10 bg-white/[0.03]"
         >
-          <div className="flex items-center gap-3">
-            <img
-              src={usFlag}
-              alt="United States flag"
-              className="w-10 h-auto rounded-sm shadow-[0_2px_8px_rgba(0,0,0,0.35)] ring-1 ring-white/20"
-              draggable={false}
-            />
-            <div className="text-left text-[9px] leading-tight font-semibold text-white/90 uppercase tracking-wider">
-              United States Diplomatic<br />Mission in Nigeria
+          {[
+            { src: usMissionLockup, alt: "United States Diplomatic Mission in Nigeria" },
+            { src: yaliRoundel, alt: "YALI Network Nigeria" },
+            { src: mwfaanLockup, alt: "Mandela Washington Fellowship Alumni Association of Nigeria" },
+          ].map(({ src, alt }) => (
+            <div
+              key={alt}
+              className="h-12 sm:h-14 px-3 py-1.5 rounded-xl bg-white flex items-center justify-center shadow-[0_2px_10px_rgba(0,0,0,0.35)] ring-1 ring-white/20"
+            >
+              <img
+                src={src}
+                alt={alt}
+                className="h-full w-auto object-contain select-none"
+                draggable={false}
+              />
             </div>
-          </div>
-          <div className="h-6 w-px bg-white/15" />
-          <div className="flex items-center gap-3">
-            <img
-              src={yaliLogo}
-              alt="YALI Network Nigeria"
-              className="w-10 h-10 rounded-full bg-white object-contain p-0.5 shadow-[0_2px_8px_rgba(0,0,0,0.35)] ring-1 ring-white/20"
-              draggable={false}
-            />
-            <div className="text-left text-[9px] leading-tight font-semibold text-white/90 uppercase tracking-wider">
-              YALI Network<br />Nigeria
-            </div>
-          </div>
+          ))}
         </motion.div>
 
         {/* PRESENTS */}
