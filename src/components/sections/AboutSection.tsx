@@ -63,7 +63,7 @@ export function AboutSection({ id = "about" }: { id?: string }) {
           {[
             { Icon: CalendarDays, label: "Dates", value: "Sept 24 – 26, 2026" },
             { Icon: MapPin, label: "Venue", value: "Daystar Oregun, Ikeja, Lagos" },
-            { Icon: Users, label: "Delegates", value: "800–1,000 expected" },
+            { Icon: Users, label: "Delegates", value: "400–800 expected" },
             { Icon: Globe, label: "Reach", value: "All 36 states + FCT" },
           ].map(({ Icon, label, value }) => (
             <motion.div

@@ -316,7 +316,7 @@ export function Hero() {
         </motion.div>
 
         <p className="mt-10 text-white/65 text-sm">
-          Free for verified YALI delegates · 800–1,000 delegates expected · Ikeja, Lagos · Sept 24–26, 2026
+          Free for verified YALI delegates · 400–800 delegates expected · Ikeja, Lagos · Sept 24–26, 2026
         </p>
       </div>
 
