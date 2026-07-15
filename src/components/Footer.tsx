@@ -67,15 +67,23 @@ export function Footer() {
           <ul className="space-y-2 text-sm" style={{ color: "var(--text-secondary)" }}>
             <li>
               <a
-                href="mailto:info@summit.yalinetwork.ng"
+                href="mailto:partnership@yalinetwork.ng"
                 className="hover:opacity-80 transition-opacity"
               >
-                info@summit.yalinetwork.ng
+                partnership@yalinetwork.ng
               </a>
             </li>
             <li>
-              <a href="tel:+234000000000" className="hover:opacity-80 transition-opacity">
-                +234 xxx xxx xxxx
+              <a
+                href="mailto:summit@yalinetwork.ng"
+                className="hover:opacity-80 transition-opacity"
+              >
+                summit@yalinetwork.ng
+              </a>
+            </li>
+            <li>
+              <a href="https://www.summit.yalinetwork.ng" className="hover:opacity-80 transition-opacity" target="_blank" rel="noopener noreferrer">
+                www.summit.yalinetwork.ng
               </a>
             </li>
           </ul>
