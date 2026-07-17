@@ -280,7 +280,7 @@ export function Hero() {
           className="mt-6 text-white/70 font-semibold text-base"
           style={{ letterSpacing: "0.05em" }}
         >
-          September 24 – 26, 2026 · Daystar Oregun, Ikeja, Lagos
+          September 24 – 26, 2026 · UNILAG Main Auditorium, Akoka Lagos
         </motion.p>
 
         <motion.div

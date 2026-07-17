@@ -36,7 +36,7 @@ const faqs = [
   },
   {
     q: "Where is the venue?",
-    a: "Daystar Oregun, Ikeja, Lagos. Travel and accommodation support is available for selected delegates.",
+    a: "UNILAG Main Auditorium, Akoka Lagos. Travel and accommodation support is available for selected delegates.",
   },
   {
     q: "What do I leave with?",

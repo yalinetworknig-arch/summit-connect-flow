@@ -31,7 +31,7 @@ export function ScheduleSection({ id = "schedule" }: { id?: string }) {
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              Keynotes, parallel sector rooms, hands-on workshops, a hackathon and a closing showcase — at Daystar Oregun, Ikeja, Lagos. Speaker lineups land closer to event.
+              Keynotes, parallel sector rooms, hands-on workshops, a hackathon and a closing showcase — at UNILAG Main Auditorium, Akoka Lagos. Speaker lineups land closer to event.
             </p>
           </Reveal>
         </div>

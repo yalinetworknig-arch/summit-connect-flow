@@ -312,7 +312,7 @@ function buildIcs(name: string) {
     "DTEND:20260926T220000",
     "SUMMARY:YALI Network Nigeria National Summit (AIDIFILN) 2026",
     `DESCRIPTION:Registered as ${name}. AI\\, Digital Innovation and the Future of Inclusive Leadership in Nigeria.`,
-    "LOCATION:Daystar Oregun, Ikeja, Lagos, Nigeria",
+    "LOCATION:UNILAG Main Auditorium, Akoka Lagos, Nigeria",
     "END:VEVENT",
     "END:VCALENDAR",
   ].join("\r\n");

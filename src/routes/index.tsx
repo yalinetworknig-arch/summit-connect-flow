@@ -16,13 +16,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "AI, Digital Innovation and the Future of Inclusive Leadership in Nigeria. Sept 24–26, 2026, Daystar Oregun, Ikeja, Lagos. Register free.",
+          "AI, Digital Innovation and the Future of Inclusive Leadership in Nigeria. Sept 24–26, 2026, UNILAG Main Auditorium, Akoka Lagos. Register free.",
       },
       { property: "og:title", content: "YALI Network Nigeria National Summit 2026" },
       {
         property: "og:description",
         content:
-          "AI, Digital Innovation and the Future of Inclusive Leadership in Nigeria. Sept 24–26, 2026, Daystar Oregun, Ikeja, Lagos.",
+          "AI, Digital Innovation and the Future of Inclusive Leadership in Nigeria. Sept 24–26, 2026, UNILAG Main Auditorium, Akoka Lagos.",
       },
     ],
   }),

@@ -127,7 +127,7 @@ function TicketPage() {
           </div>
           <div className="col-span-2">
             <dt style={{ color: "var(--text-secondary)" }}>When & where</dt>
-            <dd className="font-medium" style={{ color: "var(--text-primary)" }}>24–26 Sep 2026 · Daystar Oregun, Ikeja, Lagos</dd>
+            <dd className="font-medium" style={{ color: "var(--text-primary)" }}>24–26 Sep 2026 · UNILAG Main Auditorium, Akoka Lagos</dd>
           </div>
         </dl>
       </div>
@@ -172,7 +172,7 @@ function buildIcs(name: string, code: string) {
     "DTEND:20260926T220000",
     "SUMMARY:YALI Network Nigeria Summit (AIDIFILN) 2026",
     `DESCRIPTION:Ticket holder: ${name}. Ticket code: ${code}`,
-    "LOCATION:Daystar Oregun, Ikeja, Lagos, Nigeria",
+    "LOCATION:UNILAG Main Auditorium, Akoka Lagos, Nigeria",
     "END:VEVENT",
     "END:VCALENDAR",
   ].join("\r\n");
