@@ -61,7 +61,7 @@ export function AboutSection({ id = "about" }: { id?: string }) {
       <section className="px-5 sm:px-6 lg:px-8 py-14 md:py-20 bg-surface text-text-primary">
         <Stagger className="max-w-5xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
           {[
-            { Icon: CalendarDays, label: "Dates", value: "Sept 24 – 26, 2026" },
+            { Icon: CalendarDays, label: "Dates", value: "Sept 25 – 26, 2026" },
             { Icon: MapPin, label: "Venue", value: "UNILAG Main Auditorium, Akoka Lagos" },
             { Icon: Users, label: "Delegates", value: "400–800 expected" },
             { Icon: Globe, label: "Reach", value: "All 36 states + FCT" },

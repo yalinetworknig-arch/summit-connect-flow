@@ -20,7 +20,7 @@ export function ScheduleSection({ id = "schedule" }: { id?: string }) {
     <div id={id} className="scroll-mt-24">
       <section className="relative px-5 sm:px-6 lg:px-8 py-20 md:py-24 lg:py-28 bg-background text-text-primary overflow-hidden">
         <HalftoneBackdrop />
-        <SideLabel>Programme · Sept 24–26 · Ikeja, Lagos</SideLabel>
+        <SideLabel>Programme · Sept 25–26 · Akoka Lagos</SideLabel>
         <SideLabel side="right" tone="muted">AIDIFILN / Arrival → Day 02</SideLabel>
         <div className="relative max-w-4xl mx-auto text-center">
           <Reveal><Eyebrow>2-day summit + arrival day</Eyebrow></Reveal>

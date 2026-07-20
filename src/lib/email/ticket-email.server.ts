@@ -107,7 +107,7 @@ function renderText(input: TicketEmailInput, ticketUrl: string) {
     "",
     `View your ticket: ${ticketUrl}`,
     "",
-    "UNILAG Main Auditorium, Akoka Lagos — Sept 24–26, 2026",
+    "UNILAG Main Auditorium, Akoka Lagos — Sept 25–26, 2026",
   ].filter(Boolean).join("\n");
 }
 

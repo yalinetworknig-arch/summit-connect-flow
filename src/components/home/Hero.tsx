@@ -280,7 +280,7 @@ export function Hero() {
           className="mt-6 text-white/70 font-semibold text-base"
           style={{ letterSpacing: "0.05em" }}
         >
-          September 24 – 26, 2026 · UNILAG Main Auditorium, Akoka Lagos
+          September 25 – 26, 2026 · UNILAG Main Auditorium, Akoka Lagos
         </motion.p>
 
         <motion.div
@@ -316,7 +316,7 @@ export function Hero() {
         </motion.div>
 
         <p className="mt-10 text-white/65 text-sm">
-          Free for verified YALI delegates · 400–800 delegates expected · Ikeja, Lagos · Sept 24–26, 2026
+          Free for verified YALI delegates · 400–800 delegates expected · Akoka Lagos · Sept 25–26, 2026
         </p>
       </div>
 

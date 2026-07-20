@@ -127,7 +127,7 @@ function TicketPage() {
           </div>
           <div className="col-span-2">
             <dt style={{ color: "var(--text-secondary)" }}>When & where</dt>
-            <dd className="font-medium" style={{ color: "var(--text-primary)" }}>24–26 Sep 2026 · UNILAG Main Auditorium, Akoka Lagos</dd>
+            <dd className="font-medium" style={{ color: "var(--text-primary)" }}>25–26 Sep 2026 · UNILAG Main Auditorium, Akoka Lagos</dd>
           </div>
         </dl>
       </div>
