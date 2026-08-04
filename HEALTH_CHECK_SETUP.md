@@ -66,7 +66,7 @@ Go to **Settings → Secrets and variables → Actions** and add:
 |--------|-------|
 | `SUPABASE_URL` | `https://iipxtvptxjqwjxkayxar.supabase.co` |
 | `SUPABASE_SERVICE_ROLE_KEY` | Your Supabase service role key |
-| `REPORT_EMAIL` | adikwusamson113@gmail.com |
+| `REPORT_EMAIL` | yalinetworknig@gmail.com |
 | `SMTP_HOST` | smtp.gmail.com |
 | `SMTP_PORT` | 587 |
 | `SMTP_USER` | Your Gmail address |
@@ -94,7 +94,7 @@ crontab -e
 
 Add this line (runs at 8 AM Lagos time daily):
 ```bash
-0 7 * * * cd /path/to/summit-connect-flow && VITE_SUPABASE_URL=https://iipxtvptxjqwjxkayxar.supabase.co SUPABASE_SERVICE_ROLE_KEY=your_key REPORT_EMAIL=adikwusamson113@gmail.com SMTP_HOST=smtp.gmail.com SMTP_PORT=587 SMTP_USER=your_email@gmail.com SMTP_PASS=your_app_password node scripts/daily-health-check.js >> /var/log/health-check.log 2>&1
+0 7 * * * cd /path/to/summit-connect-flow && VITE_SUPABASE_URL=https://iipxtvptxjqwjxkayxar.supabase.co SUPABASE_SERVICE_ROLE_KEY=your_key REPORT_EMAIL=yalinetworknig@gmail.com SMTP_HOST=smtp.gmail.com SMTP_PORT=587 SMTP_USER=your_email@gmail.com SMTP_PASS=your_app_password node scripts/daily-health-check.js >> /var/log/health-check.log 2>&1
 ```
 
 ---
@@ -116,7 +116,7 @@ cd C:\path\to\summit-connect-flow
 
 set VITE_SUPABASE_URL=https://iipxtvptxjqwjxkayxar.supabase.co
 set SUPABASE_SERVICE_ROLE_KEY=your_key
-set REPORT_EMAIL=adikwusamson113@gmail.com
+set REPORT_EMAIL=yalinetworknig@gmail.com
 set SMTP_HOST=smtp.gmail.com
 set SMTP_PORT=587
 set SMTP_USER=your_email@gmail.com
@@ -162,7 +162,7 @@ Before scheduling, test the script locally:
 ```bash
 VITE_SUPABASE_URL=https://iipxtvptxjqwjxkayxar.supabase.co \
 SUPABASE_SERVICE_ROLE_KEY=your_key \
-REPORT_EMAIL=adikwusamson113@gmail.com \
+REPORT_EMAIL=yalinetworknig@gmail.com \
 SMTP_HOST=smtp.gmail.com \
 SMTP_PORT=587 \
 SMTP_USER=your_email@gmail.com \

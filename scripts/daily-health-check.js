@@ -14,7 +14,7 @@ const nodemailer = require('nodemailer');
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://iipxtvptxjqwjxkayxar.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const WEBSITE_URL = 'https://summit.yalinetwork.ng';
-const REPORT_EMAIL = process.env.REPORT_EMAIL || 'adikwusamson113@gmail.com';
+const REPORT_EMAIL = process.env.REPORT_EMAIL || 'yalinetworknig@gmail.com';
 
 // Pages to check
 const PAGES_TO_CHECK = [
