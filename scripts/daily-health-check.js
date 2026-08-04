@@ -115,7 +115,7 @@ async function getSponsorshipInquiries() {
   return {
     inquiries: data || [],
     count: count || 0,
-    contactEmail: 'partnership@yalinetwork.ng',
+    contactEmails: ['yalinetworknig@gmail.com', 'yalinetworknationalsummit@gmail.com'],
     timestamp: new Date().toISOString()
   };
 }
@@ -141,7 +141,7 @@ async function getContactSubmissions() {
   return {
     submissions: data || [],
     count: count || 0,
-    contactEmail: 'summit@yalinetwork.ng',
+    contactEmail: 'yalinetworknig@gmail.com',
     timestamp: new Date().toISOString()
   };
 }
@@ -213,7 +213,7 @@ function generateHTMLReport(pageHealth, regStats, sponsorInquiries, contactSubmi
     <div class="section">
         <h2>🤝 Partnership & Sponsorship Inquiries (Last 24h)</h2>
         <p><strong>New Inquiries:</strong> ${sponsorInquiries?.count || 0}</p>
-        <p><strong>Contact Email:</strong> <a href="mailto:${sponsorInquiries?.contactEmail}">${sponsorInquiries?.contactEmail}</a></p>
+        <p><strong>Contact Emails:</strong> ${sponsorInquiries?.contactEmails?.map(e => `<a href="mailto:${e}">${e}</a>`).join(' | ') || 'N/A'}</p>
         ${sponsorInquiries?.inquiries && sponsorInquiries.inquiries.length > 0 ? `
             <table>
                 <tr><th>Company</th><th>Contact</th><th>Email</th><th>Preferred Tier</th><th>Budget</th><th>Timeline</th></tr>
