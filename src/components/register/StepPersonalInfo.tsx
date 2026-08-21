@@ -1,4 +1,3 @@
-import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,7 +17,7 @@ import {
   type FormState,
 } from "@/lib/register/schema";
 
-export const StepPersonalInfo = React.memo(function StepPersonalInfo({
+export function StepPersonalInfo({
   value,
   errors,
   onChange,
@@ -265,7 +264,7 @@ export const StepPersonalInfo = React.memo(function StepPersonalInfo({
       )}
     </div>
   );
-});
+}
 
 function TypeSection({
   title,
