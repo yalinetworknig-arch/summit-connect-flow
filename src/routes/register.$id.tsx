@@ -265,7 +265,7 @@ function ConfirmationPage() {
               🎽 Order Official AIDIFILN Merchandise
             </h3>
             <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>
-              Get your official AIDIFILN 2026 t-shirt in your choice of size and color. ₦5,000
+              Get your official AIDIFILN 2026 t-shirt in your choice of size and color. ₦8,000
             </p>
           </div>
           <Link

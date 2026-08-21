@@ -95,7 +95,7 @@ function renderHtml(input: TicketEmailInput, ticketUrl: string, merchUrl: string
           <tr>
             <td>
               <div style="font-size:14px;font-weight:700;color:${emailColors.ink};margin-bottom:6px;">🎽 Order Official AIDIFILN Merchandise</div>
-              <p style="margin:0 0 12px;font-size:13px;line-height:1.5;color:${emailColors.sub};">Get your official AIDIFILN 2026 t-shirt in your choice of size and color. ₦5,000</p>
+              <p style="margin:0 0 12px;font-size:13px;line-height:1.5;color:${emailColors.sub};">Get your official AIDIFILN 2026 t-shirt in your choice of size and color. ₦8,000</p>
               <a href="${merchUrl}" style="display:inline-block;background:${emailColors.cyan};color:${emailColors.navy};padding:10px 16px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">Shop Now</a>
             </td>
           </tr>
@@ -121,7 +121,7 @@ function renderText(input: TicketEmailInput, ticketUrl: string, merchUrl: string
     "",
     `View your ticket: ${ticketUrl}`,
     "",
-    "🎽 Order official AIDIFILN merchandise (₦5,000):",
+    "🎽 Order official AIDIFILN merchandise (₦8,000):",
     `Shop now: ${merchUrl}`,
     "",
     "UNILAG Main Auditorium, Akoka Lagos — Sept 25–26, 2026",

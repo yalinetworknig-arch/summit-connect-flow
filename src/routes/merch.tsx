@@ -29,7 +29,7 @@ const MERCH_PRODUCTS = [
     id: "tshirt",
     name: "AIDIFILN T-Shirt",
     description: "Official AIDIFILN 2026 t-shirt with front and back design",
-    price: 5000, // in Naira
+    price: 8000, // in Naira
     image: "🎽",
     sizes: ["M", "L", "XL", "2XL"],
     colors: ["black", "white"],
