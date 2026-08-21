@@ -94,9 +94,9 @@ function renderHtml(input: TicketEmailInput, ticketUrl: string, merchUrl: string
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${emailColors.bg};border:1px solid ${emailColors.border};border-radius:12px;padding:16px;">
           <tr>
             <td>
-              <div style="font-size:14px;font-weight:700;color:${emailColors.ink};margin-bottom:6px;">🎽 Claim Your Free T-Shirt</div>
-              <p style="margin:0 0 12px;font-size:13px;line-height:1.5;color:${emailColors.sub};">Order your official AIDIFILN 2026 t-shirt in your choice of size and color.</p>
-              <a href="${merchUrl}" style="display:inline-block;background:${emailColors.cyan};color:${emailColors.navy};padding:10px 16px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">Visit Merchandise Store</a>
+              <div style="font-size:14px;font-weight:700;color:${emailColors.ink};margin-bottom:6px;">🎽 Order Official AIDIFILN Merchandise</div>
+              <p style="margin:0 0 12px;font-size:13px;line-height:1.5;color:${emailColors.sub};">Get your official AIDIFILN 2026 t-shirt in your choice of size and color. ₦5,000</p>
+              <a href="${merchUrl}" style="display:inline-block;background:${emailColors.cyan};color:${emailColors.navy};padding:10px 16px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">Shop Now</a>
             </td>
           </tr>
         </table>
@@ -121,8 +121,8 @@ function renderText(input: TicketEmailInput, ticketUrl: string, merchUrl: string
     "",
     `View your ticket: ${ticketUrl}`,
     "",
-    "🎽 Claim your free AIDIFILN t-shirt:",
-    `Order now: ${merchUrl}`,
+    "🎽 Order official AIDIFILN merchandise (₦5,000):",
+    `Shop now: ${merchUrl}`,
     "",
     "UNILAG Main Auditorium, Akoka Lagos — Sept 25–26, 2026",
   ].filter(Boolean).join("\n");

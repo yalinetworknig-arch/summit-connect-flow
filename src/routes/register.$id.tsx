@@ -262,10 +262,10 @@ function ConfirmationPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h3 className="font-semibold" style={{ color: "var(--text-primary)" }}>
-              🎽 Claim Your Free T-Shirt
+              🎽 Order Official AIDIFILN Merchandise
             </h3>
             <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>
-              Order your official AIDIFILN 2026 t-shirt in your choice of size and color.
+              Get your official AIDIFILN 2026 t-shirt in your choice of size and color. ₦5,000
             </p>
           </div>
           <Link
