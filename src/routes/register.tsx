@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { ProgressIndicator } from "@/components/register/ProgressIndicator";
@@ -59,7 +59,7 @@ function RegisterPage() {
     topRef.current?.scrollIntoView({ behavior: "auto", block: "start" });
   }, [step]);
 
-  function patch(p: FormState) {
+  const patch = useCallback((p: FormState) => {
     setForm((prev) => {
       const next = { ...prev, ...p };
       // Debounce draft save — only save after 800ms of inactivity
@@ -69,7 +69,7 @@ function RegisterPage() {
       }, 800);
       return next;
     });
-  }
+  }, []);
 
   const validateCurrent = useMemo(() => {
     return () => {
@@ -169,9 +169,9 @@ function RegisterPage() {
       {/* Page entrance */}
       <motion.header
         className="mb-8"
-        initial={{ opacity: 0, y: 20 }}
+        initial={false}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: ease.out }}
+        transition={{ duration: 0.1 }}
       >
         <h1
           className="font-bold mb-2"
@@ -198,13 +198,9 @@ function RegisterPage() {
         </AnimatePresence>
       </motion.header>
 
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, delay: 0.1, ease: ease.out }}
-      >
+      <div>
         <ProgressIndicator current={step} />
-      </motion.div>
+      </div>
 
       {/* Step content with direction-aware slide transitions + error shake */}
       <motion.div
@@ -237,11 +233,7 @@ function RegisterPage() {
       </motion.div>
 
       {/* Navigation buttons */}
-      <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35, delay: 0.2, ease: ease.out }}
-      >
+      <div>
         {step < 5 ? (
           <div className="flex items-center justify-between mt-6 gap-3">
             <motion.button
@@ -310,7 +302,7 @@ function RegisterPage() {
             </motion.button>
           </div>
         )}
-      </motion.div>
+      </div>
     </section>
   );
 }
