@@ -47,21 +47,26 @@ function RegisterPage() {
   const [nextBusy, setNextBusy] = useState(false);
   const [shaking, setShaking] = useState(false);
   const topRef = useRef<HTMLElement>(null);
+  const saveTimeoutRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
     const draft = loadDraft();
     if (draft) setForm({ ...initialFormState, ...draft });
   }, []);
 
-  // Scroll to top of form on every step change
+  // Scroll to top of form on every step change (instant for better performance)
   useEffect(() => {
-    topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    topRef.current?.scrollIntoView({ behavior: "auto", block: "start" });
   }, [step]);
 
   function patch(p: FormState) {
     setForm((prev) => {
       const next = { ...prev, ...p };
-      saveDraft(next);
+      // Debounce draft save — only save after 800ms of inactivity
+      clearTimeout(saveTimeoutRef.current);
+      saveTimeoutRef.current = setTimeout(() => {
+        saveDraft(next);
+      }, 800);
       return next;
     });
   }
@@ -106,26 +111,31 @@ function RegisterPage() {
     }
     setErrors({});
 
-    // On step 2: pre-check email uniqueness before advancing
+    // On step 2: pre-check email uniqueness (with 3s timeout for better speed)
     if (step === 2 && form.email) {
       setNextBusy(true);
       try {
-        const { data } = await supabase
+        const timeoutPromise = new Promise<any>((resolve) =>
+          setTimeout(() => resolve(null), 3000)
+        );
+        const checkPromise = supabase
           .from("registrations")
-          .select("id")
+          .select("id", { count: "exact", head: true })
           .eq("email", form.email.trim().toLowerCase())
           .maybeSingle();
-        if (data) {
+
+        const result = await Promise.race([checkPromise, timeoutPromise]);
+
+        if (result?.data) {
           setErrors({
-            email:
-              "This email is already registered. Sign in to view your ticket, or use a different email address.",
+            email: "This email is already registered. Sign in to view your ticket, or use a different email address.",
           });
           triggerShake();
           setNextBusy(false);
           return;
         }
       } catch {
-        // Let the insert catch it
+        // Query error — let final submission catch it
       }
       setNextBusy(false);
     }
@@ -140,13 +150,16 @@ function RegisterPage() {
     setStep((s) => Math.max(1, s - 1));
   }
 
-  const canAdvance =
-    (step === 1 && step1Schema.safeParse(form).success) ||
-    (step === 2 && step2Schema.safeParse(form).success) ||
-    (step === 3 && step3Schema.safeParse(form).success) ||
-    (step === 4 && step4Schema.safeParse(form).success);
+  const canAdvance = useMemo(() => {
+    return (
+      (step === 1 && step1Schema.safeParse(form).success) ||
+      (step === 2 && step2Schema.safeParse(form).success) ||
+      (step === 3 && step3Schema.safeParse(form).success) ||
+      (step === 4 && step4Schema.safeParse(form).success)
+    );
+  }, [step, form]);
 
-  const variants = stepVariants(direction);
+  const variants = useMemo(() => stepVariants(direction), [direction]);
 
   return (
     <section
