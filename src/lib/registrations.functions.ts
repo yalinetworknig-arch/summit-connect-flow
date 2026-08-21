@@ -25,7 +25,7 @@ export const submitRegistration = createServerFn({ method: "POST" })
     const payload = {
       ...data,
       phone: normalizeNigerianPhone(data.phone),
-      yali_id: nn(data.yali_id),
+      yali_id: data.attendee_type === "delegate" ? nn(data.yali_id) || null : nn(data.yali_id),
       yali_certificate_url: nn(data.yali_certificate_url),
       heard_about_summit: nn(data.heard_about_summit),
       paystack_reference: data.paystack_reference || null,

@@ -28,43 +28,48 @@ export function StepLogistics({
   errors: Record<string, string>;
   onChange: (patch: FormState) => void;
 }) {
+  // Only show accommodation/travel support for delegates from outside Lagos
+  const isOutsideLagosDelegate = value.attendee_type === "delegate" && value.state && value.state.toLowerCase() !== "lagos";
+
   return (
     <div className="space-y-6">
-      {/* Checkboxes */}
-      <div className="space-y-4">
-        <label className="flex items-start gap-3 cursor-pointer min-h-[48px]">
-          <Checkbox
-            id="accommodation_needed"
-            checked={!!value.accommodation_needed}
-            onCheckedChange={(c) => onChange({ accommodation_needed: !!c })}
-            className="mt-0.5"
-          />
-          <div>
-            <div className="font-medium" style={{ color: "var(--text-primary)" }}>
-              Accommodation needed
+      {/* Checkboxes - only show for out-of-state delegates */}
+      {isOutsideLagosDelegate && (
+        <div className="space-y-4">
+          <label className="flex items-start gap-3 cursor-pointer min-h-[48px]">
+            <Checkbox
+              id="accommodation_needed"
+              checked={!!value.accommodation_needed}
+              onCheckedChange={(c) => onChange({ accommodation_needed: !!c })}
+              className="mt-0.5"
+            />
+            <div>
+              <div className="font-medium" style={{ color: "var(--text-primary)" }}>
+                Accommodation needed
+              </div>
+              <div className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                Request a room at a partner hotel for the duration of the summit.
+              </div>
             </div>
-            <div className="text-sm" style={{ color: "var(--text-secondary)" }}>
-              Request a room at a partner hotel for the duration of the summit.
+          </label>
+          <label className="flex items-start gap-3 cursor-pointer min-h-[48px]">
+            <Checkbox
+              id="travel_support_needed"
+              checked={!!value.travel_support_needed}
+              onCheckedChange={(c) => onChange({ travel_support_needed: !!c })}
+              className="mt-0.5"
+            />
+            <div>
+              <div className="font-medium" style={{ color: "var(--text-primary)" }}>
+                Travel support
+              </div>
+              <div className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                Apply for a travel subsidy if you are travelling from outside Lagos.
+              </div>
             </div>
-          </div>
-        </label>
-        <label className="flex items-start gap-3 cursor-pointer min-h-[48px]">
-          <Checkbox
-            id="travel_support_needed"
-            checked={!!value.travel_support_needed}
-            onCheckedChange={(c) => onChange({ travel_support_needed: !!c })}
-            className="mt-0.5"
-          />
-          <div>
-            <div className="font-medium" style={{ color: "var(--text-primary)" }}>
-              Travel support
-            </div>
-            <div className="text-sm" style={{ color: "var(--text-secondary)" }}>
-              Apply for a travel subsidy if you are travelling from outside Lagos.
-            </div>
-          </div>
-        </label>
-      </div>
+          </label>
+        </div>
+      )}
 
       {/* How did you hear about the summit */}
       <div className="flex flex-col gap-1.5">
