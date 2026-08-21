@@ -28,7 +28,7 @@ const faqs = [
   },
   {
     q: "How do I register?",
-    a: "Click "Claim your seat" and step through the registration form. Takes about three minutes.",
+    a: 'Click "Claim your seat" and step through the registration form. Takes about three minutes.',
   },
   {
     q: "What's the cost breakdown?",

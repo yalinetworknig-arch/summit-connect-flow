@@ -189,9 +189,9 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
           ) : (
             <form
               onSubmit={onSubmit}
-              className="rounded-2xl border border-border-strong bg-background p-6 md:p-8 space-y-4"
+              className="rounded-2xl border-2 border-border-strong bg-background/80 p-6 md:p-8 space-y-5"
             >
-              <div className="grid sm:grid-cols-2 gap-4">
+              <div className="grid sm:grid-cols-2 gap-5">
                 <Field label="Company" name="company_name" required />
                 <Field label="Your name" name="contact_name" required />
                 <Field label="Work email" name="email" type="email" required />
@@ -201,7 +201,7 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
                 <Select label="Decision timeline" name="decision_timeline" options={DECISION_TIMELINES} />
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1.5">
+                <label className="block text-sm font-semibold mb-2 text-text-primary">
                   Goals & questions
                 </label>
                 <textarea
@@ -210,17 +210,28 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
                   rows={4}
                   minLength={10}
                   maxLength={1500}
-                  className="w-full rounded-xl border border-border-strong bg-background p-3 text-text-primary focus:outline-none focus:border-accent-cyan"
+                  className="w-full rounded-lg border-2 border-input bg-background p-4 text-text-primary placeholder:text-muted-foreground hover:border-input/80 focus:outline-none focus:border-accent-cyan focus:ring-2 focus:ring-accent-cyan/30 transition-all duration-200 resize-none"
                   placeholder="What do you want to achieve at AIDIFILN 2026?"
                 />
               </div>
-              {error && <p className="text-sm text-error">{error}</p>}
+              {error && (
+                <div className="rounded-lg bg-error/10 border border-error/30 p-4">
+                  <p className="text-sm font-medium text-error">{error}</p>
+                </div>
+              )}
               <button
                 type="submit"
                 disabled={status === "submitting"}
-                className="w-full px-7 py-3 rounded-full text-base font-semibold bg-accent-cyan text-brand-navy hover:scale-[1.01] transition-transform disabled:opacity-60"
+                className="w-full px-7 py-3 rounded-lg text-base font-semibold bg-accent-cyan text-brand-navy hover:bg-accent-cyan/90 hover:shadow-lg active:scale-95 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {status === "submitting" ? "Sending…" : "Start the conversation"}
+                {status === "submitting" ? (
+                  <>
+                    <span className="inline-block w-4 h-4 border-2 border-brand-navy border-t-transparent rounded-full animate-spin" />
+                    Sending…
+                  </>
+                ) : (
+                  "Start the conversation"
+                )}
               </button>
             </form>
           )}
@@ -243,13 +254,13 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-sm font-semibold mb-1.5">{label}</label>
+      <label className="block text-sm font-semibold mb-2 text-text-primary">{label}</label>
       <input
         name={name}
         type={type}
         required={required}
         maxLength={255}
-        className="w-full rounded-xl border border-border-strong bg-background p-3 text-text-primary focus:outline-none focus:border-accent-cyan"
+        className="w-full rounded-lg border-2 border-input bg-background px-4 py-2.5 text-text-primary placeholder:text-muted-foreground hover:border-input/80 focus:outline-none focus:border-accent-cyan focus:ring-2 focus:ring-accent-cyan/30 transition-all duration-200"
       />
     </div>
   );
@@ -266,12 +277,12 @@ function Select({
 }) {
   return (
     <div>
-      <label className="block text-sm font-semibold mb-1.5">{label}</label>
+      <label className="block text-sm font-semibold mb-2 text-text-primary">{label}</label>
       <select
         name={name}
         required
         defaultValue=""
-        className="w-full rounded-xl border border-border-strong bg-background p-3 text-text-primary focus:outline-none focus:border-accent-cyan"
+        className="w-full rounded-lg border-2 border-input bg-background px-4 py-2.5 text-text-primary placeholder:text-muted-foreground hover:border-input/80 focus:outline-none focus:border-accent-cyan focus:ring-2 focus:ring-accent-cyan/30 transition-all duration-200 cursor-pointer"
       >
         <option value="" disabled>
           Select…

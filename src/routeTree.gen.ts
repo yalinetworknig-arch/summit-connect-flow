@@ -18,6 +18,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as NetworkRouteImport } from './routes/network'
+import { Route as MerchRouteImport } from './routes/merch'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
@@ -85,6 +86,11 @@ const ProfileRoute = ProfileRouteImport.update({
 const NetworkRoute = NetworkRouteImport.update({
   id: '/network',
   path: '/network',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MerchRoute = MerchRouteImport.update({
+  id: '/merch',
+  path: '/merch',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -218,6 +224,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
+  '/merch': typeof MerchRoute
   '/network': typeof NetworkRoute
   '/profile': typeof AuthenticatedProfileRouteWithChildren
   '/register': typeof RegisterRouteWithChildren
@@ -250,6 +257,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
+  '/merch': typeof MerchRoute
   '/network': typeof NetworkRoute
   '/profile': typeof AuthenticatedProfileIndexRoute
   '/register': typeof RegisterRouteWithChildren
@@ -282,6 +290,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
+  '/merch': typeof MerchRoute
   '/network': typeof NetworkRoute
   '/profile': typeof ProfileRoute
   '/register': typeof RegisterRouteWithChildren
@@ -317,6 +326,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/login'
+    | '/merch'
     | '/network'
     | '/profile'
     | '/register'
@@ -349,6 +359,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/login'
+    | '/merch'
     | '/network'
     | '/profile'
     | '/register'
@@ -380,6 +391,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/login'
+    | '/merch'
     | '/network'
     | '/profile'
     | '/register'
@@ -415,6 +427,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   LoginRoute: typeof LoginRoute
+  MerchRoute: typeof MerchRoute
   NetworkRoute: typeof NetworkRoute
   ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRouteWithChildren
@@ -492,6 +505,13 @@ declare module '@tanstack/react-router' {
       path: '/network'
       fullPath: '/network'
       preLoaderRoute: typeof NetworkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/merch': {
+      id: '/merch'
+      path: '/merch'
+      fullPath: '/merch'
+      preLoaderRoute: typeof MerchRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -732,6 +752,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   LoginRoute: LoginRoute,
+  MerchRoute: MerchRoute,
   NetworkRoute: NetworkRoute,
   ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRouteWithChildren,

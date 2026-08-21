@@ -184,7 +184,7 @@ function ConfirmationPage() {
 
       {/* Ticket card with staggered details */}
       <motion.div
-        className="rounded-2xl border p-6 sm:p-8 mb-6 overflow-hidden"
+        className="rounded-2xl border-2 p-6 sm:p-8 mb-6 overflow-hidden shadow-md transition-all duration-200 hover:shadow-lg"
         style={{ background: "var(--card)", borderColor: "var(--border-strong)" }}
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
@@ -253,7 +253,7 @@ function ConfirmationPage() {
 
       {/* Merchandise Store CTA */}
       <motion.div
-        className="rounded-2xl border p-5 sm:p-6 mb-6"
+        className="rounded-2xl border-2 p-6 sm:p-7 mb-6 transition-all duration-200 hover:shadow-lg hover:border-accent-cyan/40"
         style={{ background: "var(--surface)", borderColor: "var(--border-strong)" }}
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
@@ -261,16 +261,16 @@ function ConfirmationPage() {
       >
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h3 className="font-semibold" style={{ color: "var(--text-primary)" }}>
+            <h3 className="font-semibold text-lg" style={{ color: "var(--text-primary)" }}>
               🎽 Order Official AIDIFILN Merchandise
             </h3>
-            <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>
+            <p className="text-sm mt-2" style={{ color: "var(--text-secondary)" }}>
               Get your official AIDIFILN 2026 t-shirt in your choice of size and color. ₦8,000
             </p>
           </div>
           <Link
             to="/merch"
-            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap"
+            className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-lg text-sm font-semibold whitespace-nowrap shadow-md hover:shadow-lg active:scale-95 transition-all duration-200"
             style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
           >
             <ShoppingBag className="w-4 h-4" />
@@ -294,7 +294,7 @@ function ConfirmationPage() {
             whileHover={{ scale: 1.03, y: -1 }}
             whileTap={{ scale: 0.97 }}
             transition={spring.snappy}
-            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-sm font-semibold border min-h-[48px]"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold border-2 min-h-[48px] transition-all duration-200 hover:shadow-md active:scale-95"
             style={{ borderColor: "var(--accent-cyan)", color: "var(--accent-cyan)" }}
           >
             <Calendar className="w-4 h-4" /> Add to calendar
@@ -308,7 +308,7 @@ function ConfirmationPage() {
           whileHover={{ scale: 1.03, y: -1 }}
           whileTap={{ scale: 0.97 }}
           transition={spring.snappy}
-          className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full text-sm font-semibold min-h-[48px]"
+          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold min-h-[48px] shadow-md hover:shadow-lg active:scale-95 transition-all duration-200"
           style={{ background: "var(--success)", color: "#FFFFFF" }}
         >
           <Share2 className="w-4 h-4" /> Share on WhatsApp
@@ -316,7 +316,7 @@ function ConfirmationPage() {
         <motion.div variants={staggerChild} whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.97 }} transition={spring.snappy}>
           <Link
             to="/"
-            className="inline-flex w-full items-center justify-center gap-2 px-5 py-3 rounded-full text-sm font-semibold border min-h-[48px]"
+            className="inline-flex w-full items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold border-2 min-h-[48px] transition-all duration-200 hover:shadow-md active:scale-95"
             style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
           >
             <Home className="w-4 h-4" /> Home

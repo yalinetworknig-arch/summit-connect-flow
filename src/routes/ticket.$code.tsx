@@ -101,7 +101,7 @@ function TicketPage() {
         </p>
       </div>
 
-      <div className="rounded-2xl border p-6 sm:p-8 flex flex-col items-center gap-4 mb-6" style={{ background: "var(--card)", borderColor: "var(--border-strong)" }}>
+      <div className="rounded-2xl border-2 p-6 sm:p-8 flex flex-col items-center gap-4 mb-6 shadow-md" style={{ background: "var(--card)", borderColor: "var(--border-strong)" }}>
         <div className="flex items-center justify-between w-full">
           <div className="text-xs uppercase tracking-widest" style={{ color: "var(--text-secondary)" }}>YALI Summit 2026</div>
           <VerificationBadge status={data.verification_status} />
@@ -135,23 +135,23 @@ function TicketPage() {
       <Link
         to="/attendee/$code"
         params={{ code: data.ticket_code }}
-        className="no-print mb-3 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full text-sm font-semibold"
+        className="no-print mb-4 w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold shadow-md hover:shadow-lg active:scale-95 transition-all duration-200"
         style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
       >
         <Users className="w-4 h-4" /> Open my networking card
       </Link>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 no-print">
-        <a href={icsHref} download="yali-summit-2026.ics" className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full text-xs sm:text-sm font-semibold border" style={{ borderColor: "var(--accent-cyan)", color: "var(--accent-cyan)" }}>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 no-print">
+        <a href={icsHref} download="yali-summit-2026.ics" className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-xs sm:text-sm font-semibold border-2 transition-all duration-200 hover:shadow-md" style={{ borderColor: "var(--accent-cyan)", color: "var(--accent-cyan)" }}>
           <Calendar className="w-4 h-4" /> Calendar
         </a>
-        <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full text-xs sm:text-sm font-semibold" style={{ background: "var(--success)", color: "#fff" }}>
+        <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-xs sm:text-sm font-semibold shadow-md hover:shadow-lg active:scale-95 transition-all duration-200" style={{ background: "var(--success)", color: "#fff" }}>
           <Share2 className="w-4 h-4" /> Share
         </a>
-        <button onClick={() => window.print()} className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full text-xs sm:text-sm font-semibold border" style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}>
+        <button onClick={() => window.print()} className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-xs sm:text-sm font-semibold border-2 transition-all duration-200 hover:shadow-md" style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}>
           <Printer className="w-4 h-4" /> Save PDF
         </button>
-        <Link to="/" className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full text-xs sm:text-sm font-semibold border" style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}>
+        <Link to="/" className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-xs sm:text-sm font-semibold border-2 transition-all duration-200 hover:shadow-md" style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}>
           <Home className="w-4 h-4" /> Home
         </Link>
       </div>

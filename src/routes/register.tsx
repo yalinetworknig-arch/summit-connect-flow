@@ -199,7 +199,7 @@ function RegisterPage() {
         className="overflow-hidden"
       >
         <div
-          className="rounded-2xl border p-5 sm:p-7 overflow-hidden"
+          className="rounded-2xl border-2 p-6 sm:p-8 overflow-hidden shadow-md transition-all duration-200"
           style={{ background: "var(--card)", borderColor: "var(--border-strong)" }}
         >
           <AnimatePresence mode="wait" custom={direction} initial={false}>
@@ -238,7 +238,7 @@ function RegisterPage() {
               whileHover={step === 1 ? {} : { scale: 1.03 }}
               whileTap={step === 1 ? {} : { scale: 0.96 }}
               transition={{ type: "spring", stiffness: 500, damping: 30 }}
-              className="px-6 py-3 rounded-full text-sm font-semibold border disabled:opacity-40 disabled:cursor-not-allowed min-h-[48px]"
+              className="px-6 py-3 rounded-lg text-sm font-semibold border-2 disabled:opacity-40 disabled:cursor-not-allowed min-h-[48px] transition-all duration-200 hover:shadow-md"
               style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
             >
               Back
@@ -252,14 +252,13 @@ function RegisterPage() {
               initial="rest"
               whileHover={(!canAdvance || nextBusy) ? {} : "hover"}
               whileTap={(!canAdvance || nextBusy) ? {} : "tap"}
-              className="flex-1 sm:flex-none px-8 py-3 rounded-full text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px] flex items-center justify-center gap-2"
+              className="flex-1 sm:flex-none px-8 py-3 rounded-lg text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px] flex items-center justify-center gap-2 transition-all duration-200 active:scale-95"
               style={{
                 background: "var(--accent-cyan)",
                 color: "var(--brand-navy)",
                 boxShadow: canAdvance && !nextBusy
                   ? "0 4px 20px color-mix(in oklab, var(--accent-cyan) 35%, transparent)"
                   : "none",
-                transition: "box-shadow 0.3s",
               }}
             >
               {nextBusy ? (
@@ -291,7 +290,7 @@ function RegisterPage() {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: "spring", stiffness: 500, damping: 30 }}
-              className="px-6 py-3 rounded-full text-sm font-semibold border min-h-[48px]"
+              className="px-6 py-3 rounded-lg text-sm font-semibold border-2 min-h-[48px] transition-all duration-200 hover:shadow-md"
               style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
             >
               ← Back

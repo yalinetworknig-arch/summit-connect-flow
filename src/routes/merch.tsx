@@ -203,7 +203,7 @@ function MerchPage() {
               key={product.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="rounded-2xl border p-6"
+              className="rounded-2xl border-2 p-6 shadow-md transition-all duration-200 hover:shadow-lg"
               style={{ background: "var(--card)", borderColor: "var(--border-strong)" }}
             >
               {/* Product header */}
@@ -352,7 +352,7 @@ function MerchPage() {
               {/* Add to Cart Button */}
               <button
                 onClick={() => addToCart(product.id)}
-                className="w-full py-3 rounded-full text-sm font-semibold flex items-center justify-center gap-2"
+                className="w-full py-3 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-95 transition-all duration-200"
                 style={{
                   background: "var(--accent-cyan)",
                   color: "var(--brand-navy)",
@@ -369,7 +369,7 @@ function MerchPage() {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl border p-6 h-fit sticky top-6"
+          className="rounded-2xl border-2 p-6 h-fit sticky top-6 shadow-md"
           style={{ background: "var(--card)", borderColor: "var(--border-strong)" }}
         >
           <h3
@@ -469,7 +469,7 @@ function MerchPage() {
                   href={`https://wa.me/${PAYMENT_DETAILS.whatsappNumber.replace(/\D/g, '')}?text=Hi, I want to order ${cart.length} item(s) for ₦${cartTotal.toLocaleString("en-NG")}. Please confirm payment details.`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3 rounded-full text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-50 inline-block text-center"
+                  className="w-full py-3 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all duration-200"
                   style={{
                     background: cart.length === 0 ? "var(--surface)" : "var(--accent-cyan)",
                     color: cart.length === 0 ? "var(--text-secondary)" : "var(--brand-navy)",
@@ -477,6 +477,7 @@ function MerchPage() {
                     display: "block",
                     pointerEvents: cart.length === 0 ? "none" : "auto",
                     opacity: cart.length === 0 ? 0.5 : 1,
+                    boxShadow: cart.length === 0 ? "none" : "var(--shadow-md)",
                   }}
                 >
                   📱 Complete Order on WhatsApp
