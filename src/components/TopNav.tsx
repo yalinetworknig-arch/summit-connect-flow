@@ -164,7 +164,21 @@ export function TopNav() {
   return (
     <header className="fixed top-3 md:top-5 inset-x-0 z-40 px-3 md:px-6 pointer-events-none">
       <div className="pointer-events-auto mx-auto max-w-[1180px] flex items-center justify-between gap-4 px-3 md:px-5 h-14 md:h-16 rounded-full border border-brand-navy/10 dark:border-white/10 bg-white/85 dark:bg-[#0A1128]/70 backdrop-blur-xl shadow-[0_10px_40px_-12px_rgba(15,27,61,0.18)] dark:shadow-[0_10px_40px_-12px_rgba(0,0,0,0.6)]">
-        <a href="#home" aria-label="AIDIFILN — Home" className="flex items-center shrink-0">
+        <a
+          href="#home"
+          aria-label="AIDIFILN — Home"
+          className="flex items-center shrink-0 cursor-pointer"
+          onClick={(e) => {
+            const el = typeof document !== "undefined" ? document.getElementById("home") : null;
+            if (el) {
+              e.preventDefault();
+              el.scrollIntoView({ behavior: "smooth", block: "start" });
+              if (typeof history !== "undefined") {
+                history.replaceState(null, "", "#home");
+              }
+            }
+          }}
+        >
           <img
             src={lockupFull}
             alt="AIDIFILN"
