@@ -24,6 +24,13 @@ export const Route = createFileRoute("/merch")({
   component: MerchPage,
 });
 
+const PAYMENT_DETAILS = {
+  accountName: "YALI Network Association",
+  accountNumber: "1027243689",
+  bank: "UBA",
+  whatsappNumber: "+234 8035209226",
+};
+
 const MERCH_PRODUCTS = [
   {
     id: "tshirt",
@@ -387,19 +394,35 @@ function MerchPage() {
                     ₦{cartTotal.toLocaleString("en-NG")}
                   </span>
                 </div>
-                <button
-                  disabled={cart.length === 0}
-                  className="w-full py-3 rounded-full text-sm font-semibold disabled:opacity-50"
+
+                {/* Payment Details */}
+                <div className="bg-surface rounded-lg p-3 mb-4 text-xs" style={{ background: "var(--surface)" }}>
+                  <p className="font-semibold mb-2" style={{ color: "var(--text-primary)" }}>
+                    💳 Payment Details
+                  </p>
+                  <div className="space-y-1" style={{ color: "var(--text-secondary)" }}>
+                    <p><strong>Bank:</strong> {PAYMENT_DETAILS.bank}</p>
+                    <p><strong>Account Name:</strong> {PAYMENT_DETAILS.accountName}</p>
+                    <p><strong>Account Number:</strong> <span style={{ fontFamily: "monospace" }}>{PAYMENT_DETAILS.accountNumber}</span></p>
+                  </div>
+                </div>
+
+                <a
+                  href={`https://wa.me/${PAYMENT_DETAILS.whatsappNumber.replace(/\D/g, '')}?text=Hi, I want to order ${cart.length} item(s) for ₦${cartTotal.toLocaleString("en-NG")}. Please confirm payment details.`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3 rounded-full text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-50 inline-block text-center"
                   style={{
-                    background: "var(--accent-cyan)",
-                    color: "var(--brand-navy)",
+                    background: cart.length === 0 ? "var(--surface)" : "var(--accent-cyan)",
+                    color: cart.length === 0 ? "var(--text-secondary)" : "var(--brand-navy)",
+                    textDecoration: "none",
+                    display: "block",
+                    pointerEvents: cart.length === 0 ? "none" : "auto",
+                    opacity: cart.length === 0 ? 0.5 : 1,
                   }}
                 >
-                  Proceed to Checkout
-                </button>
-                <p className="text-xs mt-3 text-center" style={{ color: "var(--text-secondary)" }}>
-                  💬 Coming soon: Order placement and payment
-                </p>
+                  📱 Complete Order on WhatsApp
+                </a>
               </div>
             </>
           )}
