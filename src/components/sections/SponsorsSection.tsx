@@ -48,16 +48,16 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
         <SideLabel>Partner · Sponsor · Co-host</SideLabel>
         <SideLabel side="right" tone="muted">400–800 delegates · 7 tracks</SideLabel>
         <div className="relative max-w-4xl mx-auto text-center">
-          <Reveal><Eyebrow>Partner with AIDIFILN</Eyebrow></Reveal>
+          <Reveal><Eyebrow>Partnership, sponsorship, co-hosting</Eyebrow></Reveal>
           <Reveal delay={0.08}>
             <h2 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl mt-5 mb-6 leading-[1.05]">
-              Reach Nigeria's next generation of{" "}
-              <span className="text-accent-cyan">leaders.</span>
+              Be at the table where{" "}
+              <span className="text-accent-cyan">Nigeria's civic future gets decided.</span>
             </h2>
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              400–800 delegates from all 36 states. 7 sector rooms. National and diplomatic press. Pick a tier — or tell us the outcome you want and we'll build the package around it.
+              400–800 leaders. All 36 states. Seven sector rooms making named commitments. National and international media. Tell us the outcome you want — we'll build the partnership around it.
             </p>
           </Reveal>
         </div>
