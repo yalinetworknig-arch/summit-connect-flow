@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShoppingBag, Plus, Minus } from "lucide-react";
+import blackTshirtImg from "@/assets/merch/black-tshirt.jpg";
+import whiteTshirtImg from "@/assets/merch/white-tshirt.jpg";
 
 export const Route = createFileRoute("/merch")({
   head: () => ({
@@ -37,9 +39,12 @@ const MERCH_PRODUCTS = [
     name: "AIDIFILN T-Shirt",
     description: "Official AIDIFILN 2026 t-shirt with front and back design",
     price: 8000, // in Naira
-    image: "🎽",
     sizes: ["M", "L", "XL", "2XL"],
     colors: ["black", "white"],
+    images: {
+      black: blackTshirtImg,
+      white: whiteTshirtImg,
+    },
   },
 ];
 
@@ -156,20 +161,16 @@ function MerchPage() {
             >
               {/* Product header */}
               <div className="flex gap-6 mb-6">
-                <div
-                  className="text-6xl"
+                <img
+                  src={selectedColor && product.images ? product.images[selectedColor as keyof typeof product.images] : Object.values(product.images)[0]}
+                  alt={product.name}
                   style={{
-                    width: "120px",
-                    height: "120px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    background: "var(--surface)",
+                    width: "200px",
+                    height: "250px",
+                    objectFit: "cover",
                     borderRadius: "12px",
                   }}
-                >
-                  {product.image}
-                </div>
+                />
                 <div className="flex-1">
                   <h2
                     className="text-2xl font-bold mb-2"
