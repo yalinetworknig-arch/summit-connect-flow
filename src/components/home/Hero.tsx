@@ -4,7 +4,6 @@ import { Countdown } from "./Countdown";
 import wordmark from "@/assets/new-wordmark.png";
 import usMissionLockup from "@/assets/sponsors/us-mission-lockup.png";
 import yaliRoundel from "@/assets/sponsors/yali-roundel.png";
-import mwfaanLockup from "@/assets/sponsors/mwfaan-lockup.png";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -175,7 +174,6 @@ export function Hero() {
           {[
             { src: usMissionLockup, alt: "United States Diplomatic Mission in Nigeria" },
             { src: yaliRoundel, alt: "YALI Network Nigeria" },
-            { src: mwfaanLockup, alt: "Mandela Washington Fellowship Alumni Association of Nigeria" },
           ].map(({ src, alt }) => (
             <div
               key={alt}
