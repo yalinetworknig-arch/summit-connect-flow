@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { ShoppingBag, Plus, Minus } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ShoppingBag, Plus, Minus, X } from "lucide-react";
 import blackTshirtImg from "@/assets/merch/black-tshirt.jpg";
 import whiteTshirtImg from "@/assets/merch/white-tshirt.jpg";
 
@@ -60,6 +60,7 @@ function MerchPage() {
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [selectedQty, setSelectedQty] = useState(1);
+  const [expandedImage, setExpandedImage] = useState<string | null>(null);
 
   function addToCart(productId: string) {
     if (!selectedSize || !selectedColor) {
@@ -123,6 +124,52 @@ function MerchPage() {
 
   return (
     <section className="max-w-6xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+      {/* Image Viewer Modal */}
+      <AnimatePresence>
+        {expandedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setExpandedImage(null)}
+            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-4xl w-full"
+            >
+              <img
+                src={expandedImage}
+                alt="Full size product view"
+                style={{
+                  width: "100%",
+                  maxHeight: "90vh",
+                  objectFit: "contain",
+                  borderRadius: "12px",
+                }}
+              />
+              <button
+                onClick={() => setExpandedImage(null)}
+                className="absolute top-4 right-4 p-2 rounded-full"
+                style={{
+                  background: "rgba(0,0,0,0.5)",
+                  border: "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <X className="w-6 h-6" style={{ color: "white" }} />
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header */}
       <motion.header
         initial={{ opacity: 0, y: 20 }}
@@ -161,16 +208,26 @@ function MerchPage() {
             >
               {/* Product header */}
               <div className="flex gap-6 mb-6">
-                <img
-                  src={selectedColor && product.images ? product.images[selectedColor as keyof typeof product.images] : Object.values(product.images)[0]}
-                  alt={product.name}
-                  style={{
-                    width: "200px",
-                    height: "250px",
-                    objectFit: "cover",
-                    borderRadius: "12px",
-                  }}
-                />
+                <button
+                  onClick={() => setExpandedImage(selectedColor && product.images ? product.images[selectedColor as keyof typeof product.images] : Object.values(product.images)[0])}
+                  className="cursor-pointer hover:opacity-80 transition-opacity"
+                  style={{ border: "none", background: "none", padding: 0 }}
+                >
+                  <img
+                    src={selectedColor && product.images ? product.images[selectedColor as keyof typeof product.images] : Object.values(product.images)[0]}
+                    alt={product.name}
+                    style={{
+                      width: "200px",
+                      height: "250px",
+                      objectFit: "cover",
+                      borderRadius: "12px",
+                      cursor: "pointer",
+                    }}
+                  />
+                  <p className="text-xs mt-2 text-center" style={{ color: "var(--text-secondary)" }}>
+                    Click to view full size
+                  </p>
+                </button>
                 <div className="flex-1">
                   <h2
                     className="text-2xl font-bold mb-2"
