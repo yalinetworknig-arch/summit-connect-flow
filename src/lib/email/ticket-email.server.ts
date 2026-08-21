@@ -24,7 +24,7 @@ function resolveOrigin(): string {
   return "https://summit.yalinetwork.ng";
 }
 
-function renderHtml(input: TicketEmailInput, ticketUrl: string) {
+function renderHtml(input: TicketEmailInput, ticketUrl: string, merchUrl: string) {
   const firstName = input.fullName.split(" ")[0] || input.fullName;
   const detailRows = [
     input.track ? { label: "Track", value: input.track } : null,
@@ -88,6 +88,20 @@ function renderHtml(input: TicketEmailInput, ticketUrl: string) {
         </p>
       </td>
     </tr>
+
+    <tr>
+      <td style="padding:20px 32px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${emailColors.bg};border:1px solid ${emailColors.border};border-radius:12px;padding:16px;">
+          <tr>
+            <td>
+              <div style="font-size:14px;font-weight:700;color:${emailColors.ink};margin-bottom:6px;">🎽 Claim Your Free T-Shirt</div>
+              <p style="margin:0 0 12px;font-size:13px;line-height:1.5;color:${emailColors.sub};">Order your official AIDIFILN 2026 t-shirt in your choice of size and color.</p>
+              <a href="${merchUrl}" style="display:inline-block;background:${emailColors.cyan};color:${emailColors.navy};padding:10px 16px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">Visit Merchandise Store</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
   `;
 
   return renderEmailShell({
@@ -96,7 +110,7 @@ function renderHtml(input: TicketEmailInput, ticketUrl: string) {
   });
 }
 
-function renderText(input: TicketEmailInput, ticketUrl: string) {
+function renderText(input: TicketEmailInput, ticketUrl: string, merchUrl: string) {
   return [
     `You're in, ${input.fullName.split(" ")[0] || input.fullName}!`,
     "",
@@ -106,6 +120,9 @@ function renderText(input: TicketEmailInput, ticketUrl: string) {
     input.attendeeType ? `Attendee: ${input.attendeeType}` : "",
     "",
     `View your ticket: ${ticketUrl}`,
+    "",
+    "🎽 Claim your free AIDIFILN t-shirt:",
+    `Order now: ${merchUrl}`,
     "",
     "UNILAG Main Auditorium, Akoka Lagos — Sept 25–26, 2026",
   ].filter(Boolean).join("\n");
@@ -118,6 +135,7 @@ export async function sendTicketEmail(input: TicketEmailInput): Promise<{ ok: bo
 
   const origin = resolveOrigin();
   const ticketUrl = `${origin}/ticket/${encodeURIComponent(input.ticketCode)}`;
+  const merchUrl = `${origin}/merch`;
 
   try {
     // 8-second timeout — don't let a slow/failing email block registration
@@ -135,8 +153,8 @@ export async function sendTicketEmail(input: TicketEmailInput): Promise<{ ok: bo
         from: process.env.RESEND_FROM || "YALI Summit <onboarding@resend.dev>",
         to: [input.to],
         subject: `Your YALI Summit 2026 ticket — ${input.ticketCode}`,
-        html: renderHtml(input, ticketUrl),
-        text: renderText(input, ticketUrl),
+        html: renderHtml(input, ticketUrl, merchUrl),
+        text: renderText(input, ticketUrl, merchUrl),
       }),
     });
     clearTimeout(timeout);

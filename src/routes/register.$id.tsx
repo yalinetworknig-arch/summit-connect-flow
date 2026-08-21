@@ -4,7 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import QRCode from "qrcode";
-import { CheckCircle2, Calendar, Share2, Home, Ticket } from "lucide-react";
+import { CheckCircle2, Calendar, Share2, Home, Ticket, ShoppingBag } from "lucide-react";
 import { getRegistrationById } from "@/lib/registrations.functions";
 import { TRACKS } from "@/lib/register/tracks";
 import { staggerContainer, staggerChild, spring, ease, successPop } from "@/lib/motion";
@@ -249,6 +249,34 @@ function ConfirmationPage() {
             ) : null,
           )}
         </motion.dl>
+      </motion.div>
+
+      {/* Merchandise Store CTA */}
+      <motion.div
+        className="rounded-2xl border p-5 sm:p-6 mb-6"
+        style={{ background: "var(--surface)", borderColor: "var(--border-strong)" }}
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.35, ease: ease.out }}
+      >
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h3 className="font-semibold" style={{ color: "var(--text-primary)" }}>
+              🎽 Claim Your Free T-Shirt
+            </h3>
+            <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>
+              Order your official AIDIFILN 2026 t-shirt in your choice of size and color.
+            </p>
+          </div>
+          <Link
+            to="/merch"
+            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap"
+            style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
+          >
+            <ShoppingBag className="w-4 h-4" />
+            Visit Store
+          </Link>
+        </div>
       </motion.div>
 
       {/* Action buttons */}
