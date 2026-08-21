@@ -5,7 +5,8 @@ export type AttendeeType = (typeof ATTENDEE_TYPES)[number];
 
 export const MEDIA_TYPES = ["press", "broadcast", "creator", "photographer"] as const;
 export const SPONSOR_TIERS = ["platinum", "gold", "silver", "bronze", "community", "exploring"] as const;
-export const TSHIRT_SIZES = ["XS", "S", "M", "L", "XL", "XXL"] as const;
+export const TSHIRT_SIZES = ["M", "L", "XL", "2XL"] as const;
+export const TSHIRT_COLORS = ["black", "white"] as const;
 export const VOLUNTEER_AVAILABILITY = [
   "full-summit",
   "day-1",
@@ -50,6 +51,7 @@ export const step2Schema = z
     volunteer_skills: optStr(600),
     volunteer_availability: optStr(40),
     tshirt_size: optStr(8),
+    tshirt_color: optStr(20),
     prior_volunteer_experience: optStr(600),
     attendee_type: z.enum(ATTENDEE_TYPES),
   })
@@ -101,6 +103,7 @@ export const fullRegistrationSchema = z.object({
   volunteer_skills: z.string().trim().max(600).nullable().optional(),
   volunteer_availability: z.string().trim().max(40).nullable().optional(),
   tshirt_size: z.string().trim().max(8).nullable().optional(),
+  tshirt_color: z.string().trim().max(20).nullable().optional(),
   prior_volunteer_experience: z.string().trim().max(600).nullable().optional(),
   track_selection: z.string().min(1).max(40),
   accommodation_needed: z.boolean(),

@@ -8,6 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { FormState } from "@/lib/register/schema";
+import { TSHIRT_SIZES, TSHIRT_COLORS } from "@/lib/register/schema";
 
 const HOW_HEARD_OPTIONS = [
   "YALI Network Nigeria",
@@ -70,6 +71,60 @@ export function StepLogistics({
           </label>
         </div>
       )}
+
+      {/* T-Shirt Pre-Order */}
+      <div className="space-y-4 rounded-xl border p-4" style={{ borderColor: "var(--border-strong)", background: "var(--surface)" }}>
+        <h3 className="font-semibold" style={{ color: "var(--text-primary)" }}>🎽 Free T-Shirt Pre-Order</h3>
+        <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+          Claim your AIDIFILN 2026 t-shirt with your registration (included free).
+        </p>
+
+        <div className="grid grid-cols-2 gap-4">
+          {/* Size Selection */}
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="tshirt_size" className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>
+              Size
+            </Label>
+            <Select
+              value={value.tshirt_size ?? ""}
+              onValueChange={(v) => onChange({ tshirt_size: v })}
+            >
+              <SelectTrigger id="tshirt_size">
+                <SelectValue placeholder="Select size" />
+              </SelectTrigger>
+              <SelectContent>
+                {TSHIRT_SIZES.map((size) => (
+                  <SelectItem key={size} value={size}>
+                    {size}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Color Selection */}
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="tshirt_color" className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>
+              Color
+            </Label>
+            <Select
+              value={value.tshirt_color ?? ""}
+              onValueChange={(v) => onChange({ tshirt_color: v })}
+            >
+              <SelectTrigger id="tshirt_color">
+                <SelectValue placeholder="Select color" />
+              </SelectTrigger>
+              <SelectContent>
+                {TSHIRT_COLORS.map((color) => (
+                  <SelectItem key={color} value={color}>
+                    <span className="capitalize">{color}</span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      </div>
 
       {/* How did you hear about the summit */}
       <div className="flex flex-col gap-1.5">

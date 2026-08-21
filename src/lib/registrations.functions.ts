@@ -42,6 +42,7 @@ export const submitRegistration = createServerFn({ method: "POST" })
       volunteer_skills: nn(data.volunteer_skills),
       volunteer_availability: nn(data.volunteer_availability),
       tshirt_size: nn(data.tshirt_size),
+      tshirt_color: nn(data.tshirt_color),
       prior_volunteer_experience: nn(data.prior_volunteer_experience),
     };
     const { data: row, error } = await supabaseAdmin
