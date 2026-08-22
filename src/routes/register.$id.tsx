@@ -33,6 +33,13 @@ function ConfirmationPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [icsUrl, setIcsUrl] = useState<string | null>(null);
 
+  // Breadcrumb navigation for context
+  const breadcrumbs = [
+    { label: "Home", href: "/" },
+    { label: "Register", href: "/register" },
+    { label: "Confirmation", href: "#" },
+  ];
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["registration", id],
     queryFn: () => fetchReg({ data: { id } }),
@@ -113,6 +120,26 @@ function ConfirmationPage() {
 
   return (
     <section className="max-w-2xl mx-auto px-4 sm:px-6 py-10 md:py-14">
+      {/* Breadcrumb navigation */}
+      <nav className="mb-6" aria-label="Breadcrumb">
+        <ol className="flex items-center gap-2 text-sm">
+          {breadcrumbs.map((crumb, idx) => (
+            <li key={idx} className="flex items-center gap-2">
+              {crumb.href === "#" ? (
+                <span style={{ color: "var(--text-secondary)" }}>{crumb.label}</span>
+              ) : (
+                <Link to={crumb.href as any} style={{ color: "var(--accent-cyan)" }} className="hover:underline">
+                  {crumb.label}
+                </Link>
+              )}
+              {idx < breadcrumbs.length - 1 && (
+                <span style={{ color: "var(--text-secondary)" }}>/</span>
+              )}
+            </li>
+          ))}
+        </ol>
+      </nav>
+
       {/* Hero celebration header */}
       <motion.div
         className="flex flex-col items-center text-center mb-8"

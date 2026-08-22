@@ -144,6 +144,7 @@ function MerchPage() {
               <img
                 src={expandedImage}
                 alt="Full size product view"
+                decoding="async"
                 style={{
                   width: "100%",
                   maxHeight: "90vh",
@@ -216,6 +217,8 @@ function MerchPage() {
                   <img
                     src={selectedColor && product.images ? product.images[selectedColor as keyof typeof product.images] : Object.values(product.images)[0]}
                     alt={product.name}
+                    loading="lazy"
+                    decoding="async"
                     style={{
                       width: "200px",
                       height: "250px",

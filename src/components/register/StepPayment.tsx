@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useServerFn } from "@tanstack/react-start";
 import { useNavigate } from "@tanstack/react-router";
@@ -21,6 +21,7 @@ export function StepPayment({ value }: { value: FormState }) {
   const submit = useServerFn(submitRegistration);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   const { amountNaira, paymentLabel } = useMemo(() => {
     const manualPaymentTypes = ["delegate", "volunteer", "media", "sponsor"];
@@ -45,7 +46,11 @@ export function StepPayment({ value }: { value: FormState }) {
       } as never,
     });
     clearDraft();
-    navigate({ to: "/register/$id", params: { id: row.id } });
+    setSuccess(true);
+    // Wait 1.2s to show success message, then navigate
+    setTimeout(() => {
+      navigate({ to: "/register/$id", params: { id: row.id } });
+    }, 1200);
   }
 
   async function handleSubmit() {
@@ -112,6 +117,30 @@ export function StepPayment({ value }: { value: FormState }) {
       </div>
 
       <AnimatePresence>
+        {success && (
+          <motion.div
+            key="success"
+            initial={{ opacity: 0, y: -8, height: 0, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, height: "auto", scale: 1 }}
+            exit={{ opacity: 0, y: -6, height: 0, scale: 0.95 }}
+            transition={{ duration: 0.3, ease: ease.out }}
+            className="rounded-lg border px-4 py-4 text-sm overflow-hidden flex items-center gap-3"
+            role="status"
+            style={{
+              background: "rgba(34, 197, 94, 0.08)",
+              borderColor: "rgba(34, 197, 94, 0.35)",
+              color: "#22c55e",
+            }}
+          >
+            <svg className="h-5 w-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            </svg>
+            <div>
+              <p className="font-semibold">Registration complete!</p>
+              <p className="text-xs opacity-90 mt-0.5">Redirecting to your ticket…</p>
+            </div>
+          </motion.div>
+        )}
         {error && (
           <motion.div
             key="error"
@@ -143,29 +172,33 @@ export function StepPayment({ value }: { value: FormState }) {
         )}
       </AnimatePresence>
 
-      <motion.button
-        type="button"
-        onClick={handleSubmit}
-        disabled={busy}
-        variants={ctaButton}
-        initial="rest"
-        whileHover={busy ? {} : "hover"}
-        whileTap={busy ? {} : "tap"}
-        className="w-full px-7 py-4 rounded-full text-base font-semibold disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-h-[56px]"
-        style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
-      >
-        {busy ? (
-          <>
-            <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-            </svg>
-            Submitting…
-          </>
-        ) : (
-          "Complete registration"
+      <AnimatePresence>
+        {!success && (
+          <motion.button
+            type="button"
+            onClick={handleSubmit}
+            disabled={busy}
+            variants={ctaButton}
+            initial="rest"
+            whileHover={busy ? {} : "hover"}
+            whileTap={busy ? {} : "tap"}
+            className="w-full px-7 py-4 rounded-full text-base font-semibold disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-h-[56px]"
+            style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
+          >
+            {busy ? (
+              <>
+                <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                </svg>
+                Submitting…
+              </>
+            ) : (
+              "Complete registration"
+            )}
+          </motion.button>
         )}
-      </motion.button>
+      </AnimatePresence>
 
       <p className="text-center text-xs" style={{ color: "var(--text-secondary)" }}>
         By registering you agree to the summit's terms and privacy policy.

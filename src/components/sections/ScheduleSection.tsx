@@ -18,7 +18,7 @@ export function ScheduleSection({ id = "schedule" }: { id?: string }) {
   const day = SCHEDULE[active];
   return (
     <div id={id} className="scroll-mt-24">
-      <section className="relative px-5 sm:px-6 lg:px-8 py-20 md:py-24 lg:py-28 bg-background text-text-primary overflow-hidden">
+      <section className="relative px-5 sm:px-6 lg:px-8 bg-background text-text-primary overflow-hidden" style={{ padding: "clamp(3rem, 10vw, 8rem) 1.25rem" }}>
         <HalftoneBackdrop />
         <SideLabel>Programme · Sept 25–26 · Akoka Lagos</SideLabel>
         <SideLabel side="right" tone="muted">AIDIFILN / Arrival → Day 02</SideLabel>

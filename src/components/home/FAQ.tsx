@@ -50,7 +50,7 @@ const faqs = [
 
 export function FAQ() {
   return (
-    <section className="py-16 md:py-24 px-6" style={{ background: "var(--surface)" }}>
+    <section className="px-6" style={{ background: "var(--surface)", padding: "clamp(2rem, 8vw, 6rem) 1.5rem" }}>
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <p

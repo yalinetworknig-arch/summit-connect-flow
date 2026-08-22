@@ -32,7 +32,7 @@ export function ContactSection({ id = "contact" }: { id?: string }) {
 
   return (
     <div id={id} className="scroll-mt-24">
-      <section className="relative px-5 sm:px-6 lg:px-8 py-20 md:py-24 lg:py-28 bg-background text-text-primary overflow-hidden">
+      <section className="relative px-5 sm:px-6 lg:px-8 bg-background text-text-primary overflow-hidden" style={{ padding: "clamp(3rem, 10vw, 8rem) 1.25rem" }}>
         <HalftoneBackdrop />
         <SideLabel>Reach out · yalinetworknig@gmail.com</SideLabel>
         <SideLabel side="right" tone="muted">Reply within 2 business days</SideLabel>

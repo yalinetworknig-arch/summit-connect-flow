@@ -155,6 +155,7 @@ export function Hero() {
                 alt={alt}
                 className="h-full w-auto object-contain select-none"
                 draggable={false}
+                loading="eager"
               />
             </div>
           ))}

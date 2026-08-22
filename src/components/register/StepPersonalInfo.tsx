@@ -52,7 +52,7 @@ export function StepPersonalInfo({
             placeholder="you@example.com"
           />
         </Field>
-        <Field label="Phone" error={errors.phone} fieldId="phone">
+        <Field label="Phone" error={errors.phone} fieldId="phone" hint="Format: +234 800 000 0000 or 08012345678">
           <Input
             id="phone"
             type="tel"
@@ -99,7 +99,7 @@ export function StepPersonalInfo({
                 placeholder="Partnerships Lead"
               />
             </Field>
-            <Field label="Preferred sponsorship tier" error={errors.sponsor_tier} className="sm:col-span-2">
+            <Field label="Preferred sponsorship tier" error={errors.sponsor_tier} className="sm:col-span-2" hint="Helps us understand your sponsorship scope">
               <Select
                 value={value.sponsor_tier ?? ""}
                 onValueChange={(v) => onChange({ sponsor_tier: v })}
@@ -149,7 +149,7 @@ export function StepPersonalInfo({
                 </SelectContent>
               </Select>
             </Field>
-            <Field label="Estimated audience reach" error={errors.audience_reach}>
+            <Field label="Estimated audience reach" error={errors.audience_reach} hint="e.g. 50k weekly readers or 100k monthly listeners">
               <Input
                 value={value.audience_reach ?? ""}
                 onChange={(e) => onChange({ audience_reach: e.target.value })}
@@ -228,7 +228,7 @@ export function StepPersonalInfo({
                 </SelectContent>
               </Select>
             </Field>
-            <Field label="T-shirt size" error={errors.tshirt_size}>
+            <Field label="T-shirt size" error={errors.tshirt_size} hint="You'll receive this as a volunteer gift">
               <Select
                 value={value.tshirt_size ?? ""}
                 onValueChange={(v) => onChange({ tshirt_size: v })}
@@ -297,12 +297,14 @@ function Field({
   children,
   className = "",
   fieldId,
+  hint,
 }: {
   label: string;
   error?: string;
   children: React.ReactNode;
   className?: string;
   fieldId?: string;
+  hint?: string;
 }) {
   return (
     <div className={`flex flex-col gap-1.5 ${className}`}>
@@ -314,6 +316,11 @@ function Field({
         {label}
       </Label>
       {children}
+      {hint && !error && (
+        <span className="text-xs" style={{ color: "var(--text-secondary)" }}>
+          {hint}
+        </span>
+      )}
       {error && (
         <span className="text-xs" role="alert" style={{ color: "var(--error)" }}>
           {error}

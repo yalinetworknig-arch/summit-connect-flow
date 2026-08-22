@@ -48,7 +48,7 @@ export function Partners() {
   const items = [...partners, ...partners];
 
   return (
-    <section className="py-16 md:py-24 px-6" style={{ background: "var(--background)" }}>
+    <section className="px-6" style={{ background: "var(--background)", padding: "clamp(2rem, 8vw, 6rem) 1.5rem" }}>
       <div className="max-w-6xl mx-auto">
         <h2
           className="text-center font-bold mb-12"

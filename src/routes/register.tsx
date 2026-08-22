@@ -164,7 +164,8 @@ function RegisterPage() {
   return (
     <section
       ref={topRef}
-      className="max-w-3xl mx-auto px-4 sm:px-6 py-10 md:py-14 scroll-mt-20 register-ambient"
+      className="mx-auto px-4 sm:px-6 py-10 md:py-14 scroll-mt-20 register-ambient"
+      style={{ maxWidth: "clamp(300px, 90vw, 48rem)" }}
     >
       {/* Page entrance */}
       <motion.header
@@ -173,16 +174,23 @@ function RegisterPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.1 }}
       >
-        <h1
-          className="font-bold mb-2"
-          style={{
-            fontFamily: "Space Grotesk, sans-serif",
-            fontSize: "clamp(28px, 4vw, 40px)",
-            color: "var(--text-primary)",
-          }}
-        >
-          Claim your seat at AIDIFILN 2026
-        </h1>
+        <div className="flex items-start justify-between gap-4 mb-3">
+          <div>
+            <h1
+              className="font-bold"
+              style={{
+                fontFamily: "Space Grotesk, sans-serif",
+                fontSize: "clamp(28px, 4vw, 40px)",
+                color: "var(--text-primary)",
+              }}
+            >
+              Claim your seat at AIDIFILN 2026
+            </h1>
+          </div>
+          <div className="text-xs px-3 py-1.5 rounded-full whitespace-nowrap" style={{ background: "var(--surface)", color: "var(--text-secondary)" }}>
+            ⏱️ ~3 min
+          </div>
+        </div>
         {/* Animated subtitle crossfade on step change */}
         <AnimatePresence mode="wait">
           <motion.p
@@ -193,7 +201,7 @@ function RegisterPage() {
             transition={{ duration: 0.2, ease: ease.out }}
             style={{ color: "var(--text-secondary)" }}
           >
-            {TITLES[step - 1]}
+            {TITLES[step - 1]} <span className="text-xs opacity-70">({step} of 5)</span>
           </motion.p>
         </AnimatePresence>
       </motion.header>
@@ -210,6 +218,20 @@ function RegisterPage() {
         <div
           className="rounded-2xl border-2 p-6 sm:p-8 overflow-hidden shadow-md transition-all duration-200"
           style={{ background: "var(--card)", borderColor: "var(--border-strong)" }}
+          onKeyDown={(e) => {
+            // Allow Enter key to submit current step (but not in textarea)
+            if (
+              e.key === "Enter" &&
+              e.currentTarget.tagName !== "TEXTAREA" &&
+              !(e.target as HTMLElement).tagName.includes("TEXTAREA") &&
+              canAdvance &&
+              !nextBusy &&
+              step < 5
+            ) {
+              e.preventDefault();
+              next();
+            }
+          }}
         >
           <AnimatePresence mode="wait" custom={direction} initial={false}>
             <motion.div
@@ -272,7 +294,7 @@ function RegisterPage() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                   </svg>
-                  Checking…
+                  <span>Verifying email…</span>
                 </>
               ) : (
                 <>
