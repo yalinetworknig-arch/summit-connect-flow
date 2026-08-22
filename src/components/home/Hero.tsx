@@ -70,59 +70,32 @@ export function Hero() {
                 id="wavePath"
                 d="M0,520 Q300,420 600,520 T1200,520 L1200,800 L0,800 Z"
                 fill="white"
-              >
-                <animate
-                  attributeName="d"
-                  dur="9s"
-                  repeatCount="indefinite"
-                  values="
-                    M0,520 Q300,420 600,520 T1200,520 L1200,800 L0,800 Z;
-                    M0,540 Q300,480 600,500 T1200,560 L1200,800 L0,800 Z;
-                    M0,520 Q300,420 600,520 T1200,520 L1200,800 L0,800 Z"
-                />
-              </path>
-              <path
-                d="M0,620 Q300,560 600,620 T1200,600 L1200,800 L0,800 Z"
-                fill="white"
-                opacity="0.7"
-              >
-                <animate
-                  attributeName="d"
-                  dur="11s"
-                  repeatCount="indefinite"
-                  values="
-                    M0,620 Q300,560 600,620 T1200,600 L1200,800 L0,800 Z;
-                    M0,600 Q300,680 600,600 T1200,640 L1200,800 L0,800 Z;
-                    M0,620 Q300,560 600,620 T1200,600 L1200,800 L0,800 Z"
-                />
-              </path>
+              />
             </mask>
           </defs>
           <rect width="1200" height="800" fill="url(#glow1)" />
           <rect width="1200" height="800" fill="url(#glow2)" />
           <rect width="1200" height="800" fill="url(#halftone)" mask="url(#waveMask)" opacity="0.55" />
-          {/* slow drifting diagonal streaks */}
+          {/* Static diagonal streaks for performance */}
           <g opacity="0.18">
-            <motion.path
+            <path
               d="M-100,700 L400,300"
               stroke="#00D9FF"
               strokeWidth="1"
-              animate={{ opacity: [0.1, 0.4, 0.1] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              opacity="0.25"
             />
-            <motion.path
+            <path
               d="M200,800 L800,200"
               stroke="#7B2CFF"
               strokeWidth="1"
-              animate={{ opacity: [0.05, 0.3, 0.05] }}
-              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+              opacity="0.15"
             />
           </g>
         </svg>
 
-        {/* Floating ambient dots */}
+        {/* Static ambient dots for performance */}
         {[...Array(6)].map((_, i) => (
-          <motion.span
+          <span
             key={i}
             className="absolute rounded-full bg-[#00D9FF]"
             style={{
@@ -133,8 +106,6 @@ export function Hero() {
               opacity: 0.35,
               filter: "blur(0.5px)",
             }}
-            animate={{ y: [0, -18, 0], opacity: [0.2, 0.6, 0.2] }}
-            transition={{ duration: 4 + i, repeat: Infinity, ease: "easeInOut", delay: i * 0.4 }}
           />
         ))}
       </div>
