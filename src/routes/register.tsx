@@ -67,6 +67,10 @@ function RegisterPage() {
       saveTimeoutRef.current = setTimeout(() => {
         saveDraft(next);
       }, 800);
+      // Immediately save if attendee_type is being set (critical for form flow)
+      if (p.attendee_type) {
+        saveDraft(next);
+      }
       return next;
     });
   }, []);
