@@ -258,27 +258,22 @@ function RegisterPage() {
       <div>
         {step < 5 ? (
           <div className="flex items-center justify-between mt-6 gap-3">
-            <motion.button
+            {/* Back Button - use native button for proper React event handling */}
+            <button
               type="button"
               onClick={back}
               disabled={step === 1}
-              whileHover={step === 1 ? {} : { scale: 1.03 }}
-              whileTap={step === 1 ? {} : { scale: 0.96 }}
-              transition={{ type: "spring", stiffness: 500, damping: 30 }}
               className="px-6 py-3 rounded-lg text-sm font-semibold border-2 disabled:opacity-40 disabled:cursor-not-allowed min-h-[48px] transition-all duration-200 hover:shadow-md"
               style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
             >
               Back
-            </motion.button>
+            </button>
 
-            <motion.button
+            {/* Next Button - use native button for proper React event handling */}
+            <button
               type="button"
               onClick={next}
               disabled={!canAdvance || nextBusy}
-              variants={ctaButton}
-              initial="rest"
-              whileHover={(!canAdvance || nextBusy) ? {} : "hover"}
-              whileTap={(!canAdvance || nextBusy) ? {} : "tap"}
               className="flex-1 sm:flex-none px-8 py-3 rounded-lg text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px] flex items-center justify-center gap-2 transition-all duration-200 active:scale-95"
               style={{
                 background: "var(--accent-cyan)",
@@ -299,15 +294,18 @@ function RegisterPage() {
               ) : (
                 <>
                   Next
-                  <motion.span
-                    animate={{ x: canAdvance ? 0 : 0 }}
-                    className="opacity-60 text-xs"
-                  >
+                  <span className="opacity-60 text-xs">
                     →
-                  </motion.span>
+                  </span>
                 </>
               )}
-            </motion.button>
+            </button>
+
+            {/* Animated overlay for hover/tap effects */}
+            <motion.div
+              className="absolute inset-0 pointer-events-none"
+              initial={false}
+            />
           </div>
         ) : (
           <div className="mt-6">
