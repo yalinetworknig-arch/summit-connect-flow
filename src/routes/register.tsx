@@ -118,10 +118,26 @@ function RegisterPage() {
   }
 
   async function next() {
-    if (!validateCurrent()) {
+    // DEBUG: Comprehensive logging for form state and validation
+    console.log("[REGISTER DEBUG] next() called", {
+      step,
+      attendee_type: form.attendee_type,
+      canAdvance,
+      formState: JSON.stringify(form).slice(0, 150),
+      timestamp: new Date().toISOString()
+    });
+
+    const validationResult = validateCurrent();
+    console.log("[REGISTER DEBUG] validateCurrent() returned:", validationResult);
+
+    if (!validationResult) {
+      console.log("[REGISTER DEBUG] VALIDATION FAILED - Full form state:", form);
+      console.log("[REGISTER DEBUG] Step:", step, "- Triggering shake animation");
       triggerShake();
       return;
     }
+
+    console.log("[REGISTER DEBUG] Validation PASSED - proceeding to advance");
     setErrors({});
 
     // On step 2: pre-check email uniqueness (with 3s timeout for better speed)
