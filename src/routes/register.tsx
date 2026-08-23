@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, forwardRef } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { ProgressIndicator } from "@/components/register/ProgressIndicator";
@@ -18,6 +18,15 @@ import {
 import { loadDraft, saveDraft } from "@/lib/register/storage";
 import { supabase } from "@/integrations/supabase/client";
 import { stepVariants, errorShake, ctaButton, ease } from "@/lib/motion";
+
+// Motion button wrapper with forwardRef to ensure React event handlers attach properly
+const MotionButton = forwardRef<
+  HTMLButtonElement,
+  React.ComponentPropsWithoutRef<typeof motion.button>
+>(({ ...props }, ref) => (
+  <motion.button ref={ref} {...props} />
+));
+MotionButton.displayName = "MotionButton";
 
 export const Route = createFileRoute("/register")({
   head: () => ({
@@ -109,15 +118,7 @@ function RegisterPage() {
   }
 
   async function next() {
-    // DEBUG: Log form state and validation
-    if (typeof window !== "undefined") {
-      console.log("[REGISTER] next() called", { step, attendee_type: form.attendee_type, email: form.email });
-    }
-
     if (!validateCurrent()) {
-      if (typeof window !== "undefined") {
-        console.log("[REGISTER] Validation failed for step", step);
-      }
       triggerShake();
       return;
     }
@@ -270,22 +271,29 @@ function RegisterPage() {
       <div>
         {step < 5 ? (
           <div className="flex items-center justify-between mt-6 gap-3">
-            {/* Back Button - use native button for proper React event handling */}
-            <button
+            {/* Back Button - use MotionButton with forwardRef for proper React event handling */}
+            <MotionButton
               type="button"
               onClick={back}
               disabled={step === 1}
+              whileHover={step === 1 ? {} : { scale: 1.03 }}
+              whileTap={step === 1 ? {} : { scale: 0.96 }}
+              transition={{ type: "spring", stiffness: 500, damping: 30 }}
               className="px-6 py-3 rounded-lg text-sm font-semibold border-2 disabled:opacity-40 disabled:cursor-not-allowed min-h-[48px] transition-all duration-200 hover:shadow-md"
               style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
             >
               Back
-            </button>
+            </MotionButton>
 
-            {/* Next Button - use native button for proper React event handling */}
-            <button
+            {/* Next Button - use MotionButton with forwardRef for proper React event handling */}
+            <MotionButton
               type="button"
               onClick={next}
               disabled={!canAdvance || nextBusy}
+              variants={ctaButton}
+              initial="rest"
+              whileHover={(!canAdvance || nextBusy) ? {} : "hover"}
+              whileTap={(!canAdvance || nextBusy) ? {} : "tap"}
               className="flex-1 sm:flex-none px-8 py-3 rounded-lg text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px] flex items-center justify-center gap-2 transition-all duration-200 active:scale-95"
               style={{
                 background: "var(--accent-cyan)",
@@ -306,18 +314,15 @@ function RegisterPage() {
               ) : (
                 <>
                   Next
-                  <span className="opacity-60 text-xs">
+                  <motion.span
+                    animate={{ x: canAdvance ? 0 : 0 }}
+                    className="opacity-60 text-xs"
+                  >
                     →
-                  </span>
+                  </motion.span>
                 </>
               )}
-            </button>
-
-            {/* Animated overlay for hover/tap effects */}
-            <motion.div
-              className="absolute inset-0 pointer-events-none"
-              initial={false}
-            />
+            </MotionButton>
           </div>
         ) : (
           <div className="mt-6">
