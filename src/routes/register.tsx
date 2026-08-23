@@ -109,7 +109,15 @@ function RegisterPage() {
   }
 
   async function next() {
+    // DEBUG: Log form state and validation
+    if (typeof window !== "undefined") {
+      console.log("[REGISTER] next() called", { step, attendee_type: form.attendee_type, email: form.email });
+    }
+
     if (!validateCurrent()) {
+      if (typeof window !== "undefined") {
+        console.log("[REGISTER] Validation failed for step", step);
+      }
       triggerShake();
       return;
     }
