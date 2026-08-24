@@ -174,6 +174,40 @@ export const overrideVerification = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+export const deleteRegistration = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) =>
+    z
+      .object({
+        id: z.string().uuid(),
+      })
+      .parse(input),
+  )
+  .handler(async ({ data, context }) => {
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
+    const roles = await getUserRoles(supabase, userId);
+    assertHasAdminRole(roles);
+
+    // Get registration details before deletion for logging
+    const { data: reg } = await supabase
+      .from("registrations")
+      .select("id, full_name, email, ticket_code")
+      .eq("id", data.id)
+      .single();
+
+    // Delete the registration
+    const { error } = await supabase
+      .from("registrations")
+      .delete()
+      .eq("id", data.id);
+
+    if (error) throw new Error(error.message);
+
+    console.log(`[ADMIN] Deleted registration: ${reg?.full_name} (${reg?.email}) - Ticket: ${reg?.ticket_code}`);
+    return { ok: true, deleted: reg };
+  });
+
 export const getCertificateSignedUrl = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({ path: z.string().min(1).max(500) }).parse(input))

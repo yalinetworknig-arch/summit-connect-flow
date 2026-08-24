@@ -2,9 +2,9 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ExternalLink, FileCheck, FileX, RotateCcw } from "lucide-react";
+import { ExternalLink, FileCheck, FileX, RotateCcw, Trash2 } from "lucide-react";
 import { z } from "zod";
-import { listRegistrations, overrideVerification, getCertificateSignedUrl } from "@/lib/tickets.functions";
+import { listRegistrations, overrideVerification, getCertificateSignedUrl, deleteRegistration } from "@/lib/tickets.functions";
 import { AdminTabs } from "@/components/admin/AdminTabs";
 
 const searchSchema = z.object({
@@ -39,12 +39,14 @@ function RegistrationsPage() {
   const list = useServerFn(listRegistrations);
   const override = useServerFn(overrideVerification);
   const sign = useServerFn(getCertificateSignedUrl);
+  const deleteReg = useServerFn(deleteRegistration);
   const qc = useQueryClient();
   const initial = Route.useSearch();
   const [verification, setVerification] = useState<"all" | "pending" | "verified" | "suspicious" | "rejected" | "error">(initial.verification ?? "all");
   const [checkedIn, setCheckedIn] = useState<"all" | "yes" | "no">(initial.checkedIn ?? "all");
   const [attendeeType, setAttendeeType] = useState<"all" | "delegate" | "sponsor" | "media" | "public" | "volunteer">(initial.attendeeType ?? "all");
   const [search, setSearch] = useState(initial.search ?? "");
+  const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; name: string } | null>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin-regs", verification, checkedIn, attendeeType, search],
@@ -66,6 +68,16 @@ function RegistrationsPage() {
   async function setStatus(id: string, status: "verified" | "rejected" | "pending") {
     await override({ data: { id, status } });
     qc.invalidateQueries({ queryKey: ["admin-regs"] });
+  }
+
+  async function handleDelete(id: string) {
+    try {
+      await deleteReg({ data: { id } });
+      qc.invalidateQueries({ queryKey: ["admin-regs"] });
+      setDeleteConfirm(null);
+    } catch (e) {
+      alert(`Failed to delete: ${e instanceof Error ? e.message : "Unknown error"}`);
+    }
   }
 
   const rows = data?.rows ?? [];
@@ -137,6 +149,7 @@ function RegistrationsPage() {
                     <button onClick={() => setStatus(r.id, "verified")} className="px-2 py-1 rounded text-xs inline-flex items-center gap-1" style={{ background: "rgba(34,197,94,0.15)", color: "#22c55e" }}><FileCheck className="w-3 h-3" /> Verify</button>
                     <button onClick={() => setStatus(r.id, "rejected")} className="px-2 py-1 rounded text-xs inline-flex items-center gap-1" style={{ background: "rgba(239,68,68,0.15)", color: "#ef4444" }}><FileX className="w-3 h-3" /> Reject</button>
                     <button onClick={() => setStatus(r.id, "pending")} className="px-2 py-1 rounded text-xs inline-flex items-center gap-1" style={{ background: "rgba(148,163,184,0.15)", color: "var(--text-secondary)" }}><RotateCcw className="w-3 h-3" /> Reset</button>
+                    <button onClick={() => setDeleteConfirm({ id: r.id, name: r.full_name })} className="px-2 py-1 rounded text-xs inline-flex items-center gap-1" style={{ background: "rgba(239,68,68,0.15)", color: "#ef4444" }}><Trash2 className="w-3 h-3" /> Delete</button>
                   </div>
                 </td>
               </tr>
@@ -144,6 +157,26 @@ function RegistrationsPage() {
           </tbody>
         </table>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setDeleteConfirm(null)}>
+          <div className="bg-white dark:bg-slate-900 rounded-lg p-6 max-w-sm mx-4" onClick={(e) => e.stopPropagation()} style={{ background: "var(--card)", borderColor: "var(--border-strong)" }}>
+            <h2 className="text-lg font-bold mb-3" style={{ color: "var(--text-primary)" }}>Delete Registration?</h2>
+            <p className="text-sm mb-4" style={{ color: "var(--text-secondary)" }}>
+              Are you sure you want to delete the registration for <strong>{deleteConfirm.name}</strong>? This action cannot be undone and will immediately remove this registration from the database.
+            </p>
+            <div className="flex gap-2 justify-end">
+              <button onClick={() => setDeleteConfirm(null)} className="px-4 py-2 rounded text-sm font-medium border" style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}>
+                Cancel
+              </button>
+              <button onClick={() => handleDelete(deleteConfirm.id)} className="px-4 py-2 rounded text-sm font-medium" style={{ background: "#ef4444", color: "white" }}>
+                Delete Permanently
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
