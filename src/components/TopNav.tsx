@@ -12,12 +12,12 @@ import {
 } from "@/components/ui/sheet";
 
 const items = [
-  { href: "#home", label: "Home" },
-  { href: "#about", label: "About" },
-  { href: "#schedule", label: "Schedule" },
-  { href: "#tracks", label: "Tracks" },
-  { href: "#sponsors", label: "Sponsors" },
-  { href: "#contact", label: "Contact" },
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/schedule", label: "Schedule" },
+  { href: "/tracks", label: "Tracks" },
+  { href: "/sponsors", label: "Sponsors" },
+  { href: "/contact", label: "Contact" },
 ] as const;
 
 function useTheme() {
@@ -58,37 +58,15 @@ function NavLinks({
   activeId?: string;
   onLinkClick?: (id: string) => void;
 }) {
-  const handleNavClick = (id: string) => {
-    const scrollToElement = () => {
-      const el = typeof document !== "undefined" ? document.getElementById(id) : null;
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-        if (typeof history !== "undefined") {
-          history.replaceState(null, "", `#${id}`);
-        }
-      }
-    };
-
-    // If we're on home page, scroll to section immediately
-    if (typeof window !== "undefined" && window.location.pathname === "/") {
-      scrollToElement();
-    } else {
-      // Otherwise navigate to home with anchor, which will trigger scroll on page load
-      window.location.href = `/#${id}`;
-    }
-    onLinkClick?.(id);
-    onNavigate?.();
-  };
-
   return (
     <nav className={vertical ? "flex flex-col gap-1" : "flex items-center gap-1"}>
       {items.map(({ href, label }) => {
-        const id = href.slice(1);
-        const isActive = activeId === id;
+        const isActive = activeId === href.slice(1) || (href === "/" && activeId === "");
         return (
-          <button
+          <Link
             key={href}
-            onClick={() => handleNavClick(id)}
+            to={href}
+            onClick={onNavigate}
             aria-current={isActive ? "page" : undefined}
             className={`${
               vertical ? "px-3 py-3 text-base" : "px-4 py-2 text-sm"
@@ -102,10 +80,10 @@ function NavLinks({
                   : "text-brand-navy/80 hover:text-accent-cyan dark:text-white/80 dark:hover:text-[#00D9FF]"
             } relative after:absolute after:left-3 after:right-3 after:bottom-0 after:h-0.5 after:bg-accent-cyan after:transition-transform ${
               isActive ? "after:scale-x-100" : "after:scale-x-0 hover:after:scale-x-100"
-            } bg-transparent border-0 cursor-pointer`}
+            }`}
           >
             {label}
-          </button>
+          </Link>
         );
       })}
     </nav>
@@ -278,13 +256,13 @@ export function TopNav() {
                   >
                     Register
                   </Link>
-                  <a
-                    href="#sponsors"
+                  <Link
+                    to="/sponsors"
                     onClick={() => setOpen(false)}
                     className="px-5 py-3 rounded-full text-sm font-semibold text-center border border-accent-cyan text-accent-cyan"
                   >
                     Sponsor
-                  </a>
+                  </Link>
                 </div>
               </div>
             </SheetContent>
