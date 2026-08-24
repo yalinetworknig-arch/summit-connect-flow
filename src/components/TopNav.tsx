@@ -58,27 +58,37 @@ function NavLinks({
   activeId?: string;
   onLinkClick?: (id: string) => void;
 }) {
+  const handleNavClick = (id: string) => {
+    const scrollToElement = () => {
+      const el = typeof document !== "undefined" ? document.getElementById(id) : null;
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (typeof history !== "undefined") {
+          history.replaceState(null, "", `#${id}`);
+        }
+      }
+    };
+
+    // If we're on home page, scroll to section immediately
+    if (typeof window !== "undefined" && window.location.pathname === "/") {
+      scrollToElement();
+    } else {
+      // Otherwise navigate to home with anchor, which will trigger scroll on page load
+      window.location.href = `/#${id}`;
+    }
+    onLinkClick?.(id);
+    onNavigate?.();
+  };
+
   return (
     <nav className={vertical ? "flex flex-col gap-1" : "flex items-center gap-1"}>
       {items.map(({ href, label }) => {
         const id = href.slice(1);
         const isActive = activeId === id;
         return (
-          <a
+          <button
             key={href}
-            href={href}
-            onClick={(e) => {
-              const el = typeof document !== "undefined" ? document.getElementById(id) : null;
-              if (el) {
-                e.preventDefault();
-                onLinkClick?.(id);
-                el.scrollIntoView({ behavior: "smooth", block: "start" });
-                if (typeof history !== "undefined") {
-                  history.replaceState(null, "", `#${id}`);
-                }
-              }
-              onNavigate?.();
-            }}
+            onClick={() => handleNavClick(id)}
             aria-current={isActive ? "page" : undefined}
             className={`${
               vertical ? "px-3 py-3 text-base" : "px-4 py-2 text-sm"
@@ -92,10 +102,10 @@ function NavLinks({
                   : "text-brand-navy/80 hover:text-accent-cyan dark:text-white/80 dark:hover:text-[#00D9FF]"
             } relative after:absolute after:left-3 after:right-3 after:bottom-0 after:h-0.5 after:bg-accent-cyan after:transition-transform ${
               isActive ? "after:scale-x-100" : "after:scale-x-0 hover:after:scale-x-100"
-            }`}
+            } bg-transparent border-0 cursor-pointer`}
           >
             {label}
-          </a>
+          </button>
         );
       })}
     </nav>
@@ -164,20 +174,10 @@ export function TopNav() {
   return (
     <header className="fixed top-3 md:top-5 inset-x-0 z-40 px-3 md:px-6 pointer-events-none">
       <div className="pointer-events-auto mx-auto max-w-[1180px] flex items-center justify-between gap-4 px-3 md:px-5 h-14 md:h-16 rounded-full border border-brand-navy/10 dark:border-white/10 bg-white/85 dark:bg-[#0A1128]/70 backdrop-blur-xl shadow-[0_10px_40px_-12px_rgba(15,27,61,0.18)] dark:shadow-[0_10px_40px_-12px_rgba(0,0,0,0.6)]">
-        <a
-          href="#home"
+        <Link
+          to="/"
           aria-label="AIDIFILN — Home"
           className="flex items-center shrink-0 cursor-pointer"
-          onClick={(e) => {
-            const el = typeof document !== "undefined" ? document.getElementById("home") : null;
-            if (el) {
-              e.preventDefault();
-              el.scrollIntoView({ behavior: "smooth", block: "start" });
-              if (typeof history !== "undefined") {
-                history.replaceState(null, "", "#home");
-              }
-            }
-          }}
         >
           <img
             src={lockupFull}
