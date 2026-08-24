@@ -4,6 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
 import { supabase as publicSupabase } from "@/integrations/supabase/client";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { sendTicketEmail } from "@/lib/email/ticket-email.server";
 
 function createServerSupabase() {
   const url = process.env.SUPABASE_URL;
@@ -206,6 +207,49 @@ export const deleteRegistration = createServerFn({ method: "POST" })
 
     console.log(`[ADMIN] Deleted registration: ${reg?.full_name} (${reg?.email}) - Ticket: ${reg?.ticket_code}`);
     return { ok: true, deleted: reg };
+  });
+
+export const resendTicketEmail = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) =>
+    z
+      .object({
+        id: z.string().uuid(),
+      })
+      .parse(input),
+  )
+  .handler(async ({ data, context }) => {
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
+    const roles = await getUserRoles(supabase, userId);
+    assertHasStaffRole(roles);
+
+    // Get registration details
+    const { data: reg, error: fetchError } = await supabase
+      .from("registrations")
+      .select("id, full_name, email, ticket_code, track_selection, attendee_type")
+      .eq("id", data.id)
+      .single();
+
+    if (fetchError || !reg) {
+      throw new Error("Registration not found");
+    }
+
+    // Send the ticket email
+    const emailResult = await sendTicketEmail({
+      to: reg.email,
+      fullName: reg.full_name,
+      ticketCode: reg.ticket_code,
+      track: reg.track_selection,
+      attendeeType: reg.attendee_type,
+    });
+
+    if (!emailResult.ok) {
+      throw new Error(`Failed to send email: ${emailResult.error}`);
+    }
+
+    console.log(`[ADMIN] Resent ticket email to: ${reg.full_name} (${reg.email}) - Ticket: ${reg.ticket_code}`);
+    return { ok: true, email: reg.email, messageId: emailResult.id };
   });
 
 export const getCertificateSignedUrl = createServerFn({ method: "POST" })

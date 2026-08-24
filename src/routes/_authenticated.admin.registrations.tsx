@@ -2,9 +2,9 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ExternalLink, FileCheck, FileX, RotateCcw, Trash2 } from "lucide-react";
+import { ExternalLink, FileCheck, FileX, RotateCcw, Trash2, Mail } from "lucide-react";
 import { z } from "zod";
-import { listRegistrations, overrideVerification, getCertificateSignedUrl, deleteRegistration } from "@/lib/tickets.functions";
+import { listRegistrations, overrideVerification, getCertificateSignedUrl, deleteRegistration, resendTicketEmail } from "@/lib/tickets.functions";
 import { AdminTabs } from "@/components/admin/AdminTabs";
 
 const searchSchema = z.object({
@@ -40,6 +40,7 @@ function RegistrationsPage() {
   const override = useServerFn(overrideVerification);
   const sign = useServerFn(getCertificateSignedUrl);
   const deleteReg = useServerFn(deleteRegistration);
+  const resend = useServerFn(resendTicketEmail);
   const qc = useQueryClient();
   const initial = Route.useSearch();
   const [verification, setVerification] = useState<"all" | "pending" | "verified" | "suspicious" | "rejected" | "error">(initial.verification ?? "all");
@@ -47,6 +48,8 @@ function RegistrationsPage() {
   const [attendeeType, setAttendeeType] = useState<"all" | "delegate" | "sponsor" | "media" | "public" | "volunteer">(initial.attendeeType ?? "all");
   const [search, setSearch] = useState(initial.search ?? "");
   const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; name: string } | null>(null);
+  const [resendingId, setResendingId] = useState<string | null>(null);
+  const [resendStatus, setResendStatus] = useState<{ id: string; status: "success" | "error"; message: string } | null>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin-regs", verification, checkedIn, attendeeType, search],
@@ -77,6 +80,20 @@ function RegistrationsPage() {
       setDeleteConfirm(null);
     } catch (e) {
       alert(`Failed to delete: ${e instanceof Error ? e.message : "Unknown error"}`);
+    }
+  }
+
+  async function handleResendEmail(id: string) {
+    setResendingId(id);
+    try {
+      const result = await resend({ data: { id } });
+      setResendStatus({ id, status: "success", message: `Ticket email sent to ${result.email}` });
+      setTimeout(() => setResendStatus(null), 3000);
+    } catch (e) {
+      setResendStatus({ id, status: "error", message: e instanceof Error ? e.message : "Failed to send email" });
+      setTimeout(() => setResendStatus(null), 5000);
+    } finally {
+      setResendingId(null);
     }
   }
 
@@ -149,7 +166,13 @@ function RegistrationsPage() {
                     <button onClick={() => setStatus(r.id, "verified")} className="px-2 py-1 rounded text-xs inline-flex items-center gap-1" style={{ background: "rgba(34,197,94,0.15)", color: "#22c55e" }}><FileCheck className="w-3 h-3" /> Verify</button>
                     <button onClick={() => setStatus(r.id, "rejected")} className="px-2 py-1 rounded text-xs inline-flex items-center gap-1" style={{ background: "rgba(239,68,68,0.15)", color: "#ef4444" }}><FileX className="w-3 h-3" /> Reject</button>
                     <button onClick={() => setStatus(r.id, "pending")} className="px-2 py-1 rounded text-xs inline-flex items-center gap-1" style={{ background: "rgba(148,163,184,0.15)", color: "var(--text-secondary)" }}><RotateCcw className="w-3 h-3" /> Reset</button>
+                    <button onClick={() => handleResendEmail(r.id)} disabled={resendingId === r.id} className="px-2 py-1 rounded text-xs inline-flex items-center gap-1 disabled:opacity-50" style={{ background: "rgba(59,130,246,0.15)", color: "#3b82f6" }}><Mail className="w-3 h-3" /> {resendingId === r.id ? "Sending..." : "Email"}</button>
                     <button onClick={() => setDeleteConfirm({ id: r.id, name: r.full_name })} className="px-2 py-1 rounded text-xs inline-flex items-center gap-1" style={{ background: "rgba(239,68,68,0.15)", color: "#ef4444" }}><Trash2 className="w-3 h-3" /> Delete</button>
+                    {resendStatus?.id === r.id && (
+                      <div className="text-xs px-2 py-1 rounded" style={{ background: resendStatus.status === "success" ? "rgba(34,197,94,0.15)" : "rgba(239,68,68,0.15)", color: resendStatus.status === "success" ? "#22c55e" : "#ef4444" }}>
+                        {resendStatus.message}
+                      </div>
+                    )}
                   </div>
                 </td>
               </tr>
