@@ -43,7 +43,7 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
 
   return (
     <div id={id} className="scroll-mt-24">
-      <section className="relative px-5 sm:px-6 lg:px-8 style={{ padding: "clamp(3rem, 10vw, 8rem) 1.25rem" }} bg-background text-text-primary overflow-hidden">
+      <section className="relative px-5 sm:px-6 lg:px-8 bg-background text-text-primary overflow-hidden" style={{ padding: "clamp(3rem, 10vw, 8rem) 1.25rem" }}>
         <HalftoneBackdrop />
         <SideLabel>Partner · Sponsor · Co-host</SideLabel>
         <SideLabel side="right" tone="muted">400–800 delegates · 7 tracks</SideLabel>
