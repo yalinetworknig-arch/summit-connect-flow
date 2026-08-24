@@ -37,7 +37,15 @@ export function StepPayment({ value }: { value: FormState }) {
   const track = TRACKS.find((t) => t.slug === value.track_selection);
 
   async function persist() {
-    const row = await submit({
+    // 10-second timeout to prevent hung requests
+    const timeoutPromise = new Promise<never>((_, reject) =>
+      setTimeout(
+        () => reject(new Error("Submission took too long. Please refresh and try again, or contact support if the issue persists.")),
+        10000
+      )
+    );
+
+    const submitPromise = submit({
       data: {
         ...value,
         payment_status: amountNaira > 0 ? "pending" : "free",
@@ -45,6 +53,10 @@ export function StepPayment({ value }: { value: FormState }) {
         paystack_reference: null,
       } as never,
     });
+
+    const row = await Promise.race([submitPromise, timeoutPromise]);
+
+    console.log("[REGISTER] Submission successful, registration ID:", row.id);
     clearDraft();
     setSuccess(true);
     // Wait 1.2s to show success message, then navigate
@@ -57,9 +69,12 @@ export function StepPayment({ value }: { value: FormState }) {
     setError(null);
     setBusy(true);
     try {
+      console.log("[REGISTER] Starting submission...");
       await persist();
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "Something went wrong. Please try again.");
+      console.error("[REGISTER] Submission failed:", e);
+      const errorMsg = e instanceof Error ? e.message : "Something went wrong. Please try again.";
+      setError(errorMsg);
       setBusy(false);
     }
   }

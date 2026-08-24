@@ -20,6 +20,7 @@ function normalizeNigerianPhone(raw: string): string {
 export const submitRegistration = createServerFn({ method: "POST" })
   .inputValidator((input) => fullRegistrationSchema.parse(input))
   .handler(async ({ data }) => {
+    console.log("[SERVER] Registration submission started for:", data.email);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const nn = (v: string | null | undefined) => (v?.trim() ? v.trim() : null);
     const payload = {
@@ -45,12 +46,14 @@ export const submitRegistration = createServerFn({ method: "POST" })
       tshirt_color: nn(data.tshirt_color),
       prior_volunteer_experience: nn(data.prior_volunteer_experience),
     };
+    console.log("[SERVER] Inserting into Supabase...");
     const { data: row, error } = await supabaseAdmin
       .from("registrations")
       .insert(payload)
       .select("id, full_name, email, ticket_code, track_selection, attendee_type, created_at, payment_status, amount_kobo")
       .single();
     if (error) {
+      console.error("[SERVER] Supabase insert error:", error);
       const msg = error.message ?? "";
       if (msg.includes("registrations_email_key") || msg.includes("duplicate key")) {
         throw new Error(
@@ -59,8 +62,10 @@ export const submitRegistration = createServerFn({ method: "POST" })
       }
       throw new Error(msg);
     }
+    console.log("[SERVER] Registration created with ID:", row?.id);
     // Fire-and-forget — do NOT await the email so it never blocks registration
     if (row?.email) {
+      console.log("[SERVER] Sending ticket email (fire-and-forget)...");
       sendTicketEmail({
         to: row.email,
         fullName: row.full_name,
@@ -68,9 +73,11 @@ export const submitRegistration = createServerFn({ method: "POST" })
         track: row.track_selection,
         attendeeType: row.attendee_type,
       }).then((result) => {
-        if (!result.ok) console.error("ticket email failed:", result.error);
-      }).catch((e) => console.error("ticket email threw:", e));
+        if (!result.ok) console.error("[SERVER] ticket email failed:", result.error);
+        else console.log("[SERVER] ticket email sent:", result.id);
+      }).catch((e) => console.error("[SERVER] ticket email threw:", e));
     }
+    console.log("[SERVER] Returning registration data to client...");
     return row;
   });
 
