@@ -107,6 +107,7 @@ export const checkInTicket = createServerFn({ method: "POST" })
 const listInput = z.object({
   verification: z.enum(["all", "pending", "verified", "suspicious", "rejected", "error"]).optional(),
   checkedIn: z.enum(["all", "yes", "no"]).optional(),
+  attendeeType: z.enum(["delegate", "sponsor", "media", "public", "volunteer"]).optional(),
   search: z.string().trim().max(120).optional(),
 });
 
@@ -131,6 +132,9 @@ export const listRegistrations = createServerFn({ method: "POST" })
     }
     if (data.checkedIn === "yes") q = q.not("checked_in_at", "is", null);
     if (data.checkedIn === "no") q = q.is("checked_in_at", null);
+    if (data.attendeeType) {
+      q = q.eq("attendee_type", data.attendeeType);
+    }
     if (data.search) {
       const s = data.search.replace(/[%,]/g, " ");
       q = q.or(`full_name.ilike.%${s}%,email.ilike.%${s}%,ticket_code.ilike.%${s}%`);

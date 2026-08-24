@@ -10,6 +10,7 @@ import { AdminTabs } from "@/components/admin/AdminTabs";
 const searchSchema = z.object({
   verification: z.enum(["all", "pending", "verified", "suspicious", "rejected", "error"]).optional(),
   checkedIn: z.enum(["all", "yes", "no"]).optional(),
+  attendeeType: z.enum(["all", "delegate", "sponsor", "media", "public", "volunteer"]).optional(),
   search: z.string().optional(),
 });
 
@@ -42,11 +43,12 @@ function RegistrationsPage() {
   const initial = Route.useSearch();
   const [verification, setVerification] = useState<"all" | "pending" | "verified" | "suspicious" | "rejected" | "error">(initial.verification ?? "all");
   const [checkedIn, setCheckedIn] = useState<"all" | "yes" | "no">(initial.checkedIn ?? "all");
+  const [attendeeType, setAttendeeType] = useState<"all" | "delegate" | "sponsor" | "media" | "public" | "volunteer">(initial.attendeeType ?? "all");
   const [search, setSearch] = useState(initial.search ?? "");
 
   const { data, isLoading } = useQuery({
-    queryKey: ["admin-regs", verification, checkedIn, search],
-    queryFn: () => list({ data: { verification, checkedIn, search: search || undefined } }),
+    queryKey: ["admin-regs", verification, checkedIn, attendeeType, search],
+    queryFn: () => list({ data: { verification, checkedIn, attendeeType: attendeeType === "all" ? undefined : attendeeType, search: search || undefined } }),
   });
 
   async function openCert(url: string | null) {
@@ -86,6 +88,14 @@ function RegistrationsPage() {
           <option value="all">All attendees</option>
           <option value="yes">Checked in</option>
           <option value="no">Not checked in</option>
+        </select>
+        <select value={attendeeType} onChange={(e) => setAttendeeType(e.target.value as any)} className="px-3 py-2 rounded border bg-transparent" style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}>
+          <option value="all">All types</option>
+          <option value="delegate">YALI Delegate</option>
+          <option value="sponsor">Sponsor Representative</option>
+          <option value="media">Media</option>
+          <option value="public">General Public</option>
+          <option value="volunteer">Volunteer</option>
         </select>
         <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search name, email, code…" className="flex-1 min-w-[200px] px-3 py-2 rounded border bg-transparent" style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }} />
       </div>
