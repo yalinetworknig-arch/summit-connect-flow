@@ -160,7 +160,8 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
 
       <section
         id="sponsor-inquiry"
-        className="relative px-5 sm:px-6 lg:px-8 style={{ padding: "clamp(3rem, 10vw, 8rem) 1.25rem" }} bg-surface text-text-primary overflow-hidden scroll-mt-24"
+        className="relative px-5 sm:px-6 lg:px-8 bg-surface text-text-primary overflow-hidden scroll-mt-24"
+        style={{ padding: "clamp(3rem, 10vw, 8rem) 1.25rem" }}
       >
         <SideLabel tone="muted">Inquiry · 48-hour reply</SideLabel>
         <div className="relative max-w-2xl mx-auto">
