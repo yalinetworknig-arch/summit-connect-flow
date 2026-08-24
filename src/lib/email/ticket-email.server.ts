@@ -142,17 +142,20 @@ export async function sendTicketEmail(input: TicketEmailInput): Promise<{ ok: bo
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000);
 
+    // Sanitize inputs to remove any BOM or invalid characters
+    const sanitize = (str: string) => str.replace(/^﻿/, "").trim();
+
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       signal: controller.signal,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
+        Authorization: `Bearer ${sanitize(apiKey)}`,
       },
       body: JSON.stringify({
-        from: process.env.RESEND_FROM || "YALI Summit <onboarding@resend.dev>",
-        to: [input.to],
-        subject: `Your YALI Summit 2026 ticket — ${input.ticketCode}`,
+        from: sanitize(process.env.RESEND_FROM || "YALI Summit <onboarding@resend.dev>"),
+        to: [sanitize(input.to)],
+        subject: sanitize(`Your YALI Summit 2026 ticket — ${input.ticketCode}`),
         html: renderHtml(input, ticketUrl, merchUrl),
         text: renderText(input, ticketUrl, merchUrl),
       }),
