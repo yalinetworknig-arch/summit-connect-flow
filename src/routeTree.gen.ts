@@ -9,98 +9,47 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TracksRouteImport } from './routes/tracks'
-import { Route as SummitRouteImport } from './routes/summit'
-import { Route as SponsorsRouteImport } from './routes/sponsors'
-import { Route as SignupRouteImport } from './routes/signup'
-import { Route as ScheduleRouteImport } from './routes/schedule'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as RegisterRouteImport } from './routes/register'
-import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as NetworkRouteImport } from './routes/network'
-import { Route as MerchRouteImport } from './routes/merch'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TicketCodeRouteImport } from './routes/ticket.$code'
-import { Route as RegisterIdRouteImport } from './routes/register.$id'
-import { Route as AttendeeCodeRouteImport } from './routes/attendee.$code'
-import { Route as AdminLoginRouteImport } from './routes/admin.login'
-import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
-import { Route as AuthenticatedClaimTicketRouteImport } from './routes/_authenticated.claim-ticket'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as MerchRouteImport } from './routes/merch'
+import { Route as NetworkRouteImport } from './routes/network'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as ScheduleRouteImport } from './routes/schedule'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SponsorsRouteImport } from './routes/sponsors'
+import { Route as SummitRouteImport } from './routes/summit'
+import { Route as TracksRouteImport } from './routes/tracks'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated.admin'
-import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated.profile.index'
+import { Route as AuthenticatedClaimTicketRouteImport } from './routes/_authenticated.claim-ticket'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AttendeeCodeRouteImport } from './routes/attendee.$code'
+import { Route as RegisterIdRouteImport } from './routes/register.$id'
+import { Route as TicketCodeRouteImport } from './routes/ticket.$code'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated.admin.index'
-import { Route as AuthenticatedProfileTicketRouteImport } from './routes/_authenticated.profile.ticket'
-import { Route as AuthenticatedProfileSettingsRouteImport } from './routes/_authenticated.profile.settings'
-import { Route as AuthenticatedProfilePaymentsRouteImport } from './routes/_authenticated.profile.payments'
-import { Route as AuthenticatedProfileNetworkRouteImport } from './routes/_authenticated.profile.network'
-import { Route as AuthenticatedProfileHackathonRouteImport } from './routes/_authenticated.profile.hackathon'
-import { Route as AuthenticatedProfileAgendaRouteImport } from './routes/_authenticated.profile.agenda'
-import { Route as AuthenticatedAdminRegistrationsRouteImport } from './routes/_authenticated.admin.registrations'
-import { Route as AuthenticatedAdminNetworkingRouteImport } from './routes/_authenticated.admin.networking'
 import { Route as AuthenticatedAdminCheckInRouteImport } from './routes/_authenticated.admin.check-in'
+import { Route as AuthenticatedAdminNetworkingRouteImport } from './routes/_authenticated.admin.networking'
+import { Route as AuthenticatedAdminRegistrationsRouteImport } from './routes/_authenticated.admin.registrations'
+import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated.profile.index'
+import { Route as AuthenticatedProfileAgendaRouteImport } from './routes/_authenticated.profile.agenda'
+import { Route as AuthenticatedProfileHackathonRouteImport } from './routes/_authenticated.profile.hackathon'
+import { Route as AuthenticatedProfileNetworkRouteImport } from './routes/_authenticated.profile.network'
+import { Route as AuthenticatedProfilePaymentsRouteImport } from './routes/_authenticated.profile.payments'
+import { Route as AuthenticatedProfileSettingsRouteImport } from './routes/_authenticated.profile.settings'
+import { Route as AuthenticatedProfileTicketRouteImport } from './routes/_authenticated.profile.ticket'
 
-const TracksRoute = TracksRouteImport.update({
-  id: '/tracks',
-  path: '/tracks',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SummitRoute = SummitRouteImport.update({
-  id: '/summit',
-  path: '/summit',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SponsorsRoute = SponsorsRouteImport.update({
-  id: '/sponsors',
-  path: '/sponsors',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SignupRoute = SignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ScheduleRoute = ScheduleRouteImport.update({
-  id: '/schedule',
-  path: '/schedule',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RegisterRoute = RegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NetworkRoute = NetworkRouteImport.update({
-  id: '/network',
-  path: '/network',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MerchRoute = MerchRouteImport.update({
-  id: '/merch',
-  path: '/merch',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -108,38 +57,69 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRoute = AuthenticatedRouteImport.update({
-  id: '/_authenticated',
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TicketCodeRoute = TicketCodeRouteImport.update({
-  id: '/ticket/$code',
-  path: '/ticket/$code',
+const MerchRoute = MerchRouteImport.update({
+  id: '/merch',
+  path: '/merch',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RegisterIdRoute = RegisterIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => RegisterRoute,
-} as any)
-const AttendeeCodeRoute = AttendeeCodeRouteImport.update({
-  id: '/attendee/$code',
-  path: '/attendee/$code',
+const NetworkRoute = NetworkRouteImport.update({
+  id: '/network',
+  path: '/network',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminLoginRoute = AdminLoginRouteImport.update({
-  id: '/admin/login',
-  path: '/admin/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScheduleRoute = ScheduleRouteImport.update({
+  id: '/schedule',
+  path: '/schedule',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SponsorsRoute = SponsorsRouteImport.update({
+  id: '/sponsors',
+  path: '/sponsors',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SummitRoute = SummitRouteImport.update({
+  id: '/summit',
+  path: '/summit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TracksRoute = TracksRouteImport.update({
+  id: '/tracks',
+  path: '/tracks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedClaimTicketRoute =
@@ -148,62 +128,40 @@ const AuthenticatedClaimTicketRoute =
     path: '/claim-ticket',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedProfileIndexRoute =
-  AuthenticatedProfileIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedProfileRoute,
-  } as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AttendeeCodeRoute = AttendeeCodeRouteImport.update({
+  id: '/attendee/$code',
+  path: '/attendee/$code',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterIdRoute = RegisterIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => RegisterRoute,
+} as any)
+const TicketCodeRoute = TicketCodeRouteImport.update({
+  id: '/ticket/$code',
+  path: '/ticket/$code',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
-const AuthenticatedProfileTicketRoute =
-  AuthenticatedProfileTicketRouteImport.update({
-    id: '/ticket',
-    path: '/ticket',
-    getParentRoute: () => AuthenticatedProfileRoute,
-  } as any)
-const AuthenticatedProfileSettingsRoute =
-  AuthenticatedProfileSettingsRouteImport.update({
-    id: '/settings',
-    path: '/settings',
-    getParentRoute: () => AuthenticatedProfileRoute,
-  } as any)
-const AuthenticatedProfilePaymentsRoute =
-  AuthenticatedProfilePaymentsRouteImport.update({
-    id: '/payments',
-    path: '/payments',
-    getParentRoute: () => AuthenticatedProfileRoute,
-  } as any)
-const AuthenticatedProfileNetworkRoute =
-  AuthenticatedProfileNetworkRouteImport.update({
-    id: '/network',
-    path: '/network',
-    getParentRoute: () => AuthenticatedProfileRoute,
-  } as any)
-const AuthenticatedProfileHackathonRoute =
-  AuthenticatedProfileHackathonRouteImport.update({
-    id: '/hackathon',
-    path: '/hackathon',
-    getParentRoute: () => AuthenticatedProfileRoute,
-  } as any)
-const AuthenticatedProfileAgendaRoute =
-  AuthenticatedProfileAgendaRouteImport.update({
-    id: '/agenda',
-    path: '/agenda',
-    getParentRoute: () => AuthenticatedProfileRoute,
-  } as any)
-const AuthenticatedAdminRegistrationsRoute =
-  AuthenticatedAdminRegistrationsRouteImport.update({
-    id: '/registrations',
-    path: '/registrations',
+const AuthenticatedAdminCheckInRoute =
+  AuthenticatedAdminCheckInRouteImport.update({
+    id: '/check-in',
+    path: '/check-in',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminNetworkingRoute =
@@ -212,11 +170,53 @@ const AuthenticatedAdminNetworkingRoute =
     path: '/networking',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
-const AuthenticatedAdminCheckInRoute =
-  AuthenticatedAdminCheckInRouteImport.update({
-    id: '/check-in',
-    path: '/check-in',
+const AuthenticatedAdminRegistrationsRoute =
+  AuthenticatedAdminRegistrationsRouteImport.update({
+    id: '/registrations',
+    path: '/registrations',
     getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedProfileIndexRoute =
+  AuthenticatedProfileIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
+const AuthenticatedProfileAgendaRoute =
+  AuthenticatedProfileAgendaRouteImport.update({
+    id: '/agenda',
+    path: '/agenda',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
+const AuthenticatedProfileHackathonRoute =
+  AuthenticatedProfileHackathonRouteImport.update({
+    id: '/hackathon',
+    path: '/hackathon',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
+const AuthenticatedProfileNetworkRoute =
+  AuthenticatedProfileNetworkRouteImport.update({
+    id: '/network',
+    path: '/network',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
+const AuthenticatedProfilePaymentsRoute =
+  AuthenticatedProfilePaymentsRouteImport.update({
+    id: '/payments',
+    path: '/payments',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
+const AuthenticatedProfileSettingsRoute =
+  AuthenticatedProfileSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedProfileRoute,
+  } as any)
+const AuthenticatedProfileTicketRoute =
+  AuthenticatedProfileTicketRouteImport.update({
+    id: '/ticket',
+    path: '/ticket',
+    getParentRoute: () => AuthenticatedProfileRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -444,95 +444,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/tracks': {
-      id: '/tracks'
-      path: '/tracks'
-      fullPath: '/tracks'
-      preLoaderRoute: typeof TracksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/summit': {
-      id: '/summit'
-      path: '/summit'
-      fullPath: '/summit'
-      preLoaderRoute: typeof SummitRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sponsors': {
-      id: '/sponsors'
-      path: '/sponsors'
-      fullPath: '/sponsors'
-      preLoaderRoute: typeof SponsorsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/schedule': {
-      id: '/schedule'
-      path: '/schedule'
-      fullPath: '/schedule'
-      preLoaderRoute: typeof ScheduleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/network': {
-      id: '/network'
-      path: '/network'
-      fullPath: '/network'
-      preLoaderRoute: typeof NetworkRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/merch': {
-      id: '/merch'
-      path: '/merch'
-      fullPath: '/merch'
-      preLoaderRoute: typeof MerchRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -542,46 +458,102 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/ticket/$code': {
-      id: '/ticket/$code'
-      path: '/ticket/$code'
-      fullPath: '/ticket/$code'
-      preLoaderRoute: typeof TicketCodeRouteImport
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/register/$id': {
-      id: '/register/$id'
-      path: '/$id'
-      fullPath: '/register/$id'
-      preLoaderRoute: typeof RegisterIdRouteImport
-      parentRoute: typeof RegisterRoute
-    }
-    '/attendee/$code': {
-      id: '/attendee/$code'
-      path: '/attendee/$code'
-      fullPath: '/attendee/$code'
-      preLoaderRoute: typeof AttendeeCodeRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/login': {
-      id: '/admin/login'
-      path: '/admin/login'
-      fullPath: '/admin/login'
-      preLoaderRoute: typeof AdminLoginRouteImport
+    '/merch': {
+      id: '/merch'
+      path: '/merch'
+      fullPath: '/merch'
+      preLoaderRoute: typeof MerchRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/profile': {
-      id: '/_authenticated/profile'
+    '/network': {
+      id: '/network'
+      path: '/network'
+      fullPath: '/network'
+      preLoaderRoute: typeof NetworkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
       path: '/profile'
       fullPath: '/profile'
-      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/schedule': {
+      id: '/schedule'
+      path: '/schedule'
+      fullPath: '/schedule'
+      preLoaderRoute: typeof ScheduleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sponsors': {
+      id: '/sponsors'
+      path: '/sponsors'
+      fullPath: '/sponsors'
+      preLoaderRoute: typeof SponsorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/summit': {
+      id: '/summit'
+      path: '/summit'
+      fullPath: '/summit'
+      preLoaderRoute: typeof SummitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tracks': {
+      id: '/tracks'
+      path: '/tracks'
+      fullPath: '/tracks'
+      preLoaderRoute: typeof TracksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/claim-ticket': {
@@ -591,19 +563,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedClaimTicketRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/admin': {
-      id: '/_authenticated/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/profile/': {
-      id: '/_authenticated/profile/'
-      path: '/'
-      fullPath: '/profile/'
-      preLoaderRoute: typeof AuthenticatedProfileIndexRouteImport
-      parentRoute: typeof AuthenticatedProfileRoute
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/attendee/$code': {
+      id: '/attendee/$code'
+      path: '/attendee/$code'
+      fullPath: '/attendee/$code'
+      preLoaderRoute: typeof AttendeeCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register/$id': {
+      id: '/register/$id'
+      path: '/$id'
+      fullPath: '/register/$id'
+      preLoaderRoute: typeof RegisterIdRouteImport
+      parentRoute: typeof RegisterRoute
+    }
+    '/ticket/$code': {
+      id: '/ticket/$code'
+      path: '/ticket/$code'
+      fullPath: '/ticket/$code'
+      preLoaderRoute: typeof TicketCodeRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin/': {
       id: '/_authenticated/admin/'
@@ -612,53 +605,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
-    '/_authenticated/profile/ticket': {
-      id: '/_authenticated/profile/ticket'
-      path: '/ticket'
-      fullPath: '/profile/ticket'
-      preLoaderRoute: typeof AuthenticatedProfileTicketRouteImport
-      parentRoute: typeof AuthenticatedProfileRoute
-    }
-    '/_authenticated/profile/settings': {
-      id: '/_authenticated/profile/settings'
-      path: '/settings'
-      fullPath: '/profile/settings'
-      preLoaderRoute: typeof AuthenticatedProfileSettingsRouteImport
-      parentRoute: typeof AuthenticatedProfileRoute
-    }
-    '/_authenticated/profile/payments': {
-      id: '/_authenticated/profile/payments'
-      path: '/payments'
-      fullPath: '/profile/payments'
-      preLoaderRoute: typeof AuthenticatedProfilePaymentsRouteImport
-      parentRoute: typeof AuthenticatedProfileRoute
-    }
-    '/_authenticated/profile/network': {
-      id: '/_authenticated/profile/network'
-      path: '/network'
-      fullPath: '/profile/network'
-      preLoaderRoute: typeof AuthenticatedProfileNetworkRouteImport
-      parentRoute: typeof AuthenticatedProfileRoute
-    }
-    '/_authenticated/profile/hackathon': {
-      id: '/_authenticated/profile/hackathon'
-      path: '/hackathon'
-      fullPath: '/profile/hackathon'
-      preLoaderRoute: typeof AuthenticatedProfileHackathonRouteImport
-      parentRoute: typeof AuthenticatedProfileRoute
-    }
-    '/_authenticated/profile/agenda': {
-      id: '/_authenticated/profile/agenda'
-      path: '/agenda'
-      fullPath: '/profile/agenda'
-      preLoaderRoute: typeof AuthenticatedProfileAgendaRouteImport
-      parentRoute: typeof AuthenticatedProfileRoute
-    }
-    '/_authenticated/admin/registrations': {
-      id: '/_authenticated/admin/registrations'
-      path: '/registrations'
-      fullPath: '/admin/registrations'
-      preLoaderRoute: typeof AuthenticatedAdminRegistrationsRouteImport
+    '/_authenticated/admin/check-in': {
+      id: '/_authenticated/admin/check-in'
+      path: '/check-in'
+      fullPath: '/admin/check-in'
+      preLoaderRoute: typeof AuthenticatedAdminCheckInRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/networking': {
@@ -668,12 +619,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminNetworkingRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
-    '/_authenticated/admin/check-in': {
-      id: '/_authenticated/admin/check-in'
-      path: '/check-in'
-      fullPath: '/admin/check-in'
-      preLoaderRoute: typeof AuthenticatedAdminCheckInRouteImport
+    '/_authenticated/admin/registrations': {
+      id: '/_authenticated/admin/registrations'
+      path: '/registrations'
+      fullPath: '/admin/registrations'
+      preLoaderRoute: typeof AuthenticatedAdminRegistrationsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/profile/': {
+      id: '/_authenticated/profile/'
+      path: '/'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof AuthenticatedProfileIndexRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
+    }
+    '/_authenticated/profile/agenda': {
+      id: '/_authenticated/profile/agenda'
+      path: '/agenda'
+      fullPath: '/profile/agenda'
+      preLoaderRoute: typeof AuthenticatedProfileAgendaRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
+    }
+    '/_authenticated/profile/hackathon': {
+      id: '/_authenticated/profile/hackathon'
+      path: '/hackathon'
+      fullPath: '/profile/hackathon'
+      preLoaderRoute: typeof AuthenticatedProfileHackathonRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
+    }
+    '/_authenticated/profile/network': {
+      id: '/_authenticated/profile/network'
+      path: '/network'
+      fullPath: '/profile/network'
+      preLoaderRoute: typeof AuthenticatedProfileNetworkRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
+    }
+    '/_authenticated/profile/payments': {
+      id: '/_authenticated/profile/payments'
+      path: '/payments'
+      fullPath: '/profile/payments'
+      preLoaderRoute: typeof AuthenticatedProfilePaymentsRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
+    }
+    '/_authenticated/profile/settings': {
+      id: '/_authenticated/profile/settings'
+      path: '/settings'
+      fullPath: '/profile/settings'
+      preLoaderRoute: typeof AuthenticatedProfileSettingsRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
+    }
+    '/_authenticated/profile/ticket': {
+      id: '/_authenticated/profile/ticket'
+      path: '/ticket'
+      fullPath: '/profile/ticket'
+      preLoaderRoute: typeof AuthenticatedProfileTicketRouteImport
+      parentRoute: typeof AuthenticatedProfileRoute
     }
   }
 }
