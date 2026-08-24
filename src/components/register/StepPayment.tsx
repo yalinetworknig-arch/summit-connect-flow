@@ -56,12 +56,12 @@ export function StepPayment({ value }: { value: FormState }) {
 
     const row = await Promise.race([submitPromise, timeoutPromise]);
 
-    console.log("[REGISTER] Submission successful, registration ID:", row.id);
+    console.log("[REGISTER] Submission successful, ticket code:", row.ticket_code);
     clearDraft();
     setSuccess(true);
-    // Wait 1.2s to show success message, then navigate
+    // Wait 1.2s to show success message, then navigate to ticket page
     setTimeout(() => {
-      navigate({ to: "/register/$id", params: { id: row.id } });
+      navigate({ to: "/ticket/$code", params: { code: row.ticket_code } });
     }, 1200);
   }
 
