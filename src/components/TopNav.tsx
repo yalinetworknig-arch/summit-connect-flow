@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Sun, Moon, Menu } from "lucide-react";
-import logoRainbow from "@/assets/aidifiln-logo-rainbow.png";
-import lockupFull from "@/assets/aidifiln-lockup-full.png";
+import aidieglWhite from "@/assets/aidiegl-white.png";
+import aidieglNavy from "@/assets/aidiegl-navy.png";
 import {
   Sheet,
   SheetContent,
@@ -154,19 +154,19 @@ export function TopNav() {
       <div className="pointer-events-auto mx-auto max-w-[1180px] flex items-center justify-between gap-4 px-3 md:px-5 h-14 md:h-16 rounded-full border border-brand-navy/10 dark:border-white/10 bg-white/85 dark:bg-[#0A1128]/70 backdrop-blur-xl shadow-[0_10px_40px_-12px_rgba(15,27,61,0.18)] dark:shadow-[0_10px_40px_-12px_rgba(0,0,0,0.6)]">
         <Link
           to="/"
-          aria-label="AIDIFILN — Home"
+          aria-label="AIDIEGL — Home"
           className="flex items-center shrink-0 cursor-pointer"
         >
           <img
-            src={lockupFull}
-            alt="AIDIFILN"
+            src={aidieglNavy}
+            alt="AIDIEGL"
             className="block dark:hidden h-9 md:h-11 w-auto select-none"
             loading="eager"
             decoding="async"
           />
           <img
-            src={logoRainbow}
-            alt="AIDIFILN"
+            src={aidieglWhite}
+            alt="AIDIEGL"
             className="hidden dark:block h-10 md:h-12 w-auto select-none"
             loading="eager"
             decoding="async"
@@ -223,13 +223,13 @@ export function TopNav() {
               <SheetHeader>
                 <SheetTitle className="text-left">
                   <img
-                    src={lockupFull}
-                    alt="AIDIFILN"
+                    src={aidieglNavy}
+                    alt="AIDIEGL"
                     className="block dark:hidden w-full max-w-[240px] h-auto"
                   />
                   <img
-                    src={logoRainbow}
-                    alt="AIDIFILN"
+                    src={aidieglWhite}
+                    alt="AIDIEGL"
                     className="hidden dark:block h-10 w-auto"
                   />
                 </SheetTitle>
