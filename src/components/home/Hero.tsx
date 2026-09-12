@@ -1,9 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { motion, type Variants } from "framer-motion";
-import { useEffect, useState } from "react";
 import { Countdown } from "./Countdown";
 import aidieglNavy from "@/assets/aidiegl-navy.png";
-import aidieglColor from "@/assets/aidiegl-color.png";
 import usMissionLockup from "@/assets/sponsors/us-mission-lockup.png";
 import yaliRoundel from "@/assets/sponsors/yali-roundel.png";
 
@@ -17,43 +15,6 @@ const fadeUp: Variants = {
 };
 
 export function Hero() {
-  const [isDark, setIsDark] = useState(true);
-
-  useEffect(() => {
-    // Check initial theme
-    const prefersDark =
-      typeof window !== "undefined"
-        ? window.matchMedia("(prefers-color-scheme: dark)").matches
-        : true;
-    const stored =
-      typeof window !== "undefined"
-        ? localStorage.getItem("theme")
-        : null;
-    const isDarkMode =
-      stored === "dark" || (stored === null && prefersDark);
-    setIsDark(isDarkMode);
-
-    // Listen for theme changes
-    const handleThemeChange = () => {
-      const newStored = localStorage.getItem("theme");
-      const newPrefersDark = window.matchMedia(
-        "(prefers-color-scheme: dark)"
-      ).matches;
-      const newIsDark =
-        newStored === "dark" || (newStored === null && newPrefersDark);
-      setIsDark(newIsDark);
-    };
-
-    window.addEventListener("storage", handleThemeChange);
-    const observer = new MutationObserver(handleThemeChange);
-    observer.observe(document.documentElement, { attributes: true });
-
-    return () => {
-      window.removeEventListener("storage", handleThemeChange);
-      observer.disconnect();
-    };
-  }, []);
-
   return (
     <section
       id="home"
@@ -249,16 +210,15 @@ export function Hero() {
             animate={{ opacity: [0.35, 0.7, 0.35], scale: [1, 1.03, 1] }}
             transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
           />
-          {/* AIDIEGL Wordmark — theme-aware with navy for light mode, colorful for dark mode */}
+          {/* AIDIEGL Wordmark — navy version for optimal contrast on all backgrounds */}
           <motion.img
-            src={isDark ? aidieglColor : aidieglNavy}
+            src={aidieglNavy}
             alt="AIDIEGL — Artificial Intelligence, Digital Innovation, and Empowering the Next Generation of Leaders"
             className="relative w-full h-auto select-none"
             draggable={false}
             style={{
-              filter: isDark
-                ? "drop-shadow(0 1px 0 rgba(255,255,255,0.18)) drop-shadow(0 12px 24px rgba(0,0,0,0.55)) drop-shadow(0 0 28px rgba(0,217,255,0.35))"
-                : "drop-shadow(0 2px 4px rgba(0,0,0,0.1))",
+              filter:
+                "drop-shadow(0 1px 0 rgba(255,255,255,0.18)) drop-shadow(0 12px 24px rgba(0,0,0,0.55)) drop-shadow(0 0 28px rgba(0,217,255,0.35))",
             }}
             animate={{ y: [0, -6, 0] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
