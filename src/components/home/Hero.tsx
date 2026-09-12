@@ -172,32 +172,35 @@ export function Hero() {
           ))}
         </motion.div>
 
-        {/* PRESENTED BY — label above sponsors */}
-        <motion.p
-          custom={-0.1}
+        {/* YALI NETWORK NIGERIA PRESENTS — main branding headline */}
+        <motion.h2
+          custom={0.1}
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="text-[#00D9FF]/70 text-[10px] font-medium uppercase tracking-[0.15em] mb-4"
+          className="mt-12 sm:mt-16 text-white/85 text-2xl sm:text-3xl font-bold tracking-tight leading-tight"
+          style={{ letterSpacing: "-0.01em" }}
         >
-          Presented by
-        </motion.p>
+          YALI Network Nigeria
+          <br />
+          <span className="text-[#00D9FF]">Presents</span>
+        </motion.h2>
 
-        {/* THEME SECTION — with better separation */}
+        {/* THE 2026 THEME — refined section header */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-          className="mt-20 sm:mt-24"
+          transition={{ duration: 0.4, delay: 0.3 }}
+          className="mt-20 sm:mt-28"
         >
           <motion.p
-            custom={0.8}
+            custom={0.9}
             initial="hidden"
             animate="show"
             variants={fadeUp}
-            className="text-[#00D9FF]/60 text-xs font-medium uppercase tracking-[0.12em] mb-8"
+            className="text-[#00D9FF]/70 text-sm font-semibold uppercase tracking-[0.1em] mb-8"
           >
-            The Theme
+            The 2026 Theme
           </motion.p>
         </motion.div>
 
