@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { motion, type Variants } from "framer-motion";
 import { Countdown } from "./Countdown";
 import aidieglWhite from "@/assets/aidiegl-white.png";
-import usMissionLogo from "@/assets/sponsors/us-mission-logo.jpeg";
+import usMissionLogo from "@/assets/sponsors/us-mission-logo.png";
 import yaliLogo from "@/assets/sponsors/yali-logo.jpeg";
 
 const fadeUp: Variants = {
