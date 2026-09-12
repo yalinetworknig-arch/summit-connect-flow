@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQueryClient } from "@tanstack/react-query";
@@ -6,7 +6,7 @@ import { claimTicket } from "@/lib/portal.functions";
 import { useSession } from "@/hooks/use-session";
 
 export const Route = createFileRoute("/_authenticated/claim-ticket")({
-  head: () => ({ meta: [{ title: "Claim your ticket — AIDIFILN" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Claim your ticket â€” AIDIEGL" }, { name: "robots", content: "noindex" }] }),
   component: ClaimPage,
 });
 
@@ -72,7 +72,7 @@ function ClaimPage() {
           className="w-full px-4 py-2.5 rounded-full text-sm font-semibold disabled:opacity-60"
           style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
         >
-          {busy ? "Linking…" : "Link my ticket"}
+          {busy ? "Linkingâ€¦" : "Link my ticket"}
         </button>
       </form>
       <p className="mt-6 text-xs text-center" style={{ color: "var(--text-secondary)" }}>

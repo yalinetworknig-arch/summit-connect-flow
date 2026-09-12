@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+﻿import { createFileRoute } from "@tanstack/react-router";
 import { Hero } from "@/components/home/Hero";
 import { Partners } from "@/components/home/Partners";
 import { StateHubs } from "@/components/home/StateHubs";
@@ -12,17 +12,17 @@ import { ContactSection } from "@/components/sections/ContactSection";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "YALI Network Nigeria National Summit 2026 — AIDIFILN" },
+      { title: "YALI Network Nigeria National Summit 2026 â€” AIDIEGL" },
       {
         name: "description",
         content:
-          "AI, Digital Innovation and the Future of Inclusive Leadership in Nigeria. Sept 25–26, 2026, UNILAG Main Auditorium, Akoka Lagos. Register free.",
+          "AI, Digital Innovation and the Future of Inclusive Leadership in Nigeria. Sept 25â€“26, 2026, Shiba Event Center, Lagos. Register free.",
       },
       { property: "og:title", content: "YALI Network Nigeria National Summit 2026" },
       {
         property: "og:description",
         content:
-          "AI, Digital Innovation and the Future of Inclusive Leadership in Nigeria. Sept 25–26, 2026, UNILAG Main Auditorium, Akoka Lagos.",
+          "AI, Digital Innovation and the Future of Inclusive Leadership in Nigeria. Sept 25â€“26, 2026, Shiba Event Center, Lagos.",
       },
     ],
   }),
@@ -50,3 +50,4 @@ function Index() {
     </>
   );
 }
+

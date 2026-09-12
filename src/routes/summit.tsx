@@ -1,21 +1,21 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import { CalendarDays, Layers, Info, HandHeart, ArrowRight, type LucideIcon } from "lucide-react";
 
 export const Route = createFileRoute("/summit")({
   head: () => ({
     meta: [
-      { title: "Summit — YALI Network Nigeria" },
-      { name: "description", content: "AIDIFILN: AI, Digital Innovation and the Future of Inclusive Leadership in Nigeria." },
-      { property: "og:title", content: "Summit — YALI Network Nigeria" },
-      { property: "og:description", content: "Everything you need to know about AIDIFILN 2026." },
+      { title: "Summit â€” YALI Network Nigeria" },
+      { name: "description", content: "AIDIEGL: AI, Digital Innovation and the Future of Inclusive Leadership in Nigeria." },
+      { property: "og:title", content: "Summit â€” YALI Network Nigeria" },
+      { property: "og:description", content: "Everything you need to know about AIDIEGL 2026." },
     ],
   }),
   component: SummitPage,
 });
 
 const HUBS: { to: "/about" | "/schedule" | "/tracks" | "/sponsors"; title: string; body: string; Icon: LucideIcon }[] = [
-  { to: "/about", title: "About AIDIFILN", body: "The mission, the theme pillars, the people behind it.", Icon: Info },
-  { to: "/schedule", title: "Schedule", body: "2-day summit + arrival day, hour by hour.", Icon: CalendarDays },
+  { to: "/about", title: "About AIDIEGL", body: "The mission, the theme pillars, the people behind it.", Icon: Info },
+  { to: "/schedule", title: "Schedule", body: "One-day summit, hour by hour.", Icon: CalendarDays },
   { to: "/tracks", title: "Sector tracks", body: "Seven curated rooms, from Health to Creative Economy.", Icon: Layers },
   { to: "/sponsors", title: "Sponsor portal", body: "Tiers, benefits, and the inquiry form.", Icon: HandHeart },
 ];
@@ -26,13 +26,13 @@ function SummitPage() {
       <section className="px-6 py-16 md:py-20 bg-background text-text-primary">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-accent-cyan font-semibold tracking-widest uppercase text-sm mb-4">
-            AIDIFILN 2026 · Lagos
+            AIDIEGL 2026 Â· Lagos
           </p>
           <h1 className="font-display font-bold text-4xl md:text-5xl mb-6">
             The Summit, end-to-end.
           </h1>
           <p className="text-lg text-text-secondary">
-            Use this hub to jump into whichever part of AIDIFILN matters to you most.
+            Use this hub to jump into whichever part of AIDIEGL matters to you most.
           </p>
         </div>
       </section>

@@ -1,11 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+﻿import { createFileRoute, Link } from "@tanstack/react-router";
 import { Users } from "lucide-react";
 
 export const Route = createFileRoute("/network")({
   head: () => ({
     meta: [
-      { title: "Network — YALI Network Nigeria" },
-      { name: "description", content: "Member directory — coming in Phase 2." },
+      { title: "Network â€” YALI Network Nigeria" },
+      { name: "description", content: "Member directory â€” coming in Phase 2." },
     ],
   }),
   component: NetworkPage,
@@ -26,7 +26,7 @@ function NetworkPage() {
         </h1>
         <p className="text-text-secondary mb-8">
           Find delegates by state, sector and interest. Launching alongside member
-          accounts after AIDIFILN 2026 registration closes.
+          accounts after AIDIEGL 2026 registration closes.
         </p>
         <Link
           to="/register"

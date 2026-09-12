@@ -1,4 +1,4 @@
-import { getRequestHost } from "@tanstack/react-start/server";
+﻿import { getRequestHost } from "@tanstack/react-start/server";
 import { renderEmailShell, ctaButtonRow, escapeHtml, emailColors } from "@/lib/email/shell.server";
 
 type TicketEmailInput = {
@@ -39,7 +39,7 @@ function renderHtml(input: TicketEmailInput, ticketUrl: string, merchUrl: string
       <td style="padding:36px 32px 0;">
         <table role="presentation" cellpadding="0" cellspacing="0" style="margin-bottom:14px;">
           <tr>
-            <td width="40" height="40" align="center" valign="middle" style="width:40px;height:40px;border-radius:999px;background:${emailColors.cyan};font-size:18px;font-weight:800;color:${emailColors.navy};">✓</td>
+            <td width="40" height="40" align="center" valign="middle" style="width:40px;height:40px;border-radius:999px;background:${emailColors.cyan};font-size:18px;font-weight:800;color:${emailColors.navy};">âœ“</td>
           </tr>
         </table>
         <div style="font-size:22px;font-weight:800;color:${emailColors.ink};letter-spacing:-0.3px;">You're in, ${escapeHtml(firstName)}!</div>
@@ -97,8 +97,8 @@ function renderHtml(input: TicketEmailInput, ticketUrl: string, merchUrl: string
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${emailColors.bg};border:1px solid ${emailColors.border};border-radius:12px;padding:16px;">
           <tr>
             <td>
-              <div style="font-size:14px;font-weight:700;color:${emailColors.ink};margin-bottom:6px;">🎽 Order Official YALI Summit Merchandise</div>
-              <p style="margin:0 0 12px;font-size:13px;line-height:1.5;color:${emailColors.sub};">Get your official YALI Summit 2026 t-shirt in your choice of size and color. ₦8,000</p>
+              <div style="font-size:14px;font-weight:700;color:${emailColors.ink};margin-bottom:6px;">ðŸŽ½ Order Official YALI Summit Merchandise</div>
+              <p style="margin:0 0 12px;font-size:13px;line-height:1.5;color:${emailColors.sub};">Get your official YALI Summit 2026 t-shirt in your choice of size and color. â‚¦8,000</p>
               <a href="${merchUrl}" style="display:inline-block;background:${emailColors.cyan};color:${emailColors.navy};padding:10px 16px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">Shop Now</a>
             </td>
           </tr>
@@ -108,7 +108,7 @@ function renderHtml(input: TicketEmailInput, ticketUrl: string, merchUrl: string
   `;
 
   return renderEmailShell({
-    preheader: `Your YALI Summit 2026 ticket is confirmed — code ${input.ticketCode}`,
+    preheader: `Your YALI Summit 2026 ticket is confirmed â€” code ${input.ticketCode}`,
     bodyHtml,
   });
 }
@@ -124,10 +124,10 @@ function renderText(input: TicketEmailInput, ticketUrl: string, merchUrl: string
     "",
     `View your ticket: ${ticketUrl}`,
     "",
-    "🎽 Order official AIDIEGL merchandise (₦8,000):",
+    "ðŸŽ½ Order official AIDIEGL merchandise (â‚¦8,000):",
     `Shop now: ${merchUrl}`,
     "",
-    "Friday, 25 September 2026 · 8:00 AM – 4:00 PM",
+    "Friday, 25 September 2026 Â· 8:00 AM â€“ 4:00 PM",
     "Shiba Event Center, Lagos",
   ].filter(Boolean).join("\n");
 }
@@ -142,13 +142,13 @@ export async function sendTicketEmail(input: TicketEmailInput): Promise<{ ok: bo
   const merchUrl = `${origin}/merch`;
 
   try {
-    // Note: Email text version will reference "AIDIFILN 2026" in subject; this is updated to "YALI Summit 2026" in renderText()
-    // 8-second timeout — don't let a slow/failing email block registration
+    // Note: Email text version will reference "AIDIEGL 2026" in subject; this is updated to "YALI Summit 2026" in renderText()
+    // 8-second timeout â€” don't let a slow/failing email block registration
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000);
 
     // Sanitize inputs to remove any BOM or invalid characters
-    const sanitize = (str: string) => str.replace(/^﻿/, "").trim();
+    const sanitize = (str: string) => str.replace(/^ï»¿/, "").trim();
 
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -160,7 +160,7 @@ export async function sendTicketEmail(input: TicketEmailInput): Promise<{ ok: bo
       body: JSON.stringify({
         from: sanitize(process.env.RESEND_FROM || "YALI Summit <onboarding@resend.dev>"),
         to: [sanitize(input.to)],
-        subject: sanitize(`Your YALI Summit 2026 ticket — ${input.ticketCode}`),
+        subject: sanitize(`Your YALI Summit 2026 ticket â€” ${input.ticketCode}`),
         html: renderHtml(input, ticketUrl, merchUrl),
         text: renderText(input, ticketUrl, merchUrl),
       }),

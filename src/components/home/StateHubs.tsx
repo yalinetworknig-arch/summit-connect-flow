@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   Dialog,
@@ -177,7 +177,7 @@ export function StateHubs() {
             className="mt-3 max-w-2xl mx-auto text-sm md:text-base"
             style={{ color: "var(--text-secondary)" }}
           >
-            36 states and the FCT — tap any hub to learn more about its work in
+            36 states and the FCT â€” tap any hub to learn more about its work in
             your region.
           </p>
         </div>
@@ -264,7 +264,7 @@ export function StateHubs() {
                     The {selected.state} State Hub of YALI Network Nigeria
                     mobilises young leaders across the {selected.region} region
                     around civic engagement, digital innovation, and inclusive
-                    leadership ahead of the AIDIFILN 2026 Summit.
+                    leadership ahead of the AIDIEGL 2026 Summit.
                   </DialogDescription>
                 </DialogHeader>
                 <div className="mt-4 pt-4 border-t text-sm" style={{ color: "var(--text-secondary)" }}>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
@@ -20,7 +20,7 @@ const ATTENDEE_LABELS: Record<string, string> = {
 export const Route = createFileRoute("/register/$id")({
   head: () => ({
     meta: [
-      { title: "Registration confirmed — YALI Summit 2026" },
+      { title: "Registration confirmed â€” YALI Summit 2026" },
       { name: "description", content: "Your ticket for the YALI Network Nigeria Summit 2026." },
     ],
   }),
@@ -147,7 +147,7 @@ function ConfirmationPage() {
         initial="hidden"
         animate="visible"
       >
-        {/* Animated checkmark — spring pop with glow ring */}
+        {/* Animated checkmark â€” spring pop with glow ring */}
         <motion.div
           className="relative mb-4"
           variants={{
@@ -182,11 +182,11 @@ function ConfirmationPage() {
             fontWeight: 700,
           }}
         >
-          You're in, {firstName}! 🎉
+          You're in, {firstName}! ðŸŽ‰
         </motion.h1>
 
         <motion.p variants={staggerChild} className="mt-2" style={{ color: "var(--text-secondary)" }}>
-          Your registration for AIDIFILN 2026 is confirmed.
+          Your registration for AIDIEGL 2026 is confirmed.
         </motion.p>
 
         {data.email && (
@@ -204,7 +204,7 @@ function ConfirmationPage() {
             style={{ color: "var(--accent-cyan)" }}
           >
             <Ticket className="w-3.5 h-3.5" />
-            Open shareable ticket page →
+            Open shareable ticket page â†’
           </Link>
         </motion.div>
       </motion.div>
@@ -217,7 +217,7 @@ function ConfirmationPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.25, ease: ease.out }}
       >
-        {/* QR Code — delayed fade-in after card appears */}
+        {/* QR Code â€” delayed fade-in after card appears */}
         <motion.div
           className="flex justify-center mb-5"
           initial={{ opacity: 0, scale: 0.88 }}
@@ -251,7 +251,7 @@ function ConfirmationPage() {
           </div>
         </motion.div>
 
-        {/* Detail rows — staggered */}
+        {/* Detail rows â€” staggered */}
         <motion.dl
           className="grid grid-cols-2 gap-3 w-full text-sm border-t pt-4"
           style={{ borderColor: "var(--border-strong)" }}
@@ -289,10 +289,10 @@ function ConfirmationPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h3 className="font-semibold text-lg" style={{ color: "var(--text-primary)" }}>
-              🎽 Order Official AIDIFILN Merchandise
+              ðŸŽ½ Order Official AIDIEGL Merchandise
             </h3>
             <p className="text-sm mt-2" style={{ color: "var(--text-secondary)" }}>
-              Get your official AIDIFILN 2026 t-shirt in your choice of size and color. ₦8,000
+              Get your official AIDIEGL 2026 t-shirt in your choice of size and color. â‚¦8,000
             </p>
           </div>
           <Link
@@ -365,10 +365,11 @@ function buildIcs(name: string) {
     `DTSTAMP:${stamp}`,
     "DTSTART:20260924T080000",
     "DTEND:20260926T220000",
-    "SUMMARY:YALI Network Nigeria National Summit (AIDIFILN) 2026",
+    "SUMMARY:YALI Network Nigeria National Summit (AIDIEGL) 2026",
     `DESCRIPTION:Registered as ${name}. AI\\, Digital Innovation and the Future of Inclusive Leadership in Nigeria.`,
-    "LOCATION:UNILAG Main Auditorium, Akoka Lagos, Nigeria",
+    "LOCATION:Shiba Event Center, Lagos, Nigeria",
     "END:VEVENT",
     "END:VCALENDAR",
   ].join("\r\n");
 }
+

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+﻿import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, Plus, Minus, X } from "lucide-react";
@@ -8,18 +8,18 @@ import whiteTshirtImg from "@/assets/merch/white-tshirt.jpg";
 export const Route = createFileRoute("/merch")({
   head: () => ({
     meta: [
-      { title: "Merchandise Store — YALI Summit 2026" },
+      { title: "Merchandise Store â€” YALI Summit 2026" },
       {
         name: "description",
-        content: "Order exclusive AIDIFILN 2026 merchandise and apparel.",
+        content: "Order exclusive AIDIEGL 2026 merchandise and apparel.",
       },
       {
         property: "og:title",
-        content: "Merchandise Store — YALI Summit 2026",
+        content: "Merchandise Store â€” YALI Summit 2026",
       },
       {
         property: "og:description",
-        content: "Order exclusive AIDIFILN 2026 merchandise and apparel.",
+        content: "Order exclusive AIDIEGL 2026 merchandise and apparel.",
       },
     ],
   }),
@@ -36,8 +36,8 @@ const PAYMENT_DETAILS = {
 const MERCH_PRODUCTS = [
   {
     id: "tshirt",
-    name: "AIDIFILN T-Shirt",
-    description: "Official AIDIFILN 2026 t-shirt with front and back design",
+    name: "AIDIEGL T-Shirt",
+    description: "Official AIDIEGL 2026 t-shirt with front and back design",
     price: 8000, // in Naira
     sizes: ["M", "L", "XL", "2XL"],
     colors: ["black", "white"],
@@ -192,7 +192,7 @@ function MerchPage() {
           </h1>
         </div>
         <p style={{ color: "var(--text-secondary)" }}>
-          Get exclusive AIDIFILN 2026 apparel and merch
+          Get exclusive AIDIEGL 2026 apparel and merch
         </p>
       </motion.header>
 
@@ -245,7 +245,7 @@ function MerchPage() {
                     className="text-3xl font-bold mt-3"
                     style={{ color: "var(--accent-cyan)" }}
                   >
-                    ₦{product.price.toLocaleString("en-NG")}
+                    â‚¦{product.price.toLocaleString("en-NG")}
                   </p>
                 </div>
               </div>
@@ -379,7 +379,7 @@ function MerchPage() {
             className="text-xl font-bold mb-4"
             style={{ color: "var(--text-primary)" }}
           >
-            🛒 Your Cart
+            ðŸ›’ Your Cart
           </h3>
 
           {cart.length === 0 ? (
@@ -407,7 +407,7 @@ function MerchPage() {
                           {product?.name}
                         </p>
                         <p className="text-xs" style={{ color: "var(--text-secondary)" }}>
-                          {item.size} • {item.color}
+                          {item.size} â€¢ {item.color}
                         </p>
                         <div className="flex gap-2 mt-2 items-center">
                           <button
@@ -429,7 +429,7 @@ function MerchPage() {
                       </div>
                       <div className="text-right">
                         <p className="font-semibold text-sm" style={{ color: "var(--accent-cyan)" }}>
-                          ₦{((product?.price || 0) * item.quantity).toLocaleString("en-NG")}
+                          â‚¦{((product?.price || 0) * item.quantity).toLocaleString("en-NG")}
                         </p>
                         <button
                           onClick={() => removeFromCart(index)}
@@ -452,14 +452,14 @@ function MerchPage() {
                     className="font-bold"
                     style={{ color: "var(--text-primary)" }}
                   >
-                    ₦{cartTotal.toLocaleString("en-NG")}
+                    â‚¦{cartTotal.toLocaleString("en-NG")}
                   </span>
                 </div>
 
                 {/* Payment Details */}
                 <div className="bg-surface rounded-lg p-3 mb-4 text-xs" style={{ background: "var(--surface)" }}>
                   <p className="font-semibold mb-2" style={{ color: "var(--text-primary)" }}>
-                    💳 Payment Details
+                    ðŸ’³ Payment Details
                   </p>
                   <div className="space-y-1" style={{ color: "var(--text-secondary)" }}>
                     <p><strong>Bank:</strong> {PAYMENT_DETAILS.bank}</p>
@@ -469,7 +469,7 @@ function MerchPage() {
                 </div>
 
                 <a
-                  href={`https://wa.me/${PAYMENT_DETAILS.whatsappNumber.replace(/\D/g, '')}?text=Hi, I want to order ${cart.length} item(s) for ₦${cartTotal.toLocaleString("en-NG")}. Please confirm payment details.`}
+                  href={`https://wa.me/${PAYMENT_DETAILS.whatsappNumber.replace(/\D/g, '')}?text=Hi, I want to order ${cart.length} item(s) for â‚¦${cartTotal.toLocaleString("en-NG")}. Please confirm payment details.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-3 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all duration-200"
@@ -483,7 +483,7 @@ function MerchPage() {
                     boxShadow: cart.length === 0 ? "none" : "var(--shadow-md)",
                   }}
                 >
-                  📱 Complete Order on WhatsApp
+                  ðŸ“± Complete Order on WhatsApp
                 </a>
               </div>
             </>
@@ -493,3 +493,4 @@ function MerchPage() {
     </section>
   );
 }
+

@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet, useNavigate } from "@tanstack/react-router";
+﻿import { createFileRoute, Link, Outlet, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { getMyPortal } from "@/lib/portal.functions";
@@ -17,7 +17,7 @@ const ATTENDEE_LABELS: Record<string, string> = {
 };
 
 export const Route = createFileRoute("/_authenticated/profile")({
-  head: () => ({ meta: [{ title: "My profile — AIDIFILN" }] }),
+  head: () => ({ meta: [{ title: "My profile â€” AIDIEGL" }] }),
   component: ProfileShell,
 });
 
@@ -58,7 +58,7 @@ function ProfileShell() {
           Link your registration
         </h1>
         <p className="text-sm mb-6" style={{ color: "var(--text-secondary)" }}>
-          You're signed in but haven't connected your AIDIFILN ticket yet.
+          You're signed in but haven't connected your AIDIEGL ticket yet.
         </p>
         <Link
           to="/claim-ticket"
@@ -76,14 +76,14 @@ function ProfileShell() {
       <header className="flex flex-wrap items-start justify-between gap-4 mb-6">
         <div>
           <p className="text-xs uppercase tracking-widest mb-1" style={{ color: "var(--accent-cyan)" }}>
-            AIDIFILN attendee
+            AIDIEGL attendee
           </p>
           <h1 className="text-2xl md:text-3xl font-bold" style={{ color: "var(--text-primary)", fontFamily: "Space Grotesk, sans-serif" }}>
             {data.profile.display_name || data.registration.full_name}
           </h1>
           <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
             {ATTENDEE_LABELS[data.registration.attendee_type] ?? data.registration.attendee_type}
-            {" · "}
+            {" Â· "}
             {TRACKS.find(t => t.slug === data.registration.track_selection)?.title ?? data.registration.track_selection ?? "No track yet"}
           </p>
         </div>
