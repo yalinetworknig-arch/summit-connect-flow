@@ -44,7 +44,7 @@ function renderHtml(input: TicketEmailInput, ticketUrl: string, merchUrl: string
         </table>
         <div style="font-size:22px;font-weight:800;color:${emailColors.ink};letter-spacing:-0.3px;">You're in, ${escapeHtml(firstName)}!</div>
         <p style="margin:8px 0 0;font-size:14.5px;line-height:1.6;color:${emailColors.sub};">
-          Your registration for <strong style="color:${emailColors.ink};">AIDIFILN 2026</strong> is confirmed. Bring your ticket QR to check-in on-site.
+          Your registration for <strong style="color:${emailColors.ink};">YALI Summit 2026</strong> is confirmed. Bring your ticket QR to check-in on-site.
         </p>
       </td>
     </tr>
@@ -97,8 +97,8 @@ function renderHtml(input: TicketEmailInput, ticketUrl: string, merchUrl: string
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${emailColors.bg};border:1px solid ${emailColors.border};border-radius:12px;padding:16px;">
           <tr>
             <td>
-              <div style="font-size:14px;font-weight:700;color:${emailColors.ink};margin-bottom:6px;">🎽 Order Official AIDIFILN Merchandise</div>
-              <p style="margin:0 0 12px;font-size:13px;line-height:1.5;color:${emailColors.sub};">Get your official AIDIFILN 2026 t-shirt in your choice of size and color. ₦8,000</p>
+              <div style="font-size:14px;font-weight:700;color:${emailColors.ink};margin-bottom:6px;">🎽 Order Official YALI Summit Merchandise</div>
+              <p style="margin:0 0 12px;font-size:13px;line-height:1.5;color:${emailColors.sub};">Get your official YALI Summit 2026 t-shirt in your choice of size and color. ₦8,000</p>
               <a href="${merchUrl}" style="display:inline-block;background:${emailColors.cyan};color:${emailColors.navy};padding:10px 16px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">Shop Now</a>
             </td>
           </tr>
@@ -108,7 +108,7 @@ function renderHtml(input: TicketEmailInput, ticketUrl: string, merchUrl: string
   `;
 
   return renderEmailShell({
-    preheader: `Your AIDIFILN 2026 ticket is confirmed — code ${input.ticketCode}`,
+    preheader: `Your YALI Summit 2026 ticket is confirmed — code ${input.ticketCode}`,
     bodyHtml,
   });
 }
@@ -117,17 +117,17 @@ function renderText(input: TicketEmailInput, ticketUrl: string, merchUrl: string
   return [
     `You're in, ${input.fullName.split(" ")[0] || input.fullName}!`,
     "",
-    "Your registration for AIDIFILN 2026 (YALI Summit) is confirmed.",
+    "Your registration for YALI Summit 2026 is confirmed.",
     `Ticket code: ${input.ticketCode}`,
     input.track ? `Track: ${input.track}` : "",
     input.attendeeType ? `Attendee: ${input.attendeeType}` : "",
     "",
     `View your ticket: ${ticketUrl}`,
     "",
-    "🎽 Order official AIDIFILN merchandise (₦8,000):",
+    "🎽 Order official AIDIEGL merchandise (₦8,000):",
     `Shop now: ${merchUrl}`,
     "",
-    "UNILAG Main Auditorium, Akoka Lagos — Sept 25–26, 2026",
+    "Shiba Event Center, Lagos — Sept 25–26, 2026",
   ].filter(Boolean).join("\n");
 }
 
@@ -141,6 +141,7 @@ export async function sendTicketEmail(input: TicketEmailInput): Promise<{ ok: bo
   const merchUrl = `${origin}/merch`;
 
   try {
+    // Note: Email text version will reference "AIDIFILN 2026" in subject; this is updated to "YALI Summit 2026" in renderText()
     // 8-second timeout — don't let a slow/failing email block registration
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000);
