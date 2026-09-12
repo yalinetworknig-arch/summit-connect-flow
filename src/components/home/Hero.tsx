@@ -61,8 +61,8 @@ export function Hero() {
               <stop offset="60%" stopColor="#001B4B" stopOpacity="0.1" />
               <stop offset="100%" stopColor="#0A1128" stopOpacity="0" />
             </radialGradient>
-            <pattern id="halftone" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
-              <circle cx="7" cy="7" r="2" fill="#00D9FF" />
+            <pattern id="halftone" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">
+              <circle cx="3" cy="3" r="0.85" fill="#00D9FF" />
             </pattern>
             <mask id="waveMask">
               <rect width="1200" height="800" fill="black" />
@@ -75,7 +75,7 @@ export function Hero() {
           </defs>
           <rect width="1200" height="800" fill="url(#glow1)" />
           <rect width="1200" height="800" fill="url(#glow2)" />
-          <rect width="1200" height="800" fill="url(#halftone)" mask="url(#waveMask)" opacity="0.55" />
+          <rect width="1200" height="800" fill="url(#halftone)" mask="url(#waveMask)" opacity="0.75" />
           {/* Static diagonal streaks for performance */}
           <g opacity="0.18">
             <path
