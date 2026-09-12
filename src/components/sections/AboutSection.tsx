@@ -19,7 +19,7 @@ export function AboutSection({ id = "about" }: { id?: string }) {
     <div id={id} className="scroll-mt-24">
       <section className="relative px-5 sm:px-6 lg:px-8 bg-background text-text-primary overflow-hidden" style={{ padding: "clamp(3rem, 10vw, 8rem) 1.25rem" }}>
         <HalftoneBackdrop />
-        <SideLabel>Presents · AIDIFILN 2026</SideLabel>
+        <SideLabel>Presents · YALI Network Nigeria Summit 2026</SideLabel>
         <SideLabel side="right" tone="muted">YALI Network Nigeria</SideLabel>
         <div className="relative max-w-4xl mx-auto">
           <Reveal><Eyebrow>For Nigeria's civic &amp; social-impact leaders</Eyebrow></Reveal>
@@ -33,11 +33,11 @@ export function AboutSection({ id = "about" }: { id?: string }) {
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-lg text-text-secondary leading-relaxed max-w-3xl">
-              AIDIFILN brings together the people who already lead Nigerian
-              communities — civic actors, social entrepreneurs, educators,
-              organisers, public servants — for a 2-day summit of getting fluent,
-              getting connected, and deciding together how AI and digital systems
-              get built around the people we serve.
+              The YALI Network Nigeria Summit brings together young African leaders
+              across sectors — technology, education, finance, healthcare, government,
+              agriculture, and business — for a full day of keynotes, panel discussions,
+              and networking focused on AI, digital innovation, and empowering the next
+              generation of leaders shaping Africa's digital future.
             </p>
           </Reveal>
         </div>
@@ -61,10 +61,10 @@ export function AboutSection({ id = "about" }: { id?: string }) {
       <section className="px-5 sm:px-6 lg:px-8 py-14 md:py-20 bg-surface text-text-primary">
         <Stagger className="max-w-5xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
           {[
-            { Icon: CalendarDays, label: "Dates", value: "Sept 25 – 26, 2026" },
-            { Icon: MapPin, label: "Venue", value: "UNILAG Main Auditorium, Akoka Lagos" },
-            { Icon: Users, label: "Delegates", value: "400–800 expected" },
-            { Icon: Globe, label: "Reach", value: "All 36 states + FCT" },
+            { Icon: CalendarDays, label: "Date", value: "Friday, Sept 25, 2026" },
+            { Icon: MapPin, label: "Venue", value: "Shiba Event Center, Lagos" },
+            { Icon: Users, label: "Capacity", value: "150–200 attendees" },
+            { Icon: Globe, label: "Format", value: "Physical & Virtual" },
           ].map(({ Icon, label, value }) => (
             <motion.div
               key={label}

@@ -7,12 +7,12 @@ import {
 
 const faqs = [
   {
-    q: "What is AIDIFILN 2026?",
-    a: "A 2-day summit where civic leaders, educators, founders, and policymakers across Nigeria's 36 states convene to lead how AI and digital systems get built. Not a conference. A working session with commitments that outlive it.",
+    q: "What is YALI Network Nigeria Summit 2026?",
+    a: "A summit bringing together young African leaders to discuss AI, digital innovation, and empowering the next generation of leaders. Panel sessions, networking, and collaborative discussions on shaping Africa's digital future.",
   },
   {
     q: "When does it happen?",
-    a: "Delegates arrive Thursday, September 24. The summit runs Friday 25 to Saturday 26, 2026 — keynotes, seven sector tracks, workshops, a civic-tech hackathon, and a commitments showcase.",
+    a: "Friday, September 25, 2026 — a full day of keynotes, panel sessions, workshops, and networking for delegates and virtual participants.",
   },
   {
     q: "Who comes?",
@@ -36,7 +36,7 @@ const faqs = [
   },
   {
     q: "Where is it?",
-    a: "UNILAG Main Auditorium, Akoka Lagos. Travel support and accommodation for selected delegates from outside Lagos.",
+    a: "Shiba Event Center, 20 Mobolaji Bank Anthony Way, Maryland, Ikeja, Lagos. Both physical and virtual attendance options available.",
   },
   {
     q: "What do I actually leave with?",

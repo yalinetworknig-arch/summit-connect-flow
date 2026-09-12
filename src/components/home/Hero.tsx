@@ -179,15 +179,15 @@ export function Hero() {
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="font-display font-bold text-white uppercase"
+          className="font-display font-bold text-white"
           style={{
-            fontSize: "clamp(32px, 5.6vw, 64px)",
-            lineHeight: 1.05,
+            fontSize: "clamp(28px, 4.5vw, 52px)",
+            lineHeight: 1.1,
           }}
         >
-          YALI Network Nigeria
+          YALI Network Nigeria Summit
           <br />
-          National Summit
+          <span className="text-[#00D9FF]">AI, Digital Innovation, and Empowering the Next Generation of Leaders</span>
         </motion.h2>
 
         {/* THEME */}
@@ -250,7 +250,7 @@ export function Hero() {
           className="mt-6 text-white/70 font-semibold text-base"
           style={{ letterSpacing: "0.05em" }}
         >
-          September 25 – 26, 2026 · UNILAG Main Auditorium, Akoka Lagos
+          Friday, September 25, 2026 · Shiba Event Center, Lagos
         </motion.p>
 
         <motion.div
@@ -286,7 +286,7 @@ export function Hero() {
         </motion.div>
 
         <p className="mt-10 text-white/65 text-sm">
-          Free for verified YALI delegates · 400–800 delegates expected · Akoka Lagos · Sept 25–26, 2026
+          Physical & Virtual · 150–200 attendees · Sept 25, 2026
         </p>
       </div>
 
