@@ -135,12 +135,12 @@ export function Hero() {
 
       {/* Content */}
       <div className="relative max-w-[1200px] mx-auto px-6 md:px-12 py-20 md:py-28 min-h-[100dvh] flex flex-col items-center justify-center text-center">
-        {/* Partners bar — official lockups on uniform white tiles, prospectus-style */}
+        {/* Partners bar — clean, seamless integration with dark background */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-10 inline-flex flex-wrap items-center justify-center gap-3 px-4 py-3 rounded-2xl border border-white/10 bg-white/[0.03]"
+          className="mb-12 inline-flex flex-wrap items-center justify-center gap-6 sm:gap-8"
         >
           {[
             { src: usMissionLogo, alt: "United States Diplomatic Mission in Nigeria" },
@@ -148,12 +148,12 @@ export function Hero() {
           ].map(({ src, alt }) => (
             <div
               key={alt}
-              className="h-12 sm:h-14 px-3 py-1.5 rounded-xl bg-white flex items-center justify-center shadow-[0_2px_10px_rgba(0,0,0,0.35)] ring-1 ring-white/20"
+              className="h-14 sm:h-16 flex items-center justify-center"
             >
               <img
                 src={src}
                 alt={alt}
-                className="h-full w-auto object-contain select-none"
+                className="h-full w-auto object-contain select-none filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
                 draggable={false}
                 loading="eager"
               />
@@ -167,10 +167,9 @@ export function Hero() {
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="text-[#00D9FF] text-xs font-medium uppercase mb-6"
-          style={{ letterSpacing: "0.2em" }}
+          className="text-[#00D9FF] text-xs font-semibold uppercase mb-8 tracking-widest"
         >
-          YALI Network Nigeria presents
+          Presents
         </motion.p>
 
 
@@ -180,10 +179,9 @@ export function Hero() {
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="text-[#00D9FF] text-xs font-medium uppercase mt-10 mb-5"
-          style={{ letterSpacing: "0.2em" }}
+          className="text-[#00D9FF] text-xs font-semibold uppercase mt-14 mb-6 tracking-widest"
         >
-          The 2026 theme
+          Theme
         </motion.p>
 
         {/* AIDIEGL wordmark image (contains tagline) */}
