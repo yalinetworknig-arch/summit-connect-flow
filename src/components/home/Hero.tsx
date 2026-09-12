@@ -120,7 +120,7 @@ export function Hero() {
           letterSpacing: "0.1em",
         }}
       >
-        Artificial Intelligence (AI), Digital Innovation and the Future of Inclusive Leadership in Nigeria
+        Artificial Intelligence, Digital Innovation, and Empowering the Next Generation of Leaders
       </span>
       <span
         aria-hidden="true"
@@ -325,3 +325,4 @@ export function Hero() {
     </section>
   );
 }
+

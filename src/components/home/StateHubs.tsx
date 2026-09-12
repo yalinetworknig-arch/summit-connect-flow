@@ -263,7 +263,7 @@ export function StateHubs() {
                   <DialogDescription className="text-left pt-2">
                     The {selected.state} State Hub of YALI Network Nigeria
                     mobilises young leaders across the {selected.region} region
-                    around civic engagement, digital innovation, and inclusive
+                    around civic engagement, digital innovation, and digital systems leadership
                     leadership ahead of the AIDIENGL 2026 Summit.
                   </DialogDescription>
                 </DialogHeader>
@@ -286,4 +286,5 @@ export function StateHubs() {
     </section>
   );
 }
+
 

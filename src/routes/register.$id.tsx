@@ -366,11 +366,12 @@ function buildIcs(name: string) {
     "DTSTART:20260924T080000",
     "DTEND:20260926T220000",
     "SUMMARY:YALI Network Nigeria National Summit (AIDIENGL) 2026",
-    `DESCRIPTION:Registered as ${name}. AI\\, Digital Innovation and the Future of Inclusive Leadership in Nigeria.`,
+    `DESCRIPTION:Registered as ${name}. AI\\, Digital Innovation and the Empowering the Next Generation of Leaders.`,
     "LOCATION:Shiba Event Center, Lagos, Nigeria",
     "END:VEVENT",
     "END:VCALENDAR",
   ].join("\r\n");
 }
+
 
 

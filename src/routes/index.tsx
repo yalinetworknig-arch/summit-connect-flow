@@ -16,13 +16,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "AI, Digital Innovation and the Future of Inclusive Leadership in Nigeria. Sept 25â€“26, 2026, Shiba Event Center, Lagos. Register free.",
+          "AI, Digital Innovation and the Empowering the Next Generation of Leaders. Sept 25â€“26, 2026, Shiba Event Center, Lagos. Register free.",
       },
       { property: "og:title", content: "YALI Network Nigeria National Summit 2026" },
       {
         property: "og:description",
         content:
-          "AI, Digital Innovation and the Future of Inclusive Leadership in Nigeria. Sept 25â€“26, 2026, Shiba Event Center, Lagos.",
+          "AI, Digital Innovation and the Empowering the Next Generation of Leaders. Sept 25â€“26, 2026, Shiba Event Center, Lagos.",
       },
     ],
   }),
@@ -50,5 +50,6 @@ function Index() {
     </>
   );
 }
+
 
 

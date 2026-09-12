@@ -41,11 +41,11 @@ export const TRACK_DETAILS: TrackDetail[] = [
   },
   {
     slug: "fintech",
-    title: "FinTech & Inclusive Finance",
+    title: "FinTech & Digital Finance",
     short: "Payments, lending, Naira-native digital products.",
     long: "Lagos is Africa's fintech capital. The next chapter â€” embedded finance, agency banking, credit for the underbanked â€” gets discussed here, with the founders and regulators in the same room.",
     sessions: [
-      "Panel: FinTech & Inclusive Finance - Leveraging Digital Innovation for Economic Opportunity",
+      "Panel: FinTech & Digital Finance - Leveraging Digital Innovation for Economic Opportunity",
     ],
     Icon: Landmark,
   },
@@ -84,7 +84,7 @@ export const SCHEDULE: ScheduleDay[] = [
       { time: "10:15 â€“ 10:25 AM", title: "Goodwill Remarks", description: "Casey Bonfield, Deputy Public Affairs Officer, U.S. Mission Nigeria" },
       { time: "10:25 â€“ 10:50 AM", title: "â— Keynote II: AI & Digital Transformation", description: "AI as a Catalyst for Africa's Transformation â€“ Hon. Dr. Abdoul Baq Ladi Balogun + Q&A" },
       { time: "10:50 â€“ 11:10 AM", title: "â— Break & Networking", description: "Networking, refreshments, and official group photograph" },
-      { time: "11:10 â€“ 11:50 AM", title: "â— Panel: FinTech & Inclusive Finance", description: "Leveraging Digital Innovation for Economic Opportunity + Audience Q&A" },
+      { time: "11:10 â€“ 11:50 AM", title: "â— Panel: FinTech & Digital Finance", description: "Leveraging Digital Innovation for Economic Opportunity + Audience Q&A" },
       { time: "11:50 AM â€“ 12:20 PM", title: "â— Masterclass: AI for Everyone", description: "Practical Tools to Empower African Leaders â€“ Olalekan Adeeko. Interactive AI Challenge." },
       { time: "12:20 â€“ 12:50 PM", title: "â— Masterclass: Creative Innovation", description: "In the Digital Age â€“ Dr. Salaimon Kassim, Executive Producer & Creative Leader" },
       { time: "12:50 â€“ 1:20 PM", title: "â— Panel: AI x Creative Practice", description: "Innovation Without Borders â€“ Joint conversation on AI tools and creative practice" },
@@ -185,3 +185,4 @@ export const DECISION_TIMELINES = [
   "1â€“3 months",
   "Exploring only",
 ];
+

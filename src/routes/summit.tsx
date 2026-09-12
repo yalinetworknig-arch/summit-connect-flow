@@ -5,7 +5,7 @@ export const Route = createFileRoute("/summit")({
   head: () => ({
     meta: [
       { title: "Summit â€” YALI Network Nigeria" },
-      { name: "description", content: "AIDIENGL: AI, Digital Innovation and the Future of Inclusive Leadership in Nigeria." },
+      { name: "description", content: "AIDIENGL: AI, Digital Innovation and the Empowering the Next Generation of Leaders." },
       { property: "og:title", content: "Summit â€” YALI Network Nigeria" },
       { property: "og:description", content: "Everything you need to know about AIDIENGL 2026." },
     ],
@@ -64,4 +64,5 @@ function SummitPage() {
     </>
   );
 }
+
 
