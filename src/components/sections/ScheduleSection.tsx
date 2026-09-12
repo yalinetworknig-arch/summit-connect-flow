@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { SCHEDULE } from "@/lib/event-data";
@@ -20,8 +20,8 @@ export function ScheduleSection({ id = "schedule" }: { id?: string }) {
     <div id={id} className="scroll-mt-24">
       <section className="relative px-5 sm:px-6 lg:px-8 bg-background text-text-primary overflow-hidden" style={{ padding: "clamp(3rem, 10vw, 8rem) 1.25rem" }}>
         <HalftoneBackdrop />
-        <SideLabel>Programme · Friday, Sept 25 · Lagos</SideLabel>
-        <SideLabel side="right" tone="muted">AIDIEGL 2026 · 8:00 AM – 4:00 PM</SideLabel>
+        <SideLabel>Programme Â· Friday, Sept 25 Â· Lagos</SideLabel>
+        <SideLabel side="right" tone="muted">AIDIENGL 2026 Â· 8:00 AM â€“ 4:00 PM</SideLabel>
         <div className="relative max-w-4xl mx-auto text-center">
           <Reveal><Eyebrow>One-day summit</Eyebrow></Reveal>
           <Reveal delay={0.08}>
@@ -31,20 +31,20 @@ export function ScheduleSection({ id = "schedule" }: { id?: string }) {
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              Keynotes, panels, masterclasses, and fireside chats — all on Friday, September 25, 2026 from 8:00 AM to 4:00 PM. Hybrid format: physical attendance at Shiba Event Center, Lagos + livestream.
+              Keynotes, panels, masterclasses, and fireside chats â€” all on Friday, September 25, 2026 from 8:00 AM to 4:00 PM. Hybrid format: physical attendance at Shiba Event Center, Lagos + livestream.
             </p>
           </Reveal>
         </div>
       </section>
 
-      {/* Wide editorial hero — what a day in the room looks like */}
+      {/* Wide editorial hero â€” what a day in the room looks like */}
       <section className="px-5 sm:px-6 lg:px-8 -mt-6 md:-mt-10 mb-4 md:mb-8 bg-background">
         <div className="max-w-6xl mx-auto">
           <EditorialImage
             src={scheduleAudience}
             alt="A packed audience of YALI delegates in conference seating at Y-LEEDS 2025"
             aspect="aspect-[16/9] md:aspect-[21/9]"
-            caption="Main hall · Y-LEEDS 2025"
+            caption="Main hall Â· Y-LEEDS 2025"
             sizes="(min-width: 1280px) 1200px, (min-width: 768px) 90vw, 100vw"
             width={1920}
             height={1080}
@@ -147,11 +147,11 @@ export function ScheduleSection({ id = "schedule" }: { id?: string }) {
                 Claim your seat
               </Link>
               <a
-                href="/AIDIEGL_2026_Official_Programme_Agenda.docx"
-                download="AIDIEGL_2026_Official_Programme_Agenda.docx"
+                href="/AIDIENGL_2026_Official_Programme_Agenda.docx"
+                download="AIDIENGL_2026_Official_Programme_Agenda.docx"
                 className="inline-flex items-center justify-center px-8 min-h-12 rounded-full text-base font-semibold border-2 border-accent-cyan text-accent-cyan hover:bg-accent-cyan/10 active:scale-100 transition-all"
               >
-                ↓ Download Agenda
+                â†“ Download Agenda
               </a>
             </div>
           </Reveal>

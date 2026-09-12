@@ -186,7 +186,7 @@ function ConfirmationPage() {
         </motion.h1>
 
         <motion.p variants={staggerChild} className="mt-2" style={{ color: "var(--text-secondary)" }}>
-          Your registration for AIDIEGL 2026 is confirmed.
+          Your registration for AIDIENGL 2026 is confirmed.
         </motion.p>
 
         {data.email && (
@@ -289,10 +289,10 @@ function ConfirmationPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h3 className="font-semibold text-lg" style={{ color: "var(--text-primary)" }}>
-              ðŸŽ½ Order Official AIDIEGL Merchandise
+              ðŸŽ½ Order Official AIDIENGL Merchandise
             </h3>
             <p className="text-sm mt-2" style={{ color: "var(--text-secondary)" }}>
-              Get your official AIDIEGL 2026 t-shirt in your choice of size and color. â‚¦8,000
+              Get your official AIDIENGL 2026 t-shirt in your choice of size and color. â‚¦8,000
             </p>
           </div>
           <Link
@@ -365,11 +365,12 @@ function buildIcs(name: string) {
     `DTSTAMP:${stamp}`,
     "DTSTART:20260924T080000",
     "DTEND:20260926T220000",
-    "SUMMARY:YALI Network Nigeria National Summit (AIDIEGL) 2026",
+    "SUMMARY:YALI Network Nigeria National Summit (AIDIENGL) 2026",
     `DESCRIPTION:Registered as ${name}. AI\\, Digital Innovation and the Future of Inclusive Leadership in Nigeria.`,
     "LOCATION:Shiba Event Center, Lagos, Nigeria",
     "END:VEVENT",
     "END:VCALENDAR",
   ].join("\r\n");
 }
+
 

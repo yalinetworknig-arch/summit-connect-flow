@@ -213,7 +213,7 @@ function RegisterPage() {
                 color: "var(--text-primary)",
               }}
             >
-              Claim your seat at AIDIEGL 2026
+              Claim your seat at AIDIENGL 2026
             </h1>
           </div>
           <div className="text-xs px-3 py-1.5 rounded-full whitespace-nowrap" style={{ background: "var(--surface)", color: "var(--text-secondary)" }}>
@@ -359,4 +359,5 @@ function RegisterPage() {
     </section>
   );
 }
+
 

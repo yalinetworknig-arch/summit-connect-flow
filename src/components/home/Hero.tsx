@@ -1,7 +1,7 @@
-import { Link } from "@tanstack/react-router";
+﻿import { Link } from "@tanstack/react-router";
 import { motion, type Variants } from "framer-motion";
 import { Countdown } from "./Countdown";
-import aidieglWhite from "@/assets/aidiegl-white.png";
+import AIDIENGLWhite from "@/assets/AIDIENGL-white.png";
 import usMissionLogo from "@/assets/sponsors/us-mission-logo.png";
 import yaliLogo from "@/assets/sponsors/yali-logo.jpeg";
 
@@ -110,7 +110,7 @@ export function Hero() {
         ))}
       </div>
 
-      {/* Vertical side labels — desktop only */}
+      {/* Vertical side labels â€” desktop only */}
       <span
         aria-hidden="true"
         className="hidden lg:block absolute left-4 xl:left-8 top-1/2 -translate-y-1/2 text-[11px] font-normal uppercase whitespace-nowrap text-[#00D9FF]/40 pointer-events-none"
@@ -130,12 +130,12 @@ export function Hero() {
           letterSpacing: "0.1em",
         }}
       >
-        YALI Network Nigeria National Summit — National Summit
+        YALI Network Nigeria National Summit â€” National Summit
       </span>
 
       {/* Content */}
       <div className="relative max-w-[1200px] mx-auto px-6 md:px-12 py-10 md:py-14 min-h-[100dvh] flex flex-col items-center justify-center text-center">
-        {/* Partners bar — elevated, prestigious presentation */}
+        {/* Partners bar â€” elevated, prestigious presentation */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -150,7 +150,7 @@ export function Hero() {
               key={alt}
               className="flex items-center justify-center group"
             >
-              {/* Background container box — creates visual balance and framing */}
+              {/* Background container box â€” creates visual balance and framing */}
               <div className="w-28 sm:w-32 h-20 sm:h-24 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm flex items-center justify-center p-4 transition-all duration-300 group-hover:bg-white/15 group-hover:border-white/30">
                 {/* Logo with shadow */}
                 <img
@@ -173,7 +173,7 @@ export function Hero() {
           ))}
         </motion.div>
 
-        {/* YALI NETWORK NIGERIA PRESENTS — main branding headline */}
+        {/* YALI NETWORK NIGERIA PRESENTS â€” main branding headline */}
         <motion.h2
           custom={0.1}
           initial="hidden"
@@ -187,7 +187,7 @@ export function Hero() {
           <span className="text-[#00D9FF]">Presents</span>
         </motion.h2>
 
-        {/* THE 2026 THEME — refined section header */}
+        {/* THE 2026 THEME â€” refined section header */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -205,9 +205,9 @@ export function Hero() {
           </motion.p>
         </motion.div>
 
-        {/* AIDIEGL wordmark image (contains tagline) */}
+        {/* AIDIENGL wordmark image (contains tagline) */}
         <h1 className="sr-only">
-          AIDIEGL — Artificial Intelligence, Digital Innovation and Empowering
+          AIDIENGL â€” Artificial Intelligence, Digital Innovation and Empowering
           the Next Generation of Leaders
         </h1>
         <motion.div
@@ -216,7 +216,7 @@ export function Hero() {
           transition={{ type: "spring", stiffness: 80, damping: 16, delay: 0.3 }}
           className="relative w-full max-w-[680px] mt-3 sm:mt-4"
         >
-          {/* Refined breathing halo — more subtle and sophisticated */}
+          {/* Refined breathing halo â€” more subtle and sophisticated */}
           <motion.div
             aria-hidden="true"
             className="absolute -inset-12 pointer-events-none motion-reduce:hidden"
@@ -228,10 +228,10 @@ export function Hero() {
             animate={{ opacity: [0.4, 0.6, 0.4], scale: [1, 1.02, 1] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
           />
-          {/* AIDIEGL Wordmark — white version for dark background, refined shadow */}
+          {/* AIDIENGL Wordmark â€” white version for dark background, refined shadow */}
           <motion.img
-            src={aidieglWhite}
-            alt="AIDIEGL — Artificial Intelligence, Digital Innovation, and Empowering the Next Generation of Leaders"
+            src={AIDIENGLWhite}
+            alt="AIDIENGL â€” Artificial Intelligence, Digital Innovation, and Empowering the Next Generation of Leaders"
             className="relative w-full h-auto select-none"
             draggable={false}
             style={{
@@ -243,7 +243,7 @@ export function Hero() {
           />
         </motion.div>
 
-        {/* Event details — refined typography and spacing */}
+        {/* Event details â€” refined typography and spacing */}
         <motion.div
           custom={1.2}
           initial="hidden"
@@ -255,7 +255,7 @@ export function Hero() {
             className="text-white/80 font-semibold text-sm sm:text-base leading-relaxed"
             style={{ letterSpacing: "0.02em" }}
           >
-            Friday, September 25, 2026 · 8:00 AM – 4:00 PM
+            Friday, September 25, 2026 Â· 8:00 AM â€“ 4:00 PM
           </p>
           <p className="text-white/70 text-xs sm:text-sm" style={{ letterSpacing: "0.01em" }}>
             Shiba Event Center, Lagos
@@ -273,7 +273,7 @@ export function Hero() {
           <Countdown />
         </motion.div>
 
-        {/* CTAs — premium presentation */}
+        {/* CTAs â€” premium presentation */}
         <motion.div
           custom={1.6}
           initial="hidden"
@@ -288,11 +288,11 @@ export function Hero() {
             Claim your seat
           </Link>
           <a
-            href="/AIDIEGL_2026_Official_Programme_Agenda.docx"
-            download="AIDIEGL_2026_Official_Programme_Agenda.docx"
+            href="/AIDIENGL_2026_Official_Programme_Agenda.docx"
+            download="AIDIENGL_2026_Official_Programme_Agenda.docx"
             className="px-6 min-h-[44px] inline-flex items-center justify-center rounded-full text-sm sm:text-base font-semibold border-2 border-[#00D9FF] transition-all duration-200 hover:bg-[#00D9FF]/10 hover:shadow-[0_8px_20px_rgba(0,217,255,0.2)] text-white"
           >
-            ↓ Download Agenda
+            â†“ Download Agenda
           </a>
           <a
             href="#sponsors"
@@ -302,7 +302,7 @@ export function Hero() {
           </a>
         </motion.div>
 
-        {/* Event metadata — subtle and refined */}
+        {/* Event metadata â€” subtle and refined */}
         <motion.p
           custom={1.8}
           initial="hidden"
@@ -310,11 +310,11 @@ export function Hero() {
           variants={fadeUp}
           className="mt-4 text-white/50 text-[10px] sm:text-xs font-medium uppercase tracking-wider"
         >
-          Physical & Virtual · 150–200 Attendees · Networking & Innovation
+          Physical & Virtual Â· 150â€“200 Attendees Â· Networking & Innovation
         </motion.p>
       </div>
 
-      {/* Bottom vignette — clean fade to black */}
+      {/* Bottom vignette â€” clean fade to black */}
       <div
         className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none"
         style={{

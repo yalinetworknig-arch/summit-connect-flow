@@ -12,7 +12,7 @@ import { ContactSection } from "@/components/sections/ContactSection";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "YALI Network Nigeria National Summit 2026 â€” AIDIEGL" },
+      { title: "YALI Network Nigeria National Summit 2026 â€” AIDIENGL" },
       {
         name: "description",
         content:
@@ -50,4 +50,5 @@ function Index() {
     </>
   );
 }
+
 

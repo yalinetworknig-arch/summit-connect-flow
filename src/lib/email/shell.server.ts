@@ -1,4 +1,4 @@
-﻿const LOGO_URL = "https://summit.yalinetwork.ng/assets/AIDIEGL-logo-rainbow-oJQrnYK8.png";
+﻿const LOGO_URL = "https://summit.yalinetwork.ng/assets/AIDIENGL-logo-rainbow-oJQrnYK8.png";
 
 const COLORS = {
   navy: "#0A1128",
@@ -56,7 +56,7 @@ export function renderEmailShell(input: {
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td valign="middle">
-                    <img src="${LOGO_URL}" alt="AIDIEGL" height="30" style="display:block;height:30px;width:auto;border:0;" />
+                    <img src="${LOGO_URL}" alt="AIDIENGL" height="30" style="display:block;height:30px;width:auto;border:0;" />
                   </td>
                   <td valign="middle" align="right" style="font-family:${FONT_STACK};font-size:10.5px;letter-spacing:1.4px;color:rgba(255,255,255,0.55);font-weight:700;">
                     ${escapeHtml(eyebrow)}
@@ -82,7 +82,7 @@ export function renderEmailShell(input: {
                 <tr>
                   <td style="font-family:${FONT_STACK};font-size:12px;color:rgba(255,255,255,0.65);line-height:1.6;">
                     <strong style="color:#fff;">YALI Network Nigeria</strong><br/>
-                    AIDIEGL 2026 Â· Shiba Event Center, Lagos Â· Sept 25â€“26<br/>
+                    AIDIENGL 2026 Â· Shiba Event Center, Lagos Â· Sept 25â€“26<br/>
                     <a href="mailto:info@summit.yalinetwork.ng" style="color:${COLORS.cyan};text-decoration:none;">info@summit.yalinetwork.ng</a>
                   </td>
                 </tr>
@@ -127,4 +127,5 @@ export function ctaButtonRow(href: string, label: string): string {
 
 export const emailColors = COLORS;
 export const emailFontStack = FONT_STACK;
+
 

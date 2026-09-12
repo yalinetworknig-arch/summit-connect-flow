@@ -11,7 +11,7 @@ export const Route = createFileRoute("/merch")({
       { title: "Merchandise Store â€” YALI Summit 2026" },
       {
         name: "description",
-        content: "Order exclusive AIDIEGL 2026 merchandise and apparel.",
+        content: "Order exclusive AIDIENGL 2026 merchandise and apparel.",
       },
       {
         property: "og:title",
@@ -19,7 +19,7 @@ export const Route = createFileRoute("/merch")({
       },
       {
         property: "og:description",
-        content: "Order exclusive AIDIEGL 2026 merchandise and apparel.",
+        content: "Order exclusive AIDIENGL 2026 merchandise and apparel.",
       },
     ],
   }),
@@ -36,8 +36,8 @@ const PAYMENT_DETAILS = {
 const MERCH_PRODUCTS = [
   {
     id: "tshirt",
-    name: "AIDIEGL T-Shirt",
-    description: "Official AIDIEGL 2026 t-shirt with front and back design",
+    name: "AIDIENGL T-Shirt",
+    description: "Official AIDIENGL 2026 t-shirt with front and back design",
     price: 8000, // in Naira
     sizes: ["M", "L", "XL", "2XL"],
     colors: ["black", "white"],
@@ -192,7 +192,7 @@ function MerchPage() {
           </h1>
         </div>
         <p style={{ color: "var(--text-secondary)" }}>
-          Get exclusive AIDIEGL 2026 apparel and merch
+          Get exclusive AIDIENGL 2026 apparel and merch
         </p>
       </motion.header>
 
@@ -493,4 +493,5 @@ function MerchPage() {
     </section>
   );
 }
+
 

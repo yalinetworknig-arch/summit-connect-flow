@@ -1,6 +1,6 @@
 ﻿import { Link } from "@tanstack/react-router";
 import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
-import lockupFull from "@/assets/AIDIEGL-lockup-full.png";
+import lockupFull from "@/assets/AIDIENGL-lockup-full.png";
 
 const navItems = [
   { to: "/", label: "Home" },
@@ -29,7 +29,7 @@ export function Footer() {
         <div className="md:col-span-1">
           <img
             src={lockupFull}
-            alt="AIDIEGL â€” Artificial Intelligence, Digital Innovation, and Empowering the Next Generation of Leaders"
+            alt="AIDIENGL â€” Artificial Intelligence, Digital Innovation, and Empowering the Next Generation of Leaders"
             className="w-full max-w-[320px] h-auto select-none dark:invert dark:brightness-110 opacity-90"
             loading="lazy"
             decoding="async"
@@ -123,3 +123,4 @@ export function Footer() {
     </footer>
   );
 }
+

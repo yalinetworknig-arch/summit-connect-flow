@@ -50,7 +50,7 @@ function TicketTab() {
           <a href="/brochure.pdf" download className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold" style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}>
             <BookOpen className="w-4 h-4" /> Event brochure
           </a>
-          <a href={`data:text/calendar;charset=utf-8,${encodeURIComponent(buildIcs(reg.ticket_code))}`} download="AIDIEGL-2026.ics" className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border" style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}>
+          <a href={`data:text/calendar;charset=utf-8,${encodeURIComponent(buildIcs(reg.ticket_code))}`} download="AIDIENGL-2026.ics" className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold border" style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}>
             <Download className="w-4 h-4" /> Add to calendar
           </a>
         </div>
@@ -65,9 +65,10 @@ function TicketTab() {
 
 function buildIcs(ticket: string) {
   return [
-    "BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//YALI Nigeria//AIDIEGL//EN",
-    "BEGIN:VEVENT",`UID:${ticket}@AIDIEGL`,"SUMMARY:AIDIEGL 2026 â€” YALI Network Nigeria Summit",
+    "BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//YALI Nigeria//AIDIENGL//EN",
+    "BEGIN:VEVENT",`UID:${ticket}@AIDIENGL`,"SUMMARY:AIDIENGL 2026 â€” YALI Network Nigeria Summit",
     "DTSTART:20260910T110000Z","DTEND:20260913T160000Z","LOCATION:Lagos, Nigeria",
-    "DESCRIPTION:Your AIDIEGL attendance.","END:VEVENT","END:VCALENDAR",
+    "DESCRIPTION:Your AIDIENGL attendance.","END:VEVENT","END:VCALENDAR",
   ].join("\r\n");
 }
+

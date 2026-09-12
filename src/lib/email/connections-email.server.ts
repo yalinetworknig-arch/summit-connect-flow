@@ -45,7 +45,7 @@ function renderHtml(firstName: string, contacts: ContactEntry[]) {
       <td style="padding:36px 32px 6px;">
         <div style="font-size:22px;font-weight:800;color:${emailColors.ink};letter-spacing:-0.3px;">Your summit connections, ${escapeHtml(firstName)}</div>
         <p style="margin:8px 0 0;font-size:14.5px;line-height:1.6;color:${emailColors.sub};">
-          Here ${contacts.length === 1 ? "is the contact you" : `are the ${contacts.length} contacts you`} exchanged QR codes with at AIDIEGL 2026. Keep the conversation going!
+          Here ${contacts.length === 1 ? "is the contact you" : `are the ${contacts.length} contacts you`} exchanged QR codes with at AIDIENGL 2026. Keep the conversation going!
         </p>
       </td>
     </tr>
@@ -59,7 +59,7 @@ function renderHtml(firstName: string, contacts: ContactEntry[]) {
   `;
 
   return renderEmailShell({
-    preheader: `You made ${contacts.length} connection${contacts.length === 1 ? "" : "s"} at AIDIEGL 2026 â€” here are their details`,
+    preheader: `You made ${contacts.length} connection${contacts.length === 1 ? "" : "s"} at AIDIENGL 2026 â€” here are their details`,
     bodyHtml,
   });
 }
@@ -68,7 +68,7 @@ function renderText(firstName: string, contacts: ContactEntry[]) {
   const lines = [
     `Your summit connections, ${firstName}`,
     "",
-    `Contacts you exchanged at AIDIEGL 2026 (YALI Summit):`,
+    `Contacts you exchanged at AIDIENGL 2026 (YALI Summit):`,
     "",
   ];
   for (const c of contacts) {
@@ -126,4 +126,5 @@ export async function sendConnectionsDigestEmail(input: {
     return { ok: false, error: msg.includes("abort") ? "Email timed out" : msg };
   }
 }
+
 

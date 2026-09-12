@@ -26,7 +26,7 @@ function NetworkPage() {
         </h1>
         <p className="text-text-secondary mb-8">
           Find delegates by state, sector and interest. Launching alongside member
-          accounts after AIDIEGL 2026 registration closes.
+          accounts after AIDIENGL 2026 registration closes.
         </p>
         <Link
           to="/register"
@@ -38,3 +38,4 @@ function NetworkPage() {
     </section>
   );
 }
+

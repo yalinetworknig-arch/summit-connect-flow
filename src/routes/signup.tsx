@@ -7,7 +7,7 @@ export const Route = createFileRoute("/signup")({
   validateSearch: z.object({ redirect: z.string().optional() }).parse,
   head: () => ({
     meta: [
-      { title: "Create your AIDIEGL account" },
+      { title: "Create your AIDIENGL account" },
       { name: "description", content: "Sign up to access your ticket, agenda, hackathon entry and networking." },
       { name: "robots", content: "noindex" },
     ],
@@ -110,3 +110,4 @@ function SignupPage() {
     </section>
   );
 }
+

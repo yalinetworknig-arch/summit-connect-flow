@@ -6,7 +6,7 @@ import { claimTicket } from "@/lib/portal.functions";
 import { useSession } from "@/hooks/use-session";
 
 export const Route = createFileRoute("/_authenticated/claim-ticket")({
-  head: () => ({ meta: [{ title: "Claim your ticket â€” AIDIEGL" }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Claim your ticket â€” AIDIENGL" }, { name: "robots", content: "noindex" }] }),
   component: ClaimPage,
 });
 
@@ -84,3 +84,4 @@ function ClaimPage() {
     </section>
   );
 }
+

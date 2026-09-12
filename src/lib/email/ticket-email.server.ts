@@ -124,7 +124,7 @@ function renderText(input: TicketEmailInput, ticketUrl: string, merchUrl: string
     "",
     `View your ticket: ${ticketUrl}`,
     "",
-    "ðŸŽ½ Order official AIDIEGL merchandise (â‚¦8,000):",
+    "ðŸŽ½ Order official AIDIENGL merchandise (â‚¦8,000):",
     `Shop now: ${merchUrl}`,
     "",
     "Friday, 25 September 2026 Â· 8:00 AM â€“ 4:00 PM",
@@ -142,7 +142,7 @@ export async function sendTicketEmail(input: TicketEmailInput): Promise<{ ok: bo
   const merchUrl = `${origin}/merch`;
 
   try {
-    // Note: Email text version will reference "AIDIEGL 2026" in subject; this is updated to "YALI Summit 2026" in renderText()
+    // Note: Email text version will reference "AIDIENGL 2026" in subject; this is updated to "YALI Summit 2026" in renderText()
     // 8-second timeout â€” don't let a slow/failing email block registration
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000);
@@ -178,3 +178,4 @@ export async function sendTicketEmail(input: TicketEmailInput): Promise<{ ok: bo
     return { ok: false, error: msg.includes("abort") ? "Email timed out (registration still saved)" : msg };
   }
 }
+

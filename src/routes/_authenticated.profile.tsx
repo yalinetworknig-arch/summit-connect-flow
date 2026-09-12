@@ -17,7 +17,7 @@ const ATTENDEE_LABELS: Record<string, string> = {
 };
 
 export const Route = createFileRoute("/_authenticated/profile")({
-  head: () => ({ meta: [{ title: "My profile â€” AIDIEGL" }] }),
+  head: () => ({ meta: [{ title: "My profile â€” AIDIENGL" }] }),
   component: ProfileShell,
 });
 
@@ -58,7 +58,7 @@ function ProfileShell() {
           Link your registration
         </h1>
         <p className="text-sm mb-6" style={{ color: "var(--text-secondary)" }}>
-          You're signed in but haven't connected your AIDIEGL ticket yet.
+          You're signed in but haven't connected your AIDIENGL ticket yet.
         </p>
         <Link
           to="/claim-ticket"
@@ -76,7 +76,7 @@ function ProfileShell() {
       <header className="flex flex-wrap items-start justify-between gap-4 mb-6">
         <div>
           <p className="text-xs uppercase tracking-widest mb-1" style={{ color: "var(--accent-cyan)" }}>
-            AIDIEGL attendee
+            AIDIENGL attendee
           </p>
           <h1 className="text-2xl md:text-3xl font-bold" style={{ color: "var(--text-primary)", fontFamily: "Space Grotesk, sans-serif" }}>
             {data.profile.display_name || data.registration.full_name}
@@ -101,3 +101,4 @@ function ProfileShell() {
     </section>
   );
 }
+

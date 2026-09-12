@@ -5,9 +5,9 @@ export const Route = createFileRoute("/tracks")({
   head: () => ({
     meta: [
       { title: "Tracks â€” YALI Summit 2026" },
-      { name: "description", content: "Explore the 7 sector tracks at the AIDIEGL Summit 2026." },
+      { name: "description", content: "Explore the 7 sector tracks at the AIDIENGL Summit 2026." },
       { property: "og:title", content: "Tracks â€” YALI Summit 2026" },
-      { property: "og:description", content: "Explore the 7 sector tracks at the AIDIEGL Summit 2026." },
+      { property: "og:description", content: "Explore the 7 sector tracks at the AIDIENGL Summit 2026." },
     ],
   }),
   component: TracksPage,
@@ -16,3 +16,4 @@ export const Route = createFileRoute("/tracks")({
 function TracksPage() {
   return <div className="pt-20"><TracksSection /></div>;
 }
+

@@ -144,11 +144,11 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
                 Want the full breakdown?
               </h3>
               <p className="text-text-secondary max-w-xl">
-                Every tier, benefit and remittance detail â€” in one PDF. Download the AIDIEGL 2026 partnership prospectus to review at your own pace or share with your team.
+                Every tier, benefit and remittance detail â€” in one PDF. Download the AIDIENGL 2026 partnership prospectus to review at your own pace or share with your team.
               </p>
             </div>
             <a
-              href="/AIDIEGL-2026-Partnership-Prospectus.pdf"
+              href="/AIDIENGL-2026-Partnership-Prospectus.pdf"
               download
               className="flex-shrink-0 inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full text-sm font-semibold bg-accent-cyan text-brand-navy hover:scale-[1.03] active:scale-95 transition-transform"
             >
@@ -212,7 +212,7 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
                   minLength={10}
                   maxLength={1500}
                   className="w-full rounded-lg border-2 border-input bg-background p-4 text-text-primary placeholder:text-muted-foreground hover:border-input/80 focus:outline-none focus:border-accent-cyan focus:ring-2 focus:ring-accent-cyan/30 transition-all duration-200 resize-none"
-                  placeholder="What do you want to achieve at AIDIEGL 2026?"
+                  placeholder="What do you want to achieve at AIDIENGL 2026?"
                 />
               </div>
               {error && (
@@ -297,3 +297,4 @@ function Select({
     </div>
   );
 }
+
