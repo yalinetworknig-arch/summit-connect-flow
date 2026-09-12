@@ -127,7 +127,8 @@ function renderText(input: TicketEmailInput, ticketUrl: string, merchUrl: string
     "🎽 Order official AIDIEGL merchandise (₦8,000):",
     `Shop now: ${merchUrl}`,
     "",
-    "Shiba Event Center, Lagos — Sept 25–26, 2026",
+    "Friday, 25 September 2026 · 8:00 AM – 4:00 PM",
+    "Shiba Event Center, Lagos",
   ].filter(Boolean).join("\n");
 }
 

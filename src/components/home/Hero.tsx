@@ -254,7 +254,7 @@ export function Hero() {
             className="text-white/80 font-semibold text-lg leading-relaxed"
             style={{ letterSpacing: "0.02em" }}
           >
-            Friday, September 25, 2026
+            Friday, September 25, 2026 · 8:00 AM – 4:00 PM
           </p>
           <p className="text-white/70 text-base" style={{ letterSpacing: "0.01em" }}>
             Shiba Event Center, Lagos

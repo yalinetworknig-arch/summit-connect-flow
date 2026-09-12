@@ -127,7 +127,7 @@ function TicketPage() {
           </div>
           <div className="col-span-2">
             <dt style={{ color: "var(--text-secondary)" }}>When & where</dt>
-            <dd className="font-medium" style={{ color: "var(--text-primary)" }}>25–26 Sep 2026 · Shiba Event Center, Lagos</dd>
+            <dd className="font-medium" style={{ color: "var(--text-primary)" }}>Friday, 25 Sep 2026 · 8:00 AM – 4:00 PM · Shiba Event Center, Lagos</dd>
           </div>
         </dl>
       </div>
@@ -168,8 +168,8 @@ function buildIcs(name: string, code: string) {
     "BEGIN:VEVENT",
     `UID:yali-summit-${code}@yalinetwork.ng`,
     `DTSTAMP:${stamp}`,
-    "DTSTART:20260924T080000",
-    "DTEND:20260926T220000",
+    "DTSTART:20260925T080000",
+    "DTEND:20260925T160000",
     "SUMMARY:YALI Network Nigeria Summit 2026",
     `DESCRIPTION:Ticket holder: ${name}. Ticket code: ${code}`,
     "LOCATION:Shiba Event Center, Lagos, Nigeria",
