@@ -287,6 +287,13 @@ export function Hero() {
             Claim your seat
           </Link>
           <a
+            href="/AIDIEGL_2026_Official_Programme_Agenda.docx"
+            download="AIDIEGL_2026_Official_Programme_Agenda.docx"
+            className="px-8 min-h-[52px] inline-flex items-center justify-center rounded-full text-base font-semibold border-2 border-[#00D9FF] transition-all duration-200 hover:bg-[#00D9FF]/10 hover:shadow-[0_8px_20px_rgba(0,217,255,0.2)] text-white"
+          >
+            ↓ Download Agenda
+          </a>
+          <a
             href="#sponsors"
             className="px-8 min-h-[52px] inline-flex items-center justify-center rounded-full text-base font-semibold border-2 border-[#00D9FF] transition-all duration-200 hover:bg-[#00D9FF]/10 hover:shadow-[0_8px_20px_rgba(0,217,255,0.2)] text-white"
           >

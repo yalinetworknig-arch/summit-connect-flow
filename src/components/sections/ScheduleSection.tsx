@@ -20,10 +20,10 @@ export function ScheduleSection({ id = "schedule" }: { id?: string }) {
     <div id={id} className="scroll-mt-24">
       <section className="relative px-5 sm:px-6 lg:px-8 bg-background text-text-primary overflow-hidden" style={{ padding: "clamp(3rem, 10vw, 8rem) 1.25rem" }}>
         <HalftoneBackdrop />
-        <SideLabel>Programme · Sept 25–26 · Akoka Lagos</SideLabel>
-        <SideLabel side="right" tone="muted">AIDIFILN / Arrival → Day 02</SideLabel>
+        <SideLabel>Programme · Friday, Sept 25 · Lagos</SideLabel>
+        <SideLabel side="right" tone="muted">AIDIEGL 2026 · 8:00 AM – 4:00 PM</SideLabel>
         <div className="relative max-w-4xl mx-auto text-center">
-          <Reveal><Eyebrow>2-day summit + arrival day</Eyebrow></Reveal>
+          <Reveal><Eyebrow>One-day summit</Eyebrow></Reveal>
           <Reveal delay={0.08}>
             <h2 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl mt-5 mb-6 leading-[1.05]">
               The full summit, <span className="text-accent-cyan">hour by hour.</span>
@@ -31,7 +31,7 @@ export function ScheduleSection({ id = "schedule" }: { id?: string }) {
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              Keynotes, parallel sector rooms, hands-on workshops, a hackathon and a closing showcase — at UNILAG Main Auditorium, Akoka Lagos. Speaker lineups land closer to event.
+              Keynotes, panels, masterclasses, and fireside chats — all on Friday, September 25, 2026 from 8:00 AM to 4:00 PM. Hybrid format: physical attendance at Shiba Event Center, Lagos + livestream.
             </p>
           </Reveal>
         </div>
@@ -54,31 +54,33 @@ export function ScheduleSection({ id = "schedule" }: { id?: string }) {
 
       <section className="px-5 sm:px-6 lg:px-8 pb-24 md:pb-32 bg-background text-text-primary">
         <div className="max-w-5xl mx-auto">
-          <div className="-mx-5 sm:-mx-6 lg:-mx-8 px-5 sm:px-6 lg:px-8 py-3 bg-background/85 backdrop-blur-md border-y border-border-strong mb-10">
-            <div className="flex gap-1 overflow-x-auto no-scrollbar md:justify-center snap-x">
-              {SCHEDULE.map((d, i) => (
-                <button
-                  key={d.day}
-                  type="button"
-                  onClick={() => setActive(i)}
-                  className={`relative px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap transition-colors ${
-                    i === active
-                      ? "text-brand-navy"
-                      : "text-text-secondary hover:text-text-primary"
-                  }`}
-                >
-                  {i === active && (
-                    <motion.span
-                      layoutId="day-pill-home"
-                      className="absolute inset-0 rounded-full bg-accent-cyan"
-                      transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                    />
-                  )}
-                  <span className="relative">{d.day}</span>
-                </button>
-              ))}
+          {SCHEDULE.length > 1 && (
+            <div className="-mx-5 sm:-mx-6 lg:-mx-8 px-5 sm:px-6 lg:px-8 py-3 bg-background/85 backdrop-blur-md border-y border-border-strong mb-10">
+              <div className="flex gap-1 overflow-x-auto no-scrollbar md:justify-center snap-x">
+                {SCHEDULE.map((d, i) => (
+                  <button
+                    key={d.day}
+                    type="button"
+                    onClick={() => setActive(i)}
+                    className={`relative px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap transition-colors ${
+                      i === active
+                        ? "text-brand-navy"
+                        : "text-text-secondary hover:text-text-primary"
+                    }`}
+                  >
+                    {i === active && (
+                      <motion.span
+                        layoutId="day-pill-home"
+                        className="absolute inset-0 rounded-full bg-accent-cyan"
+                        transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                      />
+                    )}
+                    <span className="relative">{d.day}</span>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           <AnimatePresence mode="wait">
             <motion.div
@@ -137,13 +139,20 @@ export function ScheduleSection({ id = "schedule" }: { id?: string }) {
           </AnimatePresence>
 
           <Reveal delay={0.1}>
-            <div className="mt-14 text-center">
+            <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 to="/register"
                 className="inline-flex items-center justify-center px-8 min-h-12 rounded-full text-base font-semibold bg-accent-cyan text-brand-navy hover:scale-[1.03] active:scale-100 transition-transform"
               >
                 Claim your seat
               </Link>
+              <a
+                href="/AIDIEGL_2026_Official_Programme_Agenda.docx"
+                download="AIDIEGL_2026_Official_Programme_Agenda.docx"
+                className="inline-flex items-center justify-center px-8 min-h-12 rounded-full text-base font-semibold border-2 border-accent-cyan text-accent-cyan hover:bg-accent-cyan/10 active:scale-100 transition-all"
+              >
+                ↓ Download Agenda
+              </a>
             </div>
           </Reveal>
         </div>
