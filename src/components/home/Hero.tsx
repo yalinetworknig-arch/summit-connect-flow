@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { motion, type Variants } from "framer-motion";
 import { Countdown } from "./Countdown";
-import aidieglNavy from "@/assets/aidiegl-navy.png";
+import aidieglWhite from "@/assets/aidiegl-white.png";
 import usMissionLockup from "@/assets/sponsors/us-mission-lockup.png";
 import yaliRoundel from "@/assets/sponsors/yali-roundel.png";
 
@@ -210,9 +210,9 @@ export function Hero() {
             animate={{ opacity: [0.35, 0.7, 0.35], scale: [1, 1.03, 1] }}
             transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
           />
-          {/* AIDIEGL Wordmark — navy version for optimal contrast on all backgrounds */}
+          {/* AIDIEGL Wordmark — white version for dark background */}
           <motion.img
-            src={aidieglNavy}
+            src={aidieglWhite}
             alt="AIDIEGL — Artificial Intelligence, Digital Innovation, and Empowering the Next Generation of Leaders"
             className="relative w-full h-auto select-none"
             draggable={false}
