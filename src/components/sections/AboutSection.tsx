@@ -25,19 +25,19 @@ export function AboutSection({ id = "about" }: { id?: string }) {
           <Reveal><Eyebrow>For Nigeria's civic &amp; social-impact leaders</Eyebrow></Reveal>
           <Reveal delay={0.08}>
             <h2 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl leading-[1.05] mt-5 mb-7">
-              Inclusive leadership is the work.{" "}
+              Leadership authority in digital systems is the work.{" "}
               <span className="text-accent-cyan">
-                AI and digital innovation are the new tools on the table.
+                AI and digital innovation are being deployed — and civic leaders need to shape them.
               </span>
             </h2>
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-lg text-text-secondary leading-relaxed max-w-3xl">
-              The YALI Network Nigeria Summit brings together young African leaders
-              across sectors — technology, education, finance, healthcare, government,
-              agriculture, and business — for a full day of keynotes, panel discussions,
-              and networking focused on AI, digital innovation, and empowering the next
-              generation of leaders shaping Africa's digital future.
+              The YALI Network Nigeria Summit 2026 convenes civic leaders, policy makers,
+              and social-impact founders across sectors — technology, education, finance,
+              healthcare, government, agriculture, and business — for a full day of keynotes,
+              panel discussions, and working partnerships focused on AI, digital innovation,
+              and Nigerian civic authority in digital systems.
             </p>
           </Reveal>
         </div>
@@ -125,9 +125,8 @@ export function AboutSection({ id = "about" }: { id?: string }) {
                 Welfare decisions, credit scores, classroom assessments,
                 healthcare triage, voter information, identity systems —
                 increasingly mediated by models and platforms whose defaults
-                nobody in your community signed off on. Inclusion isn't a value
-                statement anymore; it's a design choice someone is making whether
-                you're at the table or not.
+                nobody in your community signed off on. Systems design choices are
+                being made. Civic leadership has to be in the room to shape them.
               </p>
 
               <div className="md:float-left md:mr-8 md:w-[42%] md:max-w-[420px] mb-2 clear-both">
@@ -146,12 +145,11 @@ export function AboutSection({ id = "about" }: { id?: string }) {
                 <span className="text-text-primary font-medium">
                   Why this summit, this room.
                 </span>{" "}
-                Civic actors, social-impact founders, educators, community
-                organisers, public servants — the people Nigerians already trust
-                — getting fluent enough in AI and digital systems to lead them,
-                challenge them, procure them, regulate them, and build with them.
-                Not to become engineers. To stop being end-users of decisions
-                made elsewhere.
+                Civic actors, policy makers, social-impact founders, educators,
+                and public servants — the people Nigeria trusts — building authority
+                in AI and digital systems to lead them, regulate them, procure them,
+                and build with them. Not to become engineers. To build the competence
+                and authority to shape decisions, not just be end-users of them.
               </p>
               <p className="clear-both">
                 <span className="text-text-primary font-medium">
@@ -181,7 +179,7 @@ export function AboutSection({ id = "about" }: { id?: string }) {
               <h3 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl mt-5">
                 Three commitments.{" "}
                 <span className="text-accent-cyan">
-                  Inclusive leadership is the anchor.
+                  Civic authority is the anchor.
                 </span>
               </h3>
             </div>
@@ -190,8 +188,8 @@ export function AboutSection({ id = "about" }: { id?: string }) {
             {[
               {
                 Icon: Users,
-                title: "Inclusive leadership (the anchor)",
-                body: "Women, youth, persons with disabilities, rural communities, frontline organisers — leadership that looks like, and answers to, the Nigeria it serves.",
+                title: "Civic authority & systems leadership",
+                body: "Civic actors, policy makers, educators, and social-impact founders building competence and authority to lead, regulate, and shape AI and digital systems at Nigerian scale.",
               },
               {
                 Icon: Sparkles,
