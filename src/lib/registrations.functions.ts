@@ -50,7 +50,7 @@ export const submitRegistration = createServerFn({ method: "POST" })
     const { data: row, error } = await supabaseAdmin
       .from("registrations")
       .insert(payload)
-      .select("id, full_name, email, ticket_code, track_selection, attendee_type, created_at, payment_status, amount_kobo")
+      .select("id, full_name, email, ticket_code, sector, attendee_type, attendance_mode, state, created_at, payment_status, amount_kobo")
       .single();
     if (error) {
       console.error("[SERVER] Supabase insert error:", error);
@@ -70,8 +70,10 @@ export const submitRegistration = createServerFn({ method: "POST" })
         to: row.email,
         fullName: row.full_name,
         ticketCode: row.ticket_code,
-        track: row.track_selection,
+        sector: row.sector,
         attendeeType: row.attendee_type,
+        attendanceMode: row.attendance_mode,
+        state: row.state,
       }).then((result) => {
         if (!result.ok) console.error("[SERVER] ticket email failed:", result.error);
         else console.log("[SERVER] ticket email sent:", result.id);

@@ -5,8 +5,10 @@ type TicketEmailInput = {
   to: string;
   fullName: string;
   ticketCode: string;
-  track?: string | null;
+  sector?: string | null;
   attendeeType?: string | null;
+  attendanceMode?: string | null;
+  state?: string | null;
 };
 
 function resolveOrigin(): string {
@@ -27,8 +29,9 @@ function resolveOrigin(): string {
 function renderHtml(input: TicketEmailInput, ticketUrl: string, merchUrl: string) {
   const firstName = input.fullName.split(" ")[0] || input.fullName;
   const detailRows = [
-    input.track ? { label: "Track", value: input.track } : null,
+    input.sector ? { label: "Sector", value: input.sector, capitalize: true } : null,
     input.attendeeType ? { label: "Attendee type", value: input.attendeeType, capitalize: true } : null,
+    input.attendanceMode ? { label: "Attendance", value: input.attendanceMode === "physical" ? "In-person" : "Virtual" } : null,
   ].filter((r): r is { label: string; value: string; capitalize?: boolean } => Boolean(r));
 
   const bodyHtml = `

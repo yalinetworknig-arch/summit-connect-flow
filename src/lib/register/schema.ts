@@ -3,6 +3,21 @@ import { z } from "zod";
 export const ATTENDEE_TYPES = ["delegate", "sponsor", "media", "public", "volunteer"] as const;
 export type AttendeeType = (typeof ATTENDEE_TYPES)[number];
 
+export const SECTORS = [
+  "technology",
+  "education",
+  "finance",
+  "healthcare",
+  "government",
+  "agriculture",
+  "business",
+  "other",
+] as const;
+export type Sector = (typeof SECTORS)[number];
+
+export const ATTENDANCE_MODES = ["physical", "virtual"] as const;
+export type AttendanceMode = (typeof ATTENDANCE_MODES)[number];
+
 export const MEDIA_TYPES = ["press", "broadcast", "creator", "photographer"] as const;
 export const SPONSOR_TIERS = ["platinum", "gold", "silver", "bronze", "community", "exploring"] as const;
 export const TSHIRT_SIZES = ["M", "L", "XL", "2XL"] as const;
@@ -74,7 +89,12 @@ export const step2Schema = z
   });
 
 export const step3Schema = z.object({
-  track_selection: z.string().min(1, "Pick a track").max(40),
+  sector: z.enum(SECTORS, {
+    message: "Please select your sector",
+  }),
+  attendance_mode: z.enum(ATTENDANCE_MODES, {
+    message: "Please select physical or virtual attendance",
+  }),
 });
 
 export const step4Schema = z.object({
@@ -105,7 +125,8 @@ export const fullRegistrationSchema = z.object({
   tshirt_size: z.string().trim().max(8).nullable().optional(),
   tshirt_color: z.string().trim().max(20).nullable().optional(),
   prior_volunteer_experience: z.string().trim().max(600).nullable().optional(),
-  track_selection: z.string().min(1).max(40),
+  sector: z.enum(SECTORS),
+  attendance_mode: z.enum(ATTENDANCE_MODES),
   accommodation_needed: z.boolean(),
   travel_support_needed: z.boolean(),
   heard_about_summit: z.string().trim().max(120).nullable().optional(),

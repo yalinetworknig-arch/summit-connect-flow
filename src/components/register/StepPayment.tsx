@@ -5,7 +5,6 @@ import { useNavigate } from "@tanstack/react-router";
 import { submitRegistration } from "@/lib/registrations.functions";
 import { clearDraft } from "@/lib/register/storage";
 import type { FormState } from "@/lib/register/schema";
-import { TRACKS } from "@/lib/register/tracks";
 import { staggerContainer, staggerChild, ctaButton, ease } from "@/lib/motion";
 
 const ATTENDEE_LABELS: Record<string, string> = {
@@ -14,6 +13,22 @@ const ATTENDEE_LABELS: Record<string, string> = {
   media: "Media",
   public: "General Public",
   volunteer: "Volunteer",
+};
+
+const SECTOR_LABELS: Record<string, string> = {
+  technology: "Technology & IT",
+  education: "Education",
+  finance: "Finance & Banking",
+  healthcare: "Healthcare",
+  government: "Government & Policy",
+  agriculture: "Agriculture",
+  business: "Business & Entrepreneurship",
+  other: "Other",
+};
+
+const ATTENDANCE_LABELS: Record<string, string> = {
+  physical: "Physical (In-person)",
+  virtual: "Virtual (Online)",
 };
 
 export function StepPayment({ value }: { value: FormState }) {
@@ -34,7 +49,6 @@ export function StepPayment({ value }: { value: FormState }) {
     };
   }, [value.attendee_type]);
 
-  const track = TRACKS.find((t) => t.slug === value.track_selection);
 
   async function persist() {
     // 10-second timeout to prevent hung requests
@@ -97,7 +111,11 @@ export function StepPayment({ value }: { value: FormState }) {
         <SummaryRow label="Name" value={value.full_name} />
         <SummaryRow label="Email" value={value.email} />
         <SummaryRow label="Type" value={value.attendee_type ? ATTENDEE_LABELS[value.attendee_type] : undefined} />
-        <SummaryRow label="Track" value={track?.title ?? value.track_selection} />
+        <SummaryRow label="Sector" value={value.sector ? SECTOR_LABELS[value.sector] : undefined} />
+        <SummaryRow label="Attendance" value={value.attendance_mode ? ATTENDANCE_LABELS[value.attendance_mode] : undefined} />
+        {value.attendance_mode === "virtual" && value.state && (
+          <SummaryRow label="Location" value={value.state} />
+        )}
         <SummaryRow label="State" value={value.state} />
         {value.accommodation_needed && <SummaryRow label="Accommodation" value="Requested" />}
         {value.travel_support_needed && <SummaryRow label="Travel support" value="Requested" />}

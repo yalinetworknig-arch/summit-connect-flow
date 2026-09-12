@@ -227,7 +227,7 @@ export const resendTicketEmail = createServerFn({ method: "POST" })
     // Get registration details
     const { data: reg, error: fetchError } = await supabase
       .from("registrations")
-      .select("id, full_name, email, ticket_code, track_selection, attendee_type")
+      .select("id, full_name, email, ticket_code, sector, attendee_type, attendance_mode, state")
       .eq("id", data.id)
       .single();
 
@@ -240,8 +240,10 @@ export const resendTicketEmail = createServerFn({ method: "POST" })
       to: reg.email,
       fullName: reg.full_name,
       ticketCode: reg.ticket_code,
-      track: reg.track_selection,
+      sector: reg.sector,
       attendeeType: reg.attendee_type,
+      attendanceMode: reg.attendance_mode,
+      state: reg.state,
     });
 
     if (!emailResult.ok) {

@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ProgressIndicator } from "@/components/register/ProgressIndicator";
 import { StepAttendeeType } from "@/components/register/StepAttendeeType";
 import { StepPersonalInfo } from "@/components/register/StepPersonalInfo";
-import { StepTrack } from "@/components/register/StepTrack";
+import { StepSectorAttendance } from "@/components/register/StepSectorAttendance";
 import { StepLogistics } from "@/components/register/StepLogistics";
 import { StepPayment } from "@/components/register/StepPayment";
 import {
@@ -43,7 +43,7 @@ export const Route = createFileRoute("/register")({
 const TITLES = [
   "First — who's coming?",
   "Tell us about you",
-  "Pick the room you want to shape",
+  "Your sector and attendance",
   "Logistics and preferences",
   "Review and confirm your seat",
 ];
@@ -274,7 +274,7 @@ function RegisterPage() {
               {step === 1 && <StepAttendeeType value={form} onChange={patch} />}
               {step === 2 && <StepPersonalInfo value={form} errors={errors} onChange={patch} />}
               {step === 3 && (
-                <StepTrack value={form} error={errors.track_selection} onChange={patch} />
+                <StepSectorAttendance value={form} error={{ sector: errors.sector, attendance_mode: errors.attendance_mode }} onChange={patch} />
               )}
               {step === 4 && <StepLogistics value={form} errors={errors} onChange={patch} />}
               {step === 5 && <StepPayment value={form} />}
