@@ -2,8 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { motion, type Variants } from "framer-motion";
 import { Countdown } from "./Countdown";
 import aidieglWhite from "@/assets/aidiegl-white.png";
-import usMissionLockup from "@/assets/sponsors/us-mission-lockup.png";
-import yaliRoundel from "@/assets/sponsors/yali-roundel.png";
+import usMissionLogo from "@/assets/sponsors/us-mission-logo.jpeg";
+import yaliLogo from "@/assets/sponsors/yali-logo.jpeg";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -143,8 +143,8 @@ export function Hero() {
           className="mb-10 inline-flex flex-wrap items-center justify-center gap-3 px-4 py-3 rounded-2xl border border-white/10 bg-white/[0.03]"
         >
           {[
-            { src: usMissionLockup, alt: "United States Diplomatic Mission in Nigeria" },
-            { src: yaliRoundel, alt: "YALI Network Nigeria" },
+            { src: usMissionLogo, alt: "United States Diplomatic Mission in Nigeria" },
+            { src: yaliLogo, alt: "YALI Network Nigeria" },
           ].map(({ src, alt }) => (
             <div
               key={alt}
