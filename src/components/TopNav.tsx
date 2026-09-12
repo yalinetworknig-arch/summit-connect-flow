@@ -171,7 +171,7 @@ export function TopNav() {
             loading="eager"
             decoding="async"
           />
-        </a>
+        </Link>
 
         <div className="hidden lg:block">
           <NavLinks activeId={activeId} onLinkClick={setActiveId} />
