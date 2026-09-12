@@ -140,7 +140,7 @@ export function Hero() {
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="mb-16 sm:mb-20 inline-flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12"
+          className="mb-10 sm:mb-12 inline-flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12"
         >
           {[
             { src: usMissionLogo, alt: "United States Diplomatic Mission in Nigeria" },
@@ -178,7 +178,7 @@ export function Hero() {
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="mt-12 sm:mt-16 text-white/85 text-2xl sm:text-3xl font-bold tracking-tight leading-tight"
+          className="mt-8 sm:mt-10 text-white/85 text-2xl sm:text-3xl font-bold tracking-tight leading-tight"
           style={{ letterSpacing: "-0.01em" }}
         >
           YALI Network Nigeria
@@ -191,7 +191,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.3 }}
-          className="mt-20 sm:mt-28"
+          className="mt-12 sm:mt-14"
         >
           <motion.p
             custom={0.9}
@@ -213,7 +213,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.94, y: 16 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 80, damping: 16, delay: 0.3 }}
-          className="relative w-full max-w-[780px] mt-8 sm:mt-12"
+          className="relative w-full max-w-[780px] mt-6 sm:mt-8"
         >
           {/* Refined breathing halo — more subtle and sophisticated */}
           <motion.div
@@ -248,7 +248,7 @@ export function Hero() {
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="mt-16 sm:mt-20 space-y-3"
+          className="mt-12 sm:mt-14 space-y-2"
         >
           <p
             className="text-white/80 font-semibold text-lg leading-relaxed"
@@ -267,7 +267,7 @@ export function Hero() {
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="mt-12 sm:mt-16"
+          className="mt-10 sm:mt-12"
         >
           <Countdown />
         </motion.div>
@@ -278,7 +278,7 @@ export function Hero() {
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="mt-16 sm:mt-20 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6"
+          className="mt-12 sm:mt-14 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6"
         >
           <Link
             to="/register"
@@ -300,7 +300,7 @@ export function Hero() {
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="mt-12 text-white/50 text-xs font-medium uppercase tracking-wider"
+          className="mt-10 text-white/50 text-xs font-medium uppercase tracking-wider"
         >
           Physical & Virtual · 150–200 Attendees · Networking & Innovation
         </motion.p>
