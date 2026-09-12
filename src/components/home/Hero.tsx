@@ -135,54 +135,71 @@ export function Hero() {
 
       {/* Content */}
       <div className="relative max-w-[1200px] mx-auto px-6 md:px-12 py-20 md:py-28 min-h-[100dvh] flex flex-col items-center justify-center text-center">
-        {/* Partners bar — clean, seamless integration with dark background */}
+        {/* Partners bar — elevated, prestigious presentation */}
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
+          initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-12 inline-flex flex-wrap items-center justify-center gap-6 sm:gap-8"
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="mb-16 sm:mb-20 inline-flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12"
         >
           {[
             { src: usMissionLogo, alt: "United States Diplomatic Mission in Nigeria" },
             { src: yaliLogo, alt: "YALI Network Nigeria" },
-          ].map(({ src, alt }) => (
+          ].map(({ src, alt }, idx) => (
             <div
               key={alt}
-              className="h-14 sm:h-16 flex items-center justify-center"
+              className="flex items-center justify-center group"
             >
-              <img
-                src={src}
-                alt={alt}
-                className="h-full w-auto object-contain select-none filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
-                draggable={false}
-                loading="eager"
-              />
+              {/* Refined logo container with subtle elevation */}
+              <div className="relative">
+                <img
+                  src={src}
+                  alt={alt}
+                  className="h-16 sm:h-20 w-auto object-contain select-none transition-transform duration-300 group-hover:scale-105"
+                  style={{
+                    filter:
+                      "drop-shadow(0 8px 16px rgba(0,0,0,0.25)) drop-shadow(0 1px 2px rgba(255,255,255,0.1))",
+                  }}
+                  draggable={false}
+                  loading="eager"
+                />
+              </div>
+              {/* Divider between logos on desktop */}
+              {idx === 0 && (
+                <div className="hidden sm:block h-12 w-px bg-gradient-to-b from-transparent via-[#00D9FF]/20 to-transparent mx-8" />
+              )}
             </div>
           ))}
         </motion.div>
 
-        {/* PRESENTS */}
+        {/* PRESENTED BY — label above sponsors */}
         <motion.p
-          custom={0}
+          custom={-0.1}
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="text-[#00D9FF] text-xs font-semibold uppercase mb-8 tracking-widest"
+          className="text-[#00D9FF]/70 text-[10px] font-medium uppercase tracking-[0.15em] mb-4"
         >
-          Presents
+          Presented by
         </motion.p>
 
-
-        {/* THEME */}
-        <motion.p
-          custom={1}
-          initial="hidden"
-          animate="show"
-          variants={fadeUp}
-          className="text-[#00D9FF] text-xs font-semibold uppercase mt-14 mb-6 tracking-widest"
+        {/* THEME SECTION — with better separation */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="mt-20 sm:mt-24"
         >
-          Theme
-        </motion.p>
+          <motion.p
+            custom={0.8}
+            initial="hidden"
+            animate="show"
+            variants={fadeUp}
+            className="text-[#00D9FF]/60 text-xs font-medium uppercase tracking-[0.12em] mb-8"
+          >
+            The Theme
+          </motion.p>
+        </motion.div>
 
         {/* AIDIEGL wordmark image (contains tagline) */}
         <h1 className="sr-only">
@@ -190,25 +207,24 @@ export function Hero() {
           the Next Generation of Leaders
         </h1>
         <motion.div
-          initial={{ opacity: 0, scale: 0.92, y: 12 }}
+          initial={{ opacity: 0, scale: 0.94, y: 16 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 90, damping: 14, delay: 0.4 }}
-          whileHover={{ scale: 1.015 }}
-          className="relative w-full max-w-[760px] mt-2"
+          transition={{ type: "spring", stiffness: 80, damping: 16, delay: 0.3 }}
+          className="relative w-full max-w-[780px] mt-8 sm:mt-12"
         >
-          {/* Breathing cyan halo */}
+          {/* Refined breathing halo — more subtle and sophisticated */}
           <motion.div
             aria-hidden="true"
-            className="absolute -inset-10 pointer-events-none motion-reduce:hidden"
+            className="absolute -inset-12 pointer-events-none motion-reduce:hidden"
             style={{
               background:
-                "radial-gradient(55% 55% at 50% 50%, rgba(0,217,255,0.22), rgba(123,44,255,0.08) 55%, transparent 78%)",
-              filter: "blur(32px)",
+                "radial-gradient(50% 50% at 50% 50%, rgba(0,217,255,0.18), rgba(123,44,255,0.06) 60%, transparent 85%)",
+              filter: "blur(40px)",
             }}
-            animate={{ opacity: [0.35, 0.7, 0.35], scale: [1, 1.03, 1] }}
-            transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ opacity: [0.4, 0.6, 0.4], scale: [1, 1.02, 1] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
           />
-          {/* AIDIEGL Wordmark — white version for dark background */}
+          {/* AIDIEGL Wordmark — white version for dark background, refined shadow */}
           <motion.img
             src={aidieglWhite}
             alt="AIDIEGL — Artificial Intelligence, Digital Innovation, and Empowering the Next Generation of Leaders"
@@ -216,60 +232,75 @@ export function Hero() {
             draggable={false}
             style={{
               filter:
-                "drop-shadow(0 1px 0 rgba(255,255,255,0.18)) drop-shadow(0 12px 24px rgba(0,0,0,0.55)) drop-shadow(0 0 28px rgba(0,217,255,0.35))",
+                "drop-shadow(0 1px 2px rgba(255,255,255,0.2)) drop-shadow(0 16px 32px rgba(0,0,0,0.5)) drop-shadow(0 0 32px rgba(0,217,255,0.3))",
             }}
-            animate={{ y: [0, -6, 0] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
           />
         </motion.div>
 
-        {/* Date */}
-        <motion.p
+        {/* Event details — refined typography and spacing */}
+        <motion.div
+          custom={1.2}
+          initial="hidden"
+          animate="show"
+          variants={fadeUp}
+          className="mt-16 sm:mt-20 space-y-3"
+        >
+          <p
+            className="text-white/80 font-semibold text-lg leading-relaxed"
+            style={{ letterSpacing: "0.02em" }}
+          >
+            Friday, September 25, 2026
+          </p>
+          <p className="text-white/70 text-base" style={{ letterSpacing: "0.01em" }}>
+            Shiba Event Center, Lagos
+          </p>
+        </motion.div>
+
+        {/* Countdown */}
+        <motion.div
           custom={1.4}
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="mt-6 text-white/70 font-semibold text-base"
-          style={{ letterSpacing: "0.05em" }}
+          className="mt-12 sm:mt-16"
         >
-          Friday, September 25, 2026 · Shiba Event Center, Lagos
-        </motion.p>
+          <Countdown />
+        </motion.div>
 
+        {/* CTAs — premium presentation */}
         <motion.div
           custom={1.6}
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="mt-8"
-        >
-          <Countdown />
-        </motion.div>
-
-        {/* CTAs */}
-        <motion.div
-          custom={1.8}
-          initial="hidden"
-          animate="show"
-          variants={fadeUp}
-          className="mt-8 flex flex-col sm:flex-row items-center gap-3"
+          className="mt-16 sm:mt-20 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6"
         >
           <Link
             to="/register"
-            className="px-7 min-h-12 inline-flex items-center justify-center rounded-full text-base font-semibold bg-[#00D9FF] text-[#0A1128] transition-transform hover:scale-[1.03] active:scale-95"
+            className="px-8 min-h-[52px] inline-flex items-center justify-center rounded-full text-base font-semibold bg-[#00D9FF] text-[#0A1128] transition-all duration-200 hover:shadow-[0_12px_28px_rgba(0,217,255,0.3)] hover:scale-[1.02] active:scale-[0.98]"
           >
             Claim your seat
           </Link>
           <a
             href="#sponsors"
-            className="px-7 min-h-12 inline-flex items-center justify-center rounded-full text-base font-semibold border-2 border-[#00D9FF] transition-colors text-slate-50 bg-[#f1f2f9]/0"
+            className="px-8 min-h-[52px] inline-flex items-center justify-center rounded-full text-base font-semibold border-2 border-[#00D9FF] transition-all duration-200 hover:bg-[#00D9FF]/10 hover:shadow-[0_8px_20px_rgba(0,217,255,0.2)] text-white"
           >
             Partner with us
           </a>
         </motion.div>
 
-        <p className="mt-10 text-white/65 text-sm">
-          Physical & Virtual · 150–200 attendees · Sept 25, 2026
-        </p>
+        {/* Event metadata — subtle and refined */}
+        <motion.p
+          custom={1.8}
+          initial="hidden"
+          animate="show"
+          variants={fadeUp}
+          className="mt-12 text-white/50 text-xs font-medium uppercase tracking-wider"
+        >
+          Physical & Virtual · 150–200 Attendees · Networking & Innovation
+        </motion.p>
       </div>
 
       {/* Bottom vignette — clean fade to black */}
