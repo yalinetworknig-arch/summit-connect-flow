@@ -173,22 +173,6 @@ export function Hero() {
           YALI Network Nigeria presents
         </motion.p>
 
-        {/* Title */}
-        <motion.h2
-          custom={0.2}
-          initial="hidden"
-          animate="show"
-          variants={fadeUp}
-          className="font-display font-bold text-white"
-          style={{
-            fontSize: "clamp(28px, 4.5vw, 52px)",
-            lineHeight: 1.1,
-          }}
-        >
-          YALI Network Nigeria Summit
-          <br />
-          <span className="text-[#00D9FF]">AI, Digital Innovation, and Empowering the Next Generation of Leaders</span>
-        </motion.h2>
 
         {/* THEME */}
         <motion.p
