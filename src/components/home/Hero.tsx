@@ -148,17 +148,18 @@ export function Hero() {
           ].map(({ src, alt }, idx) => (
             <div
               key={alt}
-              className="flex items-center justify-center group w-20 sm:w-28 h-16 sm:h-20"
+              className="flex items-center justify-center group"
             >
-              {/* Refined logo container with subtle elevation — equal sizing */}
-              <div className="relative w-full h-full flex items-center justify-center">
+              {/* Background container box — creates visual balance and framing */}
+              <div className="w-28 sm:w-32 h-20 sm:h-24 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm flex items-center justify-center p-4 transition-all duration-300 group-hover:bg-white/15 group-hover:border-white/30">
+                {/* Logo with shadow */}
                 <img
                   src={src}
                   alt={alt}
-                  className="max-h-full max-w-full object-contain select-none transition-transform duration-300 group-hover:scale-105"
+                  className="max-h-full max-w-full object-contain select-none transition-transform duration-300 group-hover:scale-110"
                   style={{
                     filter:
-                      "drop-shadow(0 8px 16px rgba(0,0,0,0.25)) drop-shadow(0 1px 2px rgba(255,255,255,0.1))",
+                      "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
                   }}
                   draggable={false}
                   loading="eager"
