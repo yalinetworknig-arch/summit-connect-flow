@@ -117,8 +117,6 @@ export function StepPayment({ value }: { value: FormState }) {
           <SummaryRow label="Location" value={value.state} />
         )}
         <SummaryRow label="State" value={value.state} />
-        {value.accommodation_needed && <SummaryRow label="Accommodation" value="Requested" />}
-        {value.travel_support_needed && <SummaryRow label="Travel support" value="Requested" />}
       </motion.div>
 
       {/* Price block */}
