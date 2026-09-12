@@ -16,10 +16,10 @@ export function TracksSection({ id = "tracks" }: { id?: string }) {
     <div id={id} className="scroll-mt-24">
       <section className="relative px-5 sm:px-6 lg:px-8 bg-background text-text-primary overflow-hidden" style={{ padding: "clamp(3rem, 10vw, 8rem) 1.25rem" }}>
         <HalftoneBackdrop />
-        <SideLabel>Seven sectors · One stage</SideLabel>
-        <SideLabel side="right" tone="muted">Tracks / 01 → 07</SideLabel>
+        <SideLabel>Four sectors · One stage</SideLabel>
+        <SideLabel side="right" tone="muted">Tracks / 01 → 04</SideLabel>
         <div className="relative max-w-4xl mx-auto text-center">
-          <Reveal><Eyebrow>Seven sector tracks</Eyebrow></Reveal>
+          <Reveal><Eyebrow>Four sector tracks</Eyebrow></Reveal>
           <Reveal delay={0.08}>
             <h2 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl mt-5 mb-6 leading-[1.05]">
               Pick the room you want to{" "}
@@ -28,7 +28,7 @@ export function TracksSection({ id = "tracks" }: { id?: string }) {
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              Seven sector rooms. Each one ends with named commitments — not closing remarks. Pick the one you can move.
+              Four sector rooms. Each one connects to the one-day summit schedule with named commitments — not closing remarks. Pick the one you can move.
             </p>
           </Reveal>
         </div>
