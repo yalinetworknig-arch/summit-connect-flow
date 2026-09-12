@@ -140,7 +140,7 @@ export function Hero() {
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="mb-10 sm:mb-12 inline-flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12"
+          className="mb-10 sm:mb-12 inline-flex flex-row items-center justify-center gap-6 sm:gap-12"
         >
           {[
             { src: usMissionLogo, alt: "United States Diplomatic Mission in Nigeria" },
@@ -155,7 +155,7 @@ export function Hero() {
                 <img
                   src={src}
                   alt={alt}
-                  className="h-16 sm:h-20 w-auto object-contain select-none transition-transform duration-300 group-hover:scale-105"
+                  className="h-14 sm:h-20 w-auto object-contain select-none transition-transform duration-300 group-hover:scale-105"
                   style={{
                     filter:
                       "drop-shadow(0 8px 16px rgba(0,0,0,0.25)) drop-shadow(0 1px 2px rgba(255,255,255,0.1))",
