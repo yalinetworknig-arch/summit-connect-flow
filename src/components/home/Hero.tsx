@@ -134,13 +134,13 @@ export function Hero() {
       </span>
 
       {/* Content */}
-      <div className="relative max-w-[1200px] mx-auto px-6 md:px-12 py-20 md:py-28 min-h-[100dvh] flex flex-col items-center justify-center text-center">
+      <div className="relative max-w-[1200px] mx-auto px-6 md:px-12 py-10 md:py-14 min-h-[100dvh] flex flex-col items-center justify-center text-center">
         {/* Partners bar — elevated, prestigious presentation */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="mb-10 sm:mb-12 inline-flex flex-row items-center justify-center gap-6 sm:gap-12"
+          className="mb-6 sm:mb-8 inline-flex flex-row items-center justify-center gap-4 sm:gap-10"
         >
           {[
             { src: usMissionLogo, alt: "United States Diplomatic Mission in Nigeria" },
@@ -148,14 +148,14 @@ export function Hero() {
           ].map(({ src, alt }, idx) => (
             <div
               key={alt}
-              className="flex items-center justify-center group"
+              className="flex items-center justify-center group w-20 sm:w-28 h-16 sm:h-20"
             >
-              {/* Refined logo container with subtle elevation */}
-              <div className="relative">
+              {/* Refined logo container with subtle elevation — equal sizing */}
+              <div className="relative w-full h-full flex items-center justify-center">
                 <img
                   src={src}
                   alt={alt}
-                  className="h-14 sm:h-20 w-auto object-contain select-none transition-transform duration-300 group-hover:scale-105"
+                  className="max-h-full max-w-full object-contain select-none transition-transform duration-300 group-hover:scale-105"
                   style={{
                     filter:
                       "drop-shadow(0 8px 16px rgba(0,0,0,0.25)) drop-shadow(0 1px 2px rgba(255,255,255,0.1))",
@@ -166,7 +166,7 @@ export function Hero() {
               </div>
               {/* Divider between logos on desktop */}
               {idx === 0 && (
-                <div className="hidden sm:block h-12 w-px bg-gradient-to-b from-transparent via-[#00D9FF]/20 to-transparent mx-8" />
+                <div className="hidden sm:block h-12 w-px bg-gradient-to-b from-transparent via-[#00D9FF]/20 to-transparent mx-6" />
               )}
             </div>
           ))}
@@ -178,7 +178,7 @@ export function Hero() {
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="mt-8 sm:mt-10 text-white/85 text-2xl sm:text-3xl font-bold tracking-tight leading-tight"
+          className="mt-4 sm:mt-5 text-white/85 text-xl sm:text-2xl font-bold tracking-tight leading-tight"
           style={{ letterSpacing: "-0.01em" }}
         >
           YALI Network Nigeria
@@ -191,14 +191,14 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.3 }}
-          className="mt-12 sm:mt-14"
+          className="mt-5 sm:mt-6"
         >
           <motion.p
             custom={0.9}
             initial="hidden"
             animate="show"
             variants={fadeUp}
-            className="text-[#00D9FF]/70 text-sm font-semibold uppercase tracking-[0.1em] mb-8"
+            className="text-[#00D9FF]/70 text-xs font-semibold uppercase tracking-[0.1em] mb-4"
           >
             The 2026 Theme
           </motion.p>
@@ -213,7 +213,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.94, y: 16 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 80, damping: 16, delay: 0.3 }}
-          className="relative w-full max-w-[780px] mt-6 sm:mt-8"
+          className="relative w-full max-w-[680px] mt-3 sm:mt-4"
         >
           {/* Refined breathing halo — more subtle and sophisticated */}
           <motion.div
@@ -248,15 +248,15 @@ export function Hero() {
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="mt-12 sm:mt-14 space-y-2"
+          className="mt-4 sm:mt-5 space-y-1"
         >
           <p
-            className="text-white/80 font-semibold text-lg leading-relaxed"
+            className="text-white/80 font-semibold text-sm sm:text-base leading-relaxed"
             style={{ letterSpacing: "0.02em" }}
           >
             Friday, September 25, 2026 · 8:00 AM – 4:00 PM
           </p>
-          <p className="text-white/70 text-base" style={{ letterSpacing: "0.01em" }}>
+          <p className="text-white/70 text-xs sm:text-sm" style={{ letterSpacing: "0.01em" }}>
             Shiba Event Center, Lagos
           </p>
         </motion.div>
@@ -267,7 +267,7 @@ export function Hero() {
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="mt-10 sm:mt-12"
+          className="mt-4 sm:mt-5"
         >
           <Countdown />
         </motion.div>
@@ -278,24 +278,24 @@ export function Hero() {
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="mt-12 sm:mt-14 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6"
+          className="mt-5 sm:mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
         >
           <Link
             to="/register"
-            className="px-8 min-h-[52px] inline-flex items-center justify-center rounded-full text-base font-semibold bg-[#00D9FF] text-[#0A1128] transition-all duration-200 hover:shadow-[0_12px_28px_rgba(0,217,255,0.3)] hover:scale-[1.02] active:scale-[0.98]"
+            className="px-6 min-h-[44px] inline-flex items-center justify-center rounded-full text-sm sm:text-base font-semibold bg-[#00D9FF] text-[#0A1128] transition-all duration-200 hover:shadow-[0_12px_28px_rgba(0,217,255,0.3)] hover:scale-[1.02] active:scale-[0.98]"
           >
             Claim your seat
           </Link>
           <a
             href="/AIDIEGL_2026_Official_Programme_Agenda.docx"
             download="AIDIEGL_2026_Official_Programme_Agenda.docx"
-            className="px-8 min-h-[52px] inline-flex items-center justify-center rounded-full text-base font-semibold border-2 border-[#00D9FF] transition-all duration-200 hover:bg-[#00D9FF]/10 hover:shadow-[0_8px_20px_rgba(0,217,255,0.2)] text-white"
+            className="px-6 min-h-[44px] inline-flex items-center justify-center rounded-full text-sm sm:text-base font-semibold border-2 border-[#00D9FF] transition-all duration-200 hover:bg-[#00D9FF]/10 hover:shadow-[0_8px_20px_rgba(0,217,255,0.2)] text-white"
           >
             ↓ Download Agenda
           </a>
           <a
             href="#sponsors"
-            className="px-8 min-h-[52px] inline-flex items-center justify-center rounded-full text-base font-semibold border-2 border-[#00D9FF] transition-all duration-200 hover:bg-[#00D9FF]/10 hover:shadow-[0_8px_20px_rgba(0,217,255,0.2)] text-white"
+            className="px-6 min-h-[44px] inline-flex items-center justify-center rounded-full text-sm sm:text-base font-semibold border-2 border-[#00D9FF] transition-all duration-200 hover:bg-[#00D9FF]/10 hover:shadow-[0_8px_20px_rgba(0,217,255,0.2)] text-white"
           >
             Partner with us
           </a>
@@ -307,7 +307,7 @@ export function Hero() {
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="mt-10 text-white/50 text-xs font-medium uppercase tracking-wider"
+          className="mt-4 text-white/50 text-[10px] sm:text-xs font-medium uppercase tracking-wider"
         >
           Physical & Virtual · 150–200 Attendees · Networking & Innovation
         </motion.p>
