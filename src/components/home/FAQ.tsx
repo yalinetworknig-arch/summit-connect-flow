@@ -24,7 +24,7 @@ const faqs = [
   },
   {
     q: "What tracks run?",
-    a: "Seven sector rooms: Health & Wellbeing, Agriculture & Food, Education & Skills, FinTech & Digital Finance, Energy & Climate, Governance & Policy, Creative Economy.",
+    a: "Four sector rooms: Health & Wellbeing, Agriculture & Food, FinTech & Digital Finance, Creative Economy.",
   },
   {
     q: "How do I register?",
@@ -32,7 +32,7 @@ const faqs = [
   },
   {
     q: "What's the cost breakdown?",
-    a: "Free for verified YALI delegates. General public: â‚¦15,000 early-bird through 30 June 2026, then â‚¦20,000. Includes all sessions, materials, two days of meals.",
+    a: "Free for verified YALI delegates. General public: â‚¦15,000 early-bird through 30 June 2026, then â‚¦20,000. Includes all sessions, materials, and meals.",
   },
   {
     q: "Where is it?",
