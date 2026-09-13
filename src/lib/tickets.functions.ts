@@ -209,6 +209,46 @@ export const deleteRegistration = createServerFn({ method: "POST" })
     return { ok: true, deleted: reg };
   });
 
+export const bulkVerifyPendingRegistrations = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
+    const roles = await getUserRoles(supabase, userId);
+    assertHasAdminRole(roles);
+
+    // Get count of pending registrations
+    const { count: pendingCount, error: countError } = await supabase
+      .from("registrations")
+      .select("id", { count: "exact", head: true })
+      .eq("verification_status", "pending");
+
+    if (countError) throw new Error(countError.message);
+
+    if (!pendingCount || pendingCount === 0) {
+      return { ok: true, verified: 0, message: "No pending registrations to verify" };
+    }
+
+    // Bulk update all pending to verified
+    const { error: updateError, data } = await supabase
+      .from("registrations")
+      .update({
+        verification_status: "verified",
+        verification_model: "manual-bulk-verify",
+        verification_reason: `Bulk verified by admin (${userId}) for legacy registrations`,
+        verification_checked_at: new Date().toISOString(),
+      })
+      .eq("verification_status", "pending")
+      .select("id");
+
+    if (updateError) throw new Error(updateError.message);
+
+    const verified = (data ?? []).length;
+    console.log(`[ADMIN] Bulk verified ${verified} pending registrations`);
+
+    return { ok: true, verified, message: `Successfully verified ${verified} registration${verified !== 1 ? "s" : ""}` };
+  });
+
 export const resendTicketEmail = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) =>

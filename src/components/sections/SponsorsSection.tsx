@@ -46,7 +46,7 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
       <section className="relative px-5 sm:px-6 lg:px-8 bg-background text-text-primary overflow-hidden" style={{ padding: "clamp(3rem, 10vw, 8rem) 1.25rem" }}>
         <HalftoneBackdrop />
         <SideLabel>Partner Â· Sponsor Â· Co-host</SideLabel>
-        <SideLabel side="right" tone="muted">400â€“800 delegates Â· 7 tracks</SideLabel>
+        <SideLabel side=”right” tone=”muted”>150–200 delegates Â· 4 tracks</SideLabel>
         <div className="relative max-w-4xl mx-auto text-center">
           <Reveal><Eyebrow>Partnership, sponsorship, co-hosting</Eyebrow></Reveal>
           <Reveal delay={0.08}>
@@ -57,7 +57,7 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              400â€“800 leaders. All 36 states. Seven sector rooms making named commitments. National and international media. Tell us the outcome you want â€” we'll build the partnership around it.
+              150–200 leaders. All 36 states. Four sector rooms making named commitments. National and international media. Tell us the outcome you want — we'll build the partnership around it.
             </p>
           </Reveal>
         </div>
@@ -77,11 +77,11 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
           {/* Stat overlay band */}
           <div className="hidden md:flex absolute inset-x-0 bottom-0 z-10 pointer-events-none">
             <div className="mx-auto mb-5 px-6 py-3 rounded-full bg-background/80 backdrop-blur-md border border-border-strong flex items-center gap-8 font-mono text-[11px] uppercase tracking-[0.25em] text-text-primary">
-              <span><span className="text-accent-cyan">400â€“800</span> delegates</span>
-              <span className="text-text-secondary/40">Â·</span>
-              <span><span className="text-accent-cyan">36</span> states</span>
-              <span className="text-text-secondary/40">Â·</span>
-              <span><span className="text-accent-cyan">7</span> sectors</span>
+              <span><span className=”text-accent-cyan”>150–200</span> delegates</span>
+              <span className=”text-text-secondary/40”>Â·</span>
+              <span><span className=”text-accent-cyan”>36</span> states</span>
+              <span className=”text-text-secondary/40”>Â·</span>
+              <span><span className=”text-accent-cyan”>4</span> sectors</span>
             </div>
           </div>
         </div>

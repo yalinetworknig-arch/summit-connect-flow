@@ -2,9 +2,9 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ExternalLink, FileCheck, FileX, RotateCcw, Trash2, Mail } from "lucide-react";
+import { ExternalLink, FileCheck, FileX, RotateCcw, Trash2, Mail, AlertCircle } from "lucide-react";
 import { z } from "zod";
-import { listRegistrations, overrideVerification, getCertificateSignedUrl, deleteRegistration, resendTicketEmail } from "@/lib/tickets.functions";
+import { listRegistrations, overrideVerification, getCertificateSignedUrl, deleteRegistration, resendTicketEmail, bulkVerifyPendingRegistrations } from "@/lib/tickets.functions";
 import { AdminTabs } from "@/components/admin/AdminTabs";
 
 const searchSchema = z.object({
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/_authenticated/admin/registrations")({
   component: RegistrationsPage,
 });
 
-function StatusPill({ s }: { s: string }) {
+function StatusPill({ s, model }: { s: string; model?: string | null }) {
   const colors: Record<string, string> = {
     verified: "#22c55e",
     pending: "#eab308",
@@ -28,9 +28,10 @@ function StatusPill({ s }: { s: string }) {
     rejected: "#ef4444",
     error: "#94a3b8",
   };
+  const label = s === "verified" && model === "email-auto-verify" ? "✓ Auto-verified" : s;
   return (
     <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: `${colors[s] ?? "#94a3b8"}22`, color: colors[s] ?? "#94a3b8" }}>
-      {s}
+      {label}
     </span>
   );
 }
@@ -41,6 +42,7 @@ function RegistrationsPage() {
   const sign = useServerFn(getCertificateSignedUrl);
   const deleteReg = useServerFn(deleteRegistration);
   const resend = useServerFn(resendTicketEmail);
+  const bulkVerify = useServerFn(bulkVerifyPendingRegistrations);
   const qc = useQueryClient();
   const initial = Route.useSearch();
   const [verification, setVerification] = useState<"all" | "pending" | "verified" | "suspicious" | "rejected" | "error">(initial.verification ?? "all");
@@ -50,6 +52,9 @@ function RegistrationsPage() {
   const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; name: string } | null>(null);
   const [resendingId, setResendingId] = useState<string | null>(null);
   const [resendStatus, setResendStatus] = useState<{ id: string; status: "success" | "error"; message: string } | null>(null);
+  const [bulkVerifyModal, setBulkVerifyModal] = useState(false);
+  const [bulkVerifyStatus, setBulkVerifyStatus] = useState<"idle" | "confirming" | "loading">("idle");
+  const [bulkVerifyResult, setBulkVerifyResult] = useState<{ verified: number; message: string } | null>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ["admin-regs", verification, checkedIn, attendeeType, search],
@@ -97,36 +102,87 @@ function RegistrationsPage() {
     }
   }
 
+  async function handleBulkVerify() {
+    setBulkVerifyStatus("loading");
+    try {
+      const result = await bulkVerify({ data: {} });
+      setBulkVerifyResult(result);
+      qc.invalidateQueries({ queryKey: ["admin-regs"] });
+      setTimeout(() => {
+        setBulkVerifyModal(false);
+        setBulkVerifyStatus("idle");
+        setBulkVerifyResult(null);
+      }, 2000);
+    } catch (e) {
+      setBulkVerifyResult({
+        verified: 0,
+        message: e instanceof Error ? e.message : "Failed to bulk verify",
+      });
+      setBulkVerifyStatus("idle");
+    }
+  }
+
   const rows = data?.rows ?? [];
 
   return (
     <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
       <h1 className="text-2xl font-bold mb-4" style={{ color: "var(--text-primary)", fontFamily: "Space Grotesk, sans-serif" }}>Registrations</h1>
+
+      {/* Info banner about auto-verification */}
+      <div className="mb-6 p-4 rounded-lg border-l-4" style={{ background: "rgba(34, 197, 94, 0.08)", borderColor: "#22c55e" }}>
+        <div className="flex items-start justify-between gap-4">
+          <p style={{ color: "var(--text-primary)", fontSize: "0.95rem" }}>
+            <strong style={{ color: "#22c55e" }}>✓ Auto-verified registrations:</strong> All new registrations are automatically verified via email. Only review flagged or suspicious entries below.
+          </p>
+          <button
+            onClick={() => setBulkVerifyModal(true)}
+            className="px-3 py-1.5 rounded text-xs font-semibold whitespace-nowrap transition-all"
+            style={{ background: "rgba(34, 197, 94, 0.2)", color: "#22c55e", border: "1px solid #22c55e" }}
+            title="Verify all pending registrations from before auto-verification was enabled"
+          >
+            Verify old registrations
+          </button>
+        </div>
+      </div>
+
       <AdminTabs />
 
-      <div className="flex flex-wrap gap-2 mb-4 text-sm">
-        <select value={verification} onChange={(e) => setVerification(e.target.value as any)} className="px-3 py-2 rounded border bg-transparent" style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}>
-          <option value="all">All verification</option>
-          <option value="pending">Pending</option>
-          <option value="verified">Verified</option>
-          <option value="suspicious">Suspicious</option>
-          <option value="rejected">Rejected</option>
-          <option value="error">Error</option>
-        </select>
-        <select value={checkedIn} onChange={(e) => setCheckedIn(e.target.value as any)} className="px-3 py-2 rounded border bg-transparent" style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}>
-          <option value="all">All attendees</option>
-          <option value="yes">Checked in</option>
-          <option value="no">Not checked in</option>
-        </select>
-        <select value={attendeeType} onChange={(e) => setAttendeeType(e.target.value as any)} className="px-3 py-2 rounded border bg-transparent" style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}>
-          <option value="all">All types</option>
-          <option value="delegate">YALI Delegate</option>
-          <option value="sponsor">Sponsor Representative</option>
-          <option value="media">Media</option>
-          <option value="public">General Public</option>
-          <option value="volunteer">Volunteer</option>
-        </select>
-        <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search name, email, code…" className="flex-1 min-w-[200px] px-3 py-2 rounded border bg-transparent" style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }} />
+      <div className="flex flex-wrap gap-2 mb-6 items-center">
+        <div>
+          <label className="block text-xs font-semibold mb-2 text-text-secondary">VERIFICATION STATUS</label>
+          <select value={verification} onChange={(e) => setVerification(e.target.value as any)} className="px-3 py-2 rounded border bg-transparent text-sm" style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}>
+            <option value="all">All statuses</option>
+            <option value="verified">✓ Auto-verified (email)</option>
+            <option value="pending">Pending review</option>
+            <option value="suspicious">⚠ Suspicious</option>
+            <option value="rejected">✗ Rejected</option>
+            <option value="error">Error</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-xs font-semibold mb-2 text-text-secondary">CHECK-IN STATUS</label>
+          <select value={checkedIn} onChange={(e) => setCheckedIn(e.target.value as any)} className="px-3 py-2 rounded border bg-transparent text-sm" style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}>
+            <option value="all">All attendees</option>
+            <option value="yes">✓ Checked in</option>
+            <option value="no">Not checked in</option>
+          </select>
+        </div>
+        <div>
+          <label className="block text-xs font-semibold mb-2 text-text-secondary">ATTENDEE TYPE</label>
+          <select value={attendeeType} onChange={(e) => setAttendeeType(e.target.value as any)} className="px-3 py-2 rounded border bg-transparent text-sm" style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}>
+            <option value="all">All types</option>
+            <option value="delegate">YALI Delegate</option>
+            <option value="sponsor">Sponsor Representative</option>
+            <option value="media">Media</option>
+            <option value="public">General Public</option>
+            <option value="volunteer">Volunteer</option>
+          </select>
+        </div>
+        <div className="flex-1 min-w-[200px]">
+          <label className="block text-xs font-semibold mb-2 text-text-secondary">SEARCH</label>
+          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Name, email, ticket code…" className="w-full px-3 py-2 rounded border bg-transparent text-sm" style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }} />
+        </div>
       </div>
 
       <div className="rounded-2xl border overflow-x-auto" style={{ borderColor: "var(--border-strong)", background: "var(--card)" }}>
@@ -153,7 +209,7 @@ function RegistrationsPage() {
                 <td className="px-3 py-2 capitalize">{r.attendee_type}</td>
                 <td className="px-3 py-2 font-mono text-xs">{r.yali_id ?? "—"}</td>
                 <td className="px-3 py-2">
-                  <StatusPill s={r.verification_status} />
+                  <StatusPill s={r.verification_status} model={r.verification_model} />
                   {r.verification_reason && <div className="text-xs mt-1 max-w-xs" style={{ color: "var(--text-secondary)" }}>{r.verification_reason}</div>}
                 </td>
                 <td className="px-3 py-2 text-xs">{r.checked_in_at ? new Date(r.checked_in_at).toLocaleString() : "—"}</td>
@@ -197,6 +253,72 @@ function RegistrationsPage() {
                 Delete Permanently
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Bulk Verify Modal */}
+      {bulkVerifyModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => !bulkVerifyStatus.startsWith('loading') && setBulkVerifyModal(false)}>
+          <div className="bg-white dark:bg-slate-900 rounded-lg p-6 max-w-md mx-4" onClick={(e) => e.stopPropagation()} style={{ background: "var(--card)", border: "1px solid var(--border-strong)" }}>
+            {bulkVerifyResult ? (
+              <>
+                <div className="flex items-center gap-3 mb-4">
+                  <FileCheck className="w-6 h-6" style={{ color: bulkVerifyResult.verified > 0 ? "#22c55e" : "#eab308" }} />
+                  <h2 className="text-lg font-bold" style={{ color: "var(--text-primary)" }}>
+                    {bulkVerifyResult.verified > 0 ? "Verified!" : "Complete"}
+                  </h2>
+                </div>
+                <p className="text-sm mb-6" style={{ color: "var(--text-secondary)" }}>
+                  {bulkVerifyResult.message}
+                </p>
+                <div className="flex gap-2 justify-end">
+                  <button
+                    onClick={() => {
+                      setBulkVerifyModal(false);
+                      setBulkVerifyResult(null);
+                    }}
+                    className="px-4 py-2 rounded text-sm font-medium"
+                    style={{ background: "#22c55e", color: "white" }}
+                  >
+                    Done
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex items-center gap-3 mb-4">
+                  <AlertCircle className="w-6 h-6" style={{ color: "#f59e0b" }} />
+                  <h2 className="text-lg font-bold" style={{ color: "var(--text-primary)" }}>
+                    Verify Old Registrations?
+                  </h2>
+                </div>
+                <p className="text-sm mb-2" style={{ color: "var(--text-primary)" }}>
+                  This will <strong>verify all pending registrations</strong> from before auto-verification was enabled.
+                </p>
+                <p className="text-xs mb-6" style={{ color: "var(--text-secondary)" }}>
+                  This action cannot be undone. All pending registrations will be marked as verified with audit trail "manual-bulk-verify".
+                </p>
+                <div className="flex gap-2 justify-end">
+                  <button
+                    onClick={() => setBulkVerifyModal(false)}
+                    disabled={bulkVerifyStatus === "loading"}
+                    className="px-4 py-2 rounded text-sm font-medium border disabled:opacity-50"
+                    style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleBulkVerify}
+                    disabled={bulkVerifyStatus === "loading"}
+                    className="px-4 py-2 rounded text-sm font-medium disabled:opacity-50"
+                    style={{ background: "#22c55e", color: "white" }}
+                  >
+                    {bulkVerifyStatus === "loading" ? "Verifying..." : "Yes, Verify All"}
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

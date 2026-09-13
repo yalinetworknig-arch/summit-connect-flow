@@ -45,6 +45,11 @@ export const submitRegistration = createServerFn({ method: "POST" })
       tshirt_size: nn(data.tshirt_size),
       tshirt_color: nn(data.tshirt_color),
       prior_volunteer_experience: nn(data.prior_volunteer_experience),
+      // Auto-verify via email — no manual verification needed
+      verification_status: "verified",
+      verification_model: "email-auto-verify",
+      verification_reason: "Automatically verified at registration submission",
+      verification_checked_at: new Date().toISOString(),
     };
     console.log("[SERVER] Inserting into Supabase...");
     const { data: row, error } = await supabaseAdmin
