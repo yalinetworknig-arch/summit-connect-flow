@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Sun, Moon, Menu } from "lucide-react";
 import AIDIENGLWhite from "@/assets/aidiegl-white.png";

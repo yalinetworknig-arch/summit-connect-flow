@@ -1,4 +1,4 @@
-﻿import { renderEmailShell, escapeHtml, emailColors } from "@/lib/email/shell.server";
+import { renderEmailShell, escapeHtml, emailColors } from "@/lib/email/shell.server";
 
 export type ContactEntry = {
   full_name: string;

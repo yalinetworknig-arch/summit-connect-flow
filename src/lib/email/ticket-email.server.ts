@@ -1,4 +1,4 @@
-﻿import { getRequestHost } from "@tanstack/react-start/server";
+import { getRequestHost } from "@tanstack/react-start/server";
 import { renderEmailShell, ctaButtonRow, escapeHtml, emailColors } from "@/lib/email/shell.server";
 
 type TicketEmailInput = {

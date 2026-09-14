@@ -1,4 +1,4 @@
-﻿import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { TracksSection } from "@/components/sections/TracksSection";
 
 export const Route = createFileRoute("/tracks")({

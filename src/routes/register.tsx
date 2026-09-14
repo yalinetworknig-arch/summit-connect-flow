@@ -1,4 +1,4 @@
-﻿import { useCallback, useEffect, useMemo, useRef, useState, forwardRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, forwardRef } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { ProgressIndicator } from "@/components/register/ProgressIndicator";

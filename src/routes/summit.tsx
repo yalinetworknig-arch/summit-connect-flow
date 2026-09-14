@@ -1,4 +1,4 @@
-﻿import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { CalendarDays, Layers, Info, HandHeart, ArrowRight, type LucideIcon } from "lucide-react";
 
 export const Route = createFileRoute("/summit")({

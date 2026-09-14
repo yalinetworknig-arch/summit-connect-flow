@@ -1,4 +1,4 @@
-﻿import {
+import {
   HeartPulse,
   Sprout,
   GraduationCap,

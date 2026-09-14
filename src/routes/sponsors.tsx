@@ -1,4 +1,4 @@
-﻿import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { SponsorsSection } from "@/components/sections/SponsorsSection";
 
 export const Route = createFileRoute("/sponsors")({

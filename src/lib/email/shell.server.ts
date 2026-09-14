@@ -1,4 +1,4 @@
-﻿const LOGO_URL = "https://summit.yalinetwork.ng/assets/AIDIENGL-logo-rainbow-oJQrnYK8.png";
+const LOGO_URL = "https://summit.yalinetwork.ng/assets/AIDIENGL-logo-rainbow-oJQrnYK8.png";
 
 const COLORS = {
   navy: "#0A1128",
