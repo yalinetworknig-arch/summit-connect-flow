@@ -185,3 +185,70 @@ export const DECISION_TIMELINES = [
   "1-3 months",
   "Exploring only",
 ];
+
+export type Speaker = {
+  id: string;
+  name: string;
+  title: string;
+  bio: string;
+  image: string;
+  session: string;
+  sessionType: "keynote" | "panel" | "masterclass";
+};
+
+export const SPEAKERS: Speaker[] = [
+  {
+    id: "julius-ilori",
+    name: "Julius Ilori",
+    title: "MWAFAAN President",
+    bio: "Visionary leader driving AI innovation and digital transformation across Africa with a focus on sustainable technology adoption.",
+    image: "/speakers/julius-ilori.jpg",
+    session: "Keynote I: Leadership Mindset - Leading in the Age of AI",
+    sessionType: "keynote",
+  },
+  {
+    id: "abdoul-baq-ladi-balogun",
+    name: "Hon. Dr. Abdoul Baq Ladi Balogun",
+    title: "Government Official",
+    bio: "Policy innovator committed to leveraging AI and digital transformation as catalysts for Africa's economic and social development.",
+    image: "/speakers/abdoul-baq.jpg",
+    session: "Keynote II: AI & Digital Transformation",
+    sessionType: "keynote",
+  },
+  {
+    id: "olalekan-adeeko",
+    name: "Olalekan Adeeko",
+    title: "AI Expert & Educator",
+    bio: "Passionate advocate for democratizing AI knowledge, empowering African leaders with practical tools and skills for the digital age.",
+    image: "/speakers/olalekan-adeeko.jpg",
+    session: "Masterclass: AI for Everyone",
+    sessionType: "masterclass",
+  },
+  {
+    id: "salaimon-kassim",
+    name: "Dr. Salaimon Kassim",
+    title: "Executive Producer & Creative Leader",
+    bio: "Innovative creative strategist bridging technology and artistic expression, leading the future of creative industries in Africa.",
+    image: "/speakers/salaimon-kassim.jpg",
+    session: "Masterclass: Creative Innovation in the Digital Age",
+    sessionType: "masterclass",
+  },
+  {
+    id: "adenike-agoola-fayemi",
+    name: "Dr. Adenike Agoola-Fayemi",
+    title: "Entrepreneur & Innovation Strategist",
+    bio: "Thought leader on entrepreneurship and technology, dedicated to translating ideas into impactful ventures across African markets.",
+    image: "/speakers/adenike-agoola.jpg",
+    session: "Fireside Chat: From Ideas to Impact",
+    sessionType: "panel",
+  },
+  {
+    id: "khalifat-bint-ibrahim",
+    name: "Khalifat Bint Ibrahim",
+    title: "Panel Moderator & Sector Expert",
+    bio: "Knowledge expert in health, agriculture, and sustainable innovation, facilitating dialogue on building a resilient Africa.",
+    image: "/speakers/khalifat-bint.jpg",
+    session: "Panel: Building a Resilient Africa",
+    sessionType: "panel",
+  },
+];
