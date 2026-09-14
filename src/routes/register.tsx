@@ -27,12 +27,12 @@ const MotionButton = forwardRef<
 ));
 MotionButton.displayName = "MotionButton";
 
-export const Route = createFileRoute("/register")({
+export const Route = createFileRoute(“/register”)({
   head: () => ({
     meta: [
-      { title: "Register â€” YALI Summit 2026" },
-      { name: "description", content: "Register for the YALI Network Nigeria Summit 2026." },
-      { property: "og:title", content: "Register â€” YALI Summit 2026" },
+      { title: “Register - YALI Summit 2026” },
+      { name: “description”, content: “Register for the YALI Network Nigeria Summit 2026.” },
+      { property: “og:title”, content: “Register - YALI Summit 2026” },
       { property: "og:description", content: "Register for the YALI Network Nigeria Summit 2026." },
     ],
   }),
