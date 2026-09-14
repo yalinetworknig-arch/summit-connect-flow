@@ -1,4 +1,4 @@
-﻿import {
+import {
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -12,7 +12,7 @@ const faqs = [
   },
   {
     q: "When does it happen?",
-    a: "Friday, September 25, 2026 â€” a full day of keynotes, panel sessions, workshops, and networking for delegates and virtual participants.",
+    a: "Friday, September 25, 2026 - a full day of keynotes, panel sessions, workshops, and networking for delegates and virtual participants.",
   },
   {
     q: "Who comes?",
@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     q: "Do I have to be YALI-verified to attend?",
-    a: "No. Verified YALI delegates attend free. General public registration costs â‚¦15,000 early-bird (until 30 June 2026), â‚¦20,000 standard.",
+    a: "No. Verified YALI delegates attend free. General public registration costs N15,000 early-bird (until 30 June 2026), N20,000 standard.",
   },
   {
     q: "What tracks run?",
@@ -32,7 +32,7 @@ const faqs = [
   },
   {
     q: "What's the cost breakdown?",
-    a: "Free for verified YALI delegates. General public: â‚¦15,000 early-bird through 30 June 2026, then â‚¦20,000. Includes all sessions, materials, and meals.",
+    a: "Free for verified YALI delegates. General public: N15,000 early-bird through 30 June 2026, then N20,000. Includes all sessions, materials, and meals.",
   },
   {
     q: "Where is it?",

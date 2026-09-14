@@ -20,8 +20,8 @@ export function ScheduleSection({ id = "schedule" }: { id?: string }) {
     <div id={id} className="scroll-mt-24">
       <section className="relative px-5 sm:px-6 lg:px-8 bg-background text-text-primary overflow-hidden" style={{ padding: "clamp(3rem, 10vw, 8rem) 1.25rem" }}>
         <HalftoneBackdrop />
-        <SideLabel>Programme Â· Friday, Sept 25 Â· Lagos</SideLabel>
-        <SideLabel side="right" tone="muted">AIDIENGL 2026 Â· 8:00 AM â€“ 4:00 PM</SideLabel>
+        <SideLabel>Programme - Friday, Sept 25 - Lagos</SideLabel>
+        <SideLabel side="right" tone="muted">AIDIENGL 2026 - 8:00 AM â€“ 4:00 PM</SideLabel>
         <div className="relative max-w-4xl mx-auto text-center">
           <Reveal><Eyebrow>One-day summit</Eyebrow></Reveal>
           <Reveal delay={0.08}>
@@ -44,7 +44,7 @@ export function ScheduleSection({ id = "schedule" }: { id?: string }) {
             src={scheduleAudience}
             alt="A packed audience of YALI delegates in conference seating at Y-LEEDS 2025"
             aspect="aspect-[16/9] md:aspect-[21/9]"
-            caption="Main hall Â· Y-LEEDS 2025"
+            caption="Main hall - Y-LEEDS 2025"
             sizes="(min-width: 1280px) 1200px, (min-width: 768px) 90vw, 100vw"
             width={1920}
             height={1080}

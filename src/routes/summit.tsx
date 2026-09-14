@@ -26,7 +26,7 @@ function SummitPage() {
       <section className="px-6 py-16 md:py-20 bg-background text-text-primary">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-accent-cyan font-semibold tracking-widest uppercase text-sm mb-4">
-            AIDIENGL 2026 Â· Lagos
+            AIDIENGL 2026 - Lagos
           </p>
           <h1 className="font-display font-bold text-4xl md:text-5xl mb-6">
             The Summit, end-to-end.

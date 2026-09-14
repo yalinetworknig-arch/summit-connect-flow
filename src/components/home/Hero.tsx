@@ -255,7 +255,7 @@ export function Hero() {
             className="text-white/80 font-semibold text-sm sm:text-base leading-relaxed"
             style={{ letterSpacing: "0.02em" }}
           >
-            Friday, September 25, 2026 Â· 8:00 AM â€“ 4:00 PM
+            Friday, September 25, 2026 - 8:00 AM â€“ 4:00 PM
           </p>
           <p className="text-white/70 text-xs sm:text-sm" style={{ letterSpacing: "0.01em" }}>
             Shiba Event Center, Lagos
@@ -310,7 +310,7 @@ export function Hero() {
           variants={fadeUp}
           className="mt-4 text-white/50 text-[10px] sm:text-xs font-medium uppercase tracking-wider"
         >
-          Physical & Virtual Â· 150â€“200 Attendees Â· Networking & Innovation
+          Physical & Virtual - 150â€“200 Attendees - Networking & Innovation
         </motion.p>
       </div>
 

@@ -72,7 +72,7 @@ export type ScheduleDay = {
 export const SCHEDULE: ScheduleDay[] = [
   {
     day: "Summit",
-    date: "Fri Â· Sept 25, 2026",
+    date: "Fri - Sept 25, 2026",
     theme: "Artificial Intelligence, Digital Innovation, and Empowering the Next Generation of Leaders",
     blocks: [
       { time: "8:00 â€“ 8:30 AM", title: "Breakfast & Arrival", description: "Breakfast, tea and refreshments; arrival of participants." },
@@ -111,7 +111,7 @@ export type SponsorTier = {
 export const SPONSOR_TIERS: SponsorTier[] = [
   {
     name: "Community",
-    price: "â‚¦150K",
+    price: "...150K",
     highlight: false,
     benefits: [
       "Name on the partner wall",
@@ -122,7 +122,7 @@ export const SPONSOR_TIERS: SponsorTier[] = [
   },
   {
     name: "Bronze",
-    price: "â‚¦250K â€“ â‚¦500K",
+    price: "...250K â€“ ...500K",
     highlight: false,
     benefits: [
       "Everything in Community",
@@ -134,7 +134,7 @@ export const SPONSOR_TIERS: SponsorTier[] = [
   },
   {
     name: "Silver",
-    price: "â‚¦1M â€“ â‚¦2.9M",
+    price: "...1M â€“ ...2.9M",
     highlight: false,
     benefits: [
       "Everything in Bronze",
@@ -146,7 +146,7 @@ export const SPONSOR_TIERS: SponsorTier[] = [
   },
   {
     name: "Gold",
-    price: "â‚¦5M â€“ â‚¦7M",
+    price: "...5M â€“ ...7M",
     highlight: true,
     benefits: [
       "Everything in Silver",
@@ -158,7 +158,7 @@ export const SPONSOR_TIERS: SponsorTier[] = [
   },
   {
     name: "Platinum",
-    price: "â‚¦7M â€“ â‚¦10M+",
+    price: "...7M â€“ ...10M+",
     highlight: false,
     benefits: [
       "Everything in Gold",
@@ -172,11 +172,11 @@ export const SPONSOR_TIERS: SponsorTier[] = [
 
 export const SPONSOR_TIER_OPTIONS = SPONSOR_TIERS.map((t) => t.name);
 export const BUDGET_RANGES = [
-  "Under â‚¦150K",
-  "â‚¦150K â€“ â‚¦500K",
-  "â‚¦500K â€“ â‚¦2.9M",
-  "â‚¦2.9M â€“ â‚¦7M",
-  "Over â‚¦7M",
+  "Under ...150K",
+  "...150K â€“ ...500K",
+  "...500K â€“ ...2.9M",
+  "...2.9M â€“ ...7M",
+  "Over ...7M",
   "Let's discuss",
 ];
 export const DECISION_TIMELINES = [

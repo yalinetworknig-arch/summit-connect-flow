@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { motion } from "framer-motion";
 import { Check, Download } from "lucide-react";
@@ -45,8 +45,8 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
     <div id={id} className="scroll-mt-24">
       <section className="relative px-5 sm:px-6 lg:px-8 bg-background text-text-primary overflow-hidden" style={{ padding: "clamp(3rem, 10vw, 8rem) 1.25rem" }}>
         <HalftoneBackdrop />
-        <SideLabel>Partner Â· Sponsor Â· Co-host</SideLabel>
-        <SideLabel side=”right” tone=”muted”>150–200 delegates Â· 4 tracks</SideLabel>
+        <SideLabel>Partner - Sponsor - Co-host</SideLabel>
+        <SideLabel side="right" tone="muted">150-200 delegates - 4 tracks</SideLabel>
         <div className="relative max-w-4xl mx-auto text-center">
           <Reveal><Eyebrow>Partnership, sponsorship, co-hosting</Eyebrow></Reveal>
           <Reveal delay={0.08}>
@@ -57,13 +57,13 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
           </Reveal>
           <Reveal delay={0.16}>
             <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-              150–200 leaders. All 36 states. Four sector rooms making named commitments. National and international media. Tell us the outcome you want — we'll build the partnership around it.
+              150-200 leaders. All 36 states. Four sector rooms making named commitments. National and international media. Tell us the outcome you want — we'll build the partnership around it.
             </p>
           </Reveal>
         </div>
       </section>
 
-      {/* Impact strip â€” what sponsorship buys, visually */}
+      {/* Impact strip - what sponsorship buys, visually */}
       <section className="px-5 sm:px-6 lg:px-8 -mt-6 md:-mt-10 mb-4 md:mb-8 bg-background">
         <div className="max-w-6xl mx-auto relative">
           <EditorialImage
@@ -77,11 +77,11 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
           {/* Stat overlay band */}
           <div className="hidden md:flex absolute inset-x-0 bottom-0 z-10 pointer-events-none">
             <div className="mx-auto mb-5 px-6 py-3 rounded-full bg-background/80 backdrop-blur-md border border-border-strong flex items-center gap-8 font-mono text-[11px] uppercase tracking-[0.25em] text-text-primary">
-              <span><span className=”text-accent-cyan”>150–200</span> delegates</span>
-              <span className=”text-text-secondary/40”>Â·</span>
-              <span><span className=”text-accent-cyan”>36</span> states</span>
-              <span className=”text-text-secondary/40”>Â·</span>
-              <span><span className=”text-accent-cyan”>4</span> sectors</span>
+              <span><span className="text-accent-cyan">150-200</span> delegates</span>
+              <span className="text-text-secondary/40">-</span>
+              <span><span className="text-accent-cyan">36</span> states</span>
+              <span className="text-text-secondary/40">-</span>
+              <span><span className="text-accent-cyan">4</span> sectors</span>
             </div>
           </div>
         </div>
@@ -135,7 +135,7 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
         </Stagger>
       </section>
 
-      {/* Prospectus download â€” full tier breakdown, benefits and remittance details */}
+      {/* Prospectus download - full tier breakdown, benefits and remittance details */}
       <section className="px-5 sm:px-6 lg:px-8 pb-20 bg-background text-text-primary">
         <div className="max-w-6xl mx-auto">
           <div className="rounded-3xl border border-border-strong bg-surface p-7 md:p-9 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
@@ -144,7 +144,7 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
                 Want the full breakdown?
               </h3>
               <p className="text-text-secondary max-w-xl">
-                Every tier, benefit and remittance detail â€” in one PDF. Download the AIDIENGL 2026 partnership prospectus to review at your own pace or share with your team.
+                Every tier, benefit and remittance detail - in one PDF. Download the AIDIENGL 2026 partnership prospectus to review at your own pace or share with your team.
               </p>
             </div>
             <a
@@ -163,7 +163,7 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
         className="relative px-5 sm:px-6 lg:px-8 bg-surface text-text-primary overflow-hidden scroll-mt-24"
         style={{ padding: "clamp(3rem, 10vw, 8rem) 1.25rem" }}
       >
-        <SideLabel tone="muted">Inquiry Â· 48-hour reply</SideLabel>
+        <SideLabel tone="muted">Inquiry - 48-hour reply</SideLabel>
         <div className="relative max-w-2xl mx-auto">
           <Reveal><Eyebrow>Become a sponsor</Eyebrow></Reveal>
           <Reveal delay={0.06}>
@@ -181,7 +181,7 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
             <div className="rounded-2xl border border-accent-cyan bg-background p-8 text-center">
               <Check className="w-10 h-10 text-accent-cyan mx-auto mb-3" />
               <h4 className="font-display font-semibold text-xl mb-1">
-                Got it â€” we're on it.
+                Got it - we're on it.
               </h4>
               <p className="text-text-secondary">
                 A real human from the partnerships team will reply within 48 hours.
@@ -228,7 +228,7 @@ export function SponsorsSection({ id = "sponsors" }: { id?: string }) {
                 {status === "submitting" ? (
                   <>
                     <span className="inline-block w-4 h-4 border-2 border-brand-navy border-t-transparent rounded-full animate-spin" />
-                    Sendingâ€¦
+                    Sending...
                   </>
                 ) : (
                   "Start the conversation"
@@ -286,7 +286,7 @@ function Select({
         className="w-full rounded-lg border-2 border-input bg-background px-4 py-2.5 text-text-primary placeholder:text-muted-foreground hover:border-input/80 focus:outline-none focus:border-accent-cyan focus:ring-2 focus:ring-accent-cyan/30 transition-all duration-200 cursor-pointer"
       >
         <option value="" disabled>
-          Selectâ€¦
+          Select...
         </option>
         {options.map((o) => (
           <option key={o} value={o}>
@@ -297,4 +297,3 @@ function Select({
     </div>
   );
 }
-

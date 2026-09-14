@@ -98,7 +98,7 @@ function renderHtml(input: TicketEmailInput, ticketUrl: string, merchUrl: string
           <tr>
             <td>
               <div style="font-size:14px;font-weight:700;color:${emailColors.ink};margin-bottom:6px;">ðŸŽ½ Order Official YALI Summit Merchandise</div>
-              <p style="margin:0 0 12px;font-size:13px;line-height:1.5;color:${emailColors.sub};">Get your official YALI Summit 2026 t-shirt in your choice of size and color. â‚¦8,000</p>
+              <p style="margin:0 0 12px;font-size:13px;line-height:1.5;color:${emailColors.sub};">Get your official YALI Summit 2026 t-shirt in your choice of size and color. ...8,000</p>
               <a href="${merchUrl}" style="display:inline-block;background:${emailColors.cyan};color:${emailColors.navy};padding:10px 16px;border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">Shop Now</a>
             </td>
           </tr>
@@ -124,10 +124,10 @@ function renderText(input: TicketEmailInput, ticketUrl: string, merchUrl: string
     "",
     `View your ticket: ${ticketUrl}`,
     "",
-    "ðŸŽ½ Order official AIDIENGL merchandise (â‚¦8,000):",
+    "ðŸŽ½ Order official AIDIENGL merchandise (...8,000):",
     `Shop now: ${merchUrl}`,
     "",
-    "Friday, 25 September 2026 Â· 8:00 AM â€“ 4:00 PM",
+    "Friday, 25 September 2026 - 8:00 AM â€“ 4:00 PM",
     "Shiba Event Center, Lagos",
   ].filter(Boolean).join("\n");
 }

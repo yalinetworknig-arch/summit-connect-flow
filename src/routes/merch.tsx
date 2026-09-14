@@ -245,7 +245,7 @@ function MerchPage() {
                     className="text-3xl font-bold mt-3"
                     style={{ color: "var(--accent-cyan)" }}
                   >
-                    â‚¦{product.price.toLocaleString("en-NG")}
+                    ...{product.price.toLocaleString("en-NG")}
                   </p>
                 </div>
               </div>
@@ -429,7 +429,7 @@ function MerchPage() {
                       </div>
                       <div className="text-right">
                         <p className="font-semibold text-sm" style={{ color: "var(--accent-cyan)" }}>
-                          â‚¦{((product?.price || 0) * item.quantity).toLocaleString("en-NG")}
+                          ...{((product?.price || 0) * item.quantity).toLocaleString("en-NG")}
                         </p>
                         <button
                           onClick={() => removeFromCart(index)}
@@ -452,7 +452,7 @@ function MerchPage() {
                     className="font-bold"
                     style={{ color: "var(--text-primary)" }}
                   >
-                    â‚¦{cartTotal.toLocaleString("en-NG")}
+                    ...{cartTotal.toLocaleString("en-NG")}
                   </span>
                 </div>
 
@@ -469,7 +469,7 @@ function MerchPage() {
                 </div>
 
                 <a
-                  href={`https://wa.me/${PAYMENT_DETAILS.whatsappNumber.replace(/\D/g, '')}?text=Hi, I want to order ${cart.length} item(s) for â‚¦${cartTotal.toLocaleString("en-NG")}. Please confirm payment details.`}
+                  href={`https://wa.me/${PAYMENT_DETAILS.whatsappNumber.replace(/\D/g, '')}?text=Hi, I want to order ${cart.length} item(s) for ...${cartTotal.toLocaleString("en-NG")}. Please confirm payment details.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-3 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all duration-200"

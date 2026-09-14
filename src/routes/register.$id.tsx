@@ -292,7 +292,7 @@ function ConfirmationPage() {
               ðŸŽ½ Order Official AIDIENGL Merchandise
             </h3>
             <p className="text-sm mt-2" style={{ color: "var(--text-secondary)" }}>
-              Get your official AIDIENGL 2026 t-shirt in your choice of size and color. â‚¦8,000
+              Get your official AIDIENGL 2026 t-shirt in your choice of size and color. ...8,000
             </p>
           </div>
           <Link

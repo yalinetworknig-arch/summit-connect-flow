@@ -83,7 +83,7 @@ function ProfileShell() {
           </h1>
           <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
             {ATTENDEE_LABELS[data.registration.attendee_type] ?? data.registration.attendee_type}
-            {" Â· "}
+            {" - "}
             {TRACKS.find(t => t.slug === data.registration.track_selection)?.title ?? data.registration.track_selection ?? "No track yet"}
           </p>
         </div>
