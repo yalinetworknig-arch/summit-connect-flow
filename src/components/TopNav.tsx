@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Sun, Moon, Menu } from "lucide-react";
+import { Sun, Moon, Menu, ChevronDown } from "lucide-react";
 import AIDIENGLWhite from "@/assets/aidiegl-white.png";
 import AIDIENGLNavy from "@/assets/aidiegl-navy.png";
 import {
@@ -11,14 +11,22 @@ import {
   SheetHeader,
 } from "@/components/ui/sheet";
 
-const items = [
+const mainItems = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
+  { href: "/sponsors", label: "Sponsors" },
+] as const;
+
+const programItems = [
   { href: "/schedule", label: "Schedule" },
   { href: "/tracks", label: "Tracks" },
   { href: "/speakers", label: "Speakers" },
-  { href: "/sponsors", label: "Sponsors" },
+  { href: "/agenda", label: "Agenda" },
+] as const;
+
+const moreItems = [
+  { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
+  { href: "/merch", label: "Merchandise" },
 ] as const;
 
 function useTheme() {
@@ -48,46 +56,70 @@ function useTheme() {
   return { isDark, toggle };
 }
 
-function NavLinks({
-  onNavigate,
-  vertical,
-  activeId,
-  onLinkClick,
-}: {
-  onNavigate?: () => void;
-  vertical?: boolean;
-  activeId?: string;
-  onLinkClick?: (id: string) => void;
-}) {
+function DesktopDropdown({ label, items }: { label: string; items: readonly { href: string; label: string }[] }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <nav className={vertical ? "flex flex-col gap-1" : "flex items-center gap-1"}>
-      {items.map(({ href, label }) => {
-        const isActive = activeId === href.slice(1) || (href === "/" && activeId === "");
-        return (
-          <Link
-            key={href}
-            to={href}
-            onClick={onNavigate}
-            aria-current={isActive ? "page" : undefined}
-            className={`${
-              vertical ? "px-3 py-3 text-base" : "px-4 py-2 text-sm"
-            } font-medium uppercase tracking-wide transition-colors ${
-              vertical
-                ? isActive
-                  ? "text-accent-cyan"
-                  : "text-text-primary hover:text-accent-cyan"
-                : isActive
-                  ? "text-accent-cyan dark:text-[#00D9FF]"
-                  : "text-brand-navy/80 hover:text-accent-cyan dark:text-white/80 dark:hover:text-[#00D9FF]"
-            } relative after:absolute after:left-3 after:right-3 after:bottom-0 after:h-0.5 after:bg-accent-cyan after:transition-transform ${
-              isActive ? "after:scale-x-100" : "after:scale-x-0 hover:after:scale-x-100"
-            }`}
-          >
-            {label}
-          </Link>
-        );
-      })}
-    </nav>
+    <div className="relative group">
+      <button
+        className="px-4 py-2 text-sm font-medium uppercase tracking-wide transition-colors text-brand-navy/80 hover:text-accent-cyan dark:text-white/80 dark:hover:text-[#00D9FF] flex items-center gap-1"
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+      >
+        {label}
+        <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+      </button>
+
+      {/* Dropdown Menu */}
+      {isOpen && (
+        <div
+          className="absolute left-0 mt-0 w-48 rounded-lg border-2 shadow-lg z-50 py-2"
+          style={{ background: "var(--card)", borderColor: "var(--border-strong)" }}
+          onMouseEnter={() => setIsOpen(true)}
+          onMouseLeave={() => setIsOpen(false)}
+        >
+          {items.map(({ href, label }) => (
+            <Link
+              key={href}
+              to={href}
+              className="block px-4 py-2 text-sm font-medium uppercase tracking-wide transition-colors text-brand-navy/80 hover:text-accent-cyan dark:text-white/80 dark:hover:text-[#00D9FF]"
+            >
+              {label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MobileDropdown({ label, items }: { label: string; items: readonly { href: string; label: string }[] }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full px-3 py-3 text-base font-medium uppercase tracking-wide transition-colors text-text-primary hover:text-accent-cyan flex items-center justify-between"
+      >
+        {label}
+        <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+      </button>
+
+      {isOpen && (
+        <div className="pl-4 flex flex-col gap-1 border-l-2" style={{ borderColor: "var(--border-strong)" }}>
+          {items.map(({ href, label }) => (
+            <Link
+              key={href}
+              to={href}
+              className="px-3 py-2 text-base font-medium uppercase tracking-wide transition-colors text-text-primary hover:text-accent-cyan"
+            >
+              {label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -106,7 +138,6 @@ function useScrollSpy(ids: string[]) {
     const observer = new IntersectionObserver(
       (entries) => {
         if (Date.now() < lockUntilRef.t) {
-          // Ignore intersection updates while a programmatic scroll is in flight
           for (const entry of entries) {
             visibility.set(entry.target.id, entry.intersectionRatio);
           }
@@ -133,11 +164,9 @@ function useScrollSpy(ids: string[]) {
 
     elements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ids.join("|")]);
 
   const setActive = (id: string) => {
-    // Lock observer briefly so the clicked link stays highlighted through smooth scroll
     lockUntilRef.t = Date.now() + 900;
     setActiveId(id);
   };
@@ -148,14 +177,16 @@ function useScrollSpy(ids: string[]) {
 export function TopNav() {
   const { isDark, toggle } = useTheme();
   const [open, setOpen] = useState(false);
-  const [activeId, setActiveId] = useScrollSpy(items.map((i) => i.href.slice(1)));
+  const [activeId, setActiveId] = useScrollSpy([]);
 
   return (
     <header className="fixed top-3 md:top-5 inset-x-0 z-40 px-3 md:px-6 pointer-events-none">
       <div className="pointer-events-auto mx-auto max-w-[1180px] flex items-center justify-between gap-4 px-3 md:px-5 h-14 md:h-16 rounded-full border border-brand-navy/10 dark:border-white/10 bg-white/85 dark:bg-[#0A1128]/70 backdrop-blur-xl shadow-[0_10px_40px_-12px_rgba(15,27,61,0.18)] dark:shadow-[0_10px_40px_-12px_rgba(0,0,0,0.6)]">
+
+        {/* Logo */}
         <Link
           to="/"
-          aria-label="AIDIENGL â€” Home"
+          aria-label="AIDIENGL - Home"
           className="flex items-center shrink-0 cursor-pointer"
         >
           <img
@@ -174,10 +205,26 @@ export function TopNav() {
           />
         </Link>
 
-        <div className="hidden lg:block">
-          <NavLinks activeId={activeId} onLinkClick={setActiveId} />
-        </div>
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex items-center gap-2">
+          {mainItems.map(({ href, label }) => (
+            <Link
+              key={href}
+              to={href}
+              className="px-4 py-2 text-sm font-medium uppercase tracking-wide transition-colors text-brand-navy/80 hover:text-accent-cyan dark:text-white/80 dark:hover:text-[#00D9FF]"
+            >
+              {label}
+            </Link>
+          ))}
 
+          {/* Program Dropdown */}
+          <DesktopDropdown label="Program" items={programItems} />
+
+          {/* More Dropdown */}
+          <DesktopDropdown label="More" items={moreItems} />
+        </nav>
+
+        {/* Desktop Buttons */}
         <div className="hidden lg:flex items-center gap-2">
           <button
             onClick={toggle}
@@ -198,8 +245,15 @@ export function TopNav() {
           >
             Register
           </Link>
+          <Link
+            to="/sponsors"
+            className="px-5 py-2 rounded-full text-sm font-semibold border border-accent-cyan text-accent-cyan hover:bg-accent-cyan/10 transition-colors"
+          >
+            Sponsor
+          </Link>
         </div>
 
+        {/* Mobile Menu */}
         <div className="lg:hidden flex items-center gap-2">
           <button
             onClick={toggle}
@@ -219,7 +273,7 @@ export function TopNav() {
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="w-full sm:max-w-sm bg-surface border-border-strong"
+              className="w-full sm:max-w-sm bg-surface border-border-strong overflow-y-auto"
             >
               <SheetHeader>
                 <SheetTitle className="text-left">
@@ -235,36 +289,50 @@ export function TopNav() {
                   />
                 </SheetTitle>
               </SheetHeader>
-              <div className="mt-6 flex flex-col gap-6">
-                <NavLinks
-                  vertical
-                  onNavigate={() => setOpen(false)}
-                  activeId={activeId}
-                  onLinkClick={setActiveId}
-                />
-                <div className="flex flex-col gap-3">
+
+              <div className="mt-6 flex flex-col gap-2">
+                {/* Main Items */}
+                {mainItems.map(({ href, label }) => (
                   <Link
-                    to="/login"
+                    key={href}
+                    to={href}
                     onClick={() => setOpen(false)}
-                    className="px-5 py-3 rounded-full text-sm font-semibold text-center border border-brand-navy/20 dark:border-white/20 text-brand-navy dark:text-white active:scale-95"
+                    className="px-3 py-3 text-base font-medium uppercase tracking-wide text-text-primary hover:text-accent-cyan"
                   >
-                    Sign in
+                    {label}
                   </Link>
-                  <Link
-                    to="/register"
-                    onClick={() => setOpen(false)}
-                    className="px-5 py-3 rounded-full text-sm font-semibold text-center bg-accent-cyan text-brand-navy active:scale-95"
-                  >
-                    Register
-                  </Link>
-                  <Link
-                    to="/sponsors"
-                    onClick={() => setOpen(false)}
-                    className="px-5 py-3 rounded-full text-sm font-semibold text-center border border-accent-cyan text-accent-cyan"
-                  >
-                    Sponsor
-                  </Link>
-                </div>
+                ))}
+
+                {/* Program Dropdown */}
+                <MobileDropdown label="Program" items={programItems} />
+
+                {/* More Dropdown */}
+                <MobileDropdown label="More" items={moreItems} />
+              </div>
+
+              {/* Mobile Buttons */}
+              <div className="mt-8 flex flex-col gap-3">
+                <Link
+                  to="/login"
+                  onClick={() => setOpen(false)}
+                  className="px-5 py-3 rounded-full text-sm font-semibold text-center border border-brand-navy/20 dark:border-white/20 text-brand-navy dark:text-white active:scale-95"
+                >
+                  Sign in
+                </Link>
+                <Link
+                  to="/register"
+                  onClick={() => setOpen(false)}
+                  className="px-5 py-3 rounded-full text-sm font-semibold text-center bg-accent-cyan text-brand-navy active:scale-95"
+                >
+                  Register
+                </Link>
+                <Link
+                  to="/sponsors"
+                  onClick={() => setOpen(false)}
+                  className="px-5 py-3 rounded-full text-sm font-semibold text-center border border-accent-cyan text-accent-cyan active:scale-95"
+                >
+                  Sponsor
+                </Link>
               </div>
             </SheetContent>
           </Sheet>
