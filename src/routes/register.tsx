@@ -6,7 +6,6 @@ import { StepAttendeeType } from "@/components/register/StepAttendeeType";
 import { StepPersonalInfo } from "@/components/register/StepPersonalInfo";
 import { StepSectorAttendance } from "@/components/register/StepSectorAttendance";
 import { StepLogistics } from "@/components/register/StepLogistics";
-import { StepPayment } from "@/components/register/StepPayment";
 import {
   step1Schema,
   step2Schema,
@@ -41,11 +40,10 @@ export const Route = createFileRoute("/register")({
 });
 
 const TITLES = [
-  "First â€” who's coming?",
-  "Tell us about you",
-  "Your sector and attendance",
-  "Logistics and preferences",
-  "Review and confirm your seat",
+  “First - who's coming?”,
+  “Tell us about you”,
+  “Your sector and attendance”,
+  “Logistics and preferences”,
 ];
 
 function RegisterPage() {
@@ -170,7 +168,7 @@ function RegisterPage() {
     }
 
     setDirection(1);
-    setStep((s) => Math.min(5, s + 1));
+    setStep((s) => Math.min(4, s + 1));
   }
 
   function back() {
@@ -230,7 +228,7 @@ function RegisterPage() {
             transition={{ duration: 0.2, ease: ease.out }}
             style={{ color: "var(--text-secondary)" }}
           >
-            {TITLES[step - 1]} <span className="text-xs opacity-70">({step} of 5)</span>
+            {TITLES[step - 1]} <span className="text-xs opacity-70">({step} of 4)</span>
           </motion.p>
         </AnimatePresence>
       </motion.header>
@@ -255,7 +253,7 @@ function RegisterPage() {
               !(e.target as HTMLElement).tagName.includes("TEXTAREA") &&
               canAdvance &&
               !nextBusy &&
-              step < 5
+              step < 4
             ) {
               e.preventDefault();
               next();
@@ -277,7 +275,6 @@ function RegisterPage() {
                 <StepSectorAttendance value={form} error={{ sector: errors.sector, attendance_mode: errors.attendance_mode }} onChange={patch} />
               )}
               {step === 4 && <StepLogistics value={form} errors={errors} onChange={patch} />}
-              {step === 5 && <StepPayment value={form} />}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -285,7 +282,7 @@ function RegisterPage() {
 
       {/* Navigation buttons */}
       <div>
-        {step < 5 ? (
+        {step < 4 ? (
           <div className="flex items-center justify-between mt-6 gap-3">
             {/* Back Button - use MotionButton with forwardRef for proper React event handling */}
             <MotionButton
