@@ -1,7 +1,7 @@
 ﻿import { Link } from "@tanstack/react-router";
 import { motion, type Variants } from "framer-motion";
 import { Countdown } from "./Countdown";
-import AIDIENGLWhite from "@/assets/AIDIENGL-white.png";
+import AIDIENGLWhite from "@/assets/aidifiln-logo-rainbow.png";
 import usMissionLogo from "@/assets/sponsors/us-mission-logo.png";
 import yaliLogo from "@/assets/sponsors/yali-logo.jpeg";
 
