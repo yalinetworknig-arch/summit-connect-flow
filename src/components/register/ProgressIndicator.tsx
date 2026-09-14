@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { spring, ease } from "@/lib/motion";
 
-const labels = ["Type", "Personal", "Track", "Logistics"];
+const labels = ["Type", "Personal", "Track", "Logistics", "Confirm"];
 
 export function ProgressIndicator({ current }: { current: number }) {
   return (

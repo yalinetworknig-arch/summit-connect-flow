@@ -6,6 +6,7 @@ import { StepAttendeeType } from "@/components/register/StepAttendeeType";
 import { StepPersonalInfo } from "@/components/register/StepPersonalInfo";
 import { StepSectorAttendance } from "@/components/register/StepSectorAttendance";
 import { StepLogistics } from "@/components/register/StepLogistics";
+import { StepConfirmation } from "@/components/register/StepConfirmation";
 import {
   step1Schema,
   step2Schema,
@@ -44,6 +45,7 @@ const TITLES = [
   "Tell us about you",
   "Your sector and attendance",
   "Logistics and preferences",
+  "Review and confirm your registration",
 ];
 
 function RegisterPage() {
@@ -103,6 +105,7 @@ function RegisterPage() {
       else if (step === 2) ok = collect(step2Schema.safeParse(form));
       else if (step === 3) ok = collect(step3Schema.safeParse(form));
       else if (step === 4) ok = collect(step4Schema.safeParse(form));
+      else if (step === 5) ok = true; // Confirmation step - no validation needed
       else ok = true;
       setErrors(map);
       return ok;
@@ -168,7 +171,7 @@ function RegisterPage() {
     }
 
     setDirection(1);
-    setStep((s) => Math.min(4, s + 1));
+    setStep((s) => Math.min(5, s + 1));
   }
 
   function back() {
@@ -182,7 +185,8 @@ function RegisterPage() {
       (step === 1 && step1Schema.safeParse(form).success) ||
       (step === 2 && step2Schema.safeParse(form).success) ||
       (step === 3 && step3Schema.safeParse(form).success) ||
-      (step === 4 && step4Schema.safeParse(form).success)
+      (step === 4 && step4Schema.safeParse(form).success) ||
+      (step === 5) // Confirmation step - always can advance (submit)
     );
   }, [step, form]);
 
@@ -228,7 +232,7 @@ function RegisterPage() {
             transition={{ duration: 0.2, ease: ease.out }}
             style={{ color: "var(--text-secondary)" }}
           >
-            {TITLES[step - 1]} <span className="text-xs opacity-70">({step} of 4)</span>
+            {TITLES[step - 1]} <span className="text-xs opacity-70">({step} of 5)</span>
           </motion.p>
         </AnimatePresence>
       </motion.header>
@@ -253,7 +257,7 @@ function RegisterPage() {
               !(e.target as HTMLElement).tagName.includes("TEXTAREA") &&
               canAdvance &&
               !nextBusy &&
-              step < 4
+              step < 5
             ) {
               e.preventDefault();
               next();
@@ -275,6 +279,7 @@ function RegisterPage() {
                 <StepSectorAttendance value={form} error={{ sector: errors.sector, attendance_mode: errors.attendance_mode }} onChange={patch} />
               )}
               {step === 4 && <StepLogistics value={form} errors={errors} onChange={patch} />}
+              {step === 5 && <StepConfirmation value={form} />}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -282,7 +287,7 @@ function RegisterPage() {
 
       {/* Navigation buttons */}
       <div>
-        {step < 4 ? (
+        {step < 5 ? (
           <div className="flex items-center justify-between mt-6 gap-3">
             {/* Back Button - use MotionButton with forwardRef for proper React event handling */}
             <MotionButton
@@ -338,7 +343,7 @@ function RegisterPage() {
             </MotionButton>
           </div>
         ) : (
-          <div className="mt-6">
+          <div className="mt-6 flex items-center justify-between gap-3">
             <motion.button
               type="button"
               onClick={back}
@@ -348,7 +353,26 @@ function RegisterPage() {
               className="px-6 py-3 rounded-lg text-sm font-semibold border-2 min-h-[48px] transition-all duration-200 hover:shadow-md"
               style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
             >
-               Back
+              Back
+            </motion.button>
+            <motion.button
+              type="button"
+              onClick={() => {
+                // TODO: Submit registration to Supabase
+                console.log("Registration submitted:", form);
+              }}
+              variants={ctaButton}
+              initial="rest"
+              whileHover="hover"
+              whileTap="tap"
+              className="flex-1 sm:flex-none px-8 py-3 rounded-lg text-sm font-semibold min-h-[48px] flex items-center justify-center transition-all duration-200 active:scale-95"
+              style={{
+                background: "var(--accent-cyan)",
+                color: "var(--brand-navy)",
+                boxShadow: "0 4px 20px color-mix(in oklab, var(--accent-cyan) 35%, transparent)",
+              }}
+            >
+              Complete Registration
             </motion.button>
           </div>
         )}
