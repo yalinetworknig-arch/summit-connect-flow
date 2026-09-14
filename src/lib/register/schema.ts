@@ -98,8 +98,7 @@ export const step3Schema = z.object({
 });
 
 export const step4Schema = z.object({
-  accommodation_needed: z.boolean(),
-  travel_support_needed: z.boolean(),
+  heard_about_summit: z.string().trim().max(120).nullable().optional(),
 });
 
 export const fullRegistrationSchema = z.object({
@@ -127,8 +126,6 @@ export const fullRegistrationSchema = z.object({
   prior_volunteer_experience: z.string().trim().max(600).nullable().optional(),
   sector: z.enum(SECTORS),
   attendance_mode: z.enum(ATTENDANCE_MODES),
-  accommodation_needed: z.boolean(),
-  travel_support_needed: z.boolean(),
   heard_about_summit: z.string().trim().max(120).nullable().optional(),
   paystack_reference: z.string().trim().max(120).nullable().optional(),
   amount_kobo: z.number().int().nonnegative().nullable().optional(),
@@ -139,7 +136,4 @@ export type FullRegistration = z.infer<typeof fullRegistrationSchema>;
 
 export type FormState = Partial<FullRegistration>;
 
-export const initialFormState: FormState = {
-  accommodation_needed: false,
-  travel_support_needed: false,
-};
+export const initialFormState: FormState = {};
