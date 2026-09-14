@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AgendaRouteImport } from './routes/agenda'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as MerchRouteImport } from './routes/merch'
@@ -21,6 +22,7 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ScheduleRouteImport } from './routes/schedule'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SpeakersRouteImport } from './routes/speakers'
 import { Route as SponsorsRouteImport } from './routes/sponsors'
 import { Route as SummitRouteImport } from './routes/summit'
 import { Route as TracksRouteImport } from './routes/tracks'
@@ -55,6 +57,11 @@ const AuthenticatedRoute = AuthenticatedRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgendaRoute = AgendaRouteImport.update({
+  id: '/agenda',
+  path: '/agenda',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -100,6 +107,11 @@ const ScheduleRoute = ScheduleRouteImport.update({
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SpeakersRoute = SpeakersRouteImport.update({
+  id: '/speakers',
+  path: '/speakers',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SponsorsRoute = SponsorsRouteImport.update({
@@ -222,6 +234,7 @@ const AuthenticatedProfileTicketRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/agenda': typeof AgendaRoute
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/merch': typeof MerchRoute
@@ -231,6 +244,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/schedule': typeof ScheduleRoute
   '/signup': typeof SignupRoute
+  '/speakers': typeof SpeakersRoute
   '/sponsors': typeof SponsorsRoute
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
@@ -255,6 +269,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/agenda': typeof AgendaRoute
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/merch': typeof MerchRoute
@@ -264,6 +279,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/schedule': typeof ScheduleRoute
   '/signup': typeof SignupRoute
+  '/speakers': typeof SpeakersRoute
   '/sponsors': typeof SponsorsRoute
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
@@ -288,6 +304,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/about': typeof AboutRoute
+  '/agenda': typeof AgendaRoute
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
   '/merch': typeof MerchRoute
@@ -297,6 +314,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/schedule': typeof ScheduleRoute
   '/signup': typeof SignupRoute
+  '/speakers': typeof SpeakersRoute
   '/sponsors': typeof SponsorsRoute
   '/summit': typeof SummitRoute
   '/tracks': typeof TracksRoute
@@ -324,6 +342,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/agenda'
     | '/contact'
     | '/login'
     | '/merch'
@@ -333,6 +352,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/schedule'
     | '/signup'
+    | '/speakers'
     | '/sponsors'
     | '/summit'
     | '/tracks'
@@ -357,6 +377,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/agenda'
     | '/contact'
     | '/login'
     | '/merch'
@@ -366,6 +387,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/schedule'
     | '/signup'
+    | '/speakers'
     | '/sponsors'
     | '/summit'
     | '/tracks'
@@ -389,6 +411,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/about'
+    | '/agenda'
     | '/contact'
     | '/login'
     | '/merch'
@@ -398,6 +421,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/schedule'
     | '/signup'
+    | '/speakers'
     | '/sponsors'
     | '/summit'
     | '/tracks'
@@ -425,6 +449,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   AboutRoute: typeof AboutRoute
+  AgendaRoute: typeof AgendaRoute
   ContactRoute: typeof ContactRoute
   LoginRoute: typeof LoginRoute
   MerchRoute: typeof MerchRoute
@@ -434,6 +459,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   ScheduleRoute: typeof ScheduleRoute
   SignupRoute: typeof SignupRoute
+  SpeakersRoute: typeof SpeakersRoute
   SponsorsRoute: typeof SponsorsRoute
   SummitRoute: typeof SummitRoute
   TracksRoute: typeof TracksRoute
@@ -463,6 +489,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agenda': {
+      id: '/agenda'
+      path: '/agenda'
+      fullPath: '/agenda'
+      preLoaderRoute: typeof AgendaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -526,6 +559,13 @@ declare module '@tanstack/react-router' {
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/speakers': {
+      id: '/speakers'
+      path: '/speakers'
+      fullPath: '/speakers'
+      preLoaderRoute: typeof SpeakersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sponsors': {
@@ -750,6 +790,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   AboutRoute: AboutRoute,
+  AgendaRoute: AgendaRoute,
   ContactRoute: ContactRoute,
   LoginRoute: LoginRoute,
   MerchRoute: MerchRoute,
@@ -759,6 +800,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   ScheduleRoute: ScheduleRoute,
   SignupRoute: SignupRoute,
+  SpeakersRoute: SpeakersRoute,
   SponsorsRoute: SponsorsRoute,
   SummitRoute: SummitRoute,
   TracksRoute: TracksRoute,

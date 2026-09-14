@@ -252,3 +252,84 @@ export const SPEAKERS: Speaker[] = [
     sessionType: "panel",
   },
 ];
+
+export type NetworkAttendee = {
+  id: string;
+  name: string;
+  title: string;
+  organization: string;
+  sector: string;
+  bio: string;
+  image: string;
+  interests: string[];
+  location: string;
+};
+
+export const NETWORK_ATTENDEES: NetworkAttendee[] = [
+  {
+    id: "attendee-1",
+    name: "Chioma Okonkwo",
+    title: "Tech Founder & CEO",
+    organization: "InnovateLabs Nigeria",
+    sector: "FinTech",
+    bio: "Building payment solutions for underserved communities across Africa.",
+    image: "/attendees/chioma.jpg",
+    interests: ["AI", "Fintech", "Startups", "Women in Tech"],
+    location: "Lagos, Nigeria",
+  },
+  {
+    id: "attendee-2",
+    name: "Tunde Adekunle",
+    title: "Data Scientist",
+    organization: "DataFlow Africa",
+    sector: "Creative Economy",
+    bio: "Using AI to democratize data analytics for African businesses.",
+    image: "/attendees/tunde.jpg",
+    interests: ["Machine Learning", "Data Science", "AI Ethics"],
+    location: "Abuja, Nigeria",
+  },
+  {
+    id: "attendee-3",
+    name: "Amara Nwankwo",
+    title: "Agricultural Innovation Lead",
+    organization: "GreenTech Solutions",
+    sector: "Agriculture & Food",
+    bio: "Leveraging IoT and AI to improve agricultural productivity.",
+    image: "/attendees/amara.jpg",
+    interests: ["AgriTech", "Sustainability", "Climate Tech", "IoT"],
+    location: "Enugu, Nigeria",
+  },
+  {
+    id: "attendee-4",
+    name: "Obi Ukaegbu",
+    title: "Healthcare Innovation Consultant",
+    organization: "MedTech Africa",
+    sector: "Health & Wellbeing",
+    bio: "Connecting healthcare providers with digital transformation tools.",
+    image: "/attendees/obi.jpg",
+    interests: ["HealthTech", "Digital Health", "Telemedicine"],
+    location: "Port Harcourt, Nigeria",
+  },
+  {
+    id: "attendee-5",
+    name: "Zainab Mohammed",
+    title: "Creative Director",
+    organization: "Nollywood Innovations",
+    sector: "Creative Economy",
+    bio: "Exploring AI applications in film production and content creation.",
+    image: "/attendees/zainab.jpg",
+    interests: ["AI in Arts", "Content Creation", "Film Tech", "NFTs"],
+    location: "Lagos, Nigeria",
+  },
+  {
+    id: "attendee-6",
+    name: "Kwame Asante",
+    title: "Policy Analyst",
+    organization: "Digital Africa Foundation",
+    sector: "Digital Policy",
+    bio: "Advocating for inclusive digital policies across West Africa.",
+    image: "/attendees/kwame.jpg",
+    interests: ["Digital Policy", "Governance", "Digital Rights"],
+    location: "Accra, Ghana",
+  },
+];

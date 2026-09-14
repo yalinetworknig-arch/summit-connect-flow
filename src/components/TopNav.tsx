@@ -14,6 +14,7 @@ import {
 const mainItems = [
   { href: "/", label: "Home" },
   { href: "/sponsors", label: "Sponsors" },
+  { href: "/network", label: "Network" },
 ] as const;
 
 const programItems = [
