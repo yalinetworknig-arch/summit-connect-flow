@@ -27,12 +27,12 @@ const MotionButton = forwardRef<
 ));
 MotionButton.displayName = "MotionButton";
 
-export const Route = createFileRoute(“/register”)({
+export const Route = createFileRoute("/register")({
   head: () => ({
     meta: [
-      { title: “Register - YALI Summit 2026” },
-      { name: “description”, content: “Register for the YALI Network Nigeria Summit 2026.” },
-      { property: “og:title”, content: “Register - YALI Summit 2026” },
+      { title: "Register - YALI Summit 2026" },
+      { name: "description", content: "Register for the YALI Network Nigeria Summit 2026." },
+      { property: "og:title", content: "Register - YALI Summit 2026" },
       { property: "og:description", content: "Register for the YALI Network Nigeria Summit 2026." },
     ],
   }),
@@ -40,10 +40,10 @@ export const Route = createFileRoute(“/register”)({
 });
 
 const TITLES = [
-  “First - who's coming?”,
-  “Tell us about you”,
-  “Your sector and attendance”,
-  “Logistics and preferences”,
+  "First - who's coming?",
+  "Tell us about you",
+  "Your sector and attendance",
+  "Logistics and preferences",
 ];
 
 function RegisterPage() {
@@ -69,7 +69,7 @@ function RegisterPage() {
   const patch = useCallback((p: FormState) => {
     setForm((prev) => {
       const next = { ...prev, ...p };
-      // Debounce draft save â€” only save after 800ms of inactivity
+      // Debounce draft save " only save after 800ms of inactivity
       clearTimeout(saveTimeoutRef.current);
       saveTimeoutRef.current = setTimeout(() => {
         saveDraft(next);
@@ -162,7 +162,7 @@ function RegisterPage() {
           return;
         }
       } catch {
-        // Query error â€” let final submission catch it
+        // Query error " let final submission catch it
       }
       setNextBusy(false);
     }
@@ -215,7 +215,7 @@ function RegisterPage() {
             </h1>
           </div>
           <div className="text-xs px-3 py-1.5 rounded-full whitespace-nowrap" style={{ background: "var(--surface)", color: "var(--text-secondary)" }}>
-            â±ï¸ ~3 min
+             ~3 min
           </div>
         </div>
         {/* Animated subtitle crossfade on step change */}
@@ -322,7 +322,7 @@ function RegisterPage() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                   </svg>
-                  <span>Verifying emailâ€¦</span>
+                  <span>Verifying email</span>
                 </>
               ) : (
                 <>
@@ -331,7 +331,7 @@ function RegisterPage() {
                     animate={{ x: canAdvance ? 0 : 0 }}
                     className="opacity-60 text-xs"
                   >
-                    â†’
+                    
                   </motion.span>
                 </>
               )}
@@ -348,7 +348,7 @@ function RegisterPage() {
               className="px-6 py-3 rounded-lg text-sm font-semibold border-2 min-h-[48px] transition-all duration-200 hover:shadow-md"
               style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
             >
-              â† Back
+               Back
             </motion.button>
           </div>
         )}
