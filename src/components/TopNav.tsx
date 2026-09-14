@@ -1,8 +1,8 @@
 ﻿import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Sun, Moon, Menu } from "lucide-react";
-import AIDIENGLWhite from "@/assets/AIDIENGL-white.png";
-import AIDIENGLNavy from "@/assets/AIDIENGL-navy.png";
+import AIDIENGLWhite from "@/assets/aidiegl-white.png";
+import AIDIENGLNavy from "@/assets/aidiegl-navy.png";
 import {
   Sheet,
   SheetContent,

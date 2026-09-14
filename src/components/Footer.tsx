@@ -1,6 +1,6 @@
 ﻿import { Link } from "@tanstack/react-router";
 import { Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
-import lockupFull from "@/assets/AIDIENGL-lockup-full.png";
+import lockupFull from "@/assets/aidiegl-color.png";
 
 const navItems = [
   { to: "/", label: "Home" },
