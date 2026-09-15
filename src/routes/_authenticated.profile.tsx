@@ -17,7 +17,7 @@ const ATTENDEE_LABELS: Record<string, string> = {
 };
 
 export const Route = createFileRoute("/_authenticated/profile")({
-  head: () => ({ meta: [{ title: "My profile â€” AIDIENGL" }] }),
+  head: () => ({ meta: [{ title: "My profile — AIDIENGL" }] }),
   component: ProfileShell,
 });
 

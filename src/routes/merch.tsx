@@ -8,14 +8,14 @@ import whiteTshirtImg from "@/assets/merch/white-tshirt.jpg";
 export const Route = createFileRoute("/merch")({
   head: () => ({
     meta: [
-      { title: "Merchandise Store â€” YALI Summit 2026" },
+      { title: "Merchandise Store — YALI Summit 2026" },
       {
         name: "description",
         content: "Order exclusive AIDIENGL 2026 merchandise and apparel.",
       },
       {
         property: "og:title",
-        content: "Merchandise Store â€” YALI Summit 2026",
+        content: "Merchandise Store — YALI Summit 2026",
       },
       {
         property: "og:description",
@@ -379,7 +379,7 @@ function MerchPage() {
             className="text-xl font-bold mb-4"
             style={{ color: "var(--text-primary)" }}
           >
-            ðŸ›’ Your Cart
+            🛒 Your Cart
           </h3>
 
           {cart.length === 0 ? (
@@ -407,7 +407,7 @@ function MerchPage() {
                           {product?.name}
                         </p>
                         <p className="text-xs" style={{ color: "var(--text-secondary)" }}>
-                          {item.size} â€¢ {item.color}
+                          {item.size} • {item.color}
                         </p>
                         <div className="flex gap-2 mt-2 items-center">
                           <button
@@ -459,7 +459,7 @@ function MerchPage() {
                 {/* Payment Details */}
                 <div className="bg-surface rounded-lg p-3 mb-4 text-xs" style={{ background: "var(--surface)" }}>
                   <p className="font-semibold mb-2" style={{ color: "var(--text-primary)" }}>
-                    ðŸ’³ Payment Details
+                    💳 Payment Details
                   </p>
                   <div className="space-y-1" style={{ color: "var(--text-secondary)" }}>
                     <p><strong>Bank:</strong> {PAYMENT_DETAILS.bank}</p>
@@ -483,7 +483,7 @@ function MerchPage() {
                     boxShadow: cart.length === 0 ? "none" : "var(--shadow-md)",
                   }}
                 >
-                  ðŸ“± Complete Order on WhatsApp
+                  📱 Complete Order on WhatsApp
                 </a>
               </div>
             </>

@@ -4,9 +4,9 @@ import { SponsorsSection } from "@/components/sections/SponsorsSection";
 export const Route = createFileRoute("/sponsors")({
   head: () => ({
     meta: [
-      { title: "Sponsors â€” YALI Summit 2026" },
+      { title: "Sponsors — YALI Summit 2026" },
       { name: "description", content: "Sponsor portal: deck download and inquiry form." },
-      { property: "og:title", content: "Sponsors â€” YALI Summit 2026" },
+      { property: "og:title", content: "Sponsors — YALI Summit 2026" },
       { property: "og:description", content: "Partner with the YALI Network Nigeria Summit 2026 (AIDIENGL)." },
     ],
   }),

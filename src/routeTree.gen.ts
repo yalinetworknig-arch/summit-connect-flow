@@ -156,9 +156,9 @@ const RegisterIndexRoute = RegisterIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterIdRoute = RegisterIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => RegisterRoute,
+  id: '/register/$id',
+  path: '/register/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const TicketCodeRoute = TicketCodeRouteImport.update({
   id: '/ticket/$code',
@@ -464,6 +464,7 @@ export interface RootRouteChildren {
   TracksRoute: typeof TracksRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AttendeeCodeRoute: typeof AttendeeCodeRoute
+  RegisterIdRoute: typeof RegisterIdRoute
   TicketCodeRoute: typeof TicketCodeRoute
   RegisterIndexRoute: typeof RegisterIndexRoute
 }
@@ -626,10 +627,10 @@ declare module '@tanstack/react-router' {
     }
     '/register/$id': {
       id: '/register/$id'
-      path: '/$id'
+      path: '/register/$id'
       fullPath: '/register/$id'
       preLoaderRoute: typeof RegisterIdRouteImport
-      parentRoute: typeof RegisterRoute
+      parentRoute: typeof rootRouteImport
     }
     '/ticket/$code': {
       id: '/ticket/$code'
@@ -793,6 +794,7 @@ const rootRouteChildren: RootRouteChildren = {
   TracksRoute: TracksRoute,
   AdminLoginRoute: AdminLoginRoute,
   AttendeeCodeRoute: AttendeeCodeRoute,
+  RegisterIdRoute: RegisterIdRoute,
   TicketCodeRoute: TicketCodeRoute,
   RegisterIndexRoute: RegisterIndexRoute,
 }

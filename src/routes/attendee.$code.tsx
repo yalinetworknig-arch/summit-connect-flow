@@ -125,6 +125,7 @@ function AttendeePage() {
               avatar_url: data.profile?.avatar_url ?? "",
               networking_opt_in: data.networking_opt_in,
             }}
+            suggested={data.suggested}
           />
           <MyConnections code={data.ticket_code} />
         </div>
@@ -143,29 +144,44 @@ function AttendeePage() {
   );
 }
 
+type CardFields = {
+  headline: string;
+  bio: string;
+  linkedin_url: string;
+  avatar_url: string;
+  networking_opt_in: boolean;
+};
+
+// Only steps in when the person hasn't written their own headline/bio yet —
+// never overwrites something they already saved.
+function withSuggestion(initial: CardFields, suggested: { headline: string; bio: string } | null): CardFields {
+  if (!suggested) return initial;
+  return {
+    ...initial,
+    headline: initial.headline || suggested.headline,
+    bio: initial.bio || suggested.bio,
+  };
+}
+
 function EditMyCard({
   code,
   initial,
+  suggested,
 }: {
   code: string;
-  initial: {
-    headline: string;
-    bio: string;
-    linkedin_url: string;
-    avatar_url: string;
-    networking_opt_in: boolean;
-  };
+  initial: CardFields;
+  suggested: { headline: string; bio: string } | null;
 }) {
   const update = useServerFn(updateMyAttendeeCard);
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
-  const [form, setForm] = useState(initial);
+  const [form, setForm] = useState(() => withSuggestion(initial, suggested));
 
   // Keep the form in sync if the fetched card changes underneath us
   // (e.g. right after a save triggers a refetch).
   useEffect(() => {
-    setForm(initial);
-  }, [initial.headline, initial.bio, initial.linkedin_url, initial.avatar_url, initial.networking_opt_in]);
+    setForm(withSuggestion(initial, suggested));
+  }, [initial.headline, initial.bio, initial.linkedin_url, initial.avatar_url, initial.networking_opt_in, suggested?.headline, suggested?.bio]);
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -235,7 +251,7 @@ function EditMyCard({
           type="button"
           onClick={() => {
             setOpen(false);
-            setForm(initial);
+            setForm(withSuggestion(initial, suggested));
           }}
           className="text-xs font-semibold"
           style={{ color: "var(--text-secondary)" }}
@@ -243,6 +259,12 @@ function EditMyCard({
           Cancel
         </button>
       </div>
+
+      {suggested && (
+        <p className="text-xs -mt-2" style={{ color: "var(--accent-cyan)" }}>
+          Pre-filled from your registration answers — edit or keep it as is.
+        </p>
+      )}
 
       <div>
         <label className="block text-xs font-medium mb-1" style={{ color: "var(--text-secondary)" }}>

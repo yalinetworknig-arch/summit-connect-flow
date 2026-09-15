@@ -47,7 +47,59 @@ export type AttendeeCard = {
     linkedin_url: string | null;
     avatar_url: string | null;
   } | null;
+  // Only present for the card's owner, and only when they haven't written
+  // their own headline/bio yet — a starting draft built from what they
+  // already told us at registration, so the edit form isn't a blank page.
+  suggested: { headline: string; bio: string } | null;
 };
+
+/**
+ * Turns what someone already answered at registration into a starting
+ * headline + bio, per attendee type. Never overwrites anything they've
+ * already written themselves — the caller only uses this when their saved
+ * profile is still empty.
+ */
+function buildSuggestedProfile(reg: {
+  attendee_type: string;
+  state: string | null;
+  profession: string | null;
+  organization: string | null;
+  role_title: string | null;
+  reason_for_attending: string | null;
+  sponsor_goals: string | null;
+  media_outlet: string | null;
+  media_type: string | null;
+  media_coverage_focus: string | null;
+  volunteer_skills: string | null;
+}): { headline: string; bio: string } {
+  switch (reg.attendee_type) {
+    case "sponsor":
+      return {
+        headline: [reg.role_title, reg.organization].filter(Boolean).join(" at ") || "Sponsor Representative",
+        bio: reg.sponsor_goals ?? "",
+      };
+    case "media":
+      return {
+        headline: [reg.media_type, reg.media_outlet].filter(Boolean).join(" — ") || "Media",
+        bio: reg.media_coverage_focus ?? "",
+      };
+    case "volunteer":
+      return {
+        headline: "Volunteer, AIDIENGL 2026",
+        bio: reg.volunteer_skills ?? "",
+      };
+    case "delegate":
+      return {
+        headline: ["YALI Delegate", reg.state].filter(Boolean).join(" · "),
+        bio: reg.reason_for_attending ?? "",
+      };
+    default:
+      return {
+        headline: reg.profession ?? "",
+        bio: reg.reason_for_attending ?? "",
+      };
+  }
+}
 
 const getCardSchema = z.object({ code: ticketCode, viewerCode: ticketCode.optional() });
 
@@ -58,7 +110,11 @@ export const getAttendeeCard = createServerFn({ method: "POST" })
 
     const { data: reg, error } = await supabase
       .from("registrations")
-      .select("id, ticket_code, full_name, attendee_type, track_selection, state, checked_in_at")
+      .select(
+        "id, ticket_code, full_name, attendee_type, track_selection, state, checked_in_at, " +
+          "profession, organization, role_title, reason_for_attending, sponsor_goals, " +
+          "media_outlet, media_type, media_coverage_focus, volunteer_skills",
+      )
       .eq("ticket_code", data.code)
       .maybeSingle();
     if (error) throw new Error(error.message);
@@ -88,6 +144,9 @@ export const getAttendeeCard = createServerFn({ method: "POST" })
       await logScanEvent(supabase, reg.ticket_code, "profile_view");
     }
 
+    const hasOwnCopy = Boolean(prof?.headline?.trim() || prof?.bio?.trim());
+    const suggested = isOwner && !hasOwnCopy ? buildSuggestedProfile(reg) : null;
+
     return {
       ticket_code: reg.ticket_code,
       full_name: reg.full_name,
@@ -97,6 +156,7 @@ export const getAttendeeCard = createServerFn({ method: "POST" })
       checked_in: Boolean(reg.checked_in_at),
       networking_opt_in: prof?.networking_opt_in ?? true,
       profile,
+      suggested,
     };
   });
 

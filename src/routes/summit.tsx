@@ -4,9 +4,9 @@ import { CalendarDays, Layers, Info, HandHeart, ArrowRight, type LucideIcon } fr
 export const Route = createFileRoute("/summit")({
   head: () => ({
     meta: [
-      { title: "Summit â€” YALI Network Nigeria" },
+      { title: "Summit — YALI Network Nigeria" },
       { name: "description", content: "AIDIENGL: AI, Digital Innovation and the Empowering the Next Generation of Leaders." },
-      { property: "og:title", content: "Summit â€” YALI Network Nigeria" },
+      { property: "og:title", content: "Summit — YALI Network Nigeria" },
       { property: "og:description", content: "Everything you need to know about AIDIENGL 2026." },
     ],
   }),

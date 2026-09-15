@@ -50,7 +50,7 @@ function SignupPage() {
           Check your email
         </h1>
         <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-          We sent a magic sign-in link to <strong>{email}</strong>. Click it to access your ticket and profile â€”
+          We sent a magic sign-in link to <strong>{email}</strong>. Click it to access your ticket and profile —
           we'll automatically link your registration.
         </p>
         <button
@@ -71,7 +71,7 @@ function SignupPage() {
         Sign in with a magic link
       </h1>
       <p className="text-sm mb-6" style={{ color: "var(--text-secondary)" }}>
-        Enter the email you used to register. We'll send you a one-click sign-in link â€” no password needed.
+        Enter the email you used to register. We'll send you a one-click sign-in link — no password needed.
       </p>
       <form onSubmit={onSubmit} className="space-y-4">
         <label className="block text-sm">
@@ -98,7 +98,7 @@ function SignupPage() {
           className="w-full px-4 py-3 rounded-full text-sm font-semibold disabled:opacity-60 min-h-[48px]"
           style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
         >
-          {busy ? "Sending linkâ€¦" : "Email me a sign-in link"}
+          {busy ? "Sending link…" : "Email me a sign-in link"}
         </button>
       </form>
       <p className="mt-6 text-sm text-center" style={{ color: "var(--text-secondary)" }}>

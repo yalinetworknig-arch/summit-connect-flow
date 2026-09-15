@@ -177,7 +177,7 @@ export function StateHubs() {
             className="mt-3 max-w-2xl mx-auto text-sm md:text-base"
             style={{ color: "var(--text-secondary)" }}
           >
-            36 states and the FCT â€” tap any hub to learn more about its work in
+            36 states and the FCT — tap any hub to learn more about its work in
             your region.
           </p>
         </div>

@@ -12,17 +12,17 @@ import { ContactSection } from "@/components/sections/ContactSection";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "YALI Network Nigeria National Summit 2026 â€” AIDIENGL" },
+      { title: "YALI Network Nigeria National Summit 2026 — AIDIENGL" },
       {
         name: "description",
         content:
-          "AI, Digital Innovation and the Empowering the Next Generation of Leaders. Sept 25â€“26, 2026, Shiba Event Center, Lagos. Register free.",
+          "AI, Digital Innovation and the Empowering the Next Generation of Leaders. Sept 25–26, 2026, Shiba Event Center, Lagos. Register free.",
       },
       { property: "og:title", content: "YALI Network Nigeria National Summit 2026" },
       {
         property: "og:description",
         content:
-          "AI, Digital Innovation and the Empowering the Next Generation of Leaders. Sept 25â€“26, 2026, Shiba Event Center, Lagos.",
+          "AI, Digital Innovation and the Empowering the Next Generation of Leaders. Sept 25–26, 2026, Shiba Event Center, Lagos.",
       },
     ],
   }),

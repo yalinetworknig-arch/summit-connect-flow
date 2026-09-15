@@ -38,7 +38,7 @@ function TicketTab() {
           <dt style={{ color: "var(--text-secondary)" }}>Attendee type</dt>
           <dd style={{ color: "var(--text-primary)" }}>{ATTENDEE_LABELS[reg.attendee_type] ?? reg.attendee_type}</dd>
           <dt style={{ color: "var(--text-secondary)" }}>Track</dt>
-          <dd style={{ color: "var(--text-primary)" }}>{TRACKS.find(t => t.slug === reg.track_selection)?.title ?? reg.track_selection ?? "â€”"}</dd>
+          <dd style={{ color: "var(--text-primary)" }}>{TRACKS.find(t => t.slug === reg.track_selection)?.title ?? reg.track_selection ?? "—"}</dd>
           <dt style={{ color: "var(--text-secondary)" }}>Verification</dt>
           <dd style={{ color: "var(--text-primary)" }} className="capitalize">{reg.verification_status}</dd>
           <dt style={{ color: "var(--text-secondary)" }}>Check-in</dt>
@@ -66,7 +66,7 @@ function TicketTab() {
 function buildIcs(ticket: string) {
   return [
     "BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//YALI Nigeria//AIDIENGL//EN",
-    "BEGIN:VEVENT",`UID:${ticket}@AIDIENGL`,"SUMMARY:AIDIENGL 2026 â€” YALI Network Nigeria Summit",
+    "BEGIN:VEVENT",`UID:${ticket}@AIDIENGL`,"SUMMARY:AIDIENGL 2026 — YALI Network Nigeria Summit",
     "DTSTART:20260910T110000Z","DTEND:20260913T160000Z","LOCATION:Lagos, Nigeria",
     "DESCRIPTION:Your AIDIENGL attendance.","END:VEVENT","END:VCALENDAR",
   ].join("\r\n");

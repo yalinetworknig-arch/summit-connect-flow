@@ -20,7 +20,7 @@ const ATTENDEE_LABELS: Record<string, string> = {
 export const Route = createFileRoute("/register/$id")({
   head: () => ({
     meta: [
-      { title: "Registration confirmed â€” YALI Summit 2026" },
+      { title: "Registration confirmed — YALI Summit 2026" },
       { name: "description", content: "Your ticket for the YALI Network Nigeria Summit 2026." },
     ],
   }),
@@ -147,7 +147,7 @@ function ConfirmationPage() {
         initial="hidden"
         animate="visible"
       >
-        {/* Animated checkmark â€” spring pop with glow ring */}
+        {/* Animated checkmark — spring pop with glow ring */}
         <motion.div
           className="relative mb-4"
           variants={{
@@ -182,7 +182,7 @@ function ConfirmationPage() {
             fontWeight: 700,
           }}
         >
-          You're in, {firstName}! ðŸŽ‰
+          You're in, {firstName}! 🎉
         </motion.h1>
 
         <motion.p variants={staggerChild} className="mt-2" style={{ color: "var(--text-secondary)" }}>
@@ -204,7 +204,7 @@ function ConfirmationPage() {
             style={{ color: "var(--accent-cyan)" }}
           >
             <Ticket className="w-3.5 h-3.5" />
-            Open shareable ticket page â†’
+            Open shareable ticket page →
           </Link>
         </motion.div>
       </motion.div>
@@ -217,7 +217,7 @@ function ConfirmationPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.25, ease: ease.out }}
       >
-        {/* QR Code â€” delayed fade-in after card appears */}
+        {/* QR Code — delayed fade-in after card appears */}
         <motion.div
           className="flex justify-center mb-5"
           initial={{ opacity: 0, scale: 0.88 }}
@@ -251,7 +251,7 @@ function ConfirmationPage() {
           </div>
         </motion.div>
 
-        {/* Detail rows â€” staggered */}
+        {/* Detail rows — staggered */}
         <motion.dl
           className="grid grid-cols-2 gap-3 w-full text-sm border-t pt-4"
           style={{ borderColor: "var(--border-strong)" }}
@@ -289,7 +289,7 @@ function ConfirmationPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h3 className="font-semibold text-lg" style={{ color: "var(--text-primary)" }}>
-              ðŸŽ½ Order Official AIDIENGL Merchandise
+              🎽 Order Official AIDIENGL Merchandise
             </h3>
             <p className="text-sm mt-2" style={{ color: "var(--text-secondary)" }}>
               Get your official AIDIENGL 2026 t-shirt in your choice of size and color. ...8,000

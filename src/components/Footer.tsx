@@ -29,7 +29,7 @@ export function Footer() {
         <div className="md:col-span-1">
           <img
             src={lockupFull}
-            alt="AIDIENGL â€” Artificial Intelligence, Digital Innovation, and Empowering the Next Generation of Leaders"
+            alt="AIDIENGL — Artificial Intelligence, Digital Innovation, and Empowering the Next Generation of Leaders"
             className="w-full max-w-[320px] h-auto select-none dark:invert dark:brightness-110 opacity-90"
             loading="lazy"
             decoding="async"
@@ -114,7 +114,7 @@ export function Footer() {
           className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs"
           style={{ color: "var(--text-secondary)" }}
         >
-          <p>Â© 2026 YALI Network Nigeria</p>
+          <p>© 2026 YALI Network Nigeria</p>
           <a href="/privacy" className="hover:opacity-80 transition-opacity">
             Privacy Policy
           </a>
