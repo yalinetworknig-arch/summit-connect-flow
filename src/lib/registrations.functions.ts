@@ -68,21 +68,28 @@ export const submitRegistration = createServerFn({ method: "POST" })
       throw new Error(msg);
     }
     console.log("[SERVER] Registration created with ID:", row?.id);
-    // Fire-and-forget — do NOT await the email so it never blocks registration
+    // Awaited (not fire-and-forget): on serverless, the function's execution
+    // context can be frozen/torn down the instant the response is sent, which
+    // would silently kill a detached email send before it reaches Resend.
+    // sendTicketEmail() has its own 8s timeout, and a failed/slow email never
+    // fails the registration itself — it's just logged.
     if (row?.email) {
-      console.log("[SERVER] Sending ticket email (fire-and-forget)...");
-      sendTicketEmail({
-        to: row.email,
-        fullName: row.full_name,
-        ticketCode: row.ticket_code,
-        sector: row.sector,
-        attendeeType: row.attendee_type,
-        attendanceMode: row.attendance_mode,
-        state: row.state,
-      }).then((result) => {
+      console.log("[SERVER] Sending ticket email...");
+      try {
+        const result = await sendTicketEmail({
+          to: row.email,
+          fullName: row.full_name,
+          ticketCode: row.ticket_code,
+          sector: row.sector,
+          attendeeType: row.attendee_type,
+          attendanceMode: row.attendance_mode,
+          state: row.state,
+        });
         if (!result.ok) console.error("[SERVER] ticket email failed:", result.error);
         else console.log("[SERVER] ticket email sent:", result.id);
-      }).catch((e) => console.error("[SERVER] ticket email threw:", e));
+      } catch (e) {
+        console.error("[SERVER] ticket email threw:", e);
+      }
     }
     console.log("[SERVER] Returning registration data to client...");
     return row;

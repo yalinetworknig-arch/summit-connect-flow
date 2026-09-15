@@ -31,7 +31,7 @@ function renderContactCardHtml(c: ContactEntry, isLast: boolean) {
             <div style="font-size:13px;margin-top:8px;">
               <a href="mailto:${escapeHtml(c.email)}" style="color:${emailColors.navy};text-decoration:none;font-weight:600;">${escapeHtml(c.email)}</a>${c.phone ? `<span style="color:${emailColors.sub};"> - </span><a href="tel:${escapeHtml(c.phone)}" style="color:${emailColors.navy};text-decoration:none;font-weight:600;">${escapeHtml(c.phone)}</a>` : ""}
             </div>
-            ${c.linkedin_url ? `<div style="font-size:13px;margin-top:4px;"><a href="${escapeHtml(c.linkedin_url)}" style="color:#0A66C2;text-decoration:none;font-weight:600;">LinkedIn profile â†’</a></div>` : ""}
+            ${c.linkedin_url ? `<div style="font-size:13px;margin-top:4px;"><a href="${escapeHtml(c.linkedin_url)}" style="color:#0A66C2;text-decoration:none;font-weight:600;">LinkedIn profile →</a></div>` : ""}
           </td>
         </tr>
       </table>
@@ -59,7 +59,7 @@ function renderHtml(firstName: string, contacts: ContactEntry[]) {
   `;
 
   return renderEmailShell({
-    preheader: `You made ${contacts.length} connection${contacts.length === 1 ? "" : "s"} at AIDIENGL 2026 â€” here are their details`,
+    preheader: `You made ${contacts.length} connection${contacts.length === 1 ? "" : "s"} at AIDIENGL 2026 — here are their details`,
     bodyHtml,
   });
 }
@@ -72,7 +72,7 @@ function renderText(firstName: string, contacts: ContactEntry[]) {
     "",
   ];
   for (const c of contacts) {
-    lines.push(`â€¢ ${c.full_name} (${[c.attendee_type, c.state].filter(Boolean).join(", ")})`);
+    lines.push(`• ${c.full_name} (${[c.attendee_type, c.state].filter(Boolean).join(", ")})`);
     lines.push(`  ${c.email}${c.phone ? ` - ${c.phone}` : ""}`);
     if (c.linkedin_url) lines.push(`  ${c.linkedin_url}`);
     lines.push("");

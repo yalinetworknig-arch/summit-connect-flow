@@ -19,14 +19,14 @@ export function escapeHtml(s: string): string {
 }
 
 /** Renders a full HTML email document with a consistent branded header/footer.
- *  bodyHtml is the inner content â€” should be one or more <tr> rows for a
+ *  bodyHtml is the inner content — should be one or more <tr> rows for a
  *  <table role="presentation"> that will be nested inside the card. */
 export function renderEmailShell(input: {
   preheader: string;
   eyebrow?: string;
   bodyHtml: string;
 }): string {
-  const eyebrow = input.eyebrow ?? "YALI SUMMIT 2026 - SEPT 25â€“26 - IKEJA, LAGOS";
+  const eyebrow = input.eyebrow ?? "YALI SUMMIT 2026 - SEPT 25–26 - IKEJA, LAGOS";
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -82,7 +82,7 @@ export function renderEmailShell(input: {
                 <tr>
                   <td style="font-family:${FONT_STACK};font-size:12px;color:rgba(255,255,255,0.65);line-height:1.6;">
                     <strong style="color:#fff;">YALI Network Nigeria</strong><br/>
-                    AIDIENGL 2026 - Shiba Event Center, Lagos - Sept 25â€“26<br/>
+                    AIDIENGL 2026 - Shiba Event Center, Lagos - Sept 25–26<br/>
                     <a href="mailto:info@summit.yalinetwork.ng" style="color:${COLORS.cyan};text-decoration:none;">info@summit.yalinetwork.ng</a>
                   </td>
                 </tr>

@@ -1,13 +1,15 @@
 import { useEffect, useRef } from "react";
-import { createFileRoute, Link, useParams } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, useParams, useSearch } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
+import { z } from "zod";
 import QRCode from "qrcode";
 import { CheckCircle2, AlertTriangle, ShieldCheck, Clock, XCircle, Calendar, Share2, Home, Printer, Users } from "lucide-react";
 import { getTicketByCode } from "@/lib/tickets.functions";
 import { TRACKS } from "@/lib/register/tracks";
 
 export const Route = createFileRoute("/ticket/$code")({
+  validateSearch: z.object({ edit: z.string().optional() }).parse,
   head: () => ({
     meta: [
       { title: "Your ticket — YALI Summit 2026" },
@@ -41,6 +43,8 @@ function VerificationBadge({ status }: { status: string }) {
 
 function TicketPage() {
   const { code } = useParams({ from: "/ticket/$code" });
+  const { edit } = useSearch({ from: "/ticket/$code" });
+  const navigate = useNavigate();
   const fetchTicket = useServerFn(getTicketByCode);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -52,17 +56,24 @@ function TicketPage() {
 
   useEffect(() => {
     if (!data) return;
-    // Remember this device's ticket so the networking pages can one-tap save contacts.
+    // Remember this device's ticket so the networking pages can one-tap save contacts
+    // and so /attendee/$code recognizes this device as the card's owner.
     try {
       localStorage.setItem("yali_my_ticket_code", data.ticket_code);
     } catch {}
+    // Email's "Complete your networking profile" link lands here with ?edit=1 —
+    // identity is now established above, so hand off straight to the editable card.
+    if (edit === "1") {
+      navigate({ to: "/attendee/$code", params: { code: data.ticket_code }, replace: true });
+      return;
+    }
     if (!canvasRef.current) return;
     QRCode.toCanvas(canvasRef.current, data.ticket_code, {
       width: 260,
       margin: 1,
       color: { dark: "#0A1128", light: "#FFFFFF" },
     });
-  }, [data]);
+  }, [data, edit]);
 
   if (isLoading) {
     return <section className="max-w-2xl mx-auto px-6 py-16 text-center" style={{ color: "var(--text-secondary)" }}>Loading your ticket…</section>;
