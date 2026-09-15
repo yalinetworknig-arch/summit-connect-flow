@@ -9,7 +9,9 @@ import { getTicketByCode } from "@/lib/tickets.functions";
 import { TRACKS } from "@/lib/register/tracks";
 
 export const Route = createFileRoute("/ticket/$code")({
-  validateSearch: z.object({ edit: z.string().optional() }).parse,
+  // TanStack Router JSON-parses search values, so ?edit=1 arrives as the
+  // number 1, not the string "1" — accept either.
+  validateSearch: z.object({ edit: z.union([z.string(), z.number()]).optional() }).parse,
   head: () => ({
     meta: [
       { title: "Your ticket — YALI Summit 2026" },
@@ -63,7 +65,7 @@ function TicketPage() {
     } catch {}
     // Email's "Complete your networking profile" link lands here with ?edit=1 —
     // identity is now established above, so hand off straight to the editable card.
-    if (edit === "1") {
+    if (String(edit) === "1") {
       navigate({ to: "/attendee/$code", params: { code: data.ticket_code }, replace: true });
       return;
     }
