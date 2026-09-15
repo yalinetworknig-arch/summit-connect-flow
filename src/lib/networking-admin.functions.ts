@@ -3,6 +3,7 @@ import { z } from "zod";
 import { createClient } from "@supabase/supabase-js";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { sendConnectionsDigestEmail, type ContactEntry } from "@/lib/email/connections-email.server";
+import { sendTicketEmail } from "@/lib/email/ticket-email.server";
 
 // Untyped client: attendee_connections / scan_events aren't in the generated
 // Database types (see networking.functions.ts).
@@ -202,6 +203,108 @@ export const sendConnectionEmails = createServerFn({ method: "POST" })
       emailsFailed: batch.length - succeeded.size,
       connectionsMarked: marked,
       remainingRecipients: Math.max(0, recipients.length - batch.length),
+      errors: errors.slice(0, 10),
+    };
+  });
+
+/* ---------------- Resend corrected ticket confirmation email ----------------
+ * Covers registrants who registered before the encoding + delivery fixes:
+ * their email either never sent (Resend sandbox rejected it), or sent with
+ * mojibake and no "complete your profile" link. This re-sends the current,
+ * correct template. Marks each registration on success so re-running only
+ * ever reaches people who haven't gotten a corrected email yet. */
+
+const resendInput = z.object({
+  dryRun: z.boolean().default(true),
+  // Same batching rationale as sendConnectionEmails: stay inside the 60s
+  // serverless timeout: ~600ms/send incl. Resend rate-limit spacing.
+  maxRecipients: z.number().int().min(1).max(100).default(25),
+});
+
+export type ResendTicketEmailsResult = {
+  dryRun: boolean;
+  totalPending: number;
+  recipientsPlanned: number;
+  emailsSent: number;
+  emailsFailed: number;
+  remainingRecipients: number;
+  sample: { full_name: string; email: string }[];
+  errors: string[];
+};
+
+export const resendTicketEmails = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => resendInput.parse(input ?? {}))
+  .handler(async ({ data, context }): Promise<ResendTicketEmailsResult> => {
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
+    await assertAdmin(supabase, userId);
+
+    const { data: rows, error } = await supabase
+      .from("registrations")
+      .select(
+        "id, ticket_code, full_name, email, sector, attendee_type, attendance_mode, state, ticket_email_resent_at",
+      )
+      .is("ticket_email_resent_at", null)
+      .order("created_at", { ascending: true })
+      .limit(2000);
+    if (error) throw new Error(error.message);
+
+    const pending = rows ?? [];
+    const batch = pending.slice(0, data.maxRecipients);
+
+    if (data.dryRun) {
+      return {
+        dryRun: true,
+        totalPending: pending.length,
+        recipientsPlanned: batch.length,
+        emailsSent: 0,
+        emailsFailed: 0,
+        remainingRecipients: Math.max(0, pending.length - batch.length),
+        sample: batch.slice(0, 5).map((r) => ({ full_name: r.full_name, email: r.email })),
+        errors: [],
+      };
+    }
+
+    let sent = 0;
+    const errors: string[] = [];
+    const sentIds: string[] = [];
+    for (const r of batch) {
+      const result = await sendTicketEmail({
+        to: r.email,
+        fullName: r.full_name,
+        ticketCode: r.ticket_code,
+        sector: r.sector,
+        attendeeType: r.attendee_type,
+        attendanceMode: r.attendance_mode,
+        state: r.state,
+      });
+      if (result.ok) {
+        sent += 1;
+        sentIds.push(r.id);
+      } else {
+        errors.push(`${r.email}: ${result.error}`);
+      }
+      // Resend free tier allows ~2 requests/second
+      await new Promise((res) => setTimeout(res, 600));
+    }
+
+    if (sentIds.length > 0) {
+      const { error: updErr } = await supabase
+        .from("registrations")
+        .update({ ticket_email_resent_at: new Date().toISOString() })
+        .in("id", sentIds);
+      if (updErr) errors.push(`marking sent: ${updErr.message}`);
+    }
+
+    return {
+      dryRun: false,
+      totalPending: pending.length,
+      recipientsPlanned: batch.length,
+      emailsSent: sent,
+      emailsFailed: batch.length - sent,
+      remainingRecipients: Math.max(0, pending.length - batch.length),
+      sample: [],
       errors: errors.slice(0, 10),
     };
   });
