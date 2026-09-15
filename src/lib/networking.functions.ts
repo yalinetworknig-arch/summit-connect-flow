@@ -40,6 +40,7 @@ export type AttendeeCard = {
   track_selection: string | null;
   state: string | null;
   checked_in: boolean;
+  networking_opt_in: boolean;
   profile: {
     headline: string | null;
     bio: string | null;
@@ -48,8 +49,10 @@ export type AttendeeCard = {
   } | null;
 };
 
+const getCardSchema = z.object({ code: ticketCode, viewerCode: ticketCode.optional() });
+
 export const getAttendeeCard = createServerFn({ method: "POST" })
-  .inputValidator((input) => codeSchema.parse(input))
+  .inputValidator((input) => getCardSchema.parse(input))
   .handler(async ({ data }): Promise<AttendeeCard> => {
     const supabase = createServerSupabase();
 
@@ -61,13 +64,18 @@ export const getAttendeeCard = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     if (!reg) throw new Error("Attendee not found");
 
+    // The card owner can always see (and therefore edit) their own bio/headline/
+    // LinkedIn/avatar, even while networking_opt_in is off — opt-in only hides
+    // that data from OTHER viewers, it never hides it from the owner.
+    const isOwner = Boolean(data.viewerCode) && data.viewerCode === reg.ticket_code;
+
     let profile: AttendeeCard["profile"] = null;
     const { data: prof } = await supabase
       .from("attendee_profiles")
       .select("headline, bio, linkedin_url, avatar_url, networking_opt_in")
       .eq("registration_id", reg.id)
       .maybeSingle();
-    if (prof && prof.networking_opt_in) {
+    if (prof && (prof.networking_opt_in || isOwner)) {
       profile = {
         headline: prof.headline,
         bio: prof.bio,
@@ -76,7 +84,9 @@ export const getAttendeeCard = createServerFn({ method: "POST" })
       };
     }
 
-    await logScanEvent(supabase, reg.ticket_code, "profile_view");
+    if (!isOwner) {
+      await logScanEvent(supabase, reg.ticket_code, "profile_view");
+    }
 
     return {
       ticket_code: reg.ticket_code,
@@ -85,9 +95,124 @@ export const getAttendeeCard = createServerFn({ method: "POST" })
       track_selection: reg.track_selection,
       state: reg.state,
       checked_in: Boolean(reg.checked_in_at),
+      networking_opt_in: prof?.networking_opt_in ?? true,
       profile,
     };
   });
+
+const updateCardSchema = z.object({
+  code: ticketCode,
+  headline: z.string().trim().max(160).optional().nullable(),
+  bio: z.string().trim().max(800).optional().nullable(),
+  linkedin_url: z
+    .string()
+    .trim()
+    .max(300)
+    .regex(/^https?:\/\/(www\.)?linkedin\.com\/.+/i, "Must be a linkedin.com URL")
+    .optional()
+    .nullable()
+    .or(z.literal("")),
+  avatar_url: z.string().trim().url("Must be a valid URL").max(500).optional().nullable().or(z.literal("")),
+  networking_opt_in: z.boolean().optional(),
+});
+
+/**
+ * Passwordless self-service profile edit. Authorization is the ticket code
+ * itself — the same trust model saveContact() already uses. Nobody sees a
+ * registrant's ticket code except that registrant (their confirmation email
+ * and their own ticket/networking-card page), so presenting it back is
+ * equivalent to a magic-link token, with no password anywhere.
+ */
+export const updateMyAttendeeCard = createServerFn({ method: "POST" })
+  .inputValidator((input) => updateCardSchema.parse(input))
+  .handler(async ({ data }) => {
+    const supabase = createServerSupabase();
+
+    const { data: reg, error: regErr } = await supabase
+      .from("registrations")
+      .select("id, ticket_code")
+      .eq("ticket_code", data.code)
+      .maybeSingle();
+    if (regErr) throw new Error(regErr.message);
+    if (!reg) throw new Error("Ticket not found. Check the code on your ticket page.");
+
+    const patch: Record<string, unknown> = { registration_id: reg.id };
+    if (data.headline !== undefined) patch.headline = data.headline?.trim() || null;
+    if (data.bio !== undefined) patch.bio = data.bio?.trim() || null;
+    if (data.linkedin_url !== undefined) patch.linkedin_url = data.linkedin_url || null;
+    if (data.avatar_url !== undefined) patch.avatar_url = data.avatar_url || null;
+    if (data.networking_opt_in !== undefined) patch.networking_opt_in = data.networking_opt_in;
+
+    const { error: upErr } = await supabase
+      .from("attendee_profiles")
+      .upsert(patch, { onConflict: "registration_id" });
+    if (upErr) throw new Error(upErr.message);
+
+    return { ok: true };
+  });
+
+export type DirectoryPerson = {
+  ticket_code: string;
+  full_name: string;
+  attendee_type: string;
+  state: string | null;
+  track_selection: string | null;
+  headline: string | null;
+  bio: string | null;
+  linkedin_url: string | null;
+  avatar_url: string | null;
+};
+
+/**
+ * Public, passwordless attendee directory. Gate is networking_opt_in only —
+ * no login, no check-in requirement. Anyone with the link can browse and
+ * jump to a person's /attendee/$code card to connect (via saveContact),
+ * exactly the same flow as scanning their QR in person.
+ */
+export const listNetworkDirectory = createServerFn({ method: "GET" }).handler(
+  async (): Promise<{ people: DirectoryPerson[] }> => {
+    const supabase = createServerSupabase();
+
+    const { data: profiles, error } = await supabase
+      .from("attendee_profiles")
+      .select("registration_id, headline, bio, linkedin_url, avatar_url")
+      .eq("networking_opt_in", true)
+      .not("registration_id", "is", null);
+    if (error) throw new Error(error.message);
+
+    const regIds = (profiles ?? [])
+      .map((p) => p.registration_id as string | null)
+      .filter((id): id is string => Boolean(id));
+    if (regIds.length === 0) return { people: [] };
+
+    const { data: regs, error: regErr } = await supabase
+      .from("registrations")
+      .select("id, ticket_code, full_name, attendee_type, state, track_selection")
+      .in("id", regIds);
+    if (regErr) throw new Error(regErr.message);
+
+    const regMap = new Map((regs ?? []).map((r) => [r.id as string, r]));
+    const people: DirectoryPerson[] = (profiles ?? [])
+      .map((p) => {
+        const r = regMap.get(p.registration_id as string);
+        if (!r) return null;
+        return {
+          ticket_code: r.ticket_code as string,
+          full_name: r.full_name as string,
+          attendee_type: r.attendee_type as string,
+          state: (r.state as string | null) ?? null,
+          track_selection: (r.track_selection as string | null) ?? null,
+          headline: p.headline as string | null,
+          bio: p.bio as string | null,
+          linkedin_url: p.linkedin_url as string | null,
+          avatar_url: p.avatar_url as string | null,
+        } satisfies DirectoryPerson;
+      })
+      .filter((p): p is DirectoryPerson => p !== null);
+
+    return { people };
+  },
+);
 
 const saveContactSchema = z.object({
   fromCode: ticketCode,

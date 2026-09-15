@@ -3,8 +3,8 @@ import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import QRCode from "qrcode";
-import { UserPlus, CheckCircle2, Users, Linkedin, MapPin, Ticket, ArrowRight } from "lucide-react";
-import { getAttendeeCard, saveContact, getMyConnections } from "@/lib/networking.functions";
+import { UserPlus, CheckCircle2, Users, Linkedin, MapPin, Ticket, ArrowRight, Pencil, Eye, EyeOff } from "lucide-react";
+import { getAttendeeCard, saveContact, getMyConnections, updateMyAttendeeCard } from "@/lib/networking.functions";
 import { TRACKS } from "@/lib/register/tracks";
 
 const MY_CODE_KEY = "yali_my_ticket_code";
@@ -32,9 +32,11 @@ function AttendeePage() {
     } catch {}
   }, []);
 
+  // Re-fetches once myCode loads from localStorage (near-instant) so the
+  // owner sees their real data even if networking_opt_in is off.
   const { data, isLoading, error } = useQuery({
-    queryKey: ["attendee", code],
-    queryFn: () => fetchCard({ data: { code } }),
+    queryKey: ["attendee", code, myCode],
+    queryFn: () => fetchCard({ data: { code, viewerCode: myCode ?? undefined } }),
     retry: false,
   });
 
@@ -113,7 +115,19 @@ function AttendeePage() {
       </div>
 
       {isMe ? (
-        <MyConnections code={data.ticket_code} />
+        <div className="space-y-6">
+          <EditMyCard
+            code={data.ticket_code}
+            initial={{
+              headline: data.profile?.headline ?? "",
+              bio: data.profile?.bio ?? "",
+              linkedin_url: data.profile?.linkedin_url ?? "",
+              avatar_url: data.profile?.avatar_url ?? "",
+              networking_opt_in: data.networking_opt_in,
+            }}
+          />
+          <MyConnections code={data.ticket_code} />
+        </div>
       ) : (
         <SaveContactCard toCode={data.ticket_code} toName={data.full_name} myCode={myCode} onMyCode={(c) => setMyCode(c)} />
       )}
@@ -126,6 +140,191 @@ function AttendeePage() {
         </div>
       )}
     </section>
+  );
+}
+
+function EditMyCard({
+  code,
+  initial,
+}: {
+  code: string;
+  initial: {
+    headline: string;
+    bio: string;
+    linkedin_url: string;
+    avatar_url: string;
+    networking_opt_in: boolean;
+  };
+}) {
+  const update = useServerFn(updateMyAttendeeCard);
+  const queryClient = useQueryClient();
+  const [open, setOpen] = useState(false);
+  const [form, setForm] = useState(initial);
+
+  // Keep the form in sync if the fetched card changes underneath us
+  // (e.g. right after a save triggers a refetch).
+  useEffect(() => {
+    setForm(initial);
+  }, [initial.headline, initial.bio, initial.linkedin_url, initial.avatar_url, initial.networking_opt_in]);
+
+  const mutation = useMutation({
+    mutationFn: () =>
+      update({
+        data: {
+          code,
+          headline: form.headline,
+          bio: form.bio,
+          linkedin_url: form.linkedin_url,
+          avatar_url: form.avatar_url,
+          networking_opt_in: form.networking_opt_in,
+        },
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["attendee"] });
+      setOpen(false);
+    },
+  });
+
+  if (!open) {
+    return (
+      <div
+        className="rounded-2xl border p-5 flex items-center justify-between gap-3"
+        style={{ background: "var(--card)", borderColor: "var(--border-strong)" }}
+      >
+        <div>
+          <div className="font-semibold text-sm" style={{ color: "var(--text-primary)" }}>
+            Your networking card
+          </div>
+          <p className="text-xs mt-0.5 flex items-center gap-1" style={{ color: "var(--text-secondary)" }}>
+            {initial.networking_opt_in ? (
+              <>
+                <Eye className="w-3.5 h-3.5" /> Visible in the attendee directory
+              </>
+            ) : (
+              <>
+                <EyeOff className="w-3.5 h-3.5" /> Hidden from the directory — only people you share this link with can see it
+              </>
+            )}
+          </p>
+        </div>
+        <button
+          onClick={() => setOpen(true)}
+          className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold active:scale-95 transition-transform"
+          style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
+        >
+          <Pencil className="w-3.5 h-3.5" /> Edit
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        mutation.mutate();
+      }}
+      className="rounded-2xl border p-5 space-y-4"
+      style={{ background: "var(--card)", borderColor: "var(--border-strong)" }}
+    >
+      <div className="flex items-center justify-between">
+        <div className="font-semibold text-sm" style={{ color: "var(--text-primary)" }}>
+          Edit your networking card
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            setOpen(false);
+            setForm(initial);
+          }}
+          className="text-xs font-semibold"
+          style={{ color: "var(--text-secondary)" }}
+        >
+          Cancel
+        </button>
+      </div>
+
+      <div>
+        <label className="block text-xs font-medium mb-1" style={{ color: "var(--text-secondary)" }}>
+          Headline
+        </label>
+        <input
+          value={form.headline}
+          onChange={(e) => setForm((f) => ({ ...f, headline: e.target.value }))}
+          placeholder="e.g. Founder, ClimateAI"
+          maxLength={160}
+          className="w-full px-3 py-2.5 rounded-md border bg-transparent text-sm"
+          style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
+        />
+      </div>
+
+      <div>
+        <label className="block text-xs font-medium mb-1" style={{ color: "var(--text-secondary)" }}>
+          Short bio
+        </label>
+        <textarea
+          value={form.bio}
+          onChange={(e) => setForm((f) => ({ ...f, bio: e.target.value }))}
+          rows={3}
+          maxLength={800}
+          className="w-full px-3 py-2.5 rounded-md border bg-transparent text-sm resize-none"
+          style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
+        />
+      </div>
+
+      <div>
+        <label className="block text-xs font-medium mb-1" style={{ color: "var(--text-secondary)" }}>
+          LinkedIn URL
+        </label>
+        <input
+          value={form.linkedin_url}
+          onChange={(e) => setForm((f) => ({ ...f, linkedin_url: e.target.value }))}
+          placeholder="https://linkedin.com/in/you"
+          className="w-full px-3 py-2.5 rounded-md border bg-transparent text-sm"
+          style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
+        />
+      </div>
+
+      <div>
+        <label className="block text-xs font-medium mb-1" style={{ color: "var(--text-secondary)" }}>
+          Avatar image URL
+        </label>
+        <input
+          value={form.avatar_url}
+          onChange={(e) => setForm((f) => ({ ...f, avatar_url: e.target.value }))}
+          placeholder="https://…"
+          className="w-full px-3 py-2.5 rounded-md border bg-transparent text-sm"
+          style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
+        />
+      </div>
+
+      <label className="flex items-start gap-2.5 cursor-pointer">
+        <input
+          type="checkbox"
+          checked={form.networking_opt_in}
+          onChange={(e) => setForm((f) => ({ ...f, networking_opt_in: e.target.checked }))}
+          className="mt-0.5"
+        />
+        <span className="text-sm" style={{ color: "var(--text-primary)" }}>
+          List me in the attendee directory so others can find and connect with me
+        </span>
+      </label>
+
+      {mutation.isError && (
+        <div className="p-3 rounded-md text-sm bg-red-500/10 border border-red-500/30 text-red-400">
+          {(mutation.error as Error)?.message ?? "Couldn't save. Try again."}
+        </div>
+      )}
+
+      <button
+        type="submit"
+        disabled={mutation.isPending}
+        className="w-full px-4 py-2.5 rounded-full text-sm font-semibold disabled:opacity-60"
+        style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
+      >
+        {mutation.isPending ? "Saving…" : "Save card"}
+      </button>
+    </form>
   );
 }
 

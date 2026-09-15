@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, forwardRef } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { motion, AnimatePresence } from "framer-motion";
 import { ProgressIndicator } from "@/components/register/ProgressIndicator";
 import { StepAttendeeType } from "@/components/register/StepAttendeeType";
@@ -12,11 +13,13 @@ import {
   step2Schema,
   step3Schema,
   step4Schema,
+  fullRegistrationSchema,
   initialFormState,
   type FormState,
 } from "@/lib/register/schema";
-import { loadDraft, saveDraft } from "@/lib/register/storage";
+import { loadDraft, saveDraft, clearDraft } from "@/lib/register/storage";
 import { supabase } from "@/integrations/supabase/client";
+import { submitRegistration } from "@/lib/registrations.functions";
 import { stepVariants, errorShake, ctaButton, ease } from "@/lib/motion";
 
 // Motion button wrapper with forwardRef to ensure React event handlers attach properly
@@ -49,12 +52,16 @@ const TITLES = [
 ];
 
 function RegisterPage() {
+  const navigate = useNavigate();
+  const submit = useServerFn(submitRegistration);
   const [step, setStep] = useState(1);
   const [direction, setDirection] = useState(1); // +1 = forward, -1 = back
   const [form, setForm] = useState<FormState>(initialFormState);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [nextBusy, setNextBusy] = useState(false);
   const [shaking, setShaking] = useState(false);
+  const [submitBusy, setSubmitBusy] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const topRef = useRef<HTMLElement>(null);
   const saveTimeoutRef = useRef<NodeJS.Timeout>();
 
@@ -180,6 +187,35 @@ function RegisterPage() {
     setStep((s) => Math.max(1, s - 1));
   }
 
+  async function completeRegistration() {
+    setSubmitError(null);
+
+    // Guard: make sure everything gathered across steps 1-4 actually
+    // satisfies the full schema before we hit the server.
+    const parsed = fullRegistrationSchema.safeParse(form);
+    if (!parsed.success) {
+      console.error("[REGISTER DEBUG] Final validation failed:", parsed.error.issues);
+      setSubmitError("Some required details are missing or invalid. Please go back and check each step.");
+      triggerShake();
+      return;
+    }
+
+    setSubmitBusy(true);
+    try {
+      const result = await submit({ data: parsed.data });
+      clearDraft();
+      navigate({ to: "/register/$id", params: { id: result.id } });
+    } catch (e) {
+      console.error("[REGISTER DEBUG] Submission failed:", e);
+      setSubmitError(
+        e instanceof Error ? e.message : "Something went wrong submitting your registration. Please try again.",
+      );
+      triggerShake();
+    } finally {
+      setSubmitBusy(false);
+    }
+  }
+
   const canAdvance = useMemo(() => {
     return (
       (step === 1 && step1Schema.safeParse(form).success) ||
@@ -254,13 +290,15 @@ function RegisterPage() {
             if (
               e.key === "Enter" &&
               e.currentTarget.tagName !== "TEXTAREA" &&
-              !(e.target as HTMLElement).tagName.includes("TEXTAREA") &&
-              canAdvance &&
-              !nextBusy &&
-              step < 5
+              !(e.target as HTMLElement).tagName.includes("TEXTAREA")
             ) {
-              e.preventDefault();
-              next();
+              if (step < 5 && canAdvance && !nextBusy) {
+                e.preventDefault();
+                next();
+              } else if (step === 5 && !submitBusy) {
+                e.preventDefault();
+                completeRegistration();
+              }
             }
           }}
         >
@@ -343,37 +381,58 @@ function RegisterPage() {
             </MotionButton>
           </div>
         ) : (
-          <div className="mt-6 flex items-center justify-between gap-3">
-            <motion.button
-              type="button"
-              onClick={back}
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.96 }}
-              transition={{ type: "spring", stiffness: 500, damping: 30 }}
-              className="px-6 py-3 rounded-lg text-sm font-semibold border-2 min-h-[48px] transition-all duration-200 hover:shadow-md"
-              style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
-            >
-              Back
-            </motion.button>
-            <motion.button
-              type="button"
-              onClick={() => {
-                // TODO: Submit registration to Supabase
-                console.log("Registration submitted:", form);
-              }}
-              variants={ctaButton}
-              initial="rest"
-              whileHover="hover"
-              whileTap="tap"
-              className="flex-1 sm:flex-none px-8 py-3 rounded-lg text-sm font-semibold min-h-[48px] flex items-center justify-center transition-all duration-200 active:scale-95"
-              style={{
-                background: "var(--accent-cyan)",
-                color: "var(--brand-navy)",
-                boxShadow: "0 4px 20px color-mix(in oklab, var(--accent-cyan) 35%, transparent)",
-              }}
-            >
-              Complete Registration
-            </motion.button>
+          <div className="mt-6">
+            {submitError && (
+              <div
+                className="mb-4 p-3 rounded-md text-sm bg-red-500/10 border border-red-500/30 text-red-400"
+                role="alert"
+              >
+                {submitError}
+              </div>
+            )}
+            <div className="flex items-center justify-between gap-3">
+              <MotionButton
+                type="button"
+                onClick={back}
+                disabled={submitBusy}
+                whileHover={submitBusy ? {} : { scale: 1.03 }}
+                whileTap={submitBusy ? {} : { scale: 0.96 }}
+                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                className="px-6 py-3 rounded-lg text-sm font-semibold border-2 disabled:opacity-40 disabled:cursor-not-allowed min-h-[48px] transition-all duration-200 hover:shadow-md"
+                style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
+              >
+                Back
+              </MotionButton>
+              <MotionButton
+                type="button"
+                onClick={completeRegistration}
+                disabled={submitBusy}
+                variants={ctaButton}
+                initial="rest"
+                whileHover={submitBusy ? {} : "hover"}
+                whileTap={submitBusy ? {} : "tap"}
+                className="flex-1 sm:flex-none px-8 py-3 rounded-lg text-sm font-semibold disabled:opacity-60 disabled:cursor-not-allowed min-h-[48px] flex items-center justify-center gap-2 transition-all duration-200 active:scale-95"
+                style={{
+                  background: "var(--accent-cyan)",
+                  color: "var(--brand-navy)",
+                  boxShadow: submitBusy
+                    ? "none"
+                    : "0 4px 20px color-mix(in oklab, var(--accent-cyan) 35%, transparent)",
+                }}
+              >
+                {submitBusy ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                    </svg>
+                    <span>Submitting…</span>
+                  </>
+                ) : (
+                  "Complete Registration"
+                )}
+              </MotionButton>
+            </div>
           </div>
         )}
       </div>
