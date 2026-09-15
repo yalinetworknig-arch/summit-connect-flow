@@ -18,7 +18,6 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as MerchRouteImport } from './routes/merch'
 import { Route as NetworkRouteImport } from './routes/network'
 import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ScheduleRouteImport } from './routes/schedule'
 import { Route as SignupRouteImport } from './routes/signup'
@@ -31,6 +30,7 @@ import { Route as AuthenticatedClaimTicketRouteImport } from './routes/_authenti
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AttendeeCodeRouteImport } from './routes/attendee.$code'
+import { Route as RegisterIndexRouteImport } from './routes/register.index'
 import { Route as RegisterIdRouteImport } from './routes/register.$id'
 import { Route as TicketCodeRouteImport } from './routes/ticket.$code'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated.admin.index'
@@ -87,11 +87,6 @@ const NetworkRoute = NetworkRouteImport.update({
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RegisterRoute = RegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -153,6 +148,11 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
 const AttendeeCodeRoute = AttendeeCodeRouteImport.update({
   id: '/attendee/$code',
   path: '/attendee/$code',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterIndexRoute = RegisterIndexRouteImport.update({
+  id: '/register/',
+  path: '/register/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterIdRoute = RegisterIdRouteImport.update({
@@ -240,7 +240,6 @@ export interface FileRoutesByFullPath {
   '/merch': typeof MerchRoute
   '/network': typeof NetworkRoute
   '/profile': typeof AuthenticatedProfileRouteWithChildren
-  '/register': typeof RegisterRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/schedule': typeof ScheduleRoute
   '/signup': typeof SignupRoute
@@ -254,6 +253,7 @@ export interface FileRoutesByFullPath {
   '/attendee/$code': typeof AttendeeCodeRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
+  '/register/': typeof RegisterIndexRoute
   '/admin/check-in': typeof AuthenticatedAdminCheckInRoute
   '/admin/networking': typeof AuthenticatedAdminNetworkingRoute
   '/admin/registrations': typeof AuthenticatedAdminRegistrationsRoute
@@ -275,7 +275,6 @@ export interface FileRoutesByTo {
   '/merch': typeof MerchRoute
   '/network': typeof NetworkRoute
   '/profile': typeof AuthenticatedProfileIndexRoute
-  '/register': typeof RegisterRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/schedule': typeof ScheduleRoute
   '/signup': typeof SignupRoute
@@ -288,6 +287,7 @@ export interface FileRoutesByTo {
   '/attendee/$code': typeof AttendeeCodeRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
+  '/register': typeof RegisterIndexRoute
   '/admin/check-in': typeof AuthenticatedAdminCheckInRoute
   '/admin/networking': typeof AuthenticatedAdminNetworkingRoute
   '/admin/registrations': typeof AuthenticatedAdminRegistrationsRoute
@@ -310,7 +310,6 @@ export interface FileRoutesById {
   '/merch': typeof MerchRoute
   '/network': typeof NetworkRoute
   '/profile': typeof ProfileRoute
-  '/register': typeof RegisterRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/schedule': typeof ScheduleRoute
   '/signup': typeof SignupRoute
@@ -325,6 +324,7 @@ export interface FileRoutesById {
   '/attendee/$code': typeof AttendeeCodeRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
+  '/register/': typeof RegisterIndexRoute
   '/_authenticated/admin/check-in': typeof AuthenticatedAdminCheckInRoute
   '/_authenticated/admin/networking': typeof AuthenticatedAdminNetworkingRoute
   '/_authenticated/admin/registrations': typeof AuthenticatedAdminRegistrationsRoute
@@ -348,7 +348,6 @@ export interface FileRouteTypes {
     | '/merch'
     | '/network'
     | '/profile'
-    | '/register'
     | '/reset-password'
     | '/schedule'
     | '/signup'
@@ -362,6 +361,7 @@ export interface FileRouteTypes {
     | '/attendee/$code'
     | '/register/$id'
     | '/ticket/$code'
+    | '/register/'
     | '/admin/check-in'
     | '/admin/networking'
     | '/admin/registrations'
@@ -383,7 +383,6 @@ export interface FileRouteTypes {
     | '/merch'
     | '/network'
     | '/profile'
-    | '/register'
     | '/reset-password'
     | '/schedule'
     | '/signup'
@@ -396,6 +395,7 @@ export interface FileRouteTypes {
     | '/attendee/$code'
     | '/register/$id'
     | '/ticket/$code'
+    | '/register'
     | '/admin/check-in'
     | '/admin/networking'
     | '/admin/registrations'
@@ -417,7 +417,6 @@ export interface FileRouteTypes {
     | '/merch'
     | '/network'
     | '/profile'
-    | '/register'
     | '/reset-password'
     | '/schedule'
     | '/signup'
@@ -432,6 +431,7 @@ export interface FileRouteTypes {
     | '/attendee/$code'
     | '/register/$id'
     | '/ticket/$code'
+    | '/register/'
     | '/_authenticated/admin/check-in'
     | '/_authenticated/admin/networking'
     | '/_authenticated/admin/registrations'
@@ -455,7 +455,6 @@ export interface RootRouteChildren {
   MerchRoute: typeof MerchRoute
   NetworkRoute: typeof NetworkRoute
   ProfileRoute: typeof ProfileRoute
-  RegisterRoute: typeof RegisterRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
   ScheduleRoute: typeof ScheduleRoute
   SignupRoute: typeof SignupRoute
@@ -466,6 +465,7 @@ export interface RootRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   AttendeeCodeRoute: typeof AttendeeCodeRoute
   TicketCodeRoute: typeof TicketCodeRoute
+  RegisterIndexRoute: typeof RegisterIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -531,13 +531,6 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reset-password': {
@@ -622,6 +615,13 @@ declare module '@tanstack/react-router' {
       path: '/attendee/$code'
       fullPath: '/attendee/$code'
       preLoaderRoute: typeof AttendeeCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register/': {
+      id: '/register/'
+      path: '/register'
+      fullPath: '/register/'
+      preLoaderRoute: typeof RegisterIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register/$id': {
@@ -774,18 +774,6 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
-interface RegisterRouteChildren {
-  RegisterIdRoute: typeof RegisterIdRoute
-}
-
-const RegisterRouteChildren: RegisterRouteChildren = {
-  RegisterIdRoute: RegisterIdRoute,
-}
-
-const RegisterRouteWithChildren = RegisterRoute._addFileChildren(
-  RegisterRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
@@ -796,7 +784,6 @@ const rootRouteChildren: RootRouteChildren = {
   MerchRoute: MerchRoute,
   NetworkRoute: NetworkRoute,
   ProfileRoute: ProfileRoute,
-  RegisterRoute: RegisterRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
   ScheduleRoute: ScheduleRoute,
   SignupRoute: SignupRoute,
@@ -807,6 +794,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   AttendeeCodeRoute: AttendeeCodeRoute,
   TicketCodeRoute: TicketCodeRoute,
+  RegisterIndexRoute: RegisterIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
