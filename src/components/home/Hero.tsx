@@ -283,32 +283,32 @@ export function Hero() {
         >
           <Link
             to="/register"
-            className="px-6 min-h-[44px] inline-flex items-center justify-center rounded-full text-sm sm:text-base font-semibold bg-[#00D9FF] text-[#0A1128] transition-all duration-200 hover:shadow-[0_12px_28px_rgba(0,217,255,0.3)] hover:scale-[1.02] active:scale-[0.98]"
+            className="px-6 min-h-[44px] inline-flex items-center justify-center rounded-full text-sm sm:text-base font-semibold bg-[#00D9FF] text-[#0A1128] transition-all duration-200 hover:shadow-[0_12px_28px_rgba(0,217,255,0.35)] hover:scale-[1.05] active:scale-[0.98]"
           >
             Claim your seat
           </Link>
           <a
             href="/AIDIENGL_2026_Official_Programme_Agenda.docx"
             download="AIDIENGL_2026_Official_Programme_Agenda.docx"
-            className="px-6 min-h-[44px] inline-flex items-center justify-center rounded-full text-sm sm:text-base font-semibold border-2 border-[#00D9FF] transition-all duration-200 hover:bg-[#00D9FF]/10 hover:shadow-[0_8px_20px_rgba(0,217,255,0.2)] text-white"
+            className="px-6 min-h-[44px] inline-flex items-center justify-center rounded-full text-sm sm:text-base font-semibold border-2 border-[#00D9FF] text-white transition-all duration-200 hover:bg-[#00D9FF] hover:text-[#0A1128] hover:shadow-[0_12px_28px_rgba(0,217,255,0.3)] hover:scale-[1.05] active:scale-[0.98]"
           >
             ↓ Download Agenda
           </a>
           <a
             href="#sponsors"
-            className="px-6 min-h-[44px] inline-flex items-center justify-center rounded-full text-sm sm:text-base font-semibold border-2 border-[#00D9FF] transition-all duration-200 hover:bg-[#00D9FF]/10 hover:shadow-[0_8px_20px_rgba(0,217,255,0.2)] text-white"
+            className="px-6 min-h-[44px] inline-flex items-center justify-center rounded-full text-sm sm:text-base font-semibold border-2 border-[#00D9FF] text-white transition-all duration-200 hover:bg-[#00D9FF] hover:text-[#0A1128] hover:shadow-[0_12px_28px_rgba(0,217,255,0.3)] hover:scale-[1.05] active:scale-[0.98]"
           >
             Partner with us
           </a>
         </motion.div>
 
-        {/* Event metadata — subtle and refined */}
+        {/* Event metadata — bright and refined */}
         <motion.p
           custom={1.8}
           initial="hidden"
           animate="show"
           variants={fadeUp}
-          className="mt-4 text-white/50 text-[10px] sm:text-xs font-medium uppercase tracking-wider"
+          className="mt-4 text-white/85 text-[10px] sm:text-xs font-medium uppercase tracking-wider"
         >
           Physical & Virtual - 150–200 Attendees - Networking & Innovation
         </motion.p>
