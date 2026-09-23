@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-// Canonical summit start: Sept 24, 2026 (delegate arrival day, Lagos WAT)
-const TARGET = new Date("2026-09-24T00:00:00+01:00").getTime();
+// Canonical summit start: Sept 25, 2026 8 AM (event day, Lagos WAT)
+const TARGET = new Date("2026-09-25T08:00:00+01:00").getTime();
 
 function diff(now: number) {
   const ms = Math.max(0, TARGET - now);
