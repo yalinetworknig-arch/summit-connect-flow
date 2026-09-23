@@ -28,6 +28,7 @@ export type NetworkingStats = {
   pendingEmails: number;
   sentEmails: number;
   profileViews: number;
+  awaitingResend: number;
 };
 
 export const getNetworkingStats = createServerFn({ method: "POST" })
@@ -37,13 +38,14 @@ export const getNetworkingStats = createServerFn({ method: "POST" })
     const supabase = createServerSupabase();
     await assertAdmin(supabase, userId);
 
-    const [total, pending, sent, views] = await Promise.all([
+    const [total, pending, sent, views, resend] = await Promise.all([
       supabase.from("attendee_connections").select("id", { count: "exact", head: true }),
       supabase.from("attendee_connections").select("id", { count: "exact", head: true }).is("email_sent_at", null),
       supabase.from("attendee_connections").select("id", { count: "exact", head: true }).not("email_sent_at", "is", null),
       supabase.from("scan_events").select("id", { count: "exact", head: true }).eq("event_type", "profile_view"),
+      supabase.from("registrations").select("id", { count: "exact", head: true }).is("ticket_email_resent_at", null),
     ]);
-    for (const r of [total, pending, sent, views]) {
+    for (const r of [total, pending, sent, views, resend]) {
       if (r.error) throw new Error(r.error.message);
     }
     return {
@@ -51,6 +53,7 @@ export const getNetworkingStats = createServerFn({ method: "POST" })
       pendingEmails: pending.count ?? 0,
       sentEmails: sent.count ?? 0,
       profileViews: views.count ?? 0,
+      awaitingResend: resend.count ?? 0,
     };
   });
 

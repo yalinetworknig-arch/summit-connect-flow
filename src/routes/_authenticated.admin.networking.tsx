@@ -70,7 +70,7 @@ function NetworkingAdminPage() {
         <StatCard label="Connections" value={isLoading ? "…" : stats?.totalConnections ?? 0} Icon={Users} />
         <StatCard label="Profile views" value={isLoading ? "…" : stats?.profileViews ?? 0} Icon={Eye} />
         <StatCard label="Emails pending" value={isLoading ? "…" : stats?.pendingEmails ?? 0} Icon={Mail} />
-        <StatCard label="Emails sent" value={isLoading ? "…" : stats?.sentEmails ?? 0} Icon={CheckCircle2} />
+        <StatCard label="Awaiting resend" value={isLoading ? "…" : stats?.awaitingResend ?? 0} Icon={AlertTriangle} />
       </div>
 
       <div className="rounded-2xl border p-5 mb-4" style={{ background: "var(--card)", borderColor: "var(--border-strong)" }}>
@@ -116,7 +116,11 @@ function NetworkingAdminPage() {
           For registrants whose original email never sent or arrived with encoding issues (anyone registered before
           the delivery + template fixes). Re-sends the current, correct ticket email — including the "Complete your
           networking profile" link. Each registrant is marked once sent, so this only ever reaches people who haven't
-          received a corrected email yet. Sent in batches of 25 — click Send again to continue.
+          received a corrected email yet.
+        </p>
+        <p className="text-xs mb-4 p-3 rounded-lg" style={{ background: "rgba(59,130,246,0.1)", color: "var(--text-secondary)" }}>
+          📋 <strong>Quota strategy:</strong> You have {isLoading ? "…" : stats?.awaitingResend ?? 0} registrants awaiting resend.
+          With 100 emails/day limit, send in batches of 25 (about 1 batch per hour) to stay within your daily quota.
         </p>
         <div className="flex flex-wrap gap-2">
           <button
