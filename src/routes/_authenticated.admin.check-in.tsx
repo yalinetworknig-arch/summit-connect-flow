@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { Camera, CheckCircle2, AlertTriangle, ShieldCheck, XCircle, Clock } from "lucide-react";
+import { motion } from "framer-motion";
 import { checkInTicket } from "@/lib/tickets.functions";
 import { AdminTabs } from "@/components/admin/AdminTabs";
 
@@ -36,9 +37,14 @@ function CheckInPage() {
   async function submitCode(code: string) {
     setError(null);
     setBusy(true);
+    setManualCode("");
     try {
       const r = await checkIn({ data: { code } });
       setResult(r as Result);
+      // Auto-clear result after 4 seconds for next scan
+      setTimeout(() => {
+        setResult(null);
+      }, 4000);
     } catch (e: any) {
       setError(e?.message ?? "Failed to check in");
       setResult(null);
@@ -145,35 +151,120 @@ function CheckInPage() {
       )}
 
       {r && (
-        <div className="rounded-2xl border p-5" style={{ background: "var(--card)", borderColor: r.alreadyCheckedIn ? "var(--accent-cyan)" : "#22c55e" }}>
-          <div className="flex items-center gap-2 mb-2">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          className={`rounded-3xl border-2 p-8 text-center ${
+            r.alreadyCheckedIn
+              ? "bg-gradient-to-br"
+              : "bg-gradient-to-br"
+          }`}
+          style={{
+            background: r.alreadyCheckedIn
+              ? "linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(0, 150, 180, 0.05))"
+              : "linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(20, 140, 60, 0.05))",
+            borderColor: r.alreadyCheckedIn ? "var(--accent-cyan)" : "#22c55e",
+            boxShadow: r.alreadyCheckedIn
+              ? "0 0 40px rgba(0, 217, 255, 0.2)"
+              : "0 0 40px rgba(34, 197, 94, 0.2)"
+          }}
+        >
+          {/* Animated checkmark */}
+          <motion.div
+            animate={{ rotate: [0, 360] }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+            className="flex justify-center mb-6"
+          >
             {r.alreadyCheckedIn ? (
-              <><Clock className="w-5 h-5" style={{ color: "var(--accent-cyan)" }} /> <span className="font-semibold" style={{ color: "var(--accent-cyan)" }}>Already checked in</span></>
+              <Clock className="w-16 h-16" style={{ color: "var(--accent-cyan)" }} />
             ) : (
-              <><CheckCircle2 className="w-5 h-5" style={{ color: "#22c55e" }} /> <span className="font-semibold" style={{ color: "#22c55e" }}>Checked in</span></>
+              <CheckCircle2 className="w-16 h-16" style={{ color: "#22c55e" }} />
             )}
-          </div>
-          <div className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>{r.registration.full_name}</div>
-          <div className="text-sm mt-1 capitalize" style={{ color: "var(--text-secondary)" }}>
+          </motion.div>
+
+          {/* Status message */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-lg font-bold mb-1"
+            style={{ color: r.alreadyCheckedIn ? "var(--accent-cyan)" : "#22c55e" }}
+          >
+            {r.alreadyCheckedIn ? "Already Checked In" : "✓ Confirmed & Checked In"}
+          </motion.div>
+
+          {/* Attendee name */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-3xl font-bold mb-3"
+            style={{ color: "var(--text-primary)" }}
+          >
+            {r.registration.full_name}
+          </motion.div>
+
+          {/* Attendee details */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="text-sm capitalize mb-4"
+            style={{ color: "var(--text-secondary)" }}
+          >
             {r.registration.attendee_type} · {r.registration.track_selection ?? "no track"}
-          </div>
+          </motion.div>
+
+          {/* Time */}
           {r.registration.checked_in_at && (
-            <div className="text-xs mt-1" style={{ color: "var(--text-secondary)" }}>
-              At {new Date(r.registration.checked_in_at).toLocaleString()}
-            </div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="text-xs mb-4"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              Checked in at {new Date(r.registration.checked_in_at).toLocaleTimeString()}
+            </motion.div>
           )}
+
+          {/* Verification status */}
           {!verifiedOk && (
-            <div className="mt-3 flex items-start gap-2 p-3 rounded-lg text-xs" style={{ background: "rgba(234,179,8,0.12)", color: "#fbbf24" }}>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="mt-4 flex items-start gap-2 p-3 rounded-lg text-xs"
+              style={{ background: "rgba(234,179,8,0.12)", color: "#fbbf24" }}
+            >
               <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0" />
-              <span>Certificate is <strong>{status}</strong>. Confirm YALI ID before granting access.</span>
-            </div>
+              <span>Certificate is <strong>{status}</strong>. Verify YALI ID for access.</span>
+            </motion.div>
           )}
           {verifiedOk && (
-            <div className="mt-3 flex items-center gap-2 text-xs" style={{ color: "#22c55e" }}>
-              <ShieldCheck className="w-4 h-4" /> Certificate verified
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="mt-4 flex items-center justify-center gap-2 text-sm font-semibold"
+              style={{ color: "#22c55e" }}
+            >
+              <ShieldCheck className="w-5 h-5" /> Certificate Verified ✓
+            </motion.div>
           )}
-        </div>
+
+          {/* Next step prompt */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="mt-6 text-xs font-semibold"
+            style={{ color: "var(--text-secondary)" }}
+          >
+            📱 Ready for next attendee
+          </motion.div>
+        </motion.div>
       )}
     </section>
   );
