@@ -2,9 +2,9 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ExternalLink, FileCheck, FileX, RotateCcw, Trash2, Mail, AlertCircle } from "lucide-react";
+import { ExternalLink, FileCheck, FileX, RotateCcw, Trash2, Mail, AlertCircle, Download } from "lucide-react";
 import { z } from "zod";
-import { listRegistrations, overrideVerification, getCertificateSignedUrl, deleteRegistration, resendTicketEmail, bulkVerifyPendingRegistrations } from "@/lib/tickets.functions";
+import { listRegistrations, overrideVerification, getCertificateSignedUrl, deleteRegistration, resendTicketEmail, bulkVerifyPendingRegistrations, exportRegistrationsCSV } from "@/lib/tickets.functions";
 import { AdminTabs } from "@/components/admin/AdminTabs";
 
 const searchSchema = z.object({
@@ -123,6 +123,28 @@ function RegistrationsPage() {
   }
 
   const rows = data?.rows ?? [];
+  const exportFn = useServerFn(exportRegistrationsCSV);
+
+  async function handleExport() {
+    try {
+      const { csv } = await exportFn({ data: {} });
+      if (!csv) {
+        alert("No registrations to export");
+        return;
+      }
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", `yali-registrations-${new Date().toISOString().split("T")[0]}.csv`);
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (e) {
+      alert(`Export failed: ${e instanceof Error ? e.message : "Unknown error"}`);
+    }
+  }
 
   return (
     <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
@@ -134,14 +156,24 @@ function RegistrationsPage() {
           <p style={{ color: "var(--text-primary)", fontSize: "0.95rem" }}>
             <strong style={{ color: "#22c55e" }}>✓ Auto-verified registrations:</strong> All new registrations are automatically verified via email. Only review flagged or suspicious entries below.
           </p>
-          <button
-            onClick={() => setBulkVerifyModal(true)}
-            className="px-3 py-1.5 rounded text-xs font-semibold whitespace-nowrap transition-all"
-            style={{ background: "rgba(34, 197, 94, 0.2)", color: "#22c55e", border: "1px solid #22c55e" }}
-            title="Verify all pending registrations from before auto-verification was enabled"
-          >
-            Verify old registrations
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setBulkVerifyModal(true)}
+              className="px-3 py-1.5 rounded text-xs font-semibold whitespace-nowrap transition-all"
+              style={{ background: "rgba(34, 197, 94, 0.2)", color: "#22c55e", border: "1px solid #22c55e" }}
+              title="Verify all pending registrations from before auto-verification was enabled"
+            >
+              Verify old registrations
+            </button>
+            <button
+              onClick={handleExport}
+              className="px-3 py-1.5 rounded text-xs font-semibold whitespace-nowrap transition-all inline-flex items-center gap-1"
+              style={{ background: "rgba(59, 130, 246, 0.2)", color: "#3b82f6", border: "1px solid #3b82f6" }}
+              title="Export registrations as CSV for physical check-in backup"
+            >
+              <Download className="w-3 h-3" /> Export CSV
+            </button>
+          </div>
         </div>
       </div>
 

@@ -146,6 +146,37 @@ export const listRegistrations = createServerFn({ method: "POST" })
     return { rows: rows ?? [] };
   });
 
+export const exportRegistrationsCSV = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
+    const roles = await getUserRoles(supabase, userId);
+    assertHasStaffRole(roles);
+
+    const { data: rows, error } = await supabase
+      .from("registrations")
+      .select("id, ticket_code, full_name, email, phone, attendee_type, track_selection")
+      .order("created_at", { ascending: false });
+
+    if (error) throw new Error(error.message);
+    if (!rows || rows.length === 0) return { csv: "" };
+
+    // Build CSV with headers
+    const headers = ["Full Name", "Email", "Ticket Code", "Phone", "Attendee Type", "Sector"];
+    const csvRows = rows.map((r: any) => [
+      `"${(r.full_name || "").replace(/"/g, '""')}"`,
+      `"${(r.email || "").replace(/"/g, '""')}"`,
+      r.ticket_code || "",
+      r.phone || "",
+      r.attendee_type || "",
+      r.track_selection || "",
+    ]);
+
+    const csv = [headers.join(","), ...csvRows.map((row) => row.join(","))].join("\n");
+    return { csv, count: rows.length };
+  });
+
 export const overrideVerification = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) =>
