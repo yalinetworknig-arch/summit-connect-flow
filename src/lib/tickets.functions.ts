@@ -719,3 +719,63 @@ export const getWhatsAppBulkPreview = createServerFn({ method: "POST" })
       preview: (attendees ?? []).map((a: any) => ({ name: a.full_name, phone: a.phone, mode: a.attendance_mode })),
     };
   });
+
+export const sendWhatsAppTestMessage = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ message: z.string().min(1), phoneNumbers: z.array(z.string().min(7)) }).parse(input))
+  .handler(async ({ data, context }) => {
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
+    const roles = await getUserRoles(supabase, userId);
+    assertHasAdminRole(roles);
+
+    const termiiApiKey = process.env.TERMII_API_KEY;
+    if (!termiiApiKey) throw new Error("Termii API key not configured");
+
+    const results: Array<{ phone: string; success: boolean; messageId?: string; error?: string }> = [];
+    let sent = 0;
+    let failed = 0;
+
+    for (const phone of data.phoneNumbers) {
+      try {
+        const response = await fetch("https://v4.api.termii.com/api/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            api_key: termiiApiKey,
+            to: phone,
+            from: "YALI Summit",
+            sms: data.message,
+            channel: "whatsapp",
+            message_type: "text",
+          }),
+        });
+
+        const result = await response.json() as any;
+        if (result.status === "success" || response.ok) {
+          results.push({
+            phone,
+            success: true,
+            messageId: result.message_id,
+          });
+          sent++;
+        } else {
+          results.push({
+            phone,
+            success: false,
+            error: result.message || "Unknown error",
+          });
+          failed++;
+        }
+      } catch (e) {
+        results.push({
+          phone,
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        });
+        failed++;
+      }
+    }
+
+    return { sent, failed, total: data.phoneNumbers.length, results };
+  });

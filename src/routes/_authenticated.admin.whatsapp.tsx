@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { Send, CheckCircle2, AlertTriangle, Loader } from "lucide-react";
-import { sendWhatsAppBulkMessage, getWhatsAppBulkPreview } from "@/lib/tickets.functions";
+import { Send, CheckCircle2, AlertTriangle, Loader, TestTube } from "lucide-react";
+import { sendWhatsAppBulkMessage, getWhatsAppBulkPreview, sendWhatsAppTestMessage } from "@/lib/tickets.functions";
 import { AdminTabs } from "@/components/admin/AdminTabs";
 
 export const Route = createFileRoute("/_authenticated/admin/whatsapp")({
@@ -30,6 +30,7 @@ const TEMPLATES = {
 function WhatsAppPage() {
   const sendBulk = useServerFn(sendWhatsAppBulkMessage);
   const getPreview = useServerFn(getWhatsAppBulkPreview);
+  const sendTest = useServerFn(sendWhatsAppTestMessage);
 
   const [selectedTemplate, setSelectedTemplate] = useState<keyof typeof TEMPLATES>("few_hours_to_go");
   const [message, setMessage] = useState(TEMPLATES.few_hours_to_go.message);
@@ -38,6 +39,11 @@ function WhatsAppPage() {
   const [sending, setSending] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const [testMode, setTestMode] = useState(false);
+  const [testPhones, setTestPhones] = useState("");
+  const [testSending, setTestSending] = useState(false);
+  const [testResult, setTestResult] = useState<any>(null);
 
   async function handlePreview() {
     try {
@@ -71,6 +77,35 @@ function WhatsAppPage() {
       setError(e instanceof Error ? e.message : "Failed to send messages");
     } finally {
       setSending(false);
+    }
+  }
+
+  async function handleTestSend() {
+    const phones = testPhones
+      .split("\n")
+      .map((p) => p.trim())
+      .filter((p) => p.length > 0);
+
+    if (phones.length === 0) {
+      alert("Enter at least one phone number");
+      return;
+    }
+
+    if (!message.trim()) {
+      alert("Message cannot be empty");
+      return;
+    }
+
+    setTestSending(true);
+    setTestResult(null);
+
+    try {
+      const res = await sendTest({ data: { message, phoneNumbers: phones } });
+      setTestResult(res);
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "Failed to send test messages");
+    } finally {
+      setTestSending(false);
     }
   }
 
@@ -249,6 +284,80 @@ function WhatsAppPage() {
           )}
         </div>
       )}
+
+      {/* Test Message Section */}
+      <div className="mt-6 rounded-2xl border p-6" style={{ background: "var(--card)", borderColor: "var(--border-strong)" }}>
+        <button
+          onClick={() => setTestMode(!testMode)}
+          className="w-full flex items-center gap-2 px-4 py-3 rounded-lg font-semibold transition"
+          style={{ background: testMode ? "rgba(100, 116, 139, 0.2)" : "transparent", color: "var(--text-primary)" }}
+        >
+          <TestTube className="w-5 h-5" />
+          {testMode ? "Hide Test Message" : "📧 Send Test Message to Selected Numbers"}
+        </button>
+
+        {testMode && (
+          <div className="mt-4 space-y-4">
+            <div>
+              <label className="block text-sm font-semibold mb-2" style={{ color: "var(--text-primary)" }}>
+                Enter Phone Numbers (one per line):
+              </label>
+              <textarea
+                value={testPhones}
+                onChange={(e) => setTestPhones(e.target.value)}
+                placeholder="+2348012345678&#10;+2349087654321&#10;+2347065432109"
+                rows={4}
+                className="w-full px-3 py-2 rounded-lg border bg-transparent text-sm"
+                style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
+              />
+              <p style={{ color: "var(--text-secondary)", fontSize: "0.875rem", marginTop: "0.5rem" }}>
+                💡 Paste phone numbers (with +country code) to test before bulk send
+              </p>
+            </div>
+
+            <button
+              onClick={handleTestSend}
+              disabled={testSending}
+              className="w-full px-4 py-2 rounded-lg font-semibold transition inline-flex items-center justify-center gap-2 disabled:opacity-50"
+              style={{ background: "#f59e0b", color: "#000" }}
+            >
+              {testSending ? (
+                <>
+                  <Loader className="w-4 h-4 animate-spin" />
+                  Sending Test...
+                </>
+              ) : (
+                <>
+                  <Send className="w-4 h-4" />
+                  Send Test Message
+                </>
+              )}
+            </button>
+
+            {testResult && (
+              <div className="rounded-lg p-4" style={{ background: testResult.failed === 0 ? "rgba(34, 197, 94, 0.1)" : "rgba(245, 158, 11, 0.1)" }}>
+                <div style={{ color: testResult.failed === 0 ? "#22c55e" : "#f59e0b", fontWeight: "600" }}>
+                  {testResult.failed === 0 ? "✓ Test Successful!" : "⚠️ Some Test Failed"}
+                </div>
+                <p style={{ color: "var(--text-secondary)", fontSize: "0.875rem", marginTop: "0.5rem" }}>
+                  {testResult.sent} delivered, {testResult.failed} failed
+                </p>
+                {testResult.failed > 0 && (
+                  <div className="mt-3 space-y-2">
+                    {testResult.results
+                      .filter((r: any) => !r.success)
+                      .map((r: any, idx: number) => (
+                        <div key={idx} style={{ color: "#fca5a5", fontSize: "0.75rem" }}>
+                          {r.phone}: {r.error}
+                        </div>
+                      ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </section>
   );
 }

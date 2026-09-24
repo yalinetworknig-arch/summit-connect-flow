@@ -30,6 +30,7 @@ import { Route as AuthenticatedClaimTicketRouteImport } from './routes/_authenti
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AttendeeCodeRouteImport } from './routes/attendee.$code'
+import { Route as CheckInVirtualRouteImport } from './routes/check-in.virtual'
 import { Route as RegisterIndexRouteImport } from './routes/register.index'
 import { Route as RegisterIdRouteImport } from './routes/register.$id'
 import { Route as TicketCodeRouteImport } from './routes/ticket.$code'
@@ -37,6 +38,8 @@ import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminCheckInRouteImport } from './routes/_authenticated.admin.check-in'
 import { Route as AuthenticatedAdminNetworkingRouteImport } from './routes/_authenticated.admin.networking'
 import { Route as AuthenticatedAdminRegistrationsRouteImport } from './routes/_authenticated.admin.registrations'
+import { Route as AuthenticatedAdminVirtualRouteImport } from './routes/_authenticated.admin.virtual'
+import { Route as AuthenticatedAdminWhatsappRouteImport } from './routes/_authenticated.admin.whatsapp'
 import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated.profile.index'
 import { Route as AuthenticatedProfileAgendaRouteImport } from './routes/_authenticated.profile.agenda'
 import { Route as AuthenticatedProfileHackathonRouteImport } from './routes/_authenticated.profile.hackathon'
@@ -150,6 +153,11 @@ const AttendeeCodeRoute = AttendeeCodeRouteImport.update({
   path: '/attendee/$code',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CheckInVirtualRoute = CheckInVirtualRouteImport.update({
+  id: '/check-in/virtual',
+  path: '/check-in/virtual',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegisterIndexRoute = RegisterIndexRouteImport.update({
   id: '/register/',
   path: '/register/',
@@ -186,6 +194,18 @@ const AuthenticatedAdminRegistrationsRoute =
   AuthenticatedAdminRegistrationsRouteImport.update({
     id: '/registrations',
     path: '/registrations',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminVirtualRoute =
+  AuthenticatedAdminVirtualRouteImport.update({
+    id: '/virtual',
+    path: '/virtual',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminWhatsappRoute =
+  AuthenticatedAdminWhatsappRouteImport.update({
+    id: '/whatsapp',
+    path: '/whatsapp',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedProfileIndexRoute =
@@ -251,12 +271,15 @@ export interface FileRoutesByFullPath {
   '/claim-ticket': typeof AuthenticatedClaimTicketRoute
   '/admin/login': typeof AdminLoginRoute
   '/attendee/$code': typeof AttendeeCodeRoute
+  '/check-in/virtual': typeof CheckInVirtualRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/register/': typeof RegisterIndexRoute
   '/admin/check-in': typeof AuthenticatedAdminCheckInRoute
   '/admin/networking': typeof AuthenticatedAdminNetworkingRoute
   '/admin/registrations': typeof AuthenticatedAdminRegistrationsRoute
+  '/admin/virtual': typeof AuthenticatedAdminVirtualRoute
+  '/admin/whatsapp': typeof AuthenticatedAdminWhatsappRoute
   '/profile/agenda': typeof AuthenticatedProfileAgendaRoute
   '/profile/hackathon': typeof AuthenticatedProfileHackathonRoute
   '/profile/network': typeof AuthenticatedProfileNetworkRoute
@@ -285,12 +308,15 @@ export interface FileRoutesByTo {
   '/claim-ticket': typeof AuthenticatedClaimTicketRoute
   '/admin/login': typeof AdminLoginRoute
   '/attendee/$code': typeof AttendeeCodeRoute
+  '/check-in/virtual': typeof CheckInVirtualRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/register': typeof RegisterIndexRoute
   '/admin/check-in': typeof AuthenticatedAdminCheckInRoute
   '/admin/networking': typeof AuthenticatedAdminNetworkingRoute
   '/admin/registrations': typeof AuthenticatedAdminRegistrationsRoute
+  '/admin/virtual': typeof AuthenticatedAdminVirtualRoute
+  '/admin/whatsapp': typeof AuthenticatedAdminWhatsappRoute
   '/profile/agenda': typeof AuthenticatedProfileAgendaRoute
   '/profile/hackathon': typeof AuthenticatedProfileHackathonRoute
   '/profile/network': typeof AuthenticatedProfileNetworkRoute
@@ -322,12 +348,15 @@ export interface FileRoutesById {
   '/_authenticated/profile': typeof AuthenticatedProfileRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/attendee/$code': typeof AttendeeCodeRoute
+  '/check-in/virtual': typeof CheckInVirtualRoute
   '/register/$id': typeof RegisterIdRoute
   '/ticket/$code': typeof TicketCodeRoute
   '/register/': typeof RegisterIndexRoute
   '/_authenticated/admin/check-in': typeof AuthenticatedAdminCheckInRoute
   '/_authenticated/admin/networking': typeof AuthenticatedAdminNetworkingRoute
   '/_authenticated/admin/registrations': typeof AuthenticatedAdminRegistrationsRoute
+  '/_authenticated/admin/virtual': typeof AuthenticatedAdminVirtualRoute
+  '/_authenticated/admin/whatsapp': typeof AuthenticatedAdminWhatsappRoute
   '/_authenticated/profile/agenda': typeof AuthenticatedProfileAgendaRoute
   '/_authenticated/profile/hackathon': typeof AuthenticatedProfileHackathonRoute
   '/_authenticated/profile/network': typeof AuthenticatedProfileNetworkRoute
@@ -359,12 +388,15 @@ export interface FileRouteTypes {
     | '/claim-ticket'
     | '/admin/login'
     | '/attendee/$code'
+    | '/check-in/virtual'
     | '/register/$id'
     | '/ticket/$code'
     | '/register/'
     | '/admin/check-in'
     | '/admin/networking'
     | '/admin/registrations'
+    | '/admin/virtual'
+    | '/admin/whatsapp'
     | '/profile/agenda'
     | '/profile/hackathon'
     | '/profile/network'
@@ -393,12 +425,15 @@ export interface FileRouteTypes {
     | '/claim-ticket'
     | '/admin/login'
     | '/attendee/$code'
+    | '/check-in/virtual'
     | '/register/$id'
     | '/ticket/$code'
     | '/register'
     | '/admin/check-in'
     | '/admin/networking'
     | '/admin/registrations'
+    | '/admin/virtual'
+    | '/admin/whatsapp'
     | '/profile/agenda'
     | '/profile/hackathon'
     | '/profile/network'
@@ -429,12 +464,15 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
     | '/admin/login'
     | '/attendee/$code'
+    | '/check-in/virtual'
     | '/register/$id'
     | '/ticket/$code'
     | '/register/'
     | '/_authenticated/admin/check-in'
     | '/_authenticated/admin/networking'
     | '/_authenticated/admin/registrations'
+    | '/_authenticated/admin/virtual'
+    | '/_authenticated/admin/whatsapp'
     | '/_authenticated/profile/agenda'
     | '/_authenticated/profile/hackathon'
     | '/_authenticated/profile/network'
@@ -464,6 +502,7 @@ export interface RootRouteChildren {
   TracksRoute: typeof TracksRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AttendeeCodeRoute: typeof AttendeeCodeRoute
+  CheckInVirtualRoute: typeof CheckInVirtualRoute
   RegisterIdRoute: typeof RegisterIdRoute
   TicketCodeRoute: typeof TicketCodeRoute
   RegisterIndexRoute: typeof RegisterIndexRoute
@@ -618,6 +657,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AttendeeCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/check-in/virtual': {
+      id: '/check-in/virtual'
+      path: '/check-in/virtual'
+      fullPath: '/check-in/virtual'
+      preLoaderRoute: typeof CheckInVirtualRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register/': {
       id: '/register/'
       path: '/register'
@@ -665,6 +711,20 @@ declare module '@tanstack/react-router' {
       path: '/registrations'
       fullPath: '/admin/registrations'
       preLoaderRoute: typeof AuthenticatedAdminRegistrationsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/virtual': {
+      id: '/_authenticated/admin/virtual'
+      path: '/virtual'
+      fullPath: '/admin/virtual'
+      preLoaderRoute: typeof AuthenticatedAdminVirtualRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/whatsapp': {
+      id: '/_authenticated/admin/whatsapp'
+      path: '/whatsapp'
+      fullPath: '/admin/whatsapp'
+      preLoaderRoute: typeof AuthenticatedAdminWhatsappRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/profile/': {
@@ -723,6 +783,8 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminCheckInRoute: typeof AuthenticatedAdminCheckInRoute
   AuthenticatedAdminNetworkingRoute: typeof AuthenticatedAdminNetworkingRoute
   AuthenticatedAdminRegistrationsRoute: typeof AuthenticatedAdminRegistrationsRoute
+  AuthenticatedAdminVirtualRoute: typeof AuthenticatedAdminVirtualRoute
+  AuthenticatedAdminWhatsappRoute: typeof AuthenticatedAdminWhatsappRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
@@ -730,6 +792,8 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminCheckInRoute: AuthenticatedAdminCheckInRoute,
   AuthenticatedAdminNetworkingRoute: AuthenticatedAdminNetworkingRoute,
   AuthenticatedAdminRegistrationsRoute: AuthenticatedAdminRegistrationsRoute,
+  AuthenticatedAdminVirtualRoute: AuthenticatedAdminVirtualRoute,
+  AuthenticatedAdminWhatsappRoute: AuthenticatedAdminWhatsappRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
@@ -794,6 +858,7 @@ const rootRouteChildren: RootRouteChildren = {
   TracksRoute: TracksRoute,
   AdminLoginRoute: AdminLoginRoute,
   AttendeeCodeRoute: AttendeeCodeRoute,
+  CheckInVirtualRoute: CheckInVirtualRoute,
   RegisterIdRoute: RegisterIdRoute,
   TicketCodeRoute: TicketCodeRoute,
   RegisterIndexRoute: RegisterIndexRoute,
