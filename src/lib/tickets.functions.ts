@@ -452,6 +452,33 @@ export const getAdminDashboard = createServerFn({ method: "POST" })
     };
   });
 
+export const checkInVirtual = createServerFn({ method: "POST" })
+  .inputValidator((input) => codeSchema.parse(input))
+  .handler(async ({ data }) => {
+    const supabase = createServerSupabase();
+
+    const { data: existing, error: e1 } = await supabase
+      .from("registrations")
+      .select("id, full_name, attendee_type, track_selection, verification_status, virtual_checked_in_at")
+      .eq("ticket_code", data.code)
+      .maybeSingle();
+    if (e1) throw new Error(e1.message);
+    if (!existing) throw new Error("Ticket not found");
+
+    if (existing.virtual_checked_in_at) {
+      return { alreadyCheckedIn: true, registration: existing };
+    }
+
+    const { data: updated, error: e2 } = await supabase
+      .from("registrations")
+      .update({ virtual_checked_in_at: new Date().toISOString() })
+      .eq("id", existing.id)
+      .select("id, full_name, attendee_type, track_selection, verification_status, virtual_checked_in_at")
+      .single();
+    if (e2) throw new Error(e2.message);
+    return { alreadyCheckedIn: false, registration: updated };
+  });
+
 export const getCheckInStats = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
@@ -504,4 +531,79 @@ export const getCheckInStats = createServerFn({ method: "POST" })
       percentage: total ? Math.round(((checkedIn ?? 0) / total) * 100) : 0,
       byType: typeStats,
     };
+  });
+
+export const getVirtualCheckInStats = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
+    const roles = await getUserRoles(supabase, userId);
+    assertHasStaffRole(roles);
+
+    // Get total registrations
+    const { count: total } = await supabase
+      .from("registrations")
+      .select("*", { count: "exact", head: true });
+
+    // Get virtual checked in count
+    const { count: virtualCheckedIn } = await supabase
+      .from("registrations")
+      .select("*", { count: "exact", head: true })
+      .not("virtual_checked_in_at", "is", null);
+
+    // Get virtual attendees list
+    const { data: virtualAttendees } = await supabase
+      .from("registrations")
+      .select("id, ticket_code, full_name, email, attendee_type, track_selection, verification_status, virtual_checked_in_at")
+      .not("virtual_checked_in_at", "is", null)
+      .order("virtual_checked_in_at", { ascending: false });
+
+    const pending = (total ?? 0) - (virtualCheckedIn ?? 0);
+
+    return {
+      total: total ?? 0,
+      virtualCheckedIn: virtualCheckedIn ?? 0,
+      pending,
+      percentage: total ? Math.round(((virtualCheckedIn ?? 0) / total) * 100) : 0,
+      attendees: virtualAttendees ?? [],
+    };
+  });
+
+export const listVirtualAttendees = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
+    const roles = await getUserRoles(supabase, userId);
+    assertHasStaffRole(roles);
+
+    const { data: attendees, error } = await supabase
+      .from("registrations")
+      .select("id, ticket_code, full_name, email, phone, attendee_type, track_selection, verification_status, virtual_checked_in_at, created_at")
+      .order("virtual_checked_in_at", { ascending: false, nullsFirst: false })
+      .limit(500);
+
+    if (error) throw new Error(error.message);
+    return { attendees: attendees ?? [] };
+  });
+
+export const markVirtualAttendance = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ id: z.string().uuid() }).parse(input))
+  .handler(async ({ data, context }) => {
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
+    const roles = await getUserRoles(supabase, userId);
+    assertHasStaffRole(roles);
+
+    const { data: updated, error } = await supabase
+      .from("registrations")
+      .update({ virtual_checked_in_at: new Date().toISOString() })
+      .eq("id", data.id)
+      .select("id, full_name, virtual_checked_in_at")
+      .single();
+
+    if (error) throw new Error(error.message);
+    return updated;
   });
