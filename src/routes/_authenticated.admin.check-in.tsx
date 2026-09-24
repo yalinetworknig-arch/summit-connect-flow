@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { Camera, CheckCircle2, AlertTriangle, ShieldCheck, XCircle, Clock } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { Camera, CheckCircle2, AlertTriangle, ShieldCheck, XCircle, Clock, Maximize2, Minimize2, BarChart3 } from "lucide-react";
 import { motion } from "framer-motion";
-import { checkInTicket } from "@/lib/tickets.functions";
+import { checkInTicket, getCheckInStats } from "@/lib/tickets.functions";
 import { AdminTabs } from "@/components/admin/AdminTabs";
 
 export const Route = createFileRoute("/_authenticated/admin/check-in")({
@@ -25,6 +26,7 @@ type Result = {
 
 function CheckInPage() {
   const checkIn = useServerFn(checkInTicket);
+  const fetchStats = useServerFn(getCheckInStats);
   const [manualCode, setManualCode] = useState("");
   const [result, setResult] = useState<Result | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -33,6 +35,46 @@ function CheckInPage() {
   const lastScanned = useRef<{ code: string; at: number } | null>(null);
   const [scanning, setScanning] = useState(false);
   const [initializingScanner, setInitializingScanner] = useState(false);
+  const [fullScreen, setFullScreen] = useState(false);
+  const [showStats, setShowStats] = useState(true);
+
+  // Fetch stats and refresh every 5 seconds
+  const { data: stats } = useQuery({
+    queryKey: ["checkin-stats"],
+    queryFn: () => fetchStats({ data: {} }),
+    refetchInterval: 5000,
+    staleTime: 3000,
+  });
+
+  // Play success sound
+  function playSuccessSound() {
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    oscillator.frequency.value = 800;
+    oscillator.type = "sine";
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.1);
+  }
+
+  // Play error sound
+  function playErrorSound() {
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    oscillator.frequency.value = 300;
+    oscillator.type = "sine";
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.2);
+  }
 
   async function submitCode(code: string) {
     setError(null);
@@ -41,6 +83,7 @@ function CheckInPage() {
     try {
       const r = await checkIn({ data: { code } });
       setResult(r as Result);
+      playSuccessSound();
       // Auto-clear result after 4 seconds for next scan
       setTimeout(() => {
         setResult(null);
@@ -48,6 +91,7 @@ function CheckInPage() {
     } catch (e: any) {
       setError(e?.message ?? "Failed to check in");
       setResult(null);
+      playErrorSound();
     } finally {
       setBusy(false);
     }
@@ -104,25 +148,108 @@ function CheckInPage() {
   const status = r?.registration.verification_status ?? "pending";
   const verifiedOk = status === "verified";
 
+  // Full-screen scanner mode
+  if (fullScreen && scanning) {
+    return (
+      <div className="fixed inset-0 bg-black flex flex-col z-50">
+        {/* Stats bar */}
+        <div className="bg-black/80 border-b border-white/10 px-6 py-4 flex items-center justify-between">
+          <div className="flex gap-8">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-400">{stats?.checkedIn ?? 0}</div>
+              <div className="text-xs text-white/60">Checked In</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-white">{stats?.pending ?? 0}</div>
+              <div className="text-xs text-white/60">Pending</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-cyan-400">{stats?.percentage ?? 0}%</div>
+              <div className="text-xs text-white/60">Progress</div>
+            </div>
+          </div>
+          <button
+            onClick={() => setFullScreen(false)}
+            className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition"
+          >
+            <Minimize2 className="w-5 h-5 text-white" />
+          </button>
+        </div>
+        {/* Full screen scanner */}
+        <div className="flex-1 flex items-center justify-center">
+          <div id="qr-reader" ref={scannerRef} className="w-full h-full" />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <section className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
-      <h1 className="text-2xl font-bold mb-4" style={{ color: "var(--text-primary)", fontFamily: "Space Grotesk, sans-serif" }}>Check-in</h1>
+    <section className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-bold" style={{ color: "var(--text-primary)", fontFamily: "Space Grotesk, sans-serif" }}>Check-in</h1>
+        <button
+          onClick={() => setShowStats(!showStats)}
+          className="p-2 rounded-lg transition"
+          style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
+          title="Toggle stats dashboard"
+        >
+          <BarChart3 className="w-5 h-5" />
+        </button>
+      </div>
       <AdminTabs />
 
-      <div className="rounded-2xl border p-4 mb-4" style={{ background: "var(--card)", borderColor: "var(--border-strong)" }}>
-        <button
-          onClick={() => setScanning((s) => !s)}
-          disabled={initializingScanner}
-          className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full text-sm font-semibold disabled:opacity-60"
-          style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
+      {/* Live Dashboard Stats */}
+      {showStats && stats && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6"
         >
-          <Camera className="w-4 h-4" /> {initializingScanner ? "Initializing scanner..." : scanning ? "Stop scanner" : "Start camera scanner"}
-        </button>
+          <div className="rounded-lg p-4 text-center" style={{ background: "rgba(34, 197, 94, 0.1)", borderLeft: "3px solid #22c55e" }}>
+            <div className="text-2xl font-bold" style={{ color: "#22c55e" }}>{stats.checkedIn}</div>
+            <div className="text-xs mt-1" style={{ color: "var(--text-secondary)" }}>Checked In</div>
+          </div>
+          <div className="rounded-lg p-4 text-center" style={{ background: "rgba(59, 130, 246, 0.1)", borderLeft: "3px solid #3b82f6" }}>
+            <div className="text-2xl font-bold" style={{ color: "#3b82f6" }}>{stats.pending}</div>
+            <div className="text-xs mt-1" style={{ color: "var(--text-secondary)" }}>Pending</div>
+          </div>
+          <div className="rounded-lg p-4 text-center" style={{ background: "rgba(0, 217, 255, 0.1)", borderLeft: "3px solid var(--accent-cyan)" }}>
+            <div className="text-2xl font-bold" style={{ color: "var(--accent-cyan)" }}>{stats.total}</div>
+            <div className="text-xs mt-1" style={{ color: "var(--text-secondary)" }}>Total</div>
+          </div>
+          <div className="rounded-lg p-4 text-center" style={{ background: "rgba(34, 197, 94, 0.1)", borderLeft: "3px solid #22c55e" }}>
+            <div className="text-2xl font-bold" style={{ color: "#22c55e" }}>{stats.percentage}%</div>
+            <div className="text-xs mt-1" style={{ color: "var(--text-secondary)" }}>Completion</div>
+          </div>
+        </motion.div>
+      )}
+
+      <div className="rounded-2xl border p-4 mb-4" style={{ background: "var(--card)", borderColor: "var(--border-strong)" }}>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setScanning((s) => !s)}
+            disabled={initializingScanner}
+            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full text-sm font-semibold disabled:opacity-60"
+            style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
+          >
+            <Camera className="w-4 h-4" /> {initializingScanner ? "Initializing..." : scanning ? "Stop" : "Start Scanner"}
+          </button>
+          {scanning && (
+            <button
+              onClick={() => setFullScreen(true)}
+              className="px-4 py-3 rounded-full text-sm font-semibold inline-flex items-center gap-2"
+              style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
+              title="Full-screen scanner mode"
+            >
+              <Maximize2 className="w-4 h-4" />
+            </button>
+          )}
+        </div>
         {scanning && (
           <div>
             <div id="qr-reader" ref={scannerRef} className="mt-3 mx-auto" style={{ maxWidth: 360, minHeight: 360 }} />
             <p className="text-xs mt-3 text-center" style={{ color: "var(--text-secondary)" }}>
-              📱 Point camera at QR code or barcode to check in attendee
+              📱 Point camera at QR code or press expand button for full-screen mode
             </p>
           </div>
         )}

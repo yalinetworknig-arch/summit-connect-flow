@@ -451,3 +451,57 @@ export const getAdminDashboard = createServerFn({ method: "POST" })
       recent,
     };
   });
+
+export const getCheckInStats = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
+    const roles = await getUserRoles(supabase, userId);
+    assertHasStaffRole(roles);
+
+    // Get total registrations
+    const { count: total } = await supabase
+      .from("registrations")
+      .select("*", { count: "exact", head: true });
+
+    // Get checked in count
+    const { count: checkedIn } = await supabase
+      .from("registrations")
+      .select("*", { count: "exact", head: true })
+      .not("checked_in_at", "is", null);
+
+    // Get by attendee type
+    const { data: byType } = await supabase
+      .from("registrations")
+      .select("attendee_type, checked_in_at")
+      .order("attendee_type");
+
+    const typeStats = (byType ?? []).reduce((acc: any, row: any) => {
+      if (!acc[row.attendee_type]) {
+        acc[row.attendee_type] = { total: 0, checkedIn: 0 };
+      }
+      acc[row.attendee_type].total++;
+      if (row.checked_in_at) acc[row.attendee_type].checkedIn++;
+      return acc;
+    }, {});
+
+    // Get check-ins in last hour
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const { count: checkedInLastHour } = await supabase
+      .from("registrations")
+      .select("*", { count: "exact", head: true })
+      .gte("checked_in_at", oneHourAgo);
+
+    const pending = (total ?? 0) - (checkedIn ?? 0);
+    const checkInRate = (checkedInLastHour ?? 0) + " per hour";
+
+    return {
+      total: total ?? 0,
+      checkedIn: checkedIn ?? 0,
+      pending,
+      checkInRate,
+      percentage: total ? Math.round(((checkedIn ?? 0) / total) * 100) : 0,
+      byType: typeStats,
+    };
+  });
