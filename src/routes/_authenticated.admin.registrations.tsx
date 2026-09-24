@@ -149,6 +149,16 @@ function RegistrationsPage() {
 
   return (
     <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      <style>{`
+        select option {
+          background-color: #1a1a2e;
+          color: #ffffff;
+        }
+        select option:checked {
+          background-color: #3b82f6;
+          color: #ffffff;
+        }
+      `}</style>
       <h1 className="text-2xl font-bold mb-4" style={{ color: "var(--text-primary)", fontFamily: "Space Grotesk, sans-serif" }}>Registrations</h1>
 
       {/* Info banner about auto-verification */}
