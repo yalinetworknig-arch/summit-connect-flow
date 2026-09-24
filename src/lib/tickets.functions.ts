@@ -720,6 +720,51 @@ export const getWhatsAppBulkPreview = createServerFn({ method: "POST" })
     };
   });
 
+export const exportAttendeesEmails = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ mode: z.enum(["physical", "virtual", "all"]) }).parse(input))
+  .handler(async ({ data, context }) => {
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
+    const roles = await getUserRoles(supabase, userId);
+    assertHasStaffRole(roles);
+
+    let query = supabase
+      .from("registrations")
+      .select("full_name, email, ticket_code, attendance_mode")
+      .not("email", "is", null)
+      .order("full_name", { ascending: true });
+
+    if (data.mode === "physical") {
+      query = query.eq("attendance_mode", "physical");
+    } else if (data.mode === "virtual") {
+      query = query.eq("attendance_mode", "virtual");
+    }
+
+    const { data: attendees, error } = await query;
+    if (error) throw new Error(error.message);
+
+    if (!attendees || attendees.length === 0) {
+      return { emails: [], count: 0, csv: "" };
+    }
+
+    // Generate CSV
+    const headers = ["Name", "Email", "Ticket Code", "Type"];
+    const csvRows = attendees.map((a: any) => [
+      `"${a.full_name.replace(/"/g, '""')}"`,
+      a.email,
+      a.ticket_code,
+      a.attendance_mode === "physical" ? "Physical" : "Virtual",
+    ]);
+    const csv = [headers.join(","), ...csvRows.map((row) => row.join(","))].join("\n");
+
+    return {
+      emails: attendees,
+      count: attendees.length,
+      csv,
+    };
+  });
+
 export const sendWhatsAppTestMessage = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({ message: z.string().min(1), phoneNumbers: z.array(z.string().min(7)) }).parse(input))

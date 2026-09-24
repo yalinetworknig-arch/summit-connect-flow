@@ -1,11 +1,12 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, Users, ScanLine, Mail, Globe, MessageCircle } from "lucide-react";
+import { LayoutDashboard, Users, ScanLine, Mail, Globe, MessageCircle, Send } from "lucide-react";
 
 const tabs = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/registrations", label: "Registrations", icon: Users, exact: false },
   { to: "/admin/check-in", label: "Check-in", icon: ScanLine, exact: false },
   { to: "/admin/virtual", label: "Virtual", icon: Globe, exact: false },
+  { to: "/admin/emails", label: "Emails", icon: Send, exact: false },
   { to: "/admin/whatsapp", label: "WhatsApp", icon: MessageCircle, exact: false },
   { to: "/admin/networking", label: "Networking", icon: Mail, exact: false },
 ] as const;

@@ -36,6 +36,7 @@ import { Route as RegisterIdRouteImport } from './routes/register.$id'
 import { Route as TicketCodeRouteImport } from './routes/ticket.$code'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated.admin.index'
 import { Route as AuthenticatedAdminCheckInRouteImport } from './routes/_authenticated.admin.check-in'
+import { Route as AuthenticatedAdminEmailsRouteImport } from './routes/_authenticated.admin.emails'
 import { Route as AuthenticatedAdminNetworkingRouteImport } from './routes/_authenticated.admin.networking'
 import { Route as AuthenticatedAdminRegistrationsRouteImport } from './routes/_authenticated.admin.registrations'
 import { Route as AuthenticatedAdminVirtualRouteImport } from './routes/_authenticated.admin.virtual'
@@ -184,6 +185,12 @@ const AuthenticatedAdminCheckInRoute =
     path: '/check-in',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminEmailsRoute =
+  AuthenticatedAdminEmailsRouteImport.update({
+    id: '/emails',
+    path: '/emails',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminNetworkingRoute =
   AuthenticatedAdminNetworkingRouteImport.update({
     id: '/networking',
@@ -276,6 +283,7 @@ export interface FileRoutesByFullPath {
   '/ticket/$code': typeof TicketCodeRoute
   '/register/': typeof RegisterIndexRoute
   '/admin/check-in': typeof AuthenticatedAdminCheckInRoute
+  '/admin/emails': typeof AuthenticatedAdminEmailsRoute
   '/admin/networking': typeof AuthenticatedAdminNetworkingRoute
   '/admin/registrations': typeof AuthenticatedAdminRegistrationsRoute
   '/admin/virtual': typeof AuthenticatedAdminVirtualRoute
@@ -313,6 +321,7 @@ export interface FileRoutesByTo {
   '/ticket/$code': typeof TicketCodeRoute
   '/register': typeof RegisterIndexRoute
   '/admin/check-in': typeof AuthenticatedAdminCheckInRoute
+  '/admin/emails': typeof AuthenticatedAdminEmailsRoute
   '/admin/networking': typeof AuthenticatedAdminNetworkingRoute
   '/admin/registrations': typeof AuthenticatedAdminRegistrationsRoute
   '/admin/virtual': typeof AuthenticatedAdminVirtualRoute
@@ -353,6 +362,7 @@ export interface FileRoutesById {
   '/ticket/$code': typeof TicketCodeRoute
   '/register/': typeof RegisterIndexRoute
   '/_authenticated/admin/check-in': typeof AuthenticatedAdminCheckInRoute
+  '/_authenticated/admin/emails': typeof AuthenticatedAdminEmailsRoute
   '/_authenticated/admin/networking': typeof AuthenticatedAdminNetworkingRoute
   '/_authenticated/admin/registrations': typeof AuthenticatedAdminRegistrationsRoute
   '/_authenticated/admin/virtual': typeof AuthenticatedAdminVirtualRoute
@@ -393,6 +403,7 @@ export interface FileRouteTypes {
     | '/ticket/$code'
     | '/register/'
     | '/admin/check-in'
+    | '/admin/emails'
     | '/admin/networking'
     | '/admin/registrations'
     | '/admin/virtual'
@@ -430,6 +441,7 @@ export interface FileRouteTypes {
     | '/ticket/$code'
     | '/register'
     | '/admin/check-in'
+    | '/admin/emails'
     | '/admin/networking'
     | '/admin/registrations'
     | '/admin/virtual'
@@ -469,6 +481,7 @@ export interface FileRouteTypes {
     | '/ticket/$code'
     | '/register/'
     | '/_authenticated/admin/check-in'
+    | '/_authenticated/admin/emails'
     | '/_authenticated/admin/networking'
     | '/_authenticated/admin/registrations'
     | '/_authenticated/admin/virtual'
@@ -699,6 +712,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminCheckInRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/emails': {
+      id: '/_authenticated/admin/emails'
+      path: '/emails'
+      fullPath: '/admin/emails'
+      preLoaderRoute: typeof AuthenticatedAdminEmailsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/networking': {
       id: '/_authenticated/admin/networking'
       path: '/networking'
@@ -781,6 +801,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminCheckInRoute: typeof AuthenticatedAdminCheckInRoute
+  AuthenticatedAdminEmailsRoute: typeof AuthenticatedAdminEmailsRoute
   AuthenticatedAdminNetworkingRoute: typeof AuthenticatedAdminNetworkingRoute
   AuthenticatedAdminRegistrationsRoute: typeof AuthenticatedAdminRegistrationsRoute
   AuthenticatedAdminVirtualRoute: typeof AuthenticatedAdminVirtualRoute
@@ -790,6 +811,7 @@ interface AuthenticatedAdminRouteChildren {
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminCheckInRoute: AuthenticatedAdminCheckInRoute,
+  AuthenticatedAdminEmailsRoute: AuthenticatedAdminEmailsRoute,
   AuthenticatedAdminNetworkingRoute: AuthenticatedAdminNetworkingRoute,
   AuthenticatedAdminRegistrationsRoute: AuthenticatedAdminRegistrationsRoute,
   AuthenticatedAdminVirtualRoute: AuthenticatedAdminVirtualRoute,
