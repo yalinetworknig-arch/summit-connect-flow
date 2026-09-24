@@ -31,6 +31,7 @@ function CheckInPage() {
   const scannerRef = useRef<HTMLDivElement>(null);
   const lastScanned = useRef<{ code: string; at: number } | null>(null);
   const [scanning, setScanning] = useState(false);
+  const [initializingScanner, setInitializingScanner] = useState(false);
 
   async function submitCode(code: string) {
     setError(null);
@@ -51,13 +52,17 @@ function CheckInPage() {
     let html5: any;
     let cancelled = false;
     (async () => {
-      const mod = await import("html5-qrcode");
-      if (cancelled) return;
-      html5 = new mod.Html5Qrcode("qr-reader");
       try {
+        const mod = await import("html5-qrcode");
+        if (cancelled) return;
+
+        // Request camera permissions explicitly
+        await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+
+        html5 = new mod.Html5Qrcode("qr-reader");
         await html5.start(
           { facingMode: "environment" },
-          { fps: 10, qrbox: { width: 240, height: 240 } },
+          { fps: 15, qrbox: { width: 250, height: 250 }, disableFlip: false },
           (decoded: string) => {
             const now = Date.now();
             if (lastScanned.current && lastScanned.current.code === decoded && now - lastScanned.current.at < 3000) return;
@@ -66,14 +71,26 @@ function CheckInPage() {
           },
           () => {},
         );
+        setError(null);
       } catch (e: any) {
-        setError(`Camera error: ${e?.message ?? e}`);
+        const errorMsg = e?.message ?? String(e);
+        if (errorMsg.includes("Permission denied")) {
+          setError("Camera access denied. Please allow camera permissions in browser settings and try again.");
+        } else if (errorMsg.includes("NotFoundError")) {
+          setError("No camera found. Please connect a camera device.");
+        } else {
+          setError(`Scanner error: ${errorMsg}`);
+        }
         setScanning(false);
       }
     })();
     return () => {
       cancelled = true;
-      if (html5) html5.stop().catch(() => {}).then(() => html5.clear?.());
+      if (html5) {
+        html5.stop().catch(() => {}).then(() => {
+          try { html5.clear?.(); } catch (e) {}
+        });
+      }
     };
   }, [scanning]);
 
@@ -87,10 +104,22 @@ function CheckInPage() {
       <AdminTabs />
 
       <div className="rounded-2xl border p-4 mb-4" style={{ background: "var(--card)", borderColor: "var(--border-strong)" }}>
-        <button onClick={() => setScanning((s) => !s)} className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full text-sm font-semibold" style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}>
-          <Camera className="w-4 h-4" /> {scanning ? "Stop scanner" : "Start camera scanner"}
+        <button
+          onClick={() => setScanning((s) => !s)}
+          disabled={initializingScanner}
+          className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full text-sm font-semibold disabled:opacity-60"
+          style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
+        >
+          <Camera className="w-4 h-4" /> {initializingScanner ? "Initializing scanner..." : scanning ? "Stop scanner" : "Start camera scanner"}
         </button>
-        {scanning && <div id="qr-reader" ref={scannerRef} className="mt-3 mx-auto" style={{ maxWidth: 360 }} />}
+        {scanning && (
+          <div>
+            <div id="qr-reader" ref={scannerRef} className="mt-3 mx-auto" style={{ maxWidth: 360, minHeight: 360 }} />
+            <p className="text-xs mt-3 text-center" style={{ color: "var(--text-secondary)" }}>
+              📱 Point camera at QR code or barcode to check in attendee
+            </p>
+          </div>
+        )}
       </div>
 
       <form
