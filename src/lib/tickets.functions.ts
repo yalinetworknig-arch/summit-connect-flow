@@ -607,3 +607,115 @@ export const markVirtualAttendance = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return updated;
   });
+
+export const sendWhatsAppBulkMessage = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ message: z.string().min(1), recipientType: z.enum(["all", "physical", "virtual"]) }).parse(input))
+  .handler(async ({ data, context }) => {
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
+    const roles = await getUserRoles(supabase, userId);
+    assertHasAdminRole(roles);
+
+    const termiiApiKey = process.env.TERMII_API_KEY;
+    if (!termiiApiKey) throw new Error("Termii API key not configured");
+
+    // Get attendees with phone numbers
+    let query = supabase
+      .from("registrations")
+      .select("id, full_name, phone, attendance_mode")
+      .not("phone", "is", null);
+
+    if (data.recipientType === "physical") {
+      query = query.eq("attendance_mode", "physical");
+    } else if (data.recipientType === "virtual") {
+      query = query.eq("attendance_mode", "virtual");
+    }
+
+    const { data: attendees, error } = await query.limit(1000);
+    if (error) throw new Error(error.message);
+
+    if (!attendees || attendees.length === 0) {
+      return { sent: 0, failed: 0, results: [] };
+    }
+
+    // Send messages via Termii WhatsApp API
+    const results: Array<{ name: string; phone: string; success: boolean; messageId?: string; error?: string }> = [];
+    let sent = 0;
+    let failed = 0;
+
+    for (const attendee of attendees) {
+      try {
+        const response = await fetch("https://v4.api.termii.com/api/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            api_key: termiiApiKey,
+            to: attendee.phone,
+            from: "YALI Summit",
+            sms: data.message,
+            channel: "whatsapp",
+            message_type: "text",
+          }),
+        });
+
+        const result = await response.json() as any;
+        if (result.status === "success" || response.ok) {
+          results.push({
+            name: attendee.full_name,
+            phone: attendee.phone,
+            success: true,
+            messageId: result.message_id,
+          });
+          sent++;
+        } else {
+          results.push({
+            name: attendee.full_name,
+            phone: attendee.phone,
+            success: false,
+            error: result.message || "Unknown error",
+          });
+          failed++;
+        }
+      } catch (e) {
+        results.push({
+          name: attendee.full_name,
+          phone: attendee.phone,
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        });
+        failed++;
+      }
+    }
+
+    return { sent, failed, total: attendees.length, results };
+  });
+
+export const getWhatsAppBulkPreview = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ recipientType: z.enum(["all", "physical", "virtual"]) }).parse(input))
+  .handler(async ({ data, context }) => {
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
+    const roles = await getUserRoles(supabase, userId);
+    assertHasAdminRole(roles);
+
+    let query = supabase
+      .from("registrations")
+      .select("id, full_name, phone, attendance_mode, email", { count: "exact", head: false })
+      .not("phone", "is", null);
+
+    if (data.recipientType === "physical") {
+      query = query.eq("attendance_mode", "physical");
+    } else if (data.recipientType === "virtual") {
+      query = query.eq("attendance_mode", "virtual");
+    }
+
+    const { data: attendees, count, error } = await query.limit(10);
+    if (error) throw new Error(error.message);
+
+    return {
+      totalRecipients: count ?? 0,
+      preview: (attendees ?? []).map((a: any) => ({ name: a.full_name, phone: a.phone, mode: a.attendance_mode })),
+    };
+  });
