@@ -147,8 +147,8 @@ export function ScheduleSection({ id = "schedule" }: { id?: string }) {
                 Claim your seat
               </Link>
               <a
-                href="/AIDIENGL_2026_Official_Programme_Agenda.docx"
-                download="AIDIENGL_2026_Official_Programme_Agenda.docx"
+                href="/AIDIENGL_2026_Official_Programme_Agenda.pdf"
+                download="AIDIENGL_2026_Official_Programme_Agenda.pdf"
                 className="inline-flex items-center justify-center px-8 min-h-12 rounded-full text-base font-semibold border-2 border-accent-cyan text-accent-cyan hover:bg-accent-cyan/10 active:scale-100 transition-all"
               >
                 ↓ Download Agenda

@@ -288,8 +288,8 @@ export function Hero() {
             Claim your seat
           </Link>
           <a
-            href="/AIDIENGL_2026_Official_Programme_Agenda.docx"
-            download="AIDIENGL_2026_Official_Programme_Agenda.docx"
+            href="/AIDIENGL_2026_Official_Programme_Agenda.pdf"
+            download="AIDIENGL_2026_Official_Programme_Agenda.pdf"
             className="px-6 min-h-[44px] inline-flex items-center justify-center rounded-full text-sm sm:text-base font-semibold border-2 border-[#00D9FF] text-white transition-all duration-200 hover:bg-[#00D9FF] hover:text-[#0A1128] hover:shadow-[0_12px_28px_rgba(0,217,255,0.3)] hover:scale-[1.05] active:scale-[0.98]"
           >
             ↓ Download Agenda
