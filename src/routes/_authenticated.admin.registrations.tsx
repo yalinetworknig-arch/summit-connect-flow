@@ -125,18 +125,19 @@ function RegistrationsPage() {
   const rows = data?.rows ?? [];
   const exportFn = useServerFn(exportRegistrationsCSV);
 
-  async function handleExport() {
+  async function handleExport(mode: "all" | "physical" | "virtual" = "all") {
     try {
-      const { csv } = await exportFn({ data: {} });
+      const { csv } = await exportFn({ data: { mode } });
       if (!csv) {
-        alert("No registrations to export");
+        alert(`No ${mode === "all" ? "" : mode} registrations to export`);
         return;
       }
+      const modeLabel = mode === "all" ? "all" : mode;
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
       const link = document.createElement("a");
       const url = URL.createObjectURL(blob);
       link.setAttribute("href", url);
-      link.setAttribute("download", `yali-registrations-${new Date().toISOString().split("T")[0]}.csv`);
+      link.setAttribute("download", `yali-registrations-${modeLabel}-${new Date().toISOString().split("T")[0]}.csv`);
       link.style.visibility = "hidden";
       document.body.appendChild(link);
       link.click();
@@ -165,14 +166,29 @@ function RegistrationsPage() {
             >
               Verify old registrations
             </button>
-            <button
-              onClick={handleExport}
-              className="px-3 py-1.5 rounded text-xs font-semibold whitespace-nowrap transition-all inline-flex items-center gap-1"
-              style={{ background: "rgba(59, 130, 246, 0.2)", color: "#3b82f6", border: "1px solid #3b82f6" }}
-              title="Export registrations as CSV for physical check-in backup"
-            >
-              <Download className="w-3 h-3" /> Export CSV
-            </button>
+            <div className="flex gap-1" title="Export registrations as CSV for physical check-in backup">
+              <button
+                onClick={() => handleExport("physical")}
+                className="px-3 py-1.5 rounded text-xs font-semibold whitespace-nowrap transition-all inline-flex items-center gap-1"
+                style={{ background: "rgba(59, 130, 246, 0.2)", color: "#3b82f6", border: "1px solid #3b82f6" }}
+              >
+                <Download className="w-3 h-3" /> Physical
+              </button>
+              <button
+                onClick={() => handleExport("virtual")}
+                className="px-3 py-1.5 rounded text-xs font-semibold whitespace-nowrap transition-all inline-flex items-center gap-1"
+                style={{ background: "rgba(59, 130, 246, 0.2)", color: "#3b82f6", border: "1px solid #3b82f6" }}
+              >
+                <Download className="w-3 h-3" /> Virtual
+              </button>
+              <button
+                onClick={() => handleExport("all")}
+                className="px-3 py-1.5 rounded text-xs font-semibold whitespace-nowrap transition-all inline-flex items-center gap-1"
+                style={{ background: "rgba(59, 130, 246, 0.2)", color: "#3b82f6", border: "1px solid #3b82f6" }}
+              >
+                <Download className="w-3 h-3" /> All
+              </button>
+            </div>
           </div>
         </div>
       </div>

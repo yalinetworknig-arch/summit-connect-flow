@@ -148,22 +148,30 @@ export const listRegistrations = createServerFn({ method: "POST" })
 
 export const exportRegistrationsCSV = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
+  .inputValidator((input) => z.object({ mode: z.enum(["all", "physical", "virtual"]).optional() }).parse(input ?? {}))
+  .handler(async ({ data, context }) => {
     const { userId } = context as { userId: string };
     const supabase = createServerSupabase();
     const roles = await getUserRoles(supabase, userId);
     assertHasStaffRole(roles);
 
-    const { data: rows, error } = await supabase
+    let q = supabase
       .from("registrations")
-      .select("id, ticket_code, full_name, email, phone, attendee_type, track_selection")
+      .select("id, ticket_code, full_name, email, phone, attendee_type, track_selection, attendance_mode")
       .order("created_at", { ascending: false });
+
+    // Filter by attendance mode if specified
+    if (data.mode && data.mode !== "all") {
+      q = q.eq("attendance_mode", data.mode);
+    }
+
+    const { data: rows, error } = await q;
 
     if (error) throw new Error(error.message);
     if (!rows || rows.length === 0) return { csv: "" };
 
     // Build CSV with headers
-    const headers = ["Full Name", "Email", "Ticket Code", "Phone", "Attendee Type", "Sector"];
+    const headers = ["Full Name", "Email", "Ticket Code", "Phone", "Attendee Type", "Sector", "Attendance Mode"];
     const csvRows = rows.map((r: any) => [
       `"${(r.full_name || "").replace(/"/g, '""')}"`,
       `"${(r.email || "").replace(/"/g, '""')}"`,
@@ -171,6 +179,7 @@ export const exportRegistrationsCSV = createServerFn({ method: "POST" })
       r.phone || "",
       r.attendee_type || "",
       r.track_selection || "",
+      r.attendance_mode || "",
     ]);
 
     const csv = [headers.join(","), ...csvRows.map((row) => row.join(","))].join("\n");
