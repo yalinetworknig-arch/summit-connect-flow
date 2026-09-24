@@ -33,7 +33,15 @@ function NotFoundComponent() {
 }
 
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
-  console.error(error);
+  const errorMsg = error?.message || "Unknown error";
+  const isDev = typeof window !== "undefined" && window.location?.hostname === "localhost";
+
+  console.error("Route Error:", {
+    message: errorMsg,
+    stack: error?.stack,
+    name: error?.name,
+  });
+
   const router = useRouter();
 
   return (
@@ -45,9 +53,16 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         <p className="mt-2 text-sm text-muted-foreground">
           Something went wrong on our end. You can try refreshing or head back home.
         </p>
+        {isDev && errorMsg && (
+          <div className="mt-4 p-3 rounded bg-red-900/20 border border-red-500/30 text-left">
+            <p className="text-xs font-mono text-red-300">{errorMsg}</p>
+          </div>
+        )}
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {
+              // Clear session and reset
+              sessionStorage.clear();
               router.invalidate();
               reset();
             }}

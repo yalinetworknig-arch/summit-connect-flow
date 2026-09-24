@@ -7,7 +7,43 @@ import { useSession } from "@/hooks/use-session";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminGate,
+  errorComponent: AdminErrorComponent,
 });
+
+function AdminErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+  const navigate = useNavigate();
+  console.error("Admin error:", error);
+
+  return (
+    <div className="max-w-md mx-auto px-6 py-16 text-center">
+      <h1 className="text-xl font-bold mb-2" style={{ color: "var(--text-primary)" }}>
+        Something went wrong
+      </h1>
+      <p className="mb-6 text-sm" style={{ color: "var(--text-secondary)" }}>
+        {error?.message || "An error occurred while loading the admin page."}
+      </p>
+      <div className="flex gap-2 justify-center flex-wrap">
+        <button
+          onClick={() => {
+            reset();
+            navigate({ to: "/admin" });
+          }}
+          className="px-5 py-2 rounded-full text-sm font-semibold"
+          style={{ background: "var(--accent-cyan)", color: "var(--brand-navy)" }}
+        >
+          Try again
+        </button>
+        <button
+          onClick={() => navigate({ to: "/profile" })}
+          className="px-5 py-2 rounded-full text-sm font-semibold border"
+          style={{ borderColor: "var(--border-strong)", color: "var(--text-primary)" }}
+        >
+          Go back
+        </button>
+      </div>
+    </div>
+  );
+}
 
 function AdminGate() {
   const { session } = useSession();
