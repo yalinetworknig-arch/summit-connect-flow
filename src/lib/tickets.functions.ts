@@ -813,22 +813,35 @@ export const sendThankYouEmailBatch = createServerFn({ method: "POST" })
             to: attendee.email,
             subject: "Thank You for Attending YALI Summit 2026! 🎉",
             html: `
-              <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto;">
-                <h1>Thank You, ${attendee.full_name}!</h1>
-                <p>What an incredible experience at the YALI Network Nigeria Summit 2026!</p>
-                <p>We're grateful to have you join us from September 25-27. Your presence and participation made this event meaningful.</p>
+              <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
+                <h2 style="color: #1a1a1a; margin-bottom: 16px;">Thank You, ${attendee.full_name}! 🎉</h2>
 
-                <h3>📋 Share Your Feedback</h3>
-                <p>We'd love to hear from you! Your feedback helps us improve future events:</p>
-                <p><a href="${feedbackUrl}?ticket=${attendee.ticket_code}" style="background-color: #00D9FF; color: #1a1a1a; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600;">Provide Feedback</a></p>
+                <p style="line-height: 1.6; margin-bottom: 20px;">
+                  We are grateful to have received you on the 25th of September, whether physically or virtually. It was wonderful to have you at the YALI Network Nigeria Summit 2026.
+                </p>
 
-                <h3>🤝 Join the YALI Network</h3>
-                <p>Interested in staying connected? Learn about joining YALI Network and discover opportunities in your state hub:</p>
-                <p><a href="${whatsappUrl}" style="background-color: #25D366; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600;">Join WhatsApp Community</a></p>
+                <p style="line-height: 1.6; margin-bottom: 24px;">
+                  Your presence made a difference. We hope you gained valuable insights and meaningful connections.
+                </p>
 
-                <p style="margin-top: 32px; padding-top: 16px; border-top: 1px solid #eee; color: #666; font-size: 12px;">
+                <div style="margin: 20px 0; padding: 14px; background: #f5f5f5; border-radius: 8px;">
+                  <p style="margin: 0 0 10px 0; font-weight: 600; color: #1a1a1a; font-size: 14px;">📋 Share Your Feedback</p>
+                  <p style="margin: 0;">
+                    <a href="${feedbackUrl}?ticket=${attendee.ticket_code}" style="background-color: #00D9FF; color: #1a1a1a; padding: 10px 20px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600; font-size: 13px;">Provide Feedback</a>
+                  </p>
+                </div>
+
+                <div style="margin: 20px 0; padding: 14px; background: #f5f5f5; border-radius: 8px;">
+                  <p style="margin: 0 0 10px 0; font-weight: 600; color: #1a1a1a; font-size: 14px;">🤝 Stay Connected</p>
+                  <p style="margin: 0 0 10px 0; font-size: 13px;">Join our WhatsApp community and explore state hubs:</p>
+                  <p style="margin: 0;">
+                    <a href="${whatsappUrl}" style="background-color: #25D366; color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600; font-size: 13px;">Join Community</a>
+                  </p>
+                </div>
+
+                <p style="margin-top: 24px; padding-top: 14px; border-top: 1px solid #ddd; color: #666; font-size: 12px; line-height: 1.6;">
                   Best regards,<br>
-                  YALI Network National Summit Team
+                  <strong>YALI Network National Summit Team</strong>
                 </p>
               </div>
             `,
