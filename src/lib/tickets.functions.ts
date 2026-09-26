@@ -765,6 +765,219 @@ export const exportAttendeesEmails = createServerFn({ method: "POST" })
     };
   });
 
+export const sendThankYouEmailBatch = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
+    const roles = await getUserRoles(supabase, userId);
+    assertHasAdminRole(roles);
+
+    const resendApiKey = process.env.RESEND_API_KEY;
+    if (!resendApiKey) throw new Error("Resend API key not configured");
+
+    // Get next 100 unsent emails, prioritizing checked-in attendees
+    const { data: attendees, error } = await supabase
+      .from("registrations")
+      .select("id, full_name, email, ticket_code, checked_in_at")
+      .is("thank_you_email_sent_at", null)
+      .not("email", "is", null)
+      .order("checked_in_at", { ascending: false, nullsFirst: true })
+      .order("created_at", { ascending: true })
+      .limit(100);
+
+    if (error) throw new Error(error.message);
+    if (!attendees || attendees.length === 0) {
+      return { sent: 0, failed: 0, message: "No more emails to send" };
+    }
+
+    // Generate feedback form URL
+    const baseUrl = process.env.PUBLIC_URL || "https://summit.yalinetwork.ng";
+    const feedbackUrl = `${baseUrl}/feedback`;
+    const whatsappUrl = "https://chat.whatsapp.com/your-whatsapp-group-link"; // Replace with actual link
+
+    const results: Array<{ name: string; email: string; success: boolean; error?: string }> = [];
+    let sent = 0;
+    let failed = 0;
+
+    for (const attendee of attendees) {
+      try {
+        const response = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${resendApiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: "YALI Network <noreply@summit.yalinetwork.ng>",
+            to: attendee.email,
+            subject: "Thank You for Attending YALI Summit 2026! 🎉",
+            html: `
+              <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto;">
+                <h1>Thank You, ${attendee.full_name}!</h1>
+                <p>What an incredible experience at the YALI Network Nigeria Summit 2026!</p>
+                <p>We're grateful to have you join us from September 25-27. Your presence and participation made this event meaningful.</p>
+
+                <h3>📋 Share Your Feedback</h3>
+                <p>We'd love to hear from you! Your feedback helps us improve future events:</p>
+                <p><a href="${feedbackUrl}?ticket=${attendee.ticket_code}" style="background-color: #00D9FF; color: #1a1a1a; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600;">Provide Feedback</a></p>
+
+                <h3>🤝 Join the YALI Network</h3>
+                <p>Interested in staying connected? Learn about joining YALI Network and discover opportunities in your state hub:</p>
+                <p><a href="${whatsappUrl}" style="background-color: #25D366; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600;">Join WhatsApp Community</a></p>
+
+                <p style="margin-top: 32px; padding-top: 16px; border-top: 1px solid #eee; color: #666; font-size: 12px;">
+                  Best regards,<br>
+                  YALI Network National Summit Team
+                </p>
+              </div>
+            `,
+          }),
+        });
+
+        if (response.ok) {
+          results.push({ name: attendee.full_name, email: attendee.email, success: true });
+
+          // Mark as sent
+          await supabase
+            .from("registrations")
+            .update({ thank_you_email_sent_at: new Date().toISOString() })
+            .eq("id", attendee.id);
+
+          sent++;
+        } else {
+          const error = await response.text();
+          results.push({ name: attendee.full_name, email: attendee.email, success: false, error });
+          failed++;
+        }
+      } catch (e) {
+        results.push({
+          name: attendee.full_name,
+          email: attendee.email,
+          success: false,
+          error: e instanceof Error ? e.message : "Unknown error",
+        });
+        failed++;
+      }
+    }
+
+    console.log(`[THANK YOU EMAILS] Sent: ${sent}, Failed: ${failed}, Total batch: ${attendees.length}`);
+    return { sent, failed, total: attendees.length, results };
+  });
+
+export const getThankYouEmailStatus = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
+    const roles = await getUserRoles(supabase, userId);
+    assertHasStaffRole(roles);
+
+    // Get total count
+    const { count: totalCount } = await supabase
+      .from("registrations")
+      .select("id", { count: "exact", head: true })
+      .not("email", "is", null);
+
+    // Get sent count
+    const { count: sentCount } = await supabase
+      .from("registrations")
+      .select("id", { count: "exact", head: true })
+      .not("thank_you_email_sent_at", "is", null);
+
+    const pending = (totalCount ?? 0) - (sentCount ?? 0);
+    const percentage = totalCount ? Math.round(((sentCount ?? 0) / totalCount) * 100) : 0;
+
+    return {
+      total: totalCount ?? 0,
+      sent: sentCount ?? 0,
+      pending,
+      percentage,
+      complete: pending === 0,
+    };
+  });
+
+export const submitFeedback = createServerFn({ method: "POST" })
+  .inputValidator((input) =>
+    z
+      .object({
+        ticket_code: z.string().min(4).max(64),
+        experience_rating: z.number().min(1).max(5),
+        join_yali_interest: z.enum(["very_interested", "somewhat_interested", "not_interested"]),
+        preferred_state_hub: z.string().max(50).optional(),
+        feedback_text: z.string().max(1000).optional(),
+      })
+      .parse(input),
+  )
+  .handler(async ({ data }) => {
+    const supabase = createServerSupabase();
+
+    // Get registration
+    const { data: reg, error: regError } = await supabase
+      .from("registrations")
+      .select("id, email")
+      .eq("ticket_code", data.ticket_code)
+      .single();
+
+    if (regError || !reg) throw new Error("Invalid ticket code");
+
+    // Store feedback
+    const { error: feedbackError } = await supabase
+      .from("summit_feedback")
+      .insert({
+        registration_id: reg.id,
+        experience_rating: data.experience_rating,
+        join_yali_interest: data.join_yali_interest,
+        preferred_state_hub: data.preferred_state_hub,
+        feedback_text: data.feedback_text,
+      });
+
+    if (feedbackError) throw new Error(feedbackError.message);
+
+    return { ok: true, message: "Thank you for your feedback!" };
+  });
+
+export const getFeedbackStats = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { userId } = context as { userId: string };
+    const supabase = createServerSupabase();
+    const roles = await getUserRoles(supabase, userId);
+    assertHasStaffRole(roles);
+
+    const { data: feedback, error } = await supabase
+      .from("summit_feedback")
+      .select("experience_rating, join_yali_interest, preferred_state_hub");
+
+    if (error) throw new Error(error.message);
+    if (!feedback || feedback.length === 0) {
+      return { total: 0, averageRating: 0, byInterest: {}, byStateHub: {} };
+    }
+
+    const total = feedback.length;
+    const avgRating = (feedback.reduce((sum, f: any) => sum + (f.experience_rating || 0), 0) / total).toFixed(1);
+
+    const byInterest = feedback.reduce(
+      (acc: any, f: any) => ({
+        ...acc,
+        [f.join_yali_interest]: (acc[f.join_yali_interest] || 0) + 1,
+      }),
+      {} as Record<string, number>,
+    );
+
+    const byStateHub = feedback.reduce(
+      (acc: any, f: any) => {
+        if (f.preferred_state_hub) {
+          acc[f.preferred_state_hub] = (acc[f.preferred_state_hub] || 0) + 1;
+        }
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
+
+    return { total, averageRating: parseFloat(avgRating), byInterest, byStateHub };
+  });
+
 export const sendWhatsAppTestMessage = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({ message: z.string().min(1), phoneNumbers: z.array(z.string().min(7)) }).parse(input))
